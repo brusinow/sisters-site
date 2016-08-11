@@ -3,10 +3,23 @@ body {
   color: #1A0504;
 }
 
+#main-nav {
+  display: none;
+}
+
 .navbar {
   height: 50px;
   line-height: 50px;
-  padding: 15px 25px;
+  padding: 25px 60px;
+}
+
+.site-header, .site-footer { 
+  opacity:0; 
+  transition: all 1000ms ease-in-out; 
+}
+
+.site-header.fade-in, .site-footer.fade-in { 
+  opacity:1; 
 }
 
 .navbar ul {
@@ -17,14 +30,58 @@ body {
   display:inline;
   vertical-align:bottom;
   line-height:26px;
-  padding: 0 20px;
-  font-weight: bold;
+  padding-left: 20px;
+  /*font-weight: bold;*/
 }
+
+.social {
+  display: inline-block;
+  padding-right: 25px;
+}
+
+.social i {
+  display: inline-block;
+  vertical-align: bottom;
+  padding: 0 5px 5px 5px;
+}
+
+.navbar input {
+  width: 175px;
+  
+  padding: 4px;
+  margin: 0;
+  height: 32px;
+  border-color: #d038af;
+  border-radius: 2px 0 0 2px;
+  vertical-align: bottom;
+}
+
+.navbar button {
+  min-width:32px;
+  vertical-align: middle;
+  background-color: #d038af;
+  color: white;
+  border-color: #d038af;
+  border: 1px 1px 1px 0;
+  border-radius: 0 2px 2px 0;
+  padding: 4px;
+  margin: 0;
+  height: 32px;
+  vertical-align: bottom;
+}
+
+.clear-float {
+  display: inline-block;
+  clear: both;
+}
+
+
 
 #logo {
   float: left;
   height: 50px;
   vertical-align: center;
+  padding-right: 20px;
 }
 
 .nav-left {
@@ -33,6 +90,52 @@ body {
 
 .nav-right {
   float: right;
+}
+
+.home-content {
+  opacity:0; 
+  transition: all 1500ms ease-in-out; 
+}
+
+.home-content.fade-in { 
+  opacity:1; 
+}
+
+.album {
+  margin: 40px auto 0 auto;
+  border: 6px solid #1A0504;
+  width: 60%;
+}
+
+.album img {
+  width: 100%;
+}
+
+
+.footer {
+  margin-top: 20%;
+  height: 50px;
+  width: 100%;
+  text-align: center;
+}
+
+.footer ul {
+  display: inline-block;
+  list-style: none;
+}
+
+.footer li {
+  display: inline;
+}
+
+@media (min-width: 806px){
+  #mobile-nav {
+    display: none;
+  }
+  #main-nav {
+    display: inherit;
+  }
+
 }
 
 

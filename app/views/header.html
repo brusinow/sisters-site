@@ -1,4 +1,4 @@
-<div class="navbar row">
+<div id="main-nav" class="navbar row">
     <div class="one-half column">
       <img id="logo" src="app/img/logo.png"/>
       <ul class="nav-left">
@@ -6,10 +6,15 @@
       <li>two</li>
       </ul>
     </div>
+    <div class="clear-float"></div>
     <div class="one-half column">
-      <ul class="nav-right">
-      <li>one</li>
-      <li>two</li>
-      </ul>
+      <div class="nav-right">
+        <div class="social">
+          <i class="fa fa-twitter fa-lg" aria-hidden="true"></i>
+          <i class="fa fa-facebook fa-lg" aria-hidden="true"></i>
+          <i class="fa fa-instagram fa-lg" aria-hidden="true"></i>
+        </div>
+        <input type="text" placeholder="Join our mailing list!" ng-model="user.email"/><button><i style="position: relative; bottom: 8px;"class="fa fa-paper-plane-o fa-lg" aria-hidden="true"></i></button>
+      </div>
     </div>
 </div>

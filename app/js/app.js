@@ -1,6 +1,6 @@
-angular.module("SistersApp", ['SistersCtrls', 'ui.router'])
+angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router'])
 
-.config(['$stateProvider', '$urlRouterProvider', function($stateProvider, $urlRouterProvider){
+.config(['$stateProvider', '$urlRouterProvider','$locationProvider', function($stateProvider, $urlRouterProvider,$locationProvider){
   $urlRouterProvider.otherwise('/');
 
   $stateProvider
@@ -15,7 +15,7 @@ angular.module("SistersApp", ['SistersCtrls', 'ui.router'])
     controller: 'AboutCtrl'
   })
   
-  // $locationProvider.html5Mode(false).hashPrefix('!');
+ $locationProvider.html5Mode(true);
 
 
 }])

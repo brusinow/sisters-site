@@ -1,0 +1,38 @@
+body {
+  background: url('../img/ticks.png');
+  color: #1A0504;
+}
+
+.navbar {
+  height: 50px;
+  line-height: 50px;
+  padding: 15px 25px;
+}
+
+.navbar ul {
+  list-style: none;
+}
+
+.navbar li {
+  display:inline;
+  vertical-align:bottom;
+  line-height:26px;
+  padding: 0 20px;
+  font-weight: bold;
+}
+
+#logo {
+  float: left;
+  height: 50px;
+  vertical-align: center;
+}
+
+.nav-left {
+  float: left;
+}
+
+.nav-right {
+  float: right;
+}
+
+

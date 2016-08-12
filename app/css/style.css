@@ -91,10 +91,12 @@ a:hover {
 
 .site-header, .site-footer { 
   opacity:0; 
-  transition: all 1000ms ease-in-out; 
+  
 }
 
+
 .site-header.fade-in, .site-footer.fade-in { 
+  transition: all 1000ms ease-in-out; 
   opacity:1; 
 }
 
@@ -191,10 +193,16 @@ a:hover {
 
 .home-content {
   opacity:0; 
-  transition: all 1500ms ease-in-out; 
+  
 }
 
+.home-content.loaded {
+  opacity:1;
+}
+
+
 .home-content.fade-in { 
+  transition: all 1500ms ease-in-out; 
   opacity:1; 
 }
 

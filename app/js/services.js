@@ -6,3 +6,19 @@ angular.module('SistersServices', ['ngResource'])
     query: {params: {id: 1}, isArray: false}
   });
 }])
+
+.factory('LoadedService', function() {
+ var loaded = false;
+ function set(data) {
+   loaded = data;
+ }
+ function get() {
+  return loaded;
+ }
+
+ return {
+  set: set,
+  get: get
+ }
+
+})

@@ -11,6 +11,10 @@ angular.module('SistersCtrls', ['SistersServices'])
     
 }]) 
 
+.controller('ShowsCtrl', ['$scope', '$state', function($scope, $state){
+    
+}]) 
+
 .controller('NavCtrl', ['$scope','$timeout', function($scope, $timeout){
     $timeout(function () {
         $scope.fade = true;

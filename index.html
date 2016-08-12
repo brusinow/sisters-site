@@ -2,21 +2,26 @@
 <html ng-app="SistersApp">
 <head>
   <title>Sisters</title>
-  <meta charset="utf-8">
-  <base href="/">
+ <!--  <meta charset="utf-8">
+  <base href="/"> -->
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
  
   <!-- Latest compiled and minified CSS & JS -->
  <link rel="stylesheet" href="app/css/normalize.css">
  <link rel="stylesheet" href="app/css/skeleton.css">
+ <link href='https://fonts.googleapis.com/css?family=Fjalla+One' rel='stylesheet' type='text/css'>
  <link rel="stylesheet" href="app/css/style.css">
 </head>
 <body>
+    
+<div id="wrap">
     <div class="site-header" ng-include="'app/views/header.html'" ng-controller="NavCtrl" ng-class="{'fade-in': fade}"></div>
-        <div class="container">
+        <div id="main" class="container">
           <div ui-view></div>
         </div>
-    <div class="site-footer" ng-include="'app/views/footer.html'" ng-controller="NavCtrl" ng-class="{'fade-in': fade}"></div>
+</div>
+
+    <div id="footer" class="site-footer" ng-include="'app/views/footer.html'" ng-controller="NavCtrl" ng-class="{'fade-in': fade}"></div>
 
 
  

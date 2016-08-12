@@ -14,8 +14,13 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router'])
     templateUrl: 'app/views/about.html',
     controller: 'AboutCtrl'
   })
+  .state('shows', {
+    url: '/shows',
+    templateUrl: 'app/views/shows.html',
+    controller: 'ShowsCtrl'
+  })
   
- $locationProvider.html5Mode(true);
+ // $locationProvider.html5Mode(true);
 
 
 }])

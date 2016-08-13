@@ -1,3 +1,9 @@
+/*Pink is #d038af*/
+/*Blue is #5F9EDD*/
+
+
+
+
 body {
   background: url('../img/ticks.png');
   color: #1A0504;
@@ -13,7 +19,19 @@ h1, h2, h3, h4, h5, h6 {
   letter-spacing: .07em;
 }
 
-td, th {
+table {
+  font-size: .75em;
+}
+
+th {
+  font-family: 'Fjalla One', sans-serif;
+  border-bottom: 1px solid #dfd2c7;
+  text-transform: uppercase;
+  letter-spacing: .06em;
+}
+
+td {
+  font-family: 'PT Serif', serif;
   border-bottom: 1px solid #dfd2c7;
 }
 
@@ -73,7 +91,8 @@ a:hover {
 
 #footer i {
   color: #5e504f;
-  font-size: 1.5em;
+  font-size: 1.7em;
+  padding: 0 5px;
 }
 
 #footer li {
@@ -291,7 +310,7 @@ a:hover {
 
 
 #shows-container {
-  width: 90%;
+  width: 100%;
   margin: 20px auto 0 auto;
 }
 
@@ -307,6 +326,10 @@ a:hover {
   #main-nav {
     display: inherit;
   } 
+
+  table {
+  font-size: 1em;
+  }
 
   .site-header.fade-in, .site-footer.fade-in { 
   transition: all 1000ms ease-in-out; 

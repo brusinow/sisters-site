@@ -26,7 +26,36 @@ angular.module('SistersCtrls', ['SistersServices'])
     
 }]) 
 
-.controller('NavCtrl', ['$scope','$timeout', function($scope, $timeout){
+.controller('NavCtrl', ['$scope','$timeout','$http', function($scope, $timeout, $http){
+    $scope.user = {};
+    $scope.mailConfirm = false;
+
+    $scope.mailchimpSubmit = function(){
+      console.log("submit clicked!")
+      var req = {
+        url: "//sisterstheband.us14.list-manage.com/subscribe/post?u=bc38720b0bcc7a32641bb572c&amp;id=242f4adc89",
+        method: "POST",
+        params: {
+          EMAIL: $scope.user.email,
+        }
+      }
+
+
+      $http(req).then(function success(res){
+        console.log(res);
+        $scope.user = {};
+        $scope.mailConfirm = true;
+        $timeout(function(){
+          $scope.mailConfirm = false;
+          console.log("mail confirm reset");
+        },7000);
+      }, function error(res){
+        console.log(res);
+      });
+    }
+
+
+
     $scope.toggle = true;
     var width = window.innerWidth;
     console.log("inner width: ",width);
@@ -39,3 +68,4 @@ angular.module('SistersCtrls', ['SistersServices'])
       $scope.fade = true;
     }
 }])
+

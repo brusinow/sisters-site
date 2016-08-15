@@ -23,9 +23,11 @@
       <li class="right-border">press</li>
       <li>Three</li>
     </ul>
-    <span class="copyright">All Content ©2016 Sylvia Morris LLC.</span>
+    <span class="copyright">All Content ©2016 Sylvia Morris LLC.</span> <button class="footer-auth" ng-if="!firebaseUser.email" href="/#/login">Log In</button>
+      <button class="footer-auth" ng-if="firebaseUser.email" ng-click="Auth.$signOut()">Sign Out</button>
     </div>
   </div>
 </div>
 
  <!--  <li style="font-weight: 400; font-size: .9em;">All content ©2016 Sisters The Band</li> -->
+ 

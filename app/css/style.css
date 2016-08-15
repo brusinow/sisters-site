@@ -43,6 +43,16 @@ a:hover {
   color: #82B0DD;
 }
 
+.footer-auth {
+  color: #efe2d7 !important;
+  border-color: #efe2d7 !important;
+  margin-bottom: 0;
+  font-size: .8em;
+  height: 24px;
+  line-height: 24px;
+  padding: 0 15px;
+}
+
 #wrap {
   min-height: 100%;
 }
@@ -219,7 +229,7 @@ a:hover {
 
 .social {
   display: inline-block;
-  padding-right: 10px;
+  padding-right: 0px;
 }
 
 .social i {
@@ -265,17 +275,18 @@ a:hover {
   display: inline-block;
   margin: 0;
   float: right;
-  width: 40%;
+  width: 55%;
 }
 
 .mail-alerts {
-  font-size: .9em;
+  font-size: .8em;
   margin-top: 2px;
-  width: 85%;
-  min-width: 205px;
+  width: 95%;
+  min-width: 130px;
   min-height: 40px;
   float: right;
   display: inline-block;
+  text-align: center;
 }
 
 .mail-alerts span {
@@ -387,6 +398,14 @@ a:hover {
   height: 61px;
   padding: 0 20px 14px 0;
   }
+
+  .mail-alerts {
+  margin-top: 10px;
+  font-size: .9em;
+  width: 90%;
+  min-width: 205px;
+  min-height: 40px;
+}
 
   .social i {
   font-size: 1.3333em;

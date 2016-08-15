@@ -22,3 +22,10 @@ angular.module('SistersServices', ['ngResource'])
  }
 
 })
+
+.factory("Auth", ["$firebaseAuth",
+  function($firebaseAuth) {
+    return $firebaseAuth();
+  }
+])
+

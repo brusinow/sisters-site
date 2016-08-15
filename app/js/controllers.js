@@ -22,26 +22,66 @@ angular.module('SistersCtrls', ['SistersServices'])
     
 }]) 
 
-.controller('ShowsCtrl', ['$scope', '$state', function($scope, $state){
+.controller('ShowsCtrl', ['$scope', '$state','currentAuth', function($scope, $state, currentAuth){
     
 }]) 
 
-.controller('NavCtrl', ['$scope','$timeout','$http', function($scope, $timeout, $http){
+.controller('LoginCtrl', ['$scope', '$state','Auth', function($scope, $state, Auth){
+  Auth.$onAuthStateChanged(function(firebaseUser) {
+  if (firebaseUser) {
+      console.log("Signed in as:", firebaseUser.uid);
+      var thisUserRef = firebase.database().ref('users/'+firebaseUser.uid);
+      thisUserRef.on("value", function(user){
+          $scope.currentUser = user.val();
+          console.log("current user is: ",$scope.currentUser);
+          $state.go('home');
+      }, function (errorObject){
+          alert("Sorry! There was an error getting your data:" + errorObject.code);
+        });
+  } else {
+    console.log("Not logged in.");
+  }
+});
+
+
+  // bind form data to user model
+  $scope.user = {}
+
+
+  $scope.login = function() {
+  $scope.firebaseUser = null;
+
+  Auth.$signInWithEmailAndPassword($scope.user.email, $scope.user.password).then(function(firebaseUser) {
+  console.log("Signed in as:", firebaseUser.uid);
+  $scope.firebaseUser = firebaseUser;
+  }).catch(function(error) {
+  console.error("Authentication failed:", error);
+  })
+  };
+
+
+}]) 
+
+.controller('NavCtrl', ['$scope','$timeout','$http','Auth', function($scope, $timeout, $http, Auth){
+    $scope.auth = Auth;
+    $scope.auth.$onAuthStateChanged(function(firebaseUser) {
+      $scope.firebaseUser = firebaseUser;
+      console.log("firebase user is ",$scope.firebaseUser);
+    });
+    
+
+
     $scope.user = {};
     $scope.mailConfirm = false;
 
     $scope.mailchimpSubmit = function(){
       console.log("submit clicked!")
-      var req = {
-        url: "//sisterstheband.us14.list-manage.com/subscribe/post?u=bc38720b0bcc7a32641bb572c&amp;id=242f4adc89",
-        method: "POST",
-        params: {
-          EMAIL: $scope.user.email,
-        }
-      }
+      var url = "//sisterstheband.us14.list-manage.com/subscribe/post-json?u=bc38720b0bcc7a32641bb572c&amp;id=242f4adc89&EMAIL="+$scope.user.email+"&c=JSON_CALLBACK"
 
 
-      $http(req).then(function success(res){
+
+
+      $http.jsonp(url).then(function success(res){
         console.log(res);
         $scope.user = {};
         $scope.mailConfirm = true;

@@ -43,6 +43,25 @@ a:hover {
   color: #82B0DD;
 }
 
+#spinner-div {
+  margin-top: 15%;
+  text-align: center;
+}
+
+#spinner-div i {
+  font-size: 12em;
+  color: #aaaaaa;
+}
+
+.modal-container {
+  padding: 20px;
+}
+
+.modal-container h3 {
+  text-align: center;
+
+}
+
 .footer-auth {
   color: #efe2d7 !important;
   border-color: #efe2d7 !important;
@@ -52,6 +71,32 @@ a:hover {
   line-height: 24px;
   padding: 0 15px;
 }
+
+.small-button {
+  margin-bottom: 0;
+  font-size: .8em;
+  height: 24px;
+  line-height: 24px;
+  padding: 0 15px;
+}
+
+.edit-button {
+    margin-bottom: 0;
+    font-size: .8em;
+    height: 24px;
+    line-height: 13px;
+    padding: 5px 5px;
+    margin-right: 4px;
+}
+
+.new-show-button {
+  font-size:1.3em;
+  line-height:1.3em;
+  font-weight:600;
+  margin-bottom: 20px;
+}
+
+
 
 #wrap {
   min-height: 100%;
@@ -185,7 +230,7 @@ a:hover {
 #main-nav #logo {
   float: left;
   height: 35px;
-  padding: 15px 0px 5px 0;
+  margin-top: 12px;
 }
 
 .navbar {
@@ -396,7 +441,7 @@ a:hover {
   #main-nav #logo {
   float: left;
   height: 61px;
-  padding: 0 20px 14px 0;
+  margin-top: 0px;
   }
 
   .mail-alerts {

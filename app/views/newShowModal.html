@@ -1,0 +1,33 @@
+<div class="modal-container">
+<h3>New Show</h3>
+<div class="row">
+  <div class="ten columns offset-by-one">
+    <input class="u-full-width" type="date" ng-model="show.showDate" placeholder="Show Date" id="date">
+  </div>  
+</div>
+<div class="row">
+  <div class="ten columns offset-by-one">
+    <input class="u-full-width" type="text" ng-model="show.showLocation" placeholder="Location" id="location">
+  </div>  
+</div>
+<div class="row">
+  <div class="ten columns offset-by-one">
+    <input class="u-full-width" type="text" ng-model="show.venue" placeholder="Venue" id="venue">
+  </div>  
+</div>
+<div class="row">
+  <div class="ten columns offset-by-one">
+    <input class="u-full-width" type="text" ng-model="show.venueLink" placeholder="Venue Link (Optional)" id="venueLink">
+  </div>  
+</div>
+<div class="row">
+  <div class="ten columns offset-by-one">
+    <input class="u-full-width" type="text" ng-model="show.ticketLink" placeholder="Ticket Link (Optional)" id="ticketLink">
+  </div>  
+</div>
+
+<div class="modal-footer">
+  <button class="btn btn-primary" type="button" ng-click="ok()">OK</button>
+  <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+</div>
+</div>

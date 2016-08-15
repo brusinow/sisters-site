@@ -22,26 +22,131 @@ angular.module('SistersCtrls', ['SistersServices'])
     
 }]) 
 
-.controller('ShowsCtrl', ['$scope', '$state','currentAuth', function($scope, $state, currentAuth){
+.controller('ShowsCtrl', ['$scope', '$state','currentAuth','$uibModal','$log','$firebaseArray','moment','Auth', function($scope, $state, currentAuth, $uibModal,$log, $firebaseArray, moment, Auth){
+  $scope.auth = Auth;
+    $scope.auth.$onAuthStateChanged(function(firebaseUser) {
+      $scope.firebaseUser = firebaseUser;
+      console.log("firebase user is ",$scope.firebaseUser);
+  });
     
+  $scope.loaded = false;
+  var showsRef = firebase.database().ref('shows').orderByChild("unix");
+  $scope.shows = $firebaseArray(showsRef);
+  $scope.shows.$loaded().then(function(){
+    $scope.loaded = true;
+  })
+
+
+
+   $scope.open = function(whichPage, index) {
+    console.log(index);
+    var modalInstance = $uibModal.open({
+      animation: true,
+      backdrop: true,
+      templateUrl: 'app/views/'+whichPage+'ShowModal.html',
+      controller: whichPage+'ModalCtrl',
+      size: 'lg',
+      resolve: {
+        editShow: function () {
+          return $scope.shows;
+        },
+        index: index
+      }
+    });
+
+    modalInstance.result.then(function (selectedItem) {
+      $scope.selected = selectedItem;
+    }, function () {
+      $log.info('Modal dismissed at: ' + new Date());
+    });
+  }; 
+
 }]) 
 
+
+.controller('editModalCtrl', function ($scope, $uibModalInstance, editShow, index, $firebaseArray) {
+  $scope.shows = editShow;
+  $scope.show = editShow[index];
+
+  console.log("index is ",index);
+  $scope.dateObj = new Date($scope.show.unix);
+  console.log($scope.dateObj);
+
+
+
+  $scope.ok = function () {
+    $scope.show.date = moment($scope.dateObj).format('ddd, MMMM Do');
+    $scope.show.unix = $scope.dateObj.getTime();
+    $scope.shows.$save($scope.show).then(function(ref) {
+      console.log("success");
+        }, function(error) {
+        console.log("Error:", error);
+        });
+    $uibModalInstance.close();
+  };
+
+  $scope.cancel = function () {
+    $uibModalInstance.dismiss('cancel');
+  };
+})
+
+
+.controller('newModalCtrl', function ($scope, $uibModalInstance, $firebaseArray) {
+
+  $scope.show = {};
+  var showsRef = firebase.database().ref('shows');
+  $scope.showsArray = $firebaseArray(showsRef);
+
+  $scope.ok = function () {
+    var thisDate = moment($scope.show.showDate).format('ddd, MMMM Do');
+    var thisUnix = $scope.show.showDate.getTime();
+    console.log(thisDate);
+    var object = {
+      "date": thisDate,
+      "unix": thisUnix,
+      "location": $scope.show.showLocation,
+      "venue": $scope.show.venue,
+      "venueLink": $scope.show.venueLink || "",
+      "ticketLink": $scope.show.ticketLink || ""
+    }
+    console.log(object);
+    $scope.showsArray.$add(object);
+    $uibModalInstance.close();
+  };
+
+  $scope.cancel = function () {
+    $uibModalInstance.dismiss('cancel');
+  };
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 .controller('LoginCtrl', ['$scope', '$state','Auth', function($scope, $state, Auth){
+  $scope.submitted = false;
+  $scope.logged = false;
+
+
   Auth.$onAuthStateChanged(function(firebaseUser) {
   if (firebaseUser) {
+      $scope.logged = true;
       console.log("Signed in as:", firebaseUser.uid);
-      var thisUserRef = firebase.database().ref('users/'+firebaseUser.uid);
-      thisUserRef.on("value", function(user){
-          $scope.currentUser = user.val();
-          console.log("current user is: ",$scope.currentUser);
-          $state.go('home');
-      }, function (errorObject){
-          alert("Sorry! There was an error getting your data:" + errorObject.code);
-        });
   } else {
     console.log("Not logged in.");
   }
-});
+  });
 
 
   // bind form data to user model
@@ -49,6 +154,7 @@ angular.module('SistersCtrls', ['SistersServices'])
 
 
   $scope.login = function() {
+  $scope.submitted = true;
   $scope.firebaseUser = null;
 
   Auth.$signInWithEmailAndPassword($scope.user.email, $scope.user.password).then(function(firebaseUser) {
@@ -62,7 +168,7 @@ angular.module('SistersCtrls', ['SistersServices'])
 
 }]) 
 
-.controller('NavCtrl', ['$scope','$timeout','$http','Auth', function($scope, $timeout, $http, Auth){
+.controller('NavCtrl', ['$scope','$timeout','$http','Auth','$state', function($scope, $timeout, $http, Auth, $state){
     $scope.auth = Auth;
     $scope.auth.$onAuthStateChanged(function(firebaseUser) {
       $scope.firebaseUser = firebaseUser;
@@ -73,6 +179,19 @@ angular.module('SistersCtrls', ['SistersServices'])
 
     $scope.user = {};
     $scope.mailConfirm = false;
+
+    $scope.logout = function(){
+      console.log("clicked log out");
+      Auth.$signOut();
+    };
+
+    $scope.login = function(){
+      console.log("clicked log in");
+      $state.go('login');  
+    }
+
+
+
 
     $scope.mailchimpSubmit = function(){
       console.log("submit clicked!")

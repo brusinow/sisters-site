@@ -1,5 +1,8 @@
 <div id="shows-container">
-  <table class="u-full-width">
+  <div class="row">
+  <button ng-if="firebaseUser.email && loaded" type="button" class="four columns offset-by-four btn btn-default button-primary new-show-button" ng-click="open('new')"><i class="fa fa-plus" aria-hidden="true"></i> Add New Show</button>
+  </div>
+  <table ng-if="shows.length > 0" class="u-full-width">
   <thead>
     <tr>
       <th>Date</th>
@@ -9,12 +12,23 @@
     </tr>
   </thead>
   <tbody>
-    <tr>
-      <td>Sat September 10th</td>
-      <td>New York, NY</td>
-      <td>Mercury Lounge</td>
-      <td><a>venue info</a><br><a>tickets</a></td>
+    <tr ng-repeat="show in shows track by $index">
+      <td><button ng-if="firebaseUser.email" type="button" class="btn btn-default edit-button" ng-click="open('edit',$index)"><i class="fa fa-pencil" aria-hidden="true"></i></button>{{show.date}}</td>
+      <td>{{show.location}}</td>
+      <td>{{show.venue}}</td>
+      <td>
+        <a ng-if="show.venueLink" ng-href="{{show.venueLink}}" target="_blank">venue info</a>
+        <br ng-if="show.ticketLink && show.venueLink">
+        <a ng-if="show.ticketLink" ng-href="{{show.ticketLink}}" target="_blank">tickets</a></td>
     </tr>
   </tbody>
 </table>
+<div ng-if="shows.length === 0 && loaded">
+  <h2>There are currently no shows scheduled.</h2>
+</div>
+<div ng-if="!loaded" id="spinner-div">
+  <fa name="spinner" spin></fa>
+  <!-- rendered -->
+  <i class="fa fa-circle-o-notch fa-spin"></i>
+</div>
 </div>

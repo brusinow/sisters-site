@@ -1,7 +1,7 @@
 
 
 
-<form>
+<form ng-if="!submitted && !logged">
   <div class="row">
     <div class="six columns offset-by-three">
       <label for="exampleEmailInput">Email:</label>
@@ -18,7 +18,11 @@
     <input class="two columns offset-by-five button-primary" type="submit" ng-click="login()">
   </div>
 </form>
-
+<div ng-if="submitted && !logged" id="spinner-div">
+  <fa name="spinner" spin></fa>
+  <!-- rendered -->
+  <i class="fa fa-circle-o-notch fa-spin"></i>
+</div>
 
 
 

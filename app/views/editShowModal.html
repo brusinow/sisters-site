@@ -1,0 +1,38 @@
+<div class="modal-container">
+<h3>Edit Show</h3>
+<div class="row">
+  <div class="six columns offset-by-three">
+    <label for="exampleEmailInput">Date</label>
+    <input class="u-full-width" type="date" ng-model="dateObj" placeholder="Show Date" id="date">
+  </div>  
+</div>
+<div class="row">
+  <div class="six columns offset-by-three">
+    <label for="exampleEmailInput">Location</label>
+    <input class="u-full-width" type="text" ng-model="show.location" placeholder="Location" id="city">
+  </div>  
+</div>
+<div class="row">
+  <div class="six columns offset-by-three">
+  <label for="exampleEmailInput">Venue</label>
+    <input class="u-full-width" type="text" ng-model="show.venue" placeholder="Venue" id="venue">
+  </div>  
+</div>
+<div class="row">
+  <div class="six columns offset-by-three">
+  <label for="exampleEmailInput">Venue Link</label>
+    <input class="u-full-width" type="text" ng-model="show.venueLink" placeholder="Venue Link (Optional)" id="venueLink">
+  </div>  
+</div>
+<div class="row">
+  <div class="six columns offset-by-three">
+  <label for="exampleEmailInput">Ticket Link</label>
+    <input class="u-full-width" type="text" ng-model="show.ticketLink" placeholder="Ticket Link (Optional)" id="ticketLink">
+  </div>  
+</div>
+
+<div class="modal-footer">
+            <button class="btn btn-primary" type="button" ng-click="ok()">Submit</button>
+            <button class="btn btn-warning" type="button" ng-click="cancel()">Cancel</button>
+</div>
+</div>

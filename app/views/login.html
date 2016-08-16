@@ -2,20 +2,13 @@
 
 
 <form ng-if="!submitted && !logged">
-  <div class="row">
-    <div class="six columns offset-by-three">
-      <label for="exampleEmailInput">Email:</label>
-      <input class="u-full-width" type="email" ng-model="user.email" placeholder="admin email">
-    </div>
-  </div>
-  <div class="row">
-    <div class="six columns offset-by-three">
-      <label for="exampleRecipientInput">Password:</label>
-     <input class="u-full-width" type="password" ng-model="user.password" placeholder="admin password">
-    </div>
-  </div>
-  <div class="row">
-    <input class="two columns offset-by-five button-primary" type="submit" ng-click="login()">
+
+  <label for="adminEmail">Admin Email:</label>     
+  <input class="u-full-width" id="adminEmail" type="email" ng-model="user.email" placeholder="admin email">
+  <label for="adminPassword">Password:</label>
+  <input id="adminPassword" class="u-full-width" type="password" ng-model="user.password" placeholder="admin password">
+  <div style="text-align: center;"class="row">
+    <input class="button-primary" type="submit" ng-click="login()">
   </div>
 </form>
 <div ng-if="submitted && !logged" id="spinner-div">
@@ -23,8 +16,6 @@
   <!-- rendered -->
   <i class="fa fa-circle-o-notch fa-spin"></i>
 </div>
-
-
 
 
 

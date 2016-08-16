@@ -44,12 +44,12 @@ a:hover {
 }
 
 #spinner-div {
-  margin-top: 15%;
+  margin-top: 10%;
   text-align: center;
 }
 
 #spinner-div i {
-  font-size: 12em;
+  font-size: 6em;
   color: #aaaaaa;
 }
 
@@ -57,9 +57,23 @@ a:hover {
   padding: 20px;
 }
 
-.modal-container h3 {
+.modal-container h4 {
   text-align: center;
+  font-family: 'Fjalla One', sans-serif;
+  font-weight: 600;
+  letter-spacing: .04em;
+  text-transform: uppercase;
 
+}
+
+.date-input {
+  height: 38px;
+  padding: 6px 10px;
+  background-color: #fff;
+  border: 1px solid #D1D1D1;
+  border-radius: 4px;
+  box-shadow: none;
+  box-sizing: border-box;
 }
 
 .footer-auth {
@@ -81,12 +95,16 @@ a:hover {
 }
 
 .edit-button {
-    margin-bottom: 0;
-    font-size: .8em;
-    height: 24px;
-    line-height: 13px;
-    padding: 5px 5px;
-    margin-right: 4px;
+  margin-bottom: 0;
+  font-size: .8em;
+  height: 24px;
+  line-height: 13px;
+  padding: 5px 5px;
+  margin-right: 4px;
+}
+
+.btn-circle {
+  border-radius: 50%;
 }
 
 .new-show-button {

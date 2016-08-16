@@ -88,6 +88,20 @@ angular.module('SistersCtrls', ['SistersServices'])
   $scope.cancel = function () {
     $uibModalInstance.dismiss('cancel');
   };
+
+  $scope.delete = function(){
+    $scope.shows.$remove($scope.show).then(function(ref){
+      console.log("successful delete: ",ref);
+    }, function(error){
+      console.log("error: ",error)
+    });
+   $uibModalInstance.close();
+  }
+
+
+
+
+
 })
 
 
@@ -142,6 +156,7 @@ angular.module('SistersCtrls', ['SistersServices'])
   Auth.$onAuthStateChanged(function(firebaseUser) {
   if (firebaseUser) {
       $scope.logged = true;
+      $state.go('home');
       console.log("Signed in as:", firebaseUser.uid);
   } else {
     console.log("Not logged in.");

@@ -1,6 +1,6 @@
 <div id="shows-container">
-  <div class="row">
-  <button ng-if="firebaseUser.email && loaded" type="button" class="four columns offset-by-four btn btn-default button-primary new-show-button" ng-click="open('new')"><i class="fa fa-plus" aria-hidden="true"></i> Add New Show</button>
+  <div style="text-align: center;" class="row">
+  <button ng-if="firebaseUser.email && loaded" type="button" class="button-primary new-show-button" ng-click="open('new')"><i class="fa fa-plus" aria-hidden="true"></i> Add New Show</button>
   </div>
   <table ng-if="shows.length > 0" class="u-full-width">
   <thead>

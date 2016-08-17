@@ -1,11 +1,5 @@
 angular.module('SistersServices', ['ngResource'])
 
-.factory('FilmsFactory', ['$resource', function($resource) {
-  return $resource('http://swapi.co/api/films/:id', {}, {
-    all: {params: {id: undefined}, isArray: false},
-    query: {params: {id: 1}, isArray: false}
-  });
-}])
 
 .factory('LoadedService', function() {
  var loaded = false;
@@ -29,3 +23,11 @@ angular.module('SistersServices', ['ngResource'])
   }
 ])
 
+.factory("GetShows", ["$firebaseArray", 
+  function($firebaseArray){
+    return function(){
+    var showsRef = firebase.database().ref('shows').orderByChild("unix");
+    console.log("I'm in GetShows");
+    return $firebaseArray(showsRef);
+  }
+}])

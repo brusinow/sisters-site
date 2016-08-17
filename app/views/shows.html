@@ -1,6 +1,19 @@
 <div id="shows-container">
+<!--   <h2 style="letter-spacing: .02em;" class="text-center">SHOW DATES</h2> -->
+  <div id="video-box" class="u-max-full-width">
+    <video id="show-vid-large" class="show-video" autoplay loop>
+      <source src="app/media/sistersVid.mp4" type="video/mp4">
+      <source src="app/media/sistersVid.webmsd.webm" type="video/webm">
+       <img src="app/img/sistersVidStill.png" />
+    </video>
+     <video id="show-vid-small" class="show-video" autoplay loop>
+      <source src="app/media/sistersVidSmall.mp4" type="video/mp4">
+      <source src="app/media/sistersVid.webmsd.webm" type="video/webm">
+      <img src="app/img/sistersVidStill.png" />
+    </video>
+  </div>
   <div style="text-align: center;" class="row">
-  <button ng-if="firebaseUser.email && loaded" type="button" class="button-primary new-show-button" ng-click="open('new')"><i class="fa fa-plus" aria-hidden="true"></i> Add New Show</button>
+  <button ng-if="firebaseUser.email" type="button" class="button-primary bold-button" ng-click="open('new')"><i class="fa fa-plus" aria-hidden="true"></i> Add New Show</button>
   </div>
   <table ng-if="shows.length > 0" class="u-full-width">
   <thead>
@@ -26,9 +39,13 @@
 <div ng-if="shows.length === 0 && loaded">
   <h2>There are currently no shows scheduled.</h2>
 </div>
-<div ng-if="!loaded" id="spinner-div">
+</div>
+
+
+
+
+<!-- <div ng-if="!loaded" id="spinner-div">
   <fa name="spinner" spin></fa>
-  <!-- rendered -->
+
   <i class="fa fa-circle-o-notch fa-spin"></i>
-</div>
-</div>
+</div> -->

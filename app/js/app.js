@@ -34,7 +34,11 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
     templateUrl: 'app/views/shows.html',
     controller: 'ShowsCtrl',
     resolve: {
-      "currentAuth": authWait
+      "currentAuth": authWait,
+      getShows: function(GetShows){
+        console.log("app resolve entered");
+        return GetShows().$loaded();
+      }
     }
   })
   .state('login', {

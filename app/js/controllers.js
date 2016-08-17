@@ -22,20 +22,17 @@ angular.module('SistersCtrls', ['SistersServices'])
     
 }]) 
 
-.controller('ShowsCtrl', ['$scope', '$state','currentAuth','$uibModal','$log','$firebaseArray','moment','Auth', function($scope, $state, currentAuth, $uibModal,$log, $firebaseArray, moment, Auth){
+
+
+.controller('ShowsCtrl', ['$scope', '$state','currentAuth','$uibModal','$log','$firebaseArray','moment','Auth','getShows', function($scope, $state, currentAuth, $uibModal,$log, $firebaseArray, moment, Auth, getShows){
+  
+  $scope.shows = getShows;
+
   $scope.auth = Auth;
     $scope.auth.$onAuthStateChanged(function(firebaseUser) {
       $scope.firebaseUser = firebaseUser;
       console.log("firebase user is ",$scope.firebaseUser);
   });
-    
-  $scope.loaded = false;
-  var showsRef = firebase.database().ref('shows').orderByChild("unix");
-  $scope.shows = $firebaseArray(showsRef);
-  $scope.shows.$loaded().then(function(){
-    $scope.loaded = true;
-  })
-
 
 
    $scope.open = function(whichPage, index) {

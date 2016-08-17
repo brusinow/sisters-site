@@ -7,27 +7,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
  
   <!-- Latest compiled and minified CSS & JS -->
- <link rel="stylesheet" href="app/css/normalize.css">
-<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
- <link rel="stylesheet" href="app/css/skeleton.css">
- <link href='https://fonts.googleapis.com/css?family=Fjalla+One' rel='stylesheet' type='text/css'>
- <link href="https://fonts.googleapis.com/css?family=PT+Serif" rel="stylesheet">
- <link rel="stylesheet" href="app/css/style.css">
-</head>
-<body>
-    
-<div id="wrap">
-    <div class="site-header" ng-include="'app/views/header.html'" ng-controller="NavCtrl" ng-class="{'fade-in': fade}"></div>
-        <div id="main" class="container">
-          <div ui-view></div>
-        </div>
-</div>
-
-    <div id="footer" class="site-footer" ng-include="'app/views/footer.html'" ng-controller="NavCtrl" ng-class="{'fade-in': fade}"></div>
-
-
- 
-<script   src="https://code.jquery.com/jquery-2.2.4.min.js"   integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="   crossorigin="anonymous"></script>  
+<script src="https://code.jquery.com/jquery-2.2.4.min.js"   integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="   crossorigin="anonymous"></script>  
 <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.0/angular.js"></script>
 <script src="https://www.gstatic.com/firebasejs/3.2.1/firebase.js"></script>
 <script>
@@ -48,11 +28,38 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.14.1/moment.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-moment/1.0.0-beta.6/angular-moment.min.js"></script>
 <script src="https://use.fontawesome.com/b4167df7f2.js"></script>
-<script src="app/lib/angular-fontawesome.min.js"></script>
+<script src="/lib/angular-fontawesome.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
-<script src="app/js/app.js"></script>
-<script src="app/js/services.js"></script>
-<script src="app/js/controllers.js"></script>
-<script src="app/js/directives.js"></script>
+
+
+
+
+
+ <link rel="stylesheet" href="/css/normalize.css">
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css" integrity="sha384-1q8mTJOASx8j1Au+a5WDVnPi2lkFfwwEAa8hDDdjZlpLegxhjVME1fgjWPGmkzs7" crossorigin="anonymous">
+ <link rel="stylesheet" href="/css/skeleton.css">
+ <link href='https://fonts.googleapis.com/css?family=Fjalla+One' rel='stylesheet' type='text/css'>
+ <link href="https://fonts.googleapis.com/css?family=PT+Serif" rel="stylesheet">
+ <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    
+<div id="wrap">
+    <div class="site-header" ng-include="'/views/header.html'" ng-controller="NavCtrl" ng-class="{'fade-in': fade}"></div>
+        <div id="main" class="container">
+          <ui-view></ui-view>
+        </div>
+</div>
+
+    <div id="footer" class="site-footer" ng-include="'/views/footer.html'" ng-controller="NavCtrl" ng-class="{'fade-in': fade}"></div>
+
+
+ 
+
+
+<script src="/js/app.js"></script>
+<script src="/js/services.js"></script>
+<script src="/js/controllers.js"></script>
+<script src="/js/directives.js"></script>
 </body>
 </html>

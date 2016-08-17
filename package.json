@@ -1,14 +1,16 @@
 {
   "name": "sisters-site",
   "version": "1.0.0",
-  "description": "",
   "main": "index.js",
   "dependencies": {
     "angular": "^1.5.8",
     "angular-animate": "^1.5.8",
     "angular-resource": "^1.5.8",
     "angular-ui-bootstrap": "^2.0.1",
-    "angular-ui-router": "^0.3.1"
+    "angular-ui-router": "^0.3.1",
+    "body-parser": "^1.15.2",
+    "express": "^4.14.0",
+    "path": "^0.12.7"
   },
   "devDependencies": {
     "gulp": "^3.9.1"
@@ -17,5 +19,14 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/brusinow/sisters-site.git"
+  },
+  "bugs": {
+    "url": "https://github.com/brusinow/sisters-site/issues"
+  },
+  "homepage": "https://github.com/brusinow/sisters-site#readme",
+  "description": ""
 }

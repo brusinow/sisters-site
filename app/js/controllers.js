@@ -24,6 +24,32 @@ angular.module('SistersCtrls', ['SistersServices'])
 
 
 
+.controller('BlogCtrl', ['$scope', '$state','$http', function($scope, $state, $http){
+    
+
+
+var instaURL = 'https://api.instagram.com/v1/users/'+__env.instagram_id+'/?access_token='+__env.instagram_token+'&callback=JSON_CALLBACK';
+
+$http.jsonp(instaURL).then(function success(res){
+        console.log("success for instagram response!!!!!",res);
+      }, function error(res){
+        console.log("error for instagram response.",res);
+      });
+
+
+
+
+
+
+
+
+
+}]) 
+
+
+
+
+
 .controller('ShowsCtrl', ['$scope', '$state','currentAuth','$uibModal','$log','$firebaseArray','moment','Auth','getShows', function($scope, $state, currentAuth, $uibModal,$log, $firebaseArray, moment, Auth, getShows){
   
   $scope.shows = getShows;
@@ -208,10 +234,6 @@ angular.module('SistersCtrls', ['SistersServices'])
     $scope.mailchimpSubmit = function(){
       console.log("submit clicked!")
       var url = "//sisterstheband.us14.list-manage.com/subscribe/post-json?u=bc38720b0bcc7a32641bb572c&amp;id=242f4adc89&EMAIL="+$scope.user.email+"&c=JSON_CALLBACK"
-
-
-
-
       $http.jsonp(url).then(function success(res){
         console.log(res);
         $scope.user = {};

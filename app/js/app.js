@@ -21,17 +21,25 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
   $stateProvider
   .state('home', {
     url: '/',
-    templateUrl: 'app/views/home.html',
+    templateUrl: '/views/home.html',
     controller: 'HomeCtrl'
   })
   .state('about', {
     url: '/about',
-    templateUrl: 'app/views/about.html',
+    templateUrl: '/views/about.html',
     controller: 'AboutCtrl'
+  })
+  .state('blog', {
+    url: '/blog',
+    templateUrl: '/views/blog.html',
+    controller: 'BlogCtrl',
+    resolve: {
+      "currentAuth": authWait
+    }
   })
   .state('shows', {
     url: '/shows',
-    templateUrl: 'app/views/shows.html',
+    templateUrl: '/views/shows.html',
     controller: 'ShowsCtrl',
     resolve: {
       "currentAuth": authWait,
@@ -43,7 +51,7 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
   })
   .state('login', {
     url: '/login',
-    templateUrl: 'app/views/login.html',
+    templateUrl: '/views/login.html',
     controller: 'LoginCtrl'
   })
   

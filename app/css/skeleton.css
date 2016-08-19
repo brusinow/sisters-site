@@ -31,9 +31,9 @@
 .container {
   position: relative;
   width: 100%;
-  max-width: 1300px;
+  max-width: 1200px;
   margin: 0 auto;
-  padding: 0 15px;
+  padding: 0 20px;
   box-sizing: border-box; }
 .column,
 .columns {
@@ -44,14 +44,14 @@
 /* For devices larger than 400px */
 @media (min-width: 400px) {
   .container {
-    width: 90%;
+    width: 85%;
     padding: 0; }
 }
 
 /* For devices larger than 550px */
 @media (min-width: 550px) {
   .container {
-    width: 85%; }
+    width: 80%; }
   .column,
   .columns {
     margin-left: 4%; }

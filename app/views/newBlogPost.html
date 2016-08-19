@@ -1,0 +1,28 @@
+<form class="new-blog-form">
+  <label for="blogTitle">Post Title</label>
+  <input type="text" class="u-full-width" placeholder="This is a post title..." ng-model="post.title" id="blogTitle"/>
+  <div class="row">
+    <div class="two columns">
+      <label for="singleSelect"> Media Type: </label>
+      <select name="singleSelect" ng-model="data.mediaSelect" ng-init="data.mediaSelect='image'" ng-change="resetMedia()">
+        <option value="image">Image</option>
+        <option value="youtube">YouTube URL</option>
+        <!-- <option value="soundcloud">Soundcloud URL</option> -->
+      </select>
+    </div>
+    <div class="ten columns">
+      <div ng-if="data.mediaSelect === 'image'" id="image-choice">
+        <label for="imageUpload"> Image: </label>
+        <input type="file" name="imageUpload" fileread="data.image"/>
+      </div>
+      <div ng-if="data.mediaSelect === 'youtube'" id="youtube-choice">
+      <label for="youtube">YouTube Link</label>
+        <input class="u-full-width" type="text" name="youtube" placeholder="Enter YouTube link..." ng-model="data.youtube"/>
+      </div>
+    </div> <br>
+    </div>
+  <label for="blogBody">Post Body</label>
+  <textarea class="u-full-width" rows="10" ng-model="post.body" placeholder="This is a new blog post..." id="blogBody"></textarea>
+  <input class="button-primary" ng-click="submit()" type='submit'>
+
+</form>

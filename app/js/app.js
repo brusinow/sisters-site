@@ -34,9 +34,21 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
     templateUrl: '/views/blog.html',
     controller: 'BlogCtrl',
     resolve: {
-      "currentAuth": authWait
+      "currentAuth": authWait,
+      "Instagram": ['InstagramFactory', function(InstagramFactory){
+        return InstagramFactory;
+      }]
     }
   })
+  .state('blog-new', {
+    url: '/blog/new',
+    templateUrl: '/views/newBlogPost.html',
+    controller: 'NewBlogCtrl',
+    resolve: {
+      "currentAuth": authRequire
+    }
+  })
+
   .state('shows', {
     url: '/shows',
     templateUrl: '/views/shows.html',
@@ -54,8 +66,45 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
     templateUrl: '/views/login.html',
     controller: 'LoginCtrl'
   })
+
   
  $locationProvider.html5Mode(true);
 
-
 }])
+
+.filter('cut', function () {
+        return function (value, wordwise, max, tail) {
+            if (!value) return '';
+
+            max = parseInt(max, 10);
+            if (!max) return value;
+            if (value.length <= max) return value;
+
+            value = value.substr(0, max);
+            if (wordwise) {
+                var lastspace = value.lastIndexOf(' ');
+                if (lastspace != -1) {
+                  //Also remove . and , so its gives a cleaner result.
+                  if (value.charAt(lastspace-1) == '.' || value.charAt(lastspace-1) == ',') {
+                    lastspace = lastspace - 1;
+                  }
+                  value = value.substr(0, lastspace);
+                }
+            }
+
+            return value + (tail || '…');
+        };
+  })
+
+.filter('trustAsResourceUrl', ['$sce', function($sce) {
+    return function(val) {
+        return $sce.trustAsResourceUrl('http://www.youtube.com/embed/'+val);
+    };
+}])
+
+
+.filter('MomentFilter', ['moment', function(moment){
+  return function(val){
+    return  moment(val).format('MMMM Do, YYYY');
+  }
+}]);

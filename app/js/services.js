@@ -31,3 +31,26 @@ angular.module('SistersServices', ['ngResource'])
     return $firebaseArray(showsRef);
   }
 }])
+
+
+.service('InstagramFactory', ['$http', '$q', function ($http, $q) {
+    var deferred = $q.defer();
+    $http({
+        method: 'GET',
+        url: '/instagram',
+        cache: true
+    }).success(function (data) {
+        deferred.resolve(data);
+    }).error(function (msg) {
+        deferred.reject(msg);
+    });
+    return deferred.promise;
+}])
+
+.factory("BlogPosts", ["$firebaseArray", 
+  function($firebaseArray) {
+  return function(){
+      var chatRef = firebase.database().ref('blog_posts');
+      return $firebaseArray(chatRef);
+  }
+}]);

@@ -1,1 +1,41 @@
-<h2>I am a blog!</h2>
+
+<div class="row blog-row">
+  <div class="nine columns blog-main">
+    <div class="blog-post" ng-repeat="post in posts | orderBy:'-timestamp'">
+    <div ng-if="post.img.length > 0" class="image-panel">
+      <img ng-src="{{post.img}}"/>
+    </div>
+    <div ng-if="post.youtube.length > 0" class="videoWrapper">
+     <iframe width="560" height="349" src="{{post.youtube | trustAsResourceUrl}}" frameborder="0" allowfullscreen></iframe>
+    </div>
+    <div class="blog-panel">
+      <div class="blog-header text-center">
+        <h5 class="no-margin">{{post.postTitle}}</h5>
+        <span class="blog-date">{{post.timestamp | MomentFilter}}</span>
+      </div>
+      <p class="white-space-pre">
+      {{post.postBody | cut:true:275:'...' }} <a ng-href="">Read More!</a>
+      </p>
+      <div class="tag-div">
+        <h6 class="no-margin">TAGS</h6>
+        <ul class="tags">
+          <li>SISTERS</li>
+          <li>IS</li>
+          <li>cool</li>
+        </ul>
+      </div>
+    </div>
+    </div>
+  </div>
+  <div class="three columns sidebar-right">
+  <button ng-if="firebaseUser.email" style="width: 100%" ng-click="newBlogPost()">New Blog Post</button>
+   <div class="fancy"><span><i class="fa fa-instagram" aria-hidden="true"></i> RECENT INSTAGRAM</span></div>
+
+    <div class="insta-gallery">
+      <div class="insta-photo" ng-repeat="photo in photos | limitTo:9">
+        <a ng-href="{{photo.link}}" target="_blank"><img ng-src="{{photo.images.low_resolution.url}}"/></a>
+      </div>
+    </div>
+    <div class="fancy"><span>RECENT POSTS</span></div>
+  </div> 
+</div>

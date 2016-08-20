@@ -49,6 +49,22 @@ a:hover {
   margin-right: 0;
 }
 
+.thumbnail { 
+  height: 40px;
+  width: 40px;
+}
+
+.thumbnail img {
+  display: inline-block;
+  object-fit: cover;
+  object-position: 100% 50%;
+  width: 100%;
+  height: auto;
+}
+
+#image-choice {
+  display: inline-block;
+}
 
 
 .videoWrapper {
@@ -144,9 +160,6 @@ a:hover {
    width: 100%;
 }
 
-.blog-header {
-
-}
 
 .blog-header h5 {
   font-family: 'Fjalla One', sans-serif;
@@ -158,11 +171,26 @@ a:hover {
 .blog-date {
   font-size: 1em;
   color: #aaa;
+  font-weight: 500;
+}
+
+.blog-edit-button {
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+    margin-bottom: 0;
+    padding: 0px 4px;
+    font-size: 20px;
+    line-height: 14px;
+    height: 28px;
+    border-radius: 2px;
 }
 
 .tag-div {
+  display: block;
   text-align: center;
-  margin-bottom: 10px;
+  width: 80%;
+  margin: 0 auto 10px auto;
 }
 
 .tags {
@@ -181,7 +209,17 @@ a:hover {
   padding: 2px 12px;
   border: 1px solid #aaa;
   border-radius: 24px;
+  margin: 0 3px 0 3px;
+}
+
+.tag-delete-btn {
   margin-bottom: 0;
+  padding: 2px 4px;
+  font-size: 18px;
+  line-height: 14px;
+  height: 24px;
+  border: none;
+  color: red;
 }
 
 .image-panel img {
@@ -192,6 +230,7 @@ a:hover {
 }
 
 .blog-panel {
+  position: relative;
   width: 90%;
   background-color: white;
   padding: 20px;
@@ -200,7 +239,6 @@ a:hover {
 
 .blog-panel p {
   margin-bottom: 0;
-  font-family: 'PT Serif', serif;
 }
 
 .blog-panel h6 {
@@ -213,7 +251,10 @@ a:hover {
   min-height: 200px;
 }
 
-
+.recent-posts-list {
+  margin-top: 20px;
+  font-size: .8em;
+}
 
 
 

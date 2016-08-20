@@ -24,27 +24,116 @@ angular.module('SistersCtrls', ['SistersServices'])
 
 
 
-.controller('BlogCtrl', ['$scope', '$state','$http','Instagram','Auth','BlogPosts', function($scope, $state, $http, Instagram, Auth, BlogPosts){
+.controller('BlogCtrl', ['$scope', '$state','$http','$location','$stateParams','Instagram','Auth','Blog','HelperService', function($scope, $state, $http, $location, $stateParams, Instagram, Auth, Blog, HelperService){
   $scope.auth = Auth;
     $scope.auth.$onAuthStateChanged(function(firebaseUser) {
       $scope.firebaseUser = firebaseUser;
-      console.log("firebase user is ",$scope.firebaseUser);
+     
   });
-
-$scope.posts = BlogPosts();
-console.log($scope.posts)  
-$scope.photos = Instagram.data;
+  $scope.allPosts = Blog;
+  $scope.page = $stateParams.page || 0;
+  $scope.pageUp = parseInt($scope.page) + (1);
+  $scope.pageDown = HelperService.pageDown($scope.page);
+  $scope.length = Blog.length;
+  $scope.first = $scope.length - (4*(1+$scope.page));
+  $scope.last = $scope.length - (4 * $scope.page);
+  $scope.posts = Blog.slice($scope.first, $scope.last);
+  console.log($scope.posts);
+  $scope.photos = Instagram.data;
 
 $scope.newBlogPost = function(){
   $state.go("blog-new");
 }
 
-}]) 
+$scope.editPost = function(post){
+  var titleParsed = post.postTitle.split(' ').join('-');
+  $location.url('/blog/edit/'+titleParsed);
+}
+
+$scope.parseTitle = function(title){
+  return title.split(' ').join('-');
+}
+
+}])
 
 
-.controller('NewBlogCtrl', ['$scope', '$state','$http','Auth','BlogPosts', function($scope, $state, $http, Auth, BlogPosts){
+
+
+
+
+
+
+
+.controller('EditBlogCtrl', ['$scope', '$state','$stateParams','SendDataService','AllTags','thisPost','HelperService', function($scope, $state, $stateParams, SendDataService, AllTags, thisPost, HelperService){
+  $scope.data = {};
+  $scope.changeImage = false;
+  
+  $scope.postArray = thisPost;
+  $scope.post = thisPost[0];
+  console.log($scope.post);
+
+  $scope.tags = AllTags;
+  if ($scope.post.youtube){
+    console.log($scope.post.youtube);
+    var youtubeId = $scope.post.youtube
+  $scope.data.youtube = "https://www.youtube.com/watch?v="+ youtubeId;
+  }
+
+  $scope.addTag = function(){
+  $scope.tags.$add({
+    "name": $scope.data.newTag
+  }).then(function(ref){
+    $scope.postId = ref.key;
+    console.log("what is post id? ",ref.key);
+    $scope.data.newTag = "";
+  });
+}
+
+$scope.deleteTag = function(item){
+  $scope.tags.$remove(item).then(function(ref) {
+  ref.key === item.$id; // true
+  });
+}
+
+$scope.toggleImage = function(){
+  $scope.changeImage = !$scope.changeImage;
+}
+
+
+$scope.resetMedia = function(){
+  $scope.data.youtube = "";
+  $scope.data.image = "";
+}
+
+
+
+$scope.updatePost = function(post){
+  if ($scope.data.mediaSelect === "youtube"){
+    $scope.post.youtube = HelperService.parseYouTube($scope.data.youtube);
+  } else if ($scope.data.mediaSelect === "image"){
+
+  }
+$scope.postArray.$save(post).then(function(ref) {
+  console.log("success");
+  $state.go('blog');
+});
+}
+
+
+}])  
+
+
+
+.controller('BlogShowCtrl', ['$scope', '$state','$stateParams','thisPost','Instagram','Blog', function($scope, $state, $stateParams,thisPost, Instagram, Blog){
+ $scope.photos = Instagram.data; 
+ $scope.post = thisPost;
+ $scope.allPosts = Blog;
+}])  
+
+
+.controller('NewBlogCtrl', ['$scope', '$state','$http','Auth','BlogPosts','AllTags','HelperService','SubmitImage', function($scope, $state, $http, Auth, BlogPosts, AllTags, HelperService, SubmitImage){
 $scope.BlogPosts = BlogPosts();
-
+$scope.tags = AllTags;
 
 $scope.resetMedia = function(){
   $scope.data.youtube = "";
@@ -53,112 +142,41 @@ $scope.resetMedia = function(){
 
 $scope.submit = function(){
   if ($scope.data.mediaSelect === 'image'){
-    submitImage();
+    SubmitImage($scope.post, $scope.BlogPosts, $scope.data.image, addPost);
   } else if ($scope.data.mediaSelect === 'youtube'){
-    $scope.data.youtube = parseYouTube($scope.data.youtube);
-    addPost();
+    $scope.data.youtube = HelperService.parseYouTube($scope.data.youtube);
+    addPost($scope.post, $scope.BlogPosts, null, $scope.data.youtube);
   }
 }
 
-
-var parseYouTube = function(url){
-  var videoid = url.match(/(?:https?:\/{2})?(?:w{3}\.)?youtu(?:be)?\.(?:com|be)(?:\/watch\?v=|\/)([^\s&]+)/);
-  if(videoid != null) {
-    return videoid[1];
-  } else { 
-    console.log("The youtube url is not valid.");
-  }
-}
-
-var submitImage = function(){
-    console.log("Submit image clicked!");
-    var mime = base64MimeType($scope.data.image);
-    var base64result = getBase64Image($scope.data.image)
-    var file = b64toBlob(base64result, mime)
-    var metadata = {
-    contentType: mime
-    };
-    var photoId = (Math.random()*1e32).toString(36);
-    var storageRef = firebase.storage().ref();
-    var uploadTask = storageRef.child('blog-images/' + photoId).put(file, metadata);
-    uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, // or 'state_changed'
-    function(snapshot) {
-      // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
-      var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-      console.log('Upload is ' + progress + '% done');
-      switch (snapshot.state) {
-        case firebase.storage.TaskState.PAUSED: // or 'paused'
-          console.log('Upload is paused');
-          break;
-        case firebase.storage.TaskState.RUNNING: // or 'running'
-          console.log('Upload is running');
-          break;
-      }
-    }, function(error) {
-    switch (error.code) {
-      case 'storage/unauthorized':
-        break;
-      case 'storage/canceled':
-        // User canceled the upload
-        break;
-      case 'storage/unknown':
-        // Unknown error occurred, inspect error.serverResponse
-        break;
-    }
-  }, function() {
-    console.log("upload finished")
-    $scope.data.downloadURL = uploadTask.snapshot.downloadURL;
-    addPost();
+$scope.addTag = function(){
+  $scope.tags.$add({
+    "name": $scope.data.newTag
+  }).then(function(ref){
+    $scope.postId = ref.key;
+    console.log("what is post id? ",ref.key);
+    $scope.data.newTag = "";
   });
 }
 
-var addPost = function(){
-      $scope.BlogPosts.$add({
-        postTitle: $scope.post.title,
-        postBody: $scope.post.body,
-        youtube: $scope.data.youtube ? $scope.data.youtube : null,
-        img: $scope.data.downloadURL ? $scope.data.downloadURL : null,
+$scope.deleteTag = function(item){
+  $scope.tags.$remove(item).then(function(ref) {
+  ref.key === item.$id; // true
+  });
+}
+
+var addPost = function(post, postArray, img, youtube){
+      postArray.$add({
+        postTitle: post.title,
+        postBody: post.body,
+        youtube: youtube ? youtube : null,
+        img: img ? img : null,
+        tags: post.tags,
         timestamp: new Date().getTime()     
       }).then(function(ref){
-        $scope.postId = ref.key;
         console.log("what is post id? ",ref.key);
+        $state.go('blog');
       });
-}
-
-function b64toBlob(b64Data, contentType, sliceSize) {
-  contentType = contentType || '';
-  sliceSize = sliceSize || 512;
-  var byteCharacters = atob(b64Data);
-  var byteArrays = [];
-  for (var offset = 0; offset < byteCharacters.length; offset += sliceSize) {
-    var slice = byteCharacters.slice(offset, offset + sliceSize);
-    var byteNumbers = new Array(slice.length);
-    for (var i = 0; i < slice.length; i++) {
-      byteNumbers[i] = slice.charCodeAt(i);
-    }
-    var byteArray = new Uint8Array(byteNumbers);
-    byteArrays.push(byteArray);
-  } 
-  var blob = new Blob(byteArrays, {type: contentType});
-  return blob;
-}
-
-function base64MimeType(encoded) {
-  var result = null;
-  if (typeof encoded !== 'string') {
-    return result;
-  }
-  var mime = encoded.match(/data:([a-zA-Z0-9]+\/[a-zA-Z0-9-.+]+).*,.*/);
-  if (mime && mime.length) {
-    result = mime[1];
-  }
-  return result;
-}
-
-
-function getBase64Image(dataURL) {
-  var base64 = dataURL.replace(/^data:image\/(png|jpeg);base64,/, "");
-  return base64;
 }
 
 }])

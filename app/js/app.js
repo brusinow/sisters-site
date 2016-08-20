@@ -37,7 +37,10 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
       "currentAuth": authWait,
       "Instagram": ['InstagramFactory', function(InstagramFactory){
         return InstagramFactory;
-      }]
+      }],
+      "Blog": function(BlogTestPosts){
+        return BlogTestPosts().$loaded();
+      }      
     }
   })
   .state('blog-new', {
@@ -45,9 +48,64 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
     templateUrl: '/views/newBlogPost.html',
     controller: 'NewBlogCtrl',
     resolve: {
-      "currentAuth": authRequire
+      "currentAuth": authRequire,
+      "AllTags": function(AllTagsService){
+        return AllTagsService().$loaded();
+      }
     }
   })
+  .state('blog-edit', {
+    url: '/blog/edit/:name',
+    templateUrl: '/views/editBlogPost.html',
+    controller: 'EditBlogCtrl',
+    resolve: {
+      "currentAuth": authRequire,
+      "AllTags": function(AllTagsService){
+        return AllTagsService().$loaded();
+      },
+      "thisPost": function($stateParams, ThisPostService){
+        var parsedTitle = $stateParams.name.split("-").join(" ");
+        return ThisPostService(parsedTitle).$loaded();
+      }
+    }
+  })
+    .state('blogPage', {
+    url: '/blog/:page',
+    templateUrl: '/views/blog.html',
+    controller: 'BlogCtrl',
+    resolve: {
+      "currentAuth": authWait,
+      "Instagram": ['InstagramFactory', function(InstagramFactory){
+        return InstagramFactory;
+      }],
+      "Blog": function(BlogTestPosts){
+        return BlogTestPosts().$loaded();
+      }      
+    }
+  })
+
+     .state('blog-view', {
+    url: '/blog/show/:name',
+    templateUrl: '/views/blogView.html',
+    controller: 'BlogShowCtrl',
+    resolve: {
+      "currentAuth": authWait,
+      "Instagram": ['InstagramFactory', function(InstagramFactory){
+        return InstagramFactory;
+      }],
+      "thisPost": function($stateParams, ThisPostService){
+        var parsedTitle = $stateParams.name.split("-").join(" ");
+        return ThisPostService(parsedTitle).$loaded();
+      },
+      "Blog": function(BlogTestPosts){
+        return BlogTestPosts().$loaded();
+      }       
+    }
+  })
+  
+
+
+ 
 
   .state('shows', {
     url: '/shows',

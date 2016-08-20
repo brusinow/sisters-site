@@ -1,7 +1,7 @@
 
 <div class="row blog-row">
   <div class="nine columns blog-main">
-    <div class="blog-post" ng-repeat="post in posts | orderBy:'-timestamp'">
+    <div class="blog-post">
     <div ng-if="post.img.length > 0" class="image-panel">
       <img ng-src="{{post.img}}"/>
     </div>
@@ -15,7 +15,7 @@
         <span class="blog-date">{{post.timestamp | MomentFilter}}</span>
       </div>
       <p class="white-space-pre">
-      {{post.postBody | cut:true:275:'...' }} <a ng-href="">Read More!</a>
+      {{post.postBody}}
       </p>
       <div class="tag-div">
         <h6 class="no-margin">TAGS</h6>
@@ -25,8 +25,6 @@
       </div>
     </div>
     </div>
-    <a ng-hide="last === length" ng-href="/blog/{{pageDown}}">Back</a>
-    <a ng-hide="first <= 0" ng-href="/blog/{{pageUp}}">Next</a>
   </div>
   <div class="three columns sidebar-right">
   <button ng-if="firebaseUser.email" style="width: 100%" ng-click="newBlogPost()">New Blog Post</button>
@@ -43,5 +41,3 @@
     </ul>
   </div>
 </div>
-
-

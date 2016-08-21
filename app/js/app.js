@@ -84,9 +84,9 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
     }
   })
 
-     .state('blog-view', {
+     .state('blog-show', {
     url: '/blog/show/:name',
-    templateUrl: '/views/blogView.html',
+    templateUrl: '/views/blogShow.html',
     controller: 'BlogShowCtrl',
     resolve: {
       "currentAuth": authWait,

@@ -15,18 +15,20 @@
         <span class="blog-date">{{post.timestamp | MomentFilter}}</span>
       </div>
       <p class="white-space-pre">
-      {{post.postBody | cut:true:275:'...' }} <a ng-href="">Read More!</a>
+      {{post.postBody | cut:true:275:'...' }} <a ng-href="/blog/show/{{parseTitle(post.postTitle)}}">Read More!</a>
       </p>
       <div class="tag-div">
-        <h6 class="no-margin">TAGS</h6>
+        <h6 style="margin-bottom: 10px;">TAGS</h6>
         <ul class="tags">
-          <li ng-repeat="tag in post.tags">{{tag}}</li>       
+          <li ng-repeat="tag in post.tags">{{tag.name}}</li>       
         </ul>
       </div>
     </div>
     </div>
-    <a ng-hide="last === length" ng-href="/blog/{{pageDown}}">Back</a>
-    <a ng-hide="first <= 0" ng-href="/blog/{{pageUp}}">Next</a>
+    <div class="blog-nav">
+    <a id="back-link" ng-hide="last === length" ng-href="/blog/{{pageDown}}"><i class="fa fa-long-arrow-left" aria-hidden="true"></i> Newer</a>
+    <a id="next-link" ng-hide="first <= 0" ng-href="/blog/{{pageUp}}">Older <i class="fa fa-long-arrow-right" aria-hidden="true"></i></a>
+    </div>
   </div>
   <div class="three columns sidebar-right">
   <button ng-if="firebaseUser.email" style="width: 100%" ng-click="newBlogPost()">New Blog Post</button>
@@ -39,8 +41,9 @@
     </div>
     <div class="fancy"><span>RECENT POSTS</span></div>
     <ul class="recent-posts-list">
-    <li ng-repeat="post in allPosts | orderBy:'-timestamp' | limitTo:4"><a ng-href="/blog/show/{{parseTitle(post.postTitle)}}">{{post.postTitle}}</a></li>
+    <a ng-repeat="recent in allPosts | orderBy:'-timestamp' | limitTo:4" ng-href="/blog/show/{{parseTitle(recent.postTitle)}}"><li>{{recent.postTitle}}</li></a>
     </ul>
+    <div class="fancy"><span>ARCHIVES</span></div>
   </div>
 </div>
 

@@ -37,7 +37,7 @@
     </div>
     <div class="fancy"><span>RECENT POSTS</span></div>
     <ul class="recent-posts-list">
-    <li ng-repeat="post in allPosts | orderBy:'-timestamp' | limitTo:4"><a ng-href="/blog/show/{{parseTitle(post.postTitle)}}">{{post.postTitle}}</a></li>
+    <li ng-repeat="recent in allPosts | orderBy:'-timestamp' | limitTo:4"><a ng-href="/blog/show/{{parseTitle(recent.postTitle)}}">{{recent.postTitle}}</a></li>
     </ul>
   </div>
 </div>

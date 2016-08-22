@@ -23,7 +23,7 @@ angular.module('SistersCtrls', ['SistersServices'])
 }) 
 
 
-.controller('BlogCtrl', ['$scope', '$state','$http','$location','$stateParams','Instagram','Auth','Blog','HelperService','ArchiveService', function($scope, $state, $http, $location, $stateParams, Instagram, Auth, Blog, HelperService, ArchiveService){
+.controller('BlogCtrl', ['$scope', '$state','$http','$location','$stateParams','Instagram','Auth','Blog','HelperService','ArchiveService','AllTagsService', function($scope, $state, $http, $location, $stateParams, Instagram, Auth, Blog, HelperService, ArchiveService, AllTagsService){
   $scope.findFirst = function(length, page){
     var calcFirst = length - (4*(1+page));
     if (calcFirst >= 0){
@@ -38,7 +38,7 @@ angular.module('SistersCtrls', ['SistersServices'])
     console.log("YEARS!!!", $scope.years); 
   })
 
-
+  $scope.allTags = AllTagsService();
 
 
 

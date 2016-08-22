@@ -1,13 +1,33 @@
-<button ng-if="firebaseUser.email" style="width: 100%" ng-click="newBlogPost()">New Blog Post</button>
-<div class="fancy"><span><i class="fa fa-instagram" aria-hidden="true"></i> RECENT INSTAGRAM</span></div>
+  <button ng-if="firebaseUser.email" style="width: 100%" ng-click="newBlogPost()">New Blog Post</button>
+  <div class="fancy"><span><i class="fa fa-instagram" aria-hidden="true"></i> RECENT INSTAGRAM</span></div>
 
-<div class="insta-gallery">
-  <div class="insta-photo" ng-repeat="photo in photos | limitTo:9">
-    <a ng-href="{{photo.link}}" target="_blank"><img ng-src="{{photo.images.low_resolution.url}}"/></a>
+  <div class="insta-gallery">
+    <div class="insta-photo" ng-repeat="photo in photos | limitTo:9">
+      <a ng-href="{{photo.link}}" target="_blank"><img ng-src="{{photo.images.low_resolution.url}}"/></a>
+    </div>
   </div>
-</div>
-<div class="fancy"><span>RECENT POSTS</span></div>
-<ul class="recent-posts-list">
-  <a ng-repeat="recent in allPosts | orderBy:'-timestamp' | limitTo:4" ng-href="/blog/show/{{parseTitle(recent.postTitle)}}"><li>{{recent.postTitle}}</li></a>
-</ul>
-<div class="fancy"><span>ARCHIVES</span></div>
+  <div class="fancy"><span>RECENT POSTS</span></div>
+  <ul class="recent-posts-list">
+    <a ng-repeat="recent in recentPosts | orderBy:'-timestamp' | limitTo:4" ng-href="/blog/show/{{parseTitle(recent.postTitle)}}"><li>{{recent.postTitle}}</li></a>
+  </ul>
+  <div class="fancy"><span>ARCHIVES</span></div>
+
+  <div class="archives archive-container">
+    <ul>
+    <div class="each-year" ng-repeat="year in years">
+      <li><span class="archive-year">{{year.$id}}:</span>
+        <div class="month-list">
+        <ul>
+          <li ng-repeat="(key,val) in year"><a ng-href="/blog/archives/{{year.$id}}/{{key}}">{{key}}</a></li>
+        </ul>
+        </div>
+      </li>
+      </div>
+    </ul>
+  </div>
+  <div class="fancy"><span>TAGS</span></div>
+  <div class="tags">
+  <ul>
+    <li style="float: left;" ng-repeat="tag in allTags">{{tag.name}}</li>
+  </ul>
+  </div>

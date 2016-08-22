@@ -212,7 +212,7 @@ a:hover {
   padding: 4px 12px;
   border: 1px solid #d038af;
   border-radius: 24px;
-  margin: 0 3px 0 3px;
+  margin: 2px 3px 2px 3px;
   background-color: #d038af;
 }
 
@@ -289,8 +289,36 @@ a:hover {
   margin-bottom: 2px;
 }
 
+.archive-container {
+  width: 70%;
+  margin: 0 auto;
+}
 
+.archive-year {
+  font-weight: 600;
+  position: absolute;
+  top: 13px;
+  left: 0;
+}
 
+.month-list {
+  position:relative;
+  left: 15px;
+}
+
+.archives ul {
+  list-style: none;
+  display: inline-block;
+}
+
+.archives li {
+  margin: 0;
+  line-height: 1.4;
+}
+
+.each-year {
+  position: relative;
+}
 
 
 

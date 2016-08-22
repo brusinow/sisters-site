@@ -23,24 +23,10 @@ angular.module('SistersCtrls', ['SistersServices'])
 }) 
 
 
-.controller('BlogCtrl', ['$scope', '$state','$http','$location','$stateParams','Instagram','Auth','Blog','HelperService','ArchiveService','AllTagsService', function($scope, $state, $http, $location, $stateParams, Instagram, Auth, Blog, HelperService, ArchiveService, AllTagsService){
-  $scope.findFirst = function(length, page){
-    var calcFirst = length - (4*(1+page));
-    if (calcFirst >= 0){
-      return calcFirst
-    } else {
-      return 0;
-    }
-  }
-
-  $scope.years = ArchiveService.years();
-  $scope.years.$loaded().then(function(){
-    console.log("YEARS!!!", $scope.years); 
-  })
-
-  $scope.allTags = AllTagsService();
-
-
+.controller('BlogCtrl', ['$scope', '$state','$http','$location','$stateParams','Auth','Blog','HelperService','Instagram', function($scope, $state, $http, $location, $stateParams, Auth, Blog, HelperService, Instagram){
+  $scope.photos = Instagram.data;
+  $scope.enable = true;
+  $scope.parseTitle = HelperService.titleToURL;
 
   $scope.auth = Auth;
   $scope.auth.$onAuthStateChanged(function(firebaseUser) {
@@ -48,35 +34,26 @@ angular.module('SistersCtrls', ['SistersServices'])
 
   });
   $scope.allPosts = Blog;
-  console.log(Blog);
   $scope.page = $stateParams.page || 0;
-  $scope.pageUp = parseInt($scope.page) + (1);
-  $scope.pageDown = HelperService.pageDown($scope.page);
+  $scope.pageUp = '/blog/' + (parseInt($scope.page) + 1);
+  $scope.pageDown = '/blog/' + HelperService.pageDown($scope.page);
   $scope.length = Blog.length;
-  console.log("Length: ",$scope.length);
-  $scope.first = $scope.findFirst($scope.length, $scope.page);
+  $scope.first = HelperService.findFirst($scope.length, $scope.page);
 
-  console.log("First: ",$scope.first);
+
   $scope.last = $scope.length - (4 * $scope.page);
   console.log("Last: ",$scope.last);
   $scope.posts = Blog.slice($scope.first, $scope.last);
   console.log($scope.posts);
-  $scope.photos = Instagram.data;
 
   $scope.newBlogPost = function(){
     $state.go("blog-new");
   }
 
   $scope.editPost = function(post){
-    var titleParsed = post.postTitle.split(' ').join('-');
+    var titleParsed = HelperService.titleToURL(post.postTitle);
     $location.url('/blog/edit/'+titleParsed);
   }
-
-  $scope.parseTitle = function(title){
-    return title.split(' ').join('-');
-  }
-
-
 
 }])
 
@@ -147,12 +124,64 @@ angular.module('SistersCtrls', ['SistersServices'])
 }])  
 
 
+.controller('BlogArchiveCtrl', ['$scope', '$state','$stateParams','Instagram','Blog','Archive','Auth','HelperService', function($scope, $state, $stateParams, Instagram, Blog, Archive, Auth, HelperService){
+  $scope.enable = true;
+  $scope.photos = Instagram.data;
+  $scope.allPosts = Archive; 
+
+  $scope.parseTitle = HelperService.titleToURL;
+
+
+
+  $scope.auth = Auth;
+  $scope.auth.$onAuthStateChanged(function(firebaseUser) {
+    $scope.firebaseUser = firebaseUser;
+
+  });
+  $scope.page = $stateParams.page || 0;
+  $scope.pageUp = '/blog/archives/' + $stateParams.year + '/' + $stateParams.month + '/' + (parseInt($scope.page) + 1);
+  $scope.pageDown = '/blog/archives/' + $stateParams.year + '/' + $stateParams.month + '/' + HelperService.pageDown($scope.page);
+  $scope.length = $scope.allPosts.length;
+  $scope.first = HelperService.findFirst($scope.length, $scope.page);
+
+
+  $scope.last = $scope.length - (4 * $scope.page);
+  console.log("Last: ",$scope.last);
+  $scope.posts = $scope.allPosts.slice($scope.first, $scope.last);
+  console.log($scope.posts);
+
+  $scope.newBlogPost = function(){
+    $state.go("blog-new");
+  }
+
+  $scope.editPost = function(post){
+    var titleParsed = HelperService.titleToURL(post.postTitle);
+    $location.url('/blog/edit/'+titleParsed);
+  }
+}]) 
+
+.controller('BlogSidebarCtrl', ['$scope', '$state','$stateParams','$timeout','ArchiveService','AllTagsService','BlogPosts', function($scope, $state, $stateParams,$timeout, ArchiveService, AllTagsService, BlogPosts){
+ 
+  $scope.recentPosts = BlogPosts();
+
+  $scope.years = ArchiveService.years();
+  $scope.years.$loaded().then(function(){
+    console.log("YEARS!!!", $scope.years); 
+  })
+
+  $scope.allTags = AllTagsService();
+
+}]) 
+
+
 
 .controller('BlogShowCtrl', ['$scope', '$state','$stateParams','thisPost','Instagram','Blog', function($scope, $state, $stateParams,thisPost, Instagram, Blog){
+ console.log("What are params? ",$stateParams);
+ $scope.enable = false;
  $scope.photos = Instagram.data; 
- $scope.post = thisPost[0];
- console.log($scope.post)
- $scope.allPosts = Blog;
+ $scope.posts = thisPost;
+ console.log($scope.posts)
+ $scope.allPosts = thisPost;
 }])  
 
 
@@ -241,12 +270,12 @@ angular.module('SistersCtrls', ['SistersServices'])
 
 
   $scope.open = function(whichPage, index) {
-    console.log()
+    console.log(whichPage);
     console.log(index);
     var modalInstance = $uibModal.open({
       animation: true,
       backdrop: true,
-      templateUrl: 'app/views/'+whichPage+'ShowModal.html',
+      templateUrl: '/views/'+whichPage+'ShowModal.html',
       controller: whichPage+'ModalCtrl',
       size: 'lg',
       resolve: {

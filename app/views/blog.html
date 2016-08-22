@@ -2,20 +2,20 @@
 <div class="row blog-row">
   <div class="nine columns blog-main">
     <div class="blog-post" ng-repeat="post in posts | orderBy:'-timestamp'">
-    <div ng-if="post.img.length > 0" class="image-panel">
-      <img ng-src="{{post.img}}"/>
-    </div>
-    <div ng-if="post.youtube.length > 0" class="videoWrapper">
-     <iframe width="560" height="349" src="{{post.youtube | trustAsResourceUrl}}" frameborder="0" allowfullscreen></iframe>
-    </div>
-    <div class="blog-panel">
+      <div ng-if="post.img.length > 0" class="image-panel">
+        <img ng-src="{{post.img}}"/>
+      </div>
+      <div ng-if="post.youtube.length > 0" class="videoWrapper">
+       <iframe width="560" height="349" src="{{post.youtube | trustAsResourceUrl}}" frameborder="0" allowfullscreen></iframe>
+     </div>
+     <div class="blog-panel">
       <div class="blog-header text-center">
-      <button class="blog-edit-button" ng-click="editPost(post)"><i class="fa fa-pencil" aria-hidden="true"></i></button>
+        <button class="blog-edit-button" ng-click="editPost(post)"><i class="fa fa-pencil" aria-hidden="true"></i></button>
         <h5 class="no-margin">{{post.postTitle}}</h5>
         <span class="blog-date">{{post.timestamp | MomentFilter}}</span>
       </div>
       <p class="white-space-pre">
-      {{post.postBody | cut:true:275:'...' }} <a ng-href="/blog/show/{{parseTitle(post.postTitle)}}">Read More!</a>
+        {{post.postBody | cut:enable:true:275:'...' }} <a ng-href="/blog/show/{{parseTitle(post.postTitle)}}">Read More!</a>
       </p>
       <div class="tag-div">
         <h6 style="margin-bottom: 10px;">TAGS</h6>
@@ -24,38 +24,50 @@
         </ul>
       </div>
     </div>
-    </div>
-    <div class="blog-nav">
-    <a id="back-link" ng-hide="last === length" ng-href="/blog/{{pageDown}}"><i class="fa fa-long-arrow-left" aria-hidden="true"></i> Newer</a>
-    <a id="next-link" ng-hide="first <= 0" ng-href="/blog/{{pageUp}}">Older <i class="fa fa-long-arrow-right" aria-hidden="true"></i></a>
-    </div>
   </div>
-  <div class="three columns sidebar-right">
-  <button ng-if="firebaseUser.email" style="width: 100%" ng-click="newBlogPost()">New Blog Post</button>
-   <div class="fancy"><span><i class="fa fa-instagram" aria-hidden="true"></i> RECENT INSTAGRAM</span></div>
+  <div class="blog-nav">
+    <a id="back-link" ng-hide="last === length" ng-href="{{pageDown}}"><i class="fa fa-long-arrow-left" aria-hidden="true"></i> Newer</a>
+    <a id="next-link" ng-hide="first <= 0 || allPosts.length < 5" ng-href="{{pageUp}}">Older <i class="fa fa-long-arrow-right" aria-hidden="true"></i></a>
+  </div>
+</div>
+<div class="three columns sidebar-right">
 
-    <div class="insta-gallery">
-      <div class="insta-photo" ng-repeat="photo in photos | limitTo:9">
-        <a ng-href="{{photo.link}}" target="_blank"><img ng-src="{{photo.images.low_resolution.url}}"/></a>
-      </div>
+
+ <div id="sidebar" ng-include="'/views/blogSidebar.html'" ng-controller="BlogSidebarCtrl"></div>
+<!--   <button ng-if="firebaseUser.email" style="width: 100%" ng-click="newBlogPost()">New Blog Post</button>
+  <div class="fancy"><span><i class="fa fa-instagram" aria-hidden="true"></i> RECENT INSTAGRAM</span></div>
+
+  <div class="insta-gallery">
+    <div class="insta-photo" ng-repeat="photo in photos | limitTo:9">
+      <a ng-href="{{photo.link}}" target="_blank"><img ng-src="{{photo.images.low_resolution.url}}"/></a>
     </div>
-    <div class="fancy"><span>RECENT POSTS</span></div>
-    <ul class="recent-posts-list">
+  </div>
+  <div class="fancy"><span>RECENT POSTS</span></div>
+  <ul class="recent-posts-list">
     <a ng-repeat="recent in allPosts | orderBy:'-timestamp' | limitTo:4" ng-href="/blog/show/{{parseTitle(recent.postTitle)}}"><li>{{recent.postTitle}}</li></a>
-    </ul>
-    <div class="fancy"><span>ARCHIVES</span></div>
+  </ul>
+  <div class="fancy"><span>ARCHIVES</span></div>
+
+  <div class="archives archive-container">
     <ul>
-    <li ng-repeat="year in years">{{year.$id}}
-      <ul>
-      <li ng-repeat="(key,val) in year">{{key}}</li>
-      </ul>
-    </li>
-    </ul>
-    <div class="fancy"><span>TAGS</span></div>
-    <ul>
-    <li ng-repeat="tag in allTags">{{tag.name}}</li>
+    <div class="each-year" ng-repeat="year in years">
+      <li><span class="archive-year">{{year.$id}}</span>
+        <div class="month-list">
+        <ul>
+          <li ng-repeat="(key,val) in year"><a ng-href="/blog/archives/{{year.$id}}/{{key}}">{{key}}</a></li>
+        </ul>
+        </div>
+      </li>
+      </div>
     </ul>
   </div>
+  <div class="fancy"><span>TAGS</span></div>
+  <div class="tags">
+  <ul>
+    <li style="float: left;" ng-repeat="tag in allTags">{{tag.name}}</li>
+  </ul>
+  </div> -->
+</div>
 </div>
 
 

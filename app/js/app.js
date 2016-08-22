@@ -38,8 +38,8 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
       "Instagram": ['InstagramFactory', function(InstagramFactory){
         return InstagramFactory;
       }],
-      "Blog": function(BlogTestPosts){
-        return BlogTestPosts().$loaded();
+      "Blog": function(BlogPosts){
+        return BlogPosts().$loaded();
       }      
     }
   })
@@ -69,7 +69,7 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
       }
     }
   })
-    .state('blogPage', {
+  .state('blogPage', {
     url: '/blog/:page',
     templateUrl: '/views/blog.html',
     controller: 'BlogCtrl',
@@ -78,15 +78,36 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
       "Instagram": ['InstagramFactory', function(InstagramFactory){
         return InstagramFactory;
       }],
-      "Blog": function(BlogTestPosts){
-        return BlogTestPosts().$loaded();
+      "Blog": function(BlogPosts){
+        return BlogPosts().$loaded();
       }      
     }
   })
 
-     .state('blog-show', {
+    .state('blogArchive', {
+    url: '/blog/archives/:year/:month',
+    templateUrl: '/views/blog.html',
+    controller: 'BlogArchiveCtrl',
+    resolve: {
+      "currentAuth": authWait,
+      "Instagram": ['InstagramFactory', function(InstagramFactory){
+        return InstagramFactory;
+      }],
+      "Blog": function(BlogPosts){
+        return BlogPosts().$loaded();
+      },
+      "Archive": function($stateParams, ArchiveShowService){
+        console.log("ARCHIVE RESOLVE!!!!!!!!!!!!!!!!!")
+        return ArchiveShowService($stateParams.year, $stateParams.month).$loaded();
+      }      
+    }
+  })
+
+
+
+  .state('blog-show', {
     url: '/blog/show/:name',
-    templateUrl: '/views/blogShow.html',
+    templateUrl: '/views/blog.html',
     controller: 'BlogShowCtrl',
     resolve: {
       "currentAuth": authWait,
@@ -97,15 +118,15 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
         var parsedTitle = $stateParams.name.split("-").join(" ");
         return ThisPostService(parsedTitle).$loaded();
       },
-      "Blog": function(BlogTestPosts){
-        return BlogTestPosts().$loaded();
+      "Blog": function(BlogPosts){
+        return BlogPosts().$loaded();
       }       
     }
   })
   
 
 
- 
+
 
   .state('shows', {
     url: '/shows',
@@ -126,38 +147,42 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
   })
 
   
- $locationProvider.html5Mode(true);
+  $locationProvider.html5Mode(true);
 
 }])
 
 .filter('cut', function () {
-        return function (value, wordwise, max, tail) {
-            if (!value) return '';
+  return function (value, enable, wordwise, max, tail) {
+    if (!value) return '';
+    if (value && !enable) {
+      return value;
+    } else if (value && enable){
 
-            max = parseInt(max, 10);
-            if (!max) return value;
-            if (value.length <= max) return value;
+    max = parseInt(max, 10);
+    if (!max) return value;
+    if (value.length <= max) return value;
 
-            value = value.substr(0, max);
-            if (wordwise) {
-                var lastspace = value.lastIndexOf(' ');
-                if (lastspace != -1) {
+    value = value.substr(0, max);
+    if (wordwise) {
+      var lastspace = value.lastIndexOf(' ');
+      if (lastspace != -1) {
                   //Also remove . and , so its gives a cleaner result.
                   if (value.charAt(lastspace-1) == '.' || value.charAt(lastspace-1) == ',') {
                     lastspace = lastspace - 1;
                   }
                   value = value.substr(0, lastspace);
                 }
-            }
+              }
 
-            return value + (tail || '…');
-        };
-  })
+              return value + (tail || '…');
+            }
+            };
+          })
 
 .filter('trustAsResourceUrl', ['$sce', function($sce) {
-    return function(val) {
-        return $sce.trustAsResourceUrl('http://www.youtube.com/embed/'+val);
-    };
+  return function(val) {
+    return $sce.trustAsResourceUrl('http://www.youtube.com/embed/'+val);
+  };
 }])
 
 

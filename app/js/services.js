@@ -47,15 +47,8 @@ angular.module('SistersServices', ['ngResource'])
     return deferred.promise;
 }])
 
-.factory("BlogPosts", ["$firebaseArray", 
-  function($firebaseArray) {
-  return function(){
-    var blogRef = firebase.database().ref('blog_posts');
-    return $firebaseArray(blogRef);
-  }
-}])
 
-.factory("BlogTestPosts", ["$firebaseArray", 
+.factory("BlogPosts", ["$firebaseArray", 
   function($firebaseArray) {
   return function(){
     var blogRef = firebase.database().ref('blog_posts').orderByChild("timestamp");
@@ -95,6 +88,14 @@ angular.module('SistersServices', ['ngResource'])
       return $firebaseArray(monthRef)
       }
     }
+}])
+
+.factory("ArchiveShowService", ["$firebaseArray", 
+  function($firebaseArray) {
+  return function(year, month){
+      var archiveRef = firebase.database().ref('archives/' + year + '/' + month);
+      return $firebaseArray(archiveRef);
+  }
 }])
 
 .factory('SendDataService', function() {
@@ -161,6 +162,17 @@ angular.module('SistersServices', ['ngResource'])
       } else {
         return currentPage - (1);
       }
+    },
+    findFirst: function(length, page){
+    var calcFirst = length - (4*(1+page));
+      if (calcFirst >= 0){
+        return calcFirst
+      } else {
+        return 0;
+      }
+    },
+    titleToURL: function(title){
+    return title.split(' ').join('-');
     }
   };
 }])

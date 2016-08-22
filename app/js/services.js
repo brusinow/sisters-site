@@ -82,6 +82,21 @@ angular.module('SistersServices', ['ngResource'])
   }
 }])
 
+
+.factory("ArchiveService", ["$firebaseArray", 
+  function($firebaseArray){
+    return {
+      years: function(){
+      var yearRef = firebase.database().ref('archives');
+      return $firebaseArray(yearRef)
+      },
+      months: function(year){
+      var monthRef = firebase.database().ref('archives/'+year);
+      return $firebaseArray(monthRef)
+      }
+    }
+}])
+
 .factory('SendDataService', function() {
  var savedData = {}
  function set(data) {

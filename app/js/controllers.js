@@ -23,8 +23,7 @@ angular.module('SistersCtrls', ['SistersServices'])
 }) 
 
 
-
-.controller('BlogCtrl', ['$scope', '$state','$http','$location','$stateParams','Instagram','Auth','Blog','HelperService', function($scope, $state, $http, $location, $stateParams, Instagram, Auth, Blog, HelperService){
+.controller('BlogCtrl', ['$scope', '$state','$http','$location','$stateParams','Instagram','Auth','Blog','HelperService','ArchiveService', function($scope, $state, $http, $location, $stateParams, Instagram, Auth, Blog, HelperService, ArchiveService){
   $scope.findFirst = function(length, page){
     var calcFirst = length - (4*(1+page));
     if (calcFirst >= 0){
@@ -33,6 +32,14 @@ angular.module('SistersCtrls', ['SistersServices'])
       return 0;
     }
   }
+
+  $scope.years = ArchiveService.years();
+  $scope.years.$loaded().then(function(){
+    console.log("YEARS!!!", $scope.years); 
+  })
+
+
+
 
 
   $scope.auth = Auth;

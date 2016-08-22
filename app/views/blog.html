@@ -44,6 +44,13 @@
     <a ng-repeat="recent in allPosts | orderBy:'-timestamp' | limitTo:4" ng-href="/blog/show/{{parseTitle(recent.postTitle)}}"><li>{{recent.postTitle}}</li></a>
     </ul>
     <div class="fancy"><span>ARCHIVES</span></div>
+    <ul>
+    <li ng-repeat="year in years">{{year.$id}}
+      <ul>
+      <li ng-repeat="(key,val) in year">{{key}}</li>
+      </ul>
+    </li>
+    </ul>
   </div>
 </div>
 

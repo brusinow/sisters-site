@@ -28,6 +28,6 @@
   <div class="fancy"><span>TAGS</span></div>
   <div class="tags">
   <ul>
-    <li style="float: left;" ng-repeat="tag in allTags">{{tag.name}}</li>
+    <a ng-repeat="tag in allTags" ng-href="/blog/tags/{{tag.name}}"><li style="float: left;">{{tag.name}}</li></a>
   </ul>
   </div>

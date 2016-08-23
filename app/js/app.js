@@ -84,7 +84,7 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
     }
   })
 
-    .state('blogArchive', {
+  .state('blogArchive', {
     url: '/blog/archives/:year/:month',
     templateUrl: '/views/blog.html',
     controller: 'BlogArchiveCtrl',
@@ -97,8 +97,43 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
         return BlogPosts().$loaded();
       },
       "Archive": function($stateParams, ArchiveShowService){
-        console.log("ARCHIVE RESOLVE!!!!!!!!!!!!!!!!!")
         return ArchiveShowService($stateParams.year, $stateParams.month).$loaded();
+      }      
+    }
+  })
+
+    .state('blogArchivePage', {
+    url: '/blog/archives/:year/:month/:page',
+    templateUrl: '/views/blog.html',
+    controller: 'BlogArchiveCtrl',
+    resolve: {
+      "currentAuth": authWait,
+      "Instagram": ['InstagramFactory', function(InstagramFactory){
+        return InstagramFactory;
+      }],
+      "Blog": function(BlogPosts){
+        return BlogPosts().$loaded();
+      },
+      "Archive": function($stateParams, ArchiveShowService){
+        return ArchiveShowService($stateParams.year, $stateParams.month).$loaded();
+      }      
+    }
+  })
+
+  .state('blogTags', {
+    url: '/blog/tags/:tagName',
+    templateUrl: '/views/blog.html',
+    controller: 'BlogTagsCtrl',
+    resolve: {
+      "currentAuth": authWait,
+      "Instagram": ['InstagramFactory', function(InstagramFactory){
+        return InstagramFactory;
+      }],
+      "Blog": function(BlogPosts){
+        return BlogPosts().$loaded();
+      },
+      "TagsShow": function($stateParams, TagsShowService){
+        return TagsShowService($stateParams.tagName).$loaded();
       }      
     }
   })
@@ -158,14 +193,14 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
       return value;
     } else if (value && enable){
 
-    max = parseInt(max, 10);
-    if (!max) return value;
-    if (value.length <= max) return value;
+      max = parseInt(max, 10);
+      if (!max) return value;
+      if (value.length <= max) return value;
 
-    value = value.substr(0, max);
-    if (wordwise) {
-      var lastspace = value.lastIndexOf(' ');
-      if (lastspace != -1) {
+      value = value.substr(0, max);
+      if (wordwise) {
+        var lastspace = value.lastIndexOf(' ');
+        if (lastspace != -1) {
                   //Also remove . and , so its gives a cleaner result.
                   if (value.charAt(lastspace-1) == '.' || value.charAt(lastspace-1) == ',') {
                     lastspace = lastspace - 1;
@@ -176,8 +211,8 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
 
               return value + (tail || '…');
             }
-            };
-          })
+          };
+        })
 
 .filter('trustAsResourceUrl', ['$sce', function($sce) {
   return function(val) {

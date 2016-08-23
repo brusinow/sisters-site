@@ -75,6 +75,15 @@ angular.module('SistersServices', ['ngResource'])
   }
 }])
 
+.factory("TagsShowService", ["$firebaseArray", 
+  function($firebaseObject) {
+  return function(tagName){
+      var tagRef = firebase.database().ref('tags');
+      var tagShowRef = tagRef.orderByChild('name').equalTo(tagName);
+      return $firebaseObject(tagShowRef);
+  }
+}])
+
 
 .factory("ArchiveService", ["$firebaseArray", 
   function($firebaseArray){

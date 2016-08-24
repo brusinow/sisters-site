@@ -285,7 +285,10 @@ a:hover {
 }
 
 .recent-posts-list li {
-  list-style-type: square;
+  font-size: 1.2em;
+  overflow-wrap: normal;
+  line-height: 1.3;
+  list-style: none;
   margin-bottom: 2px;
 }
 
@@ -295,6 +298,7 @@ a:hover {
 }
 
 .archive-year {
+  color: #1A0504;
   font-weight: 600;
   position: absolute;
   top: 13px;

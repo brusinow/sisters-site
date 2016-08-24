@@ -201,7 +201,7 @@ angular.module('SistersCtrls', ['SistersServices'])
 
   $scope.last = $scope.length - (4 * $scope.page);
   console.log("Last: ",$scope.last);
-  $scope.posts = selectPosts.slice($scope.first, $scope.last);
+  $scope.posts = selectedPosts.slice($scope.first, $scope.last);
   console.log($scope.posts);
 
   $scope.editPost = function(post){
@@ -225,6 +225,9 @@ angular.module('SistersCtrls', ['SistersServices'])
  $scope.posts = thisPost;
  $scope.allPosts = thisPost;
 }])  
+
+
+
 
 
 .controller('NewBlogCtrl', ['$scope', '$state','$http','Auth','BlogPosts','AllTags','HelperService','SubmitImage','moment', function($scope, $state, $http, Auth, BlogPosts, AllTags, HelperService, SubmitImage, moment){

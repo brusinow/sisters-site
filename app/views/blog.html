@@ -10,7 +10,7 @@
      </div>
      <div class="blog-panel">
       <div class="blog-header text-center">
-        <button class="blog-edit-button" ng-click="editPost(post)"><i class="fa fa-pencil" aria-hidden="true"></i></button>
+        <button ng-if="firebaseUser.email" class="blog-edit-button" ng-click="editPost(post)"><i class="fa fa-pencil" aria-hidden="true"></i></button>
         <h5 class="no-margin">{{post.postTitle}}</h5>
         <span class="blog-date">{{post.timestamp | MomentFilter}}</span>
       </div>

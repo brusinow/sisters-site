@@ -64,17 +64,20 @@ angular.module('SistersCtrls', ['SistersServices'])
 .controller('EditBlogCtrl', ['$scope', '$state','$stateParams','SendDataService','AllTags','thisPost','HelperService', function($scope, $state, $stateParams, SendDataService, AllTags, thisPost, HelperService){
   $scope.data = {};
   $scope.changeImage = false;
+
   
   $scope.postArray = thisPost;
   $scope.post = thisPost[0];
   console.log($scope.post);
 
   $scope.tags = AllTags;
+  console.log("what are all tags? ",$scope.tags)
   if ($scope.post.youtube){
     console.log($scope.post.youtube);
     var youtubeId = $scope.post.youtube
     $scope.data.youtube = "https://www.youtube.com/watch?v="+ youtubeId;
   }
+
 
   $scope.addTag = function(){
     $scope.tags.$add({
@@ -181,7 +184,7 @@ angular.module('SistersCtrls', ['SistersServices'])
         length++;
         selectPosts.push(allPosts[i]);
     }
-}
+  }
   console.log("what is selectPosts? ",selectPosts);
   console.log("what is length? ",length)
   $scope.parseTitle = HelperService.titleToURL;
@@ -201,7 +204,7 @@ angular.module('SistersCtrls', ['SistersServices'])
 
   $scope.last = $scope.length - (4 * $scope.page);
   console.log("Last: ",$scope.last);
-  $scope.posts = selectedPosts.slice($scope.first, $scope.last);
+  $scope.posts = selectPosts.slice($scope.first, $scope.last);
   console.log($scope.posts);
 
   $scope.editPost = function(post){
@@ -270,13 +273,15 @@ angular.module('SistersCtrls', ['SistersServices'])
     var year = moment(postDate).format("YYYY");
     var month = moment(postDate).format("MMMM");
     console.log(post.tags);
+
     var newTags = {};
-    for (var i = 0; i < post.tags.length; i++){
-      newTags[post.tags[i].$id] = {
-        "name": post.tags[i].name,
-        "posts": null 
+    for (var prop in post.tags){
+      newTags[post.tags[prop].name] = {
+        "id": post.tags[prop].$id,
+        "name": post.tags[prop].name
       }
     }
+    console.log("what are new tags? ",newTags)
     var thisPost = {
       postTitle: post.title,
       postBody: post.body,
@@ -285,11 +290,12 @@ angular.module('SistersCtrls', ['SistersServices'])
       tags: newTags,
       timestamp: postDate   
     };
+    console.log("thisPost: ",thisPost);
     postArray.$add(thisPost).then(function(ref){
       var key = ref.key;
       firebase.database().ref('archives/' + year + '/' + month + '/' + key).set(thisPost);
-      for (prop in newTags){
-      firebase.database().ref('tags/' + prop + '/posts/' + key).set(thisPost); 
+      for (prop in post.tags){
+      firebase.database().ref('tags/' + post.tags[prop].$id + '/posts/' + key).set(thisPost); 
       }
       $state.go('blog');
     });

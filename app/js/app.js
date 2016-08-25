@@ -55,7 +55,7 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
     }
   })
   .state('blog-edit', {
-    url: '/blog/edit/:name',
+    url: '/blog/edit/:slug',
     templateUrl: '/views/editBlogPost.html',
     controller: 'EditBlogCtrl',
     resolve: {
@@ -64,8 +64,7 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
         return AllTagsService().$loaded();
       },
       "thisPost": function($stateParams, ThisPostService){
-        var parsedTitle = $stateParams.name.split("-").join(" ");
-        return ThisPostService(parsedTitle).$loaded();
+        return ThisPostService($stateParams.slug).$loaded();
       }
     }
   })
@@ -142,7 +141,7 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
 
 
   .state('blog-show', {
-    url: '/blog/show/:name',
+    url: '/blog/show/:slug',
     templateUrl: '/views/blog.html',
     controller: 'BlogShowCtrl',
     resolve: {
@@ -150,9 +149,8 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
       "Instagram": ['InstagramFactory', function(InstagramFactory){
         return InstagramFactory;
       }],
-      "thisPost": function($stateParams, ThisPostService){
-        var parsedTitle = $stateParams.name.split("-").join(" ");
-        return ThisPostService(parsedTitle).$loaded();
+      "thisPost": function($stateParams, ThisPostService){        
+        return ThisPostService($stateParams.slug).$loaded();
       },
       "Blog": function(BlogPosts){
         return BlogPosts().$loaded();
@@ -193,27 +191,32 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
     if (value && !enable) {
       return value;
     } else if (value && enable){
-
+      console.log("value and enable");
       max = parseInt(max, 10);
-      if (!max) return value;
-      if (value.length <= max) return value;
+      if (!max) {
+        return value;
+      }
+      if (value.length <= max){
+        console.log("should not include tail!!!")
+        return value;
+      } 
 
       value = value.substr(0, max);
       if (wordwise) {
         var lastspace = value.lastIndexOf(' ');
         if (lastspace != -1) {
-                  //Also remove . and , so its gives a cleaner result.
-                  if (value.charAt(lastspace-1) == '.' || value.charAt(lastspace-1) == ',') {
-                    lastspace = lastspace - 1;
-                  }
-                  value = value.substr(0, lastspace);
-                }
-              }
+          //Also remove . and , so its gives a cleaner result.
+          if (value.charAt(lastspace-1) == '.' || value.charAt(lastspace-1) == ',') {
+            lastspace = lastspace - 1;
+          }
+          value = value.substr(0, lastspace);
+        }
+      }
 
-              return value + (tail || '…');
-            }
-          };
-        })
+      return value + (tail || '…');
+    }
+  };
+})
 
 .filter('trustAsResourceUrl', ['$sce', function($sce) {
   return function(val) {

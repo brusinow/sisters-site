@@ -40,6 +40,7 @@ angular.module('SistersCtrls')
 
   var addPost = function(post, postArray, img, youtube){
     console.log("IN ADD POST!!!!!!!!!!!!");
+    var slug = HelperService.slugify(post.title);
     var postDate = new Date().getTime();
     var year = moment(postDate).format("YYYY");
     var month = moment(postDate).format("MMMM");
@@ -52,6 +53,7 @@ angular.module('SistersCtrls')
     console.log("what are new tags? ",newTags)
     var thisPost = {
       postTitle: post.title,
+      slug: slug,
       postBody: post.body,
       youtube: youtube ? youtube : null,
       img: img ? img : null,
@@ -124,7 +126,7 @@ angular.module('SistersCtrls')
   $scope.submit = function(){
     if ($scope.data.mediaSelect === 'image' && $scope.data.image){
       SubmitImage($scope.post, $scope.postArray, $scope.data.image, updatePost);
-    } else if ($scope.data.mediaSelect === 'image' && !scope.data.image){
+    } else if ($scope.data.mediaSelect === 'image' && !$scope.data.image){
       updatePost($scope.post, $scope.BlogPosts, $scope.post.img, null);
     } else if ($scope.data.mediaSelect === 'youtube'){
       $scope.data.youtube = HelperService.parseYouTube($scope.data.youtube);
@@ -133,18 +135,21 @@ angular.module('SistersCtrls')
   }
 
   var updatePost = function(post, postArray, img, youtube){
+    var slug = HelperService.slugify(post.postTitle);
+    console.log(slug);
     var year = moment(post.timestamp).format("YYYY");
     var month = moment(post.timestamp).format("MMMM");
     var newTags = {};
     for (var prop in post.tags){
       newTags[prop] = post.tags[prop];
     }
+    post.slug = slug;
     post.tags = newTags;
     post.youtube = youtube ? youtube : null;
     post.img = img ? img : null;
-    console.log(post);
     var thisPost = {
       postTitle: post.postTitle,
+      slug: slug,
       postBody: post.postBody,
       youtube: post.youtube,
       img: post.img,

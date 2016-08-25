@@ -59,9 +59,9 @@ angular.module('SistersServices', ['ngResource'])
 
 .factory("ThisPostService", ["$firebaseArray",
   function($firebaseArray){
-    return function(title){
+    return function(slug){
       var postRef = firebase.database().ref('blog_posts');
-      var thisPostRef = postRef.orderByChild('postTitle').equalTo(title);
+      var thisPostRef = postRef.orderByChild('slug').equalTo(slug);
       return $firebaseArray(thisPostRef);
     }
   }
@@ -181,7 +181,16 @@ angular.module('SistersServices', ['ngResource'])
       }
     },
     titleToURL: function(title){
+
     return title.split(' ').join('-');
+    },
+    slugify: function(text){
+      return text.toString().toLowerCase()
+      .replace(/\s+/g, '-')           // Replace spaces with -
+      .replace(/[^\w\-]+/g, '')       // Remove all non-word chars
+      .replace(/\-\-+/g, '-')         // Replace multiple - with single -
+      .replace(/^-+/, '')             // Trim - from start of text
+      .replace(/-+$/, '');            // Trim - from end of text
     }
   };
 }])

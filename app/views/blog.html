@@ -10,15 +10,15 @@
      </div>
      <div class="blog-panel">
       <div class="blog-header text-center">
-        <button ng-if="firebaseUser.email" class="blog-edit-button" ng-click="editPost(post)"><i class="fa fa-pencil" aria-hidden="true"></i></button>
-        <h5 class="no-margin">{{post.postTitle}}</h5>
+        <button ng-if="firebaseUser.email" class="blog-edit-button" ng-click="editPost(post.slug)"><i class="fa fa-pencil" aria-hidden="true"></i></button>
+        <h5 class="no-margin"><a ng-href="/blog/show/{{post.slug}}">{{post.postTitle}}</a></h5>
         <span class="blog-date">{{post.timestamp | MomentFilter}}</span>
       </div>
       <p class="white-space-pre">
-        {{post.postBody | cut:enable:true:275:'...' }} <a ng-if="enable" ng-href="/blog/show/{{parseTitle(post.postTitle)}}">Read More!</a>
+        {{post.postBody | cut:enable:true:275:'...' }} <a ng-if="enable && post.postBody.length >= 275" ng-href="/blog/show/{{post.slug}}">Read More!</a>
       </p>
       <div class="tag-div">
-        <h6 style="margin-bottom: 10px;">TAGS</h6>
+        <h6 style="margin-bottom: 5px;">TAGS</h6>
         <ul class="tags">
           <li ng-repeat="tag in allTags" ng-if="post.tags[tag.$id]">{{tag.name}}</li>   
         </ul>

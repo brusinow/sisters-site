@@ -24,9 +24,8 @@ angular.module('SistersCtrls')
   $scope.posts = Blog.slice($scope.first, $scope.last);
   
 
-  $scope.editPost = function(post){
-    var titleParsed = HelperService.titleToURL(post.postTitle);
-    $location.url('/blog/edit/'+titleParsed);
+  $scope.editPost = function(slug){ 
+    $location.url('/blog/edit/'+slug);
   }
 
 }])

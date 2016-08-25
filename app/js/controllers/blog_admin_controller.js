@@ -76,7 +76,7 @@ angular.module('SistersCtrls')
 
 
 
-.controller('EditBlogCtrl', ['$scope', '$state', '$timeout', '$stateParams','SendDataService','AllTags','thisPost','HelperService', function($scope, $state, $timeout, $stateParams, SendDataService, AllTags, thisPost, HelperService){
+.controller('EditBlogCtrl', ['$scope', '$state', '$timeout', '$stateParams','SendDataService','AllTags','thisPost','HelperService','SubmitImage', function($scope, $state, $timeout, $stateParams, SendDataService, AllTags, thisPost, HelperService, SubmitImage){
   $scope.data = {};
   $scope.changeImage = false;
 
@@ -121,43 +121,38 @@ angular.module('SistersCtrls')
     $scope.data.image = "";
   }
 
-   $scope.submit = function(){
-    if ($scope.data.mediaSelect === 'image'){
-      SubmitImage($scope.post, $scope.BlogPosts, $scope.data.image, addPost);
+  $scope.submit = function(){
+    if ($scope.data.mediaSelect === 'image' && $scope.changeImage){
+      SubmitImage($scope.post, $scope.postArray, $scope.data.image, updatePost);
+    } else if ($scope.data.mediaSelect === 'image' && !$scope.changeImage){
+      updatePost($scope.post, $scope.BlogPosts, $scope.post.img, null);
     } else if ($scope.data.mediaSelect === 'youtube'){
       $scope.data.youtube = HelperService.parseYouTube($scope.data.youtube);
-      addPost($scope.post, $scope.BlogPosts, null, $scope.data.youtube);
+      updatePost($scope.post, $scope.BlogPosts, null, $scope.data.youtube);
     }
   }
-  
 
-  $scope.updatePost = function(post){
+  var updatePost = function(post, postArray, img, youtube){
     var year = moment(post.timestamp).format("YYYY");
     var month = moment(post.timestamp).format("MMMM");
-    if ($scope.data.mediaSelect === "youtube"){
-      $scope.post.youtube = HelperService.parseYouTube($scope.data.youtube);
-    } else if ($scope.data.mediaSelect === "image"){
-
-    }
-    var newTags = {};
-    for (var prop in $scope.checkedTags){
-        newTags[prop] = $scope.checkedTags[prop];
-    }
     var newTags = {};
     for (var prop in post.tags){
       newTags[prop] = post.tags[prop];
     }
     post.tags = newTags;
+    post.youtube = youtube ? youtube : null;
+    post.img = img ? img : null;
     console.log(post);
     var thisPost = {
       postTitle: post.postTitle,
       postBody: post.postBody,
-      youtube: post.youtube ? post.youtube : null,
-      img: post.img ? post.img : null,
+      youtube: post.youtube,
+      img: post.img,
       tags: newTags,
       timestamp: post.timestamp   
     };
-    
+    console.log("what is thisPost? ",thisPost);
+
     $scope.postArray.$save(post).then(function(ref) {
       var key = ref.key;
       firebase.database().ref('archives/' + year + '/' + month + '/' + key).remove();
@@ -173,7 +168,7 @@ angular.module('SistersCtrls')
           firebase.database().ref(url).remove().then(function(message) {
             console.log("Remove succeeded.",message);
           })
-            .catch(function(error) {
+          .catch(function(error) {
             console.log("Remove failed: " + error.message)
           }); 
         } else {
@@ -185,15 +180,76 @@ angular.module('SistersCtrls')
         if (thisPost.tags[prop] === true){
           firebase.database().ref('tags/' + prop + '/posts/' + key).set(thisPost);
           console.log("should be added");
-          } else {
-            console.log(prop + " not a tag for new edit!");
-          }
+        } else {
+          console.log(prop + " not a tag for new edit!");
+        }
       }
-      },100)
-     
+    },100)
+
       $state.go('blog');
     });
   }
+  
+
+  // $scope.updatePost = function(post){
+  //   var year = moment(post.timestamp).format("YYYY");
+  //   var month = moment(post.timestamp).format("MMMM");
+  //   if ($scope.data.mediaSelect === "youtube"){
+  //     $scope.post.youtube = HelperService.parseYouTube($scope.data.youtube);
+  //   } else if ($scope.data.mediaSelect === "image"){
+
+  //   }
+  //   var newTags = {};
+  //   for (var prop in post.tags){
+  //     newTags[prop] = post.tags[prop];
+  //   }
+  //   post.tags = newTags;
+  //   console.log(post);
+  //   var thisPost = {
+  //     postTitle: post.postTitle,
+  //     postBody: post.postBody,
+  //     youtube: post.youtube ? post.youtube : null,
+  //     img: post.img ? post.img : null,
+  //     tags: newTags,
+  //     timestamp: post.timestamp   
+  //   };
+    
+  //   $scope.postArray.$save(post).then(function(ref) {
+  //     var key = ref.key;
+  //     firebase.database().ref('archives/' + year + '/' + month + '/' + key).remove();
+  //     firebase.database().ref('archives/' + year + '/' + month + '/' + key).set(thisPost);
+  //     console.log("TAGS BEFORE CHANGES: ",$scope.originalTags);
+  //     console.log("TAGS AFTER CHANGES: ",thisPost.tags);
+  //     for (prop in $scope.originalTags){
+  //       if ($scope.originalTags[prop] === true){
+  //         console.log("at ",prop);
+  //         console.log("key is ",key);
+  //         var url = 'tags/' + prop + '/posts/' + key;
+  //         console.log("what is url? ",url)
+  //         firebase.database().ref(url).remove().then(function(message) {
+  //           console.log("Remove succeeded.",message);
+  //         })
+  //           .catch(function(error) {
+  //           console.log("Remove failed: " + error.message)
+  //         }); 
+  //       } else {
+  //         console.log(prop + " not a tag for old edit!")
+  //       }
+  //     }
+  //     $timeout(function(){
+  //      for (prop in thisPost.tags){
+  //       if (thisPost.tags[prop] === true){
+  //         firebase.database().ref('tags/' + prop + '/posts/' + key).set(thisPost);
+  //         console.log("should be added");
+  //         } else {
+  //           console.log(prop + " not a tag for new edit!");
+  //         }
+  //     }
+  //     },100)
+     
+  //     $state.go('blog');
+  //   });
+  // }
 
 
 }])  

@@ -16,7 +16,7 @@
         <div style="display: inline-block" ng-if="post.img" ng-show="!changeImage" class="thumbnail"><img ng-src="{{post.img}}"></div>
         <input ng-show="changeImage" type="file" name="imageUpload" fileread="data.image"/>
       </div>
-      <button style="display: inline-block" ng-if="post.img" ng-show="!changeImage" ng-click="toggleImage()">Change image?</button>
+      <button style="display: inline-block" ng-show="!changeImage && post.img && data.mediaSelect === 'image'" ng-show="!changeImage" ng-click="toggleImage()">Change image?</button>
       <div ng-if="data.mediaSelect === 'youtube'" id="youtube-choice">
       <label for="youtube">YouTube Link</label>
         <input class="u-full-width" type="text" name="youtube" placeholder="Enter YouTube link..." ng-model="data.youtube"/>
@@ -33,7 +33,7 @@
    </div>
   <!-- <button class="tag-delete-btn" ng-click="deleteTag(tag)"><i class="fa fa-trash" aria-hidden="true"></i></button> -->
  
-  <input class="button-primary" ng-click="updatePost(post)" type='submit'>
+  <input class="button-primary" ng-click="submit()" type='submit'>
 
 </form>
 

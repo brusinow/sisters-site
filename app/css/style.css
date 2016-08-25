@@ -314,16 +314,20 @@ a:hover {
 }
 
 .archive-year {
-  color: #1A0504;
+  color: #5e504f;
   font-weight: 600;
   position: absolute;
-  top: 13px;
+  top: 15px;
   left: 0;
 }
 
 .month-list {
   position:relative;
   left: 15px;
+}
+
+.archive-list-links a {
+  font-size: 1.1em;
 }
 
 .archives ul {

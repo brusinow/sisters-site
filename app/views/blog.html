@@ -15,7 +15,7 @@
         <span class="blog-date">{{post.timestamp | MomentFilter}}</span>
       </div>
       <p class="white-space-pre">
-        {{post.postBody | cut:enable:true:275:'...' }} <a ng-href="/blog/show/{{parseTitle(post.postTitle)}}">Read More!</a>
+        {{post.postBody | cut:enable:true:275:'...' }} <a ng-if="enable" ng-href="/blog/show/{{parseTitle(post.postTitle)}}">Read More!</a>
       </p>
       <div class="tag-div">
         <h6 style="margin-bottom: 10px;">TAGS</h6>

@@ -8,26 +8,26 @@
   </div>
   <div class="fancy"><span>RECENT POSTS</span></div>
   <ul class="recent-posts-list">
-    <a ng-repeat="recent in recentPosts | orderBy:'-timestamp' | limitTo:4" ng-href="/blog/show/{{parseTitle(recent.postTitle)}}"><li>{{recent.postTitle}}</li></a>
+    <a ng-repeat="recent in recentPosts | orderBy:'-timestamp' | limitTo:4" ng-href="/blog/show/{{parseTitle(recent.postTitle)}}"><li style="text-align: center;">{{recent.postTitle}}</li></a>
   </ul>
   <div class="fancy"><span>ARCHIVES</span></div>
 
   <div class="archives archive-container">
     <ul>
-    <div class="each-year" ng-repeat="year in years">
-      <li><span class="archive-year">{{year.$id}}:</span>
-        <div class="month-list">
-        <ul>
-          <li ng-repeat="(key,val) in year"><a ng-href="/blog/archives/{{year.$id}}/{{key}}">{{key}}</a></li>
-        </ul>
-        </div>
-      </li>
+      <div class="each-year" ng-repeat="year in years">
+        <li><span class="archive-year">{{year.$id}}:</span>
+          <div class="month-list">
+            <ul>
+            <li class="archive-list-links" ng-repeat="(key,val) in year"><a ng-href="/blog/archives/{{year.$id}}/{{key}}">{{key}}</a></li>
+            </ul>
+          </div>
+        </li>
       </div>
     </ul>
   </div>
   <div class="fancy"><span>TAGS</span></div>
   <div class="tags">
-  <ul>
-    <a ng-repeat="tag in allTags" ng-href="/blog/tags/{{tag.name}}"><li style="float: left;">{{tag.name}}</li></a>
-  </ul>
+    <ul>
+      <a ng-repeat="tag in allTags" ng-href="/blog/tags/{{tag.name}}"><li style="float: left;">{{tag.name}}</li></a>
+    </ul>
   </div>

@@ -110,8 +110,8 @@ angular.module('SistersCtrls')
 }]) 
 
 
-.controller('BlogShowCtrl', ['$scope', '$state','$stateParams','thisPost','Instagram','Blog', function($scope, $state, $stateParams,thisPost, Instagram, Blog){
-
+.controller('BlogShowCtrl', ['$scope', '$state','$stateParams','thisPost','Instagram','Blog','AllTagsService', function($scope, $state, $stateParams,thisPost, Instagram, Blog, AllTagsService){
+ $scope.allTags = AllTagsService();
  $scope.enable = false;
  $scope.recentPosts = Blog;
  console.log($scope.recentPosts);

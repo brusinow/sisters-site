@@ -14,9 +14,9 @@
       <div ng-if="data.mediaSelect === 'image'" id="image-choice">
         <label for="imageUpload"> Image: </label>
         <div style="display: inline-block" ng-if="post.img" ng-show="!changeImage" class="thumbnail"><img ng-src="{{post.img}}"></div>
-        <input ng-show="changeImage" type="file" name="imageUpload" fileread="data.image"/>
+        <input ng-show="!post.img && data.mediaSelect === 'image'" type="file" name="imageUpload" fileread="data.image"/>
       </div>
-      <button style="display: inline-block" ng-show="!changeImage && post.img && data.mediaSelect === 'image'" ng-show="!changeImage" ng-click="toggleImage()">Change image?</button>
+      <button style="display: inline-block" ng-show="!changeImage && post.img && data.mediaSelect === 'image'" ng-click="post.img = null">Change image?</button>
       <div ng-if="data.mediaSelect === 'youtube'" id="youtube-choice">
       <label for="youtube">YouTube Link</label>
         <input class="u-full-width" type="text" name="youtube" placeholder="Enter YouTube link..." ng-model="data.youtube"/>

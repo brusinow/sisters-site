@@ -122,9 +122,9 @@ angular.module('SistersCtrls')
   }
 
   $scope.submit = function(){
-    if ($scope.data.mediaSelect === 'image' && $scope.changeImage){
+    if ($scope.data.mediaSelect === 'image' && $scope.data.image){
       SubmitImage($scope.post, $scope.postArray, $scope.data.image, updatePost);
-    } else if ($scope.data.mediaSelect === 'image' && !$scope.changeImage){
+    } else if ($scope.data.mediaSelect === 'image' && !scope.data.image){
       updatePost($scope.post, $scope.BlogPosts, $scope.post.img, null);
     } else if ($scope.data.mediaSelect === 'youtube'){
       $scope.data.youtube = HelperService.parseYouTube($scope.data.youtube);

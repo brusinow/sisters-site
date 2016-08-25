@@ -1,14 +1,14 @@
 <div id="mobile-nav" class="row">
   <div class="u-pull-left">
-  <a ng-href="/#/"><img id="logo" src="/img/logo.png"/></a>
+  <a ng-href="/"><img id="logo" src="/img/logo.png"/></a>
   </div>
   <div style="text-align: right;"class="u-pull-right">
   <i ng-click="toggle = !toggle" class="fa fa-bars fa-2x" aria-hidden="true"></i>
     <ul ng-class="{'drop-hidden' : toggle}">
-      <li><a ng-click="toggle = !toggle" ng-href="/#/">home</a></li>
-      <li><a ng-click="toggle = !toggle" ng-href="/#/shows">shows</a></li>
+      <li><a ng-click="toggle = !toggle" ng-href="/">home</a></li>
+      <li><a ng-click="toggle = !toggle" ng-href="/shows">shows</a></li>
       <li><a ng-click="toggle = !toggle" href="https://open.spotify.com/artist/2Hb8mc3CoUktri3i4Q4ACR" target="_blank">listen</a></li>
-      <li><a ng-click="toggle = !toggle" ng-href="/#/blog">blog</a></li>
+      <li><a ng-click="toggle = !toggle" ng-href="/blog">blog</a></li>
     </ul>
   </div>
 </div>
@@ -16,12 +16,12 @@
 
 <div id="main-nav" class="container navbar row">
     <div style="vertical-align: middle;" class="six columns">
-      <a ng-href="/#/"><img id="logo" src="/img/logo.png"/></a>
+      <a ng-href="/"><img id="logo" src="/img/logo.png"/></a>
       <ul class="nav-left">
       <li><a ng-href="/shows">shows</a></li>
       <li><a href="https://open.spotify.com/artist/2Hb8mc3CoUktri3i4Q4ACR" target="_blank">listen</a></li>
       <li><a ng-href="/blog">blog</a></li>
-      <li><a>store</a></li>
+      <!-- <li><a>store</a></li> -->
       </ul>
 
     </div>

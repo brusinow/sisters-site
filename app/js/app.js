@@ -116,7 +116,8 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
       },
       "Archive": function($stateParams, ArchiveShowService){
         return ArchiveShowService($stateParams.year, $stateParams.month).$loaded();
-      }      
+      }
+      
     }
   })
 

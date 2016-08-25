@@ -27,11 +27,11 @@
   <!-- <label ng-repeat="tag in tags"> -->
   <!-- <input class="checkbox" type="checkbox" name="{{tag.name}}" checklist-model="post.tags" checklist-value="tag"> {{tag.name}} -->
   <label class="checkbox-inline" ng-repeat="(key, value) in tags">
-        <input type="checkbox" id="{{ key }}" value="{{ value }}" ng-true-value="{{ value }}" ng-false-value="null" ng-model="post.tags[value.name]">{{ value.name }}
+        <input type="checkbox" id="{{ key }}" value="{{ value }}" ng-init="checkedTags[value.$id] = false" ng-model="checkedTags[value.$id]">{{value.name}}
    </label>
 <!--   <button class="tag-delete-btn" ng-click="deleteTag(tag)"><i class="fa fa-trash" aria-hidden="true"></i></button> -->
 <!--   </label> -->
   <input class="button-primary" ng-click="submit()" type='submit'>
 
 </form>
-{{post}}
+{{checkedTags}}

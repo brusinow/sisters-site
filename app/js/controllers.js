@@ -23,7 +23,8 @@ angular.module('SistersCtrls', ['SistersServices'])
 }) 
 
 
-.controller('BlogCtrl', ['$scope', '$state','$http','$location','$stateParams','Auth','Blog','HelperService','Instagram', function($scope, $state, $http, $location, $stateParams, Auth, Blog, HelperService, Instagram){
+.controller('BlogCtrl', ['$scope', '$state','$http','$location','$stateParams','Auth','Blog','HelperService','Instagram','AllTagsService', function($scope, $state, $http, $location, $stateParams, Auth, Blog, HelperService, Instagram, AllTagsService){
+  $scope.allTags = AllTagsService();
   $scope.photos = Instagram.data;
   $scope.enable = true;
   $scope.parseTitle = HelperService.titleToURL;
@@ -68,9 +69,11 @@ angular.module('SistersCtrls', ['SistersServices'])
   
   $scope.postArray = thisPost;
   $scope.post = thisPost[0];
+  $scope.originalTags = angular.copy($scope.post.tags);
   console.log($scope.post);
-
+  console.log("what are original tags? ",$scope.originalTags);
   $scope.tags = AllTags;
+
   console.log("what are all tags? ",$scope.tags)
   if ($scope.post.youtube){
     console.log($scope.post.youtube);
@@ -108,13 +111,49 @@ angular.module('SistersCtrls', ['SistersServices'])
 
 
   $scope.updatePost = function(post){
+    var year = moment(post.timestamp).format("YYYY");
+    var month = moment(post.timestamp).format("MMMM");
     if ($scope.data.mediaSelect === "youtube"){
       $scope.post.youtube = HelperService.parseYouTube($scope.data.youtube);
     } else if ($scope.data.mediaSelect === "image"){
 
     }
+    var newTags = {};
+    for (var prop in $scope.checkedTags){
+        newTags[prop] = $scope.checkedTags[prop];
+    }
+    var newTags = {};
+    for (var prop in post.tags){
+      newTags[prop] = post.tags[prop];
+    }
+    post.tags = newTags;
+    console.log(post);
+    var thisPost = {
+      postTitle: post.postTitle,
+      postBody: post.postBody,
+      youtube: post.youtube ? post.youtube : null,
+      img: post.img ? post.img : null,
+      tags: newTags,
+      timestamp: post.timestamp   
+    };
+    
     $scope.postArray.$save(post).then(function(ref) {
       console.log("success");
+      var key = ref.key;
+      firebase.database().ref('archives/' + year + '/' + month + '/' + key).remove();
+      firebase.database().ref('archives/' + year + '/' + month + '/' + key).set(thisPost);
+      for (prop in $scope.originalTags){
+        if ($scope.originalTags[prop]){
+          firebase.database().ref('tags/' + prop + '/posts/' + key).remove();
+          console.log("should be removed");  
+        }
+      }
+      for (prop in post.tags){
+        if ($scope.originalTags[prop]){
+          // firebase.database().ref('tags/' + prop + '/posts/' + key).set(thisPost);
+          // console.log("should be added");
+        } 
+      }
       $state.go('blog');
     });
   }
@@ -123,13 +162,26 @@ angular.module('SistersCtrls', ['SistersServices'])
 }])  
 
 
-.controller('BlogArchiveCtrl', ['$scope', '$state','$stateParams','Instagram','Blog','Archive','Auth','HelperService', function($scope, $state, $stateParams, Instagram, Blog, Archive, Auth, HelperService){
+.controller('BlogArchiveCtrl', ['$scope', '$state','$stateParams','Instagram','Blog','Archive','Auth','HelperService','AllTagsService', function($scope, $state, $stateParams, Instagram, Blog, Archive, Auth, HelperService, AllTagsService){
+  $scope.allTags = AllTagsService();
   $scope.enable = true;
   $scope.photos = Instagram.data;
+  $scope.fullBlog = Blog;
   $scope.allPosts = Archive; 
+
+  
+  console.log("archive is: ",$scope.allPosts);
 
   $scope.parseTitle = HelperService.titleToURL;
 
+//   for (var i = 0; i < archive.length; i++){
+//     for (var j = 0; j < $scope.fullBlog.length; j++){
+//       if (archive[i].$id === $scope.fullBlog[j].$id){
+//         $scope.allPosts.push($scope.fullBlog[j]);
+//       }
+//     }
+//   }
+// console.log("allPosts is: ",$scope.allPosts);
 
 
   $scope.auth = Auth;
@@ -172,7 +224,8 @@ angular.module('SistersCtrls', ['SistersServices'])
 
 }]) 
 
-.controller('BlogTagsCtrl', ['$scope', '$state','$stateParams','Instagram','Blog','TagsShow','Auth','HelperService', function($scope, $state, $stateParams, Instagram, Blog, TagsShow, Auth, HelperService){
+.controller('BlogTagsCtrl', ['$scope', '$state','$stateParams','Instagram','Blog','TagsShow','Auth','HelperService','AllTagsService', function($scope, $state, $stateParams, Instagram, Blog, TagsShow, Auth, HelperService, AllTagsService){
+  $scope.allTags = AllTagsService();
   $scope.enable = true;
   $scope.photos = Instagram.data;
   var allPosts = TagsShow[0].posts;
@@ -234,8 +287,10 @@ angular.module('SistersCtrls', ['SistersServices'])
 
 
 .controller('NewBlogCtrl', ['$scope', '$state','$http','Auth','BlogPosts','AllTags','HelperService','SubmitImage','moment', function($scope, $state, $http, Auth, BlogPosts, AllTags, HelperService, SubmitImage, moment){
+
   $scope.BlogPosts = BlogPosts();
   $scope.tags = AllTags;
+  $scope.checkedTags = {};
 
   $scope.resetMedia = function(){
     $scope.data.youtube = "";
@@ -275,11 +330,8 @@ angular.module('SistersCtrls', ['SistersServices'])
     console.log(post.tags);
 
     var newTags = {};
-    for (var prop in post.tags){
-      newTags[post.tags[prop].name] = {
-        "id": post.tags[prop].$id,
-        "name": post.tags[prop].name
-      }
+    for (var prop in $scope.checkedTags){
+        newTags[prop] = $scope.checkedTags[prop];
     }
     console.log("what are new tags? ",newTags)
     var thisPost = {
@@ -294,8 +346,10 @@ angular.module('SistersCtrls', ['SistersServices'])
     postArray.$add(thisPost).then(function(ref){
       var key = ref.key;
       firebase.database().ref('archives/' + year + '/' + month + '/' + key).set(thisPost);
-      for (prop in post.tags){
-      firebase.database().ref('tags/' + post.tags[prop].$id + '/posts/' + key).set(thisPost); 
+      for (prop in newTags){
+        if (newTags[prop]){
+        firebase.database().ref('tags/' + prop + '/posts/' + key).set(thisPost); 
+        }
       }
       $state.go('blog');
     });

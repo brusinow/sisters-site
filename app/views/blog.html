@@ -20,7 +20,7 @@
       <div class="tag-div">
         <h6 style="margin-bottom: 10px;">TAGS</h6>
         <ul class="tags">
-          <li ng-repeat="tag in post.tags">{{tag.name}}</li>       
+          <li ng-repeat="tag in allTags" ng-if="post.tags[tag.$id]">{{tag.name}}</li>   
         </ul>
       </div>
     </div>

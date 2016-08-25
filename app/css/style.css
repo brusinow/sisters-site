@@ -226,6 +226,22 @@ a:hover {
   color: #d9534f;
 }
 
+.checkbox-group {
+  display: block;
+  width: 100%;
+  min-height: 50px;
+}
+
+.checkbox-group label {
+  float: left;
+  display: inline-block;
+  margin: 4px 5px;
+}
+
+.checkbox-group input {
+  margin-right: 3px;
+}
+
 .image-panel img {
   object-fit: cover;
   object-position: 100% 50%;

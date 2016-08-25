@@ -43,9 +43,9 @@ angular.module('SistersCtrls', ['SistersServices'])
 
 
   $scope.last = $scope.length - (4 * $scope.page);
-  console.log("Last: ",$scope.last);
+ 
   $scope.posts = Blog.slice($scope.first, $scope.last);
-  console.log($scope.posts);
+  
 
   $scope.editPost = function(post){
     var titleParsed = HelperService.titleToURL(post.postTitle);
@@ -62,7 +62,7 @@ angular.module('SistersCtrls', ['SistersServices'])
 
 
 
-.controller('EditBlogCtrl', ['$scope', '$state','$stateParams','SendDataService','AllTags','thisPost','HelperService', function($scope, $state, $stateParams, SendDataService, AllTags, thisPost, HelperService){
+.controller('EditBlogCtrl', ['$scope', '$state', '$timeout', '$stateParams','SendDataService','AllTags','thisPost','HelperService', function($scope, $state, $timeout, $stateParams, SendDataService, AllTags, thisPost, HelperService){
   $scope.data = {};
   $scope.changeImage = false;
 
@@ -138,22 +138,38 @@ angular.module('SistersCtrls', ['SistersServices'])
     };
     
     $scope.postArray.$save(post).then(function(ref) {
-      console.log("success");
       var key = ref.key;
       firebase.database().ref('archives/' + year + '/' + month + '/' + key).remove();
       firebase.database().ref('archives/' + year + '/' + month + '/' + key).set(thisPost);
+      console.log("TAGS BEFORE CHANGES: ",$scope.originalTags);
+      console.log("TAGS AFTER CHANGES: ",thisPost.tags);
       for (prop in $scope.originalTags){
-        if ($scope.originalTags[prop]){
-          firebase.database().ref('tags/' + prop + '/posts/' + key).remove();
-          console.log("should be removed");  
+        if ($scope.originalTags[prop] === true){
+          console.log("at ",prop);
+          console.log("key is ",key);
+          var url = 'tags/' + prop + '/posts/' + key;
+          console.log("what is url? ",url)
+          firebase.database().ref(url).remove().then(function(message) {
+            console.log("Remove succeeded.",message);
+          })
+            .catch(function(error) {
+            console.log("Remove failed: " + error.message)
+          }); 
+        } else {
+          console.log(prop + " not a tag for old edit!")
         }
       }
-      for (prop in post.tags){
-        if ($scope.originalTags[prop]){
-          // firebase.database().ref('tags/' + prop + '/posts/' + key).set(thisPost);
-          // console.log("should be added");
-        } 
+      $timeout(function(){
+       for (prop in thisPost.tags){
+        if (thisPost.tags[prop] === true){
+          firebase.database().ref('tags/' + prop + '/posts/' + key).set(thisPost);
+          console.log("should be added");
+          } else {
+            console.log(prop + " not a tag for new edit!");
+          }
       }
+      },100)
+     
       $state.go('blog');
     });
   }
@@ -524,7 +540,6 @@ angular.module('SistersCtrls', ['SistersServices'])
   $scope.auth = Auth;
   $scope.auth.$onAuthStateChanged(function(firebaseUser) {
     $scope.firebaseUser = firebaseUser;
-    console.log("firebase user is ",$scope.firebaseUser);
   });
 
 
@@ -565,7 +580,6 @@ angular.module('SistersCtrls', ['SistersServices'])
 
   $scope.toggle = true;
   var width = window.innerWidth;
-  console.log("inner width: ",width);
 
   if (width > 806){
     $timeout(function () {

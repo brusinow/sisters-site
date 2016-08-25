@@ -227,3 +227,4 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
     return  moment(val).format('MMMM Do, YYYY');
   }
 }]);
+

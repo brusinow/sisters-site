@@ -25,10 +25,12 @@
     </div>
   <label for="blogBody">Post Body</label>
   <textarea class="u-full-width" rows="10" ng-model="post.postBody" placeholder="This is a new blog post..." id="blogBody"></textarea>
-  <input type="text" placeholder="new tag name" ng-model="data.newTag"/><button ng-click="addTag(data.newTag)">Add Tag</button>
-  <label class="checkbox-inline" ng-repeat="(key, value) in tags">
+  <input type="text" placeholder="new tag name" ng-model="data.newTag"/><button ng-click="addTag(data.newTag)">Add Tag</button><br>
+  <div class="checkbox-group">
+  <label ng-repeat="(key, value) in tags">
          <input type="checkbox" id="{{ key }}" value="{{ value }}" ng-model="post.tags[value.$id]">{{ value.name }}
    </label>
+   </div>
   <!-- <button class="tag-delete-btn" ng-click="deleteTag(tag)"><i class="fa fa-trash" aria-hidden="true"></i></button> -->
  
   <input class="button-primary" ng-click="updatePost(post)" type='submit'>
@@ -39,6 +41,6 @@
   <input type="checkbox" data-checklist-model="user.roles" data-checklist-value="role"> {{role.text}}
 </label> -->
 
-{{post.tags}}
+
 
 

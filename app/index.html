@@ -9,6 +9,7 @@
   <!-- Latest compiled and minified CSS & JS -->
 <script src="https://code.jquery.com/jquery-2.2.4.min.js"   integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="   crossorigin="anonymous"></script>  
 <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.0/angular.js"></script>
+<script src="/lib/ngCart.js"></script>
 <script src="https://www.gstatic.com/firebasejs/3.2.1/firebase.js"></script>
 <script>
   // Initialize Firebase
@@ -29,6 +30,11 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-moment/1.0.0-beta.6/angular-moment.min.js"></script>
 <script src="https://use.fontawesome.com/b4167df7f2.js"></script>
 <script src="/lib/angular-fontawesome.min.js"></script>
+<script type="text/javascript" src="https://js.stripe.com/v2/"></script>
+<script type="text/javascript">
+  Stripe.setPublishableKey('pk_test_0z0BcbD8URR6kBC60HqdP6TU');
+</script>
+
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js" integrity="sha384-0mSbJDEHialfmuBBQP6A4Qrprq5OVfW37PRR3j5ELqxss1yVqOtnepnHVP9aJ7xS" crossorigin="anonymous"></script>
 
 
@@ -65,6 +71,7 @@
 <script src="/js/controllers/blog_controller.js"></script>
 <script src="/js/controllers/blog_admin_controller.js"></script>
 <script src="/js/controllers/show_controller.js"></script>
+<script src="/js/controllers/store_controller.js"></script>
 <script src="/js/controllers/nav_controller.js"></script>
 <script src="/js/controllers/modal_controller.js"></script>
 <script src="/js/controllers/auth_controller.js"></script>

@@ -1,0 +1,13 @@
+
+<div ng-repeat="item in items">
+{{item.name}}
+<ngcart-addtocart id="{{ item.id }}" name="{{ item.name }}" price="{{ item.price }}" quantity="1" quantity-max="30" data="item">Add to Cart</ngcart-addtocart>
+</div>
+
+<ngcart-cart></ngcart-cart>
+
+<ngcart-summary></ngcart-summary>
+
+<ngcart-checkout service="http" settings="{ url:'/checkout' }"></ngcart-checkout>
+
+

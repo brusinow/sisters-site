@@ -2,6 +2,7 @@ var express = require('express');
 var bodyParser = require('body-parser');
 var path = require('path');
 var request = require('request');
+var stripe = require("stripe")(process.env.STRIPE_SECRET);
 
 
 var app = express();
@@ -11,6 +12,12 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(express.static(path.join(__dirname, 'app')));
 
 
+
+
+// Get the credit card details submitted by the form
+ 
+
+// Create a charge: this will charge the user's card
 
 
 

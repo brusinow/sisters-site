@@ -1,7 +1,7 @@
 var authWait = ["Auth", function(Auth) { return Auth.$waitForSignIn(); }]
 var authRequire = ["Auth", function(Auth) { return Auth.$requireSignIn(); }]
 
-angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui.bootstrap','firebase','angularMoment'])
+angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui.bootstrap','firebase','angularMoment','ngCart'])
 
 .run(["$rootScope", "$state", function($rootScope, $state) {
   $rootScope.$on("$stateChangeError", function(event, toState, toParams, fromState, fromParams, error) {
@@ -172,6 +172,14 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
         console.log("app resolve entered");
         return GetShows().$loaded();
       }
+    }
+  })
+  .state('store', {
+    url: '/store',
+    templateUrl: '/views/store.html',
+    controller: 'StoreCtrl',
+    resolve: {
+      "currentAuth": authWait
     }
   })
   .state('login', {

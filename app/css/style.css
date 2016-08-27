@@ -556,7 +556,7 @@ a:hover {
 
 #mobile-nav #logo {
   float: left;
-  height: 35px;
+  height: 30px;
 }
 
 #mobile-nav ul {
@@ -585,10 +585,73 @@ a:hover {
   letter-spacing: .08em;
 }
 
+.shopping-cart {
+  position: absolute;
+  top: 10px; 
+  right: 20px; 
+}
+
+.cart-add {
+  opacity: 0;
+  animation: fade 2s linear;
+}
+
+.animate-show.ng-hide {
+  opacity: 0;
+}
+
+.shopping-cart a {
+  color: white;
+  text-decoration: none;
+  cursor: pointer;
+}
+
+
+.cart-summary {
+  width: 90px;
+  height: 28px;
+  padding: 3px;
+  font-family: 'PT Serif', serif;
+  background-color: rgba(84, 84, 84, 0.79);
+  border-radius: 5px;
+  margin: 0 auto;
+  text-align: center;
+  font-size: .9em;
+  color: white;
+  
+}
+
+.store-row {
+  margin-bottom: 10px;
+}
+
+.store-item {
+  padding: 4px;
+  text-align: center;
+  display: inline-block;
+  height: 450px;
+  border: 2px solid black;
+  background-color: white;
+}
+
+.item-image-div {
+  width: 90%;
+  height: auto;
+  margin: 10px auto;
+  overflow: hidden;
+}
+
+.item-image-div img {
+  width: 100%;
+  object-fit: cover;
+  object-position: 100% 50%;
+}
+
+
 #main-nav #logo {
   float: left;
-  height: 35px;
-  margin-top: 12px;
+  height: 30px;
+  margin-top: 17px;
 }
 
 .navbar {

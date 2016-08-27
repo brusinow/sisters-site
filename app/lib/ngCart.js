@@ -51,7 +51,6 @@ angular.module('ngCart', ['ngCart.directives'])
                 this.$cart.items.push(newItem);
                 $rootScope.$broadcast('ngCart:itemAdded', newItem);
             }
-
             $rootScope.$broadcast('ngCart:change', {});
         };
 

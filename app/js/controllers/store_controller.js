@@ -16,6 +16,11 @@ angular.module('SistersCtrls')
       id: 10003,
       name: "SISTERS Tank Top",
       price: 30
+    },
+    {
+      id: 10004,
+      name: "SISTERS T-Shirt",
+      price: 30
     }
   ]
 
@@ -27,4 +32,10 @@ angular.module('SistersCtrls')
 
   $scope.food = "pizza"
 
-}); 
+})
+
+
+.controller('StoreCartCtrl', function($scope, $state){
+
+
+})

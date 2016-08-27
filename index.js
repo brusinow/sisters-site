@@ -1,3 +1,4 @@
+var subdomain = require('express-subdomain');
 var express = require('express');
 var bodyParser = require('body-parser');
 var path = require('path');

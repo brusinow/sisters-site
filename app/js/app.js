@@ -182,6 +182,14 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
       "currentAuth": authWait
     }
   })
+  .state('storeCart', {
+    url: '/store/cart',
+    templateUrl: '/views/cart.html',
+    controller: 'StoreCartCtrl',
+    resolve: {
+      "currentAuth": authWait
+    }
+  })
   .state('login', {
     url: '/login',
     templateUrl: '/views/login.html',

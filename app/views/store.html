@@ -11,25 +11,28 @@
 
 <div ng-repeat="item in items" ng-if="$index % 3 === 0" class="store-row row">
     <div class="one-third column store-item">
-      {{items[$index].name}}
+      <h6>{{items[$index].name}}</h6>
         <div class="item-image-div">
           <img src="/img/placeholder.jpg"/>
         </div>
+        <p>{{items[$index].description}}</p>
         <ngcart-addtocart id="{{ items[$index].id }}" name="{{ items[$index].name }}" price="{{ items[$index].price }}" quantity="1" quantity-max="30" data="item">Add to Cart</ngcart-addtocart>
     </div>
     <div class="one-third column store-item" ng-if="items.length > ($index + 1)">
-       {{items[$index + 1].name}}
+       <h6>{{items[$index + 1].name}}</h6>
         <div class="item-image-div">
           <img src="/img/placeholder.jpg"/>
         </div>
+        <p>{{items[$index + 1].description}}</p>
         <ngcart-addtocart id="{{ items[$index + 1].id }}" name="{{ items[$index + 1].name }}" price="{{ items[$index + 1].price }}" quantity="1" quantity-max="30" data="item">Add to Cart</ngcart-addtocart>
 
     </div>
     <div class="one-third column store-item" ng-if="items.length > ($index + 2)">
-       {{items[$index + 2].name}}
+       <h6>{{items[$index + 2].name}}</h6>
         <div class="item-image-div">
           <img src="/img/placeholder.jpg"/>
         </div>
+        <p>{{items[$index + 2].description}}</p>
         <ngcart-addtocart id="{{ items[$index + 2].id }}" name="{{ items[$index + 2].name }}" price="{{ items[$index + 2].price }}" quantity="1" quantity-max="30" data="item">Add to Cart</ngcart-addtocart>
     </div>
 </div>

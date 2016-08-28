@@ -1,5 +1,6 @@
 var subdomain = require('express-subdomain');
 var express = require('express');
+var session = require('express-session');
 var bodyParser = require('body-parser');
 var path = require('path');
 var request = require('request');
@@ -12,13 +13,15 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(express.static(path.join(__dirname, 'app')));
 
+app.use(session({
+  secret: "Murray is a dog buddy",
+  resave: false,
+  saveUninitialized: true,
+  cookie: { secure: false },
+}));
 
 
 
-// Get the credit card details submitted by the form
- 
-
-// Create a charge: this will charge the user's card
 
 
 
@@ -32,14 +35,17 @@ app.get('/instagram', function(req, res) {
   });
 });
 
+app.post("/checkout", function(req, res) {
+  req.session.currentOrder = req.body;
+  console.log("what is currentOrder? ",req.session.currentOrder);
+});
+
 
 app.get('/*', function(req, res) {
   res.sendFile(path.join(__dirname, 'app/index.html'));
 });
 
 
-// process.env.DBUSER
-// '&callback=JSON_CALLBACK'
 
 
 

@@ -190,6 +190,14 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
       "currentAuth": authWait
     }
   })
+  .state('storeCheckout', {
+    url: '/store/checkout',
+    templateUrl: '/views/checkout.html',
+    controller: 'StoreCheckoutCtrl',
+    resolve: {
+      "currentAuth": authWait
+    }
+  })
   .state('login', {
     url: '/login',
     templateUrl: '/views/login.html',

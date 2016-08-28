@@ -482,7 +482,7 @@ angular.module('ngCart.fulfilment', [])
 .service('ngCart.fulfilment.log', ['$q', '$log', 'ngCart', function($q, $log, ngCart){
 
         this.checkout = function(){
-
+            console.log("LOG FUNCTION!!!")
             var deferred = $q.defer();
 
             $log.info(ngCart.toObject());
@@ -496,9 +496,10 @@ angular.module('ngCart.fulfilment', [])
 
  }])
 
-.service('ngCart.fulfilment.http', ['$http', 'ngCart', function($http, ngCart){
+.service('ngCart.fulfilment.http', ['$http', 'ngCart','$location', function($http, ngCart, $location){
 
         this.checkout = function(settings){
+        $location.path( '/store/checkout' )
             return $http.post(settings.url,
                 { data: ngCart.toObject(), options: settings.options});
         }

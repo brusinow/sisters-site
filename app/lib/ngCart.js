@@ -338,8 +338,10 @@ angular.module('ngCart', ['ngCart.directives'])
 
 angular.module('ngCart.directives', ['ngCart.fulfilment'])
 
-    .controller('CartController',['$scope', 'ngCart', function($scope, ngCart) {
+    .controller('CartController',['$scope', 'ngCart','$sessionStorage', function($scope, ngCart, $sessionStorage) {
         $scope.ngCart = ngCart;
+        $scope.sessionStorage = $sessionStorage;
+        console.log("cart controller!!!!!");
     }])
 
     .directive('ngcartAddtocart', ['ngCart', function(ngCart){
@@ -499,7 +501,7 @@ angular.module('ngCart.fulfilment', [])
 .service('ngCart.fulfilment.http', ['$http', 'ngCart','$location', function($http, ngCart, $location){
 
         this.checkout = function(settings){
-        $location.path( '/store/checkout' )
+        $location.path( '/store/address' )
             return $http.post(settings.url,
                 { data: ngCart.toObject(), options: settings.options});
         }

@@ -183,7 +183,7 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
     }
   })
   .state('storeCart', {
-    url: '/store/:hash/cart',
+    url: '/store/cart',
     templateUrl: '/views/cart.html',
     controller: 'StoreCtrl',
     resolve: {
@@ -191,7 +191,7 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
     }
   })
   .state('storeAddress', {
-    url: '/store/:hash/address',
+    url: '/store/address',
     templateUrl: '/views/checkoutAddress.html',
     controller: 'StoreCtrl',
     resolve: {

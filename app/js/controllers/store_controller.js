@@ -1,8 +1,16 @@
 angular.module('SistersCtrls')
 
 
-.controller('StoreCtrl', function($scope, $state){
+.controller('StoreCtrl', function($scope, $state, $http){
+  $scope.selected = {};
 
+  $scope.submitAddress = function(address){
+    if ($scope.selected.country === 'US' || $scope.selected.country === 'CA'){
+      address.stateProvince = $scope.selected.stateProvince.short;
+    }
+    address.country = $scope.selected.country.name;
+    console.log("what is address object? ",address);
+  }
 
 
 
@@ -39,7 +47,26 @@ angular.module('SistersCtrls')
       price: 20
     }
 
- 
+  $http.get('/js/JSON/countries.json').success (function(data){
+        $scope.countries = data;
+  });
+
+  $http.get('/js/JSON/states.json').success (function(data){
+        $scope.states = data;
+  });
+
+  $http.get('/js/JSON/provinces.json').success (function(data){
+        $scope.provinces = data;
+  });
+
+
+
+
+
+
+
+
+
 
 })
 

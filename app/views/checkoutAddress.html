@@ -1,5 +1,19 @@
-<form>
-<input clas="u-full-width" type="text" placeholder="Recipient Name" />
-<input clas="u-full-width" type="text" placeholder="Address 1" />
-<input clas="u-full-width" type="text" placeholder="Address 2" />
+<form ng-submit="submitAddress(address)">
+<input class="eight columns offset-by-two" type="text" ng-model="address.name" placeholder="Recipient Name" />
+<input class="eight columns offset-by-two" type="email" ng-model="address.email" placeholder="Email Address (for receipt)" />
+<input class="eight columns offset-by-two" type="text" ng-model="address.phone" placeholder="Phone Number" />
+<select class="eight columns offset-by-two" data-ng-model="selected.country" ng-options="country.name for country in countries">
+  <option value="" disabled selected>Choose Your Country</option>
+</select>
+<input class="eight columns offset-by-two" type="text" ng-model="address.address1" placeholder="Address 1" />
+<input class="eight columns offset-by-two" type="text" ng-model="address.address2" placeholder="Address 2" />
+<input class="eight columns offset-by-two" type="text" ng-model="address.city" placeholder="City" />
+<select ng-if="selected.country.code === 'US'" class="eight columns offset-by-two" data-ng-model="selected.stateProvince" ng-options="state.name for state in states">
+  <option value="" disabled selected>Choose Your State</option>
+</select>
+<select ng-if="selected.country.code === 'CA'" class="eight columns offset-by-two" data-ng-model="selected.stateProvince" ng-options="province.name for province in provinces">
+  <option value="" disabled selected>Choose Your Province</option>
+</select>
+<input class="eight columns offset-by-two" type="text" ng-model="address.postalCode" placeholder="ZIP/Postal Code" />
+<button type="submit">Submit</button>
 </form>

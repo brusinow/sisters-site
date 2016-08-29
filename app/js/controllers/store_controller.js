@@ -2,6 +2,10 @@ angular.module('SistersCtrls')
 
 
 .controller('StoreCtrl', function($scope, $state){
+
+
+
+
   $scope.items = [{
       id: 10001,
       name: "Drink Champagne LP",
@@ -35,17 +39,8 @@ angular.module('SistersCtrls')
       price: 20
     }
 
-  $scope.food = "pizza"
+ 
 
 })
 
 
-.controller('StoreCartCtrl', function($scope, $state){
-
-
-})
-
-.controller('StoreCheckoutCtrl', function($scope, $state){
-
-
-})

@@ -1,5 +1,5 @@
 <div class="shopping-cart animate-show" ng-show="ngCart.getTotalItems() > 0">
-  <a ng-href="/store/cart">
+  <a ng-href="/store/{{sessionStorage.hash}}/cart">
     <div class="cart-summary row">     
       <i class="fa fa-shopping-cart" aria-hidden="true"></i> 
       CART ({{ ngCart.getTotalItems() }}) 

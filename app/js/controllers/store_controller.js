@@ -2,8 +2,20 @@ angular.module('SistersCtrls')
 
 
 .controller('StoreCtrl', function($scope, $state, $http, $location){
-  $scope.selected = {};
-  $scope.data = {};
+  $scope.data = {
+    "billing": {
+      "country": {}
+    }
+  };
+
+  $scope.isShippingSame = function(){
+    if ($scope.data.shippingSame){
+      $scope.data.shipping = $scope.data.billing;
+    } else {
+      $scope.data.shipping = {};
+    }
+  }
+
 
   $scope.submitAddress = function(address){
     if ($scope.selected.country.code === 'US' || $scope.selected.country.code === 'CA'){
@@ -65,6 +77,8 @@ angular.module('SistersCtrls')
 
   $http.get('/js/JSON/countries.json').success (function(data){
         $scope.countries = data;
+        console.log("what is first country? ",$scope.countries[0]);
+        $scope.data.billing.country = $scope.countries[0];
   });
 
   $http.get('/js/JSON/states.json').success (function(data){

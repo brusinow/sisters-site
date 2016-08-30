@@ -17,7 +17,7 @@ angular.module('SistersCtrls')
     var modalInstance = $uibModal.open({
       animation: true,
       backdrop: true,
-      templateUrl: '/views/'+whichPage+'ShowModal.html',
+      templateUrl: '/views/shows/'+whichPage+'ShowModal.html',
       controller: whichPage+'ModalCtrl',
       size: 'lg',
       resolve: {

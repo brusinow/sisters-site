@@ -31,7 +31,7 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
   })
   .state('blog', {
     url: '/blog',
-    templateUrl: '/views/blog.html',
+    templateUrl: '/views/blog/blog.html',
     controller: 'BlogCtrl',
     resolve: {
       "currentAuth": authWait,
@@ -45,7 +45,7 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
   })
   .state('blog-new', {
     url: '/blog/new',
-    templateUrl: '/views/newBlogPost.html',
+    templateUrl: '/views/blog/newBlogPost.html',
     controller: 'NewBlogCtrl',
     resolve: {
       "currentAuth": authRequire,
@@ -56,7 +56,7 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
   })
   .state('blog-edit', {
     url: '/blog/edit/:slug',
-    templateUrl: '/views/editBlogPost.html',
+    templateUrl: '/views/blog/editBlogPost.html',
     controller: 'EditBlogCtrl',
     resolve: {
       "currentAuth": authRequire,
@@ -70,7 +70,7 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
   })
   .state('blogPage', {
     url: '/blog/:page',
-    templateUrl: '/views/blog.html',
+    templateUrl: '/views/blog/blog.html',
     controller: 'BlogCtrl',
     resolve: {
       "currentAuth": authWait,
@@ -85,7 +85,7 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
 
   .state('blogArchive', {
     url: '/blog/archives/:year/:month',
-    templateUrl: '/views/blog.html',
+    templateUrl: '/views/blog/blog.html',
     controller: 'BlogArchiveCtrl',
     resolve: {
       "currentAuth": authWait,
@@ -103,7 +103,7 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
 
     .state('blogArchivePage', {
     url: '/blog/archives/:year/:month/:page',
-    templateUrl: '/views/blog.html',
+    templateUrl: '/views/blog/blog.html',
     controller: 'BlogArchiveCtrl',
     resolve: {
       "currentAuth": authWait,
@@ -122,7 +122,7 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
 
   .state('blogTags', {
     url: '/blog/tags/:tagName',
-    templateUrl: '/views/blog.html',
+    templateUrl: '/views/blog/blog.html',
     controller: 'BlogTagsCtrl',
     resolve: {
       "currentAuth": authWait,
@@ -142,7 +142,7 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
 
   .state('blog-show', {
     url: '/blog/show/:slug',
-    templateUrl: '/views/blog.html',
+    templateUrl: '/views/blog/blog.html',
     controller: 'BlogShowCtrl',
     resolve: {
       "currentAuth": authWait,
@@ -164,7 +164,7 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
 
   .state('shows', {
     url: '/shows',
-    templateUrl: '/views/shows.html',
+    templateUrl: '/views/shows/shows.html',
     controller: 'ShowsCtrl',
     resolve: {
       "currentAuth": authWait,
@@ -176,7 +176,7 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
   })
   .state('store', {
     url: '/store',
-    templateUrl: '/views/store.html',
+    templateUrl: '/views/store/store.html',
     controller: 'StoreCtrl',
     resolve: {
       "currentAuth": authWait
@@ -184,7 +184,7 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
   })
   .state('storeCart', {
     url: '/store/cart',
-    templateUrl: '/views/cart.html',
+    templateUrl: '/views/store/cart.html',
     controller: 'StoreCtrl',
     resolve: {
       "currentAuth": authWait
@@ -192,7 +192,7 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
   })
   .state('storeAddress', {
     url: '/store/address',
-    templateUrl: '/views/checkoutAddress.html',
+    templateUrl: '/views/store/checkoutAddress.html',
     controller: 'StoreCtrl',
     resolve: {
       "currentAuth": authWait
@@ -200,7 +200,7 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
   })
   .state('storePayment', {
     url: '/store/payment',
-    templateUrl: '/views/checkoutPayment.html',
+    templateUrl: '/views/store/checkoutPayment.html',
     controller: 'StoreCtrl',
     resolve: {
       "currentAuth": authWait

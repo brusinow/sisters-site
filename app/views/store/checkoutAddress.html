@@ -1,0 +1,49 @@
+<ngcart-cart></ngcart-cart>
+<div class="row">
+<div class="six columns">
+<h5 class="text-center">Billing Address</h5>
+<form ng-submit="submitAddress(address)">
+<input class="u-full-width" type="text" ng-model="data.billing.name" placeholder="Billing Name" />
+<input class="u-full-width" type="email" ng-model="data.billing.email" placeholder="Email Address (for receipt)" />
+<input class="u-full-width" type="text" ng-model="data.billing.phone" placeholder="Phone Number" />
+<select class="u-full-width" ng-options="country.name for country in countries" data-ng-model="data.billing.country">
+<!--   <option value="" disabled selected>Choose Your Country</option> -->
+</select>
+<input class="u-full-width" type="text" ng-model="data.billing.address1" placeholder="Address 1" />
+<input class="u-full-width" type="text" ng-model="data.billing.address2" placeholder="Address 2" />
+<input class="u-full-width" type="text" ng-model="data.billing.city" placeholder="City" />
+<select ng-if="data.billing.country.code === 'US'" class="u-full-width" data-ng-model="data.billing.stateProvince" ng-options="state.name for state in states">
+  <option value="" disabled selected>Choose Your State</option>
+</select>
+<select ng-if="data.billing.country.code === 'CA'" class="u-full-width" data-ng-model="data.billing.stateProvince" ng-options="province.name for province in provinces">
+  <option value="" disabled selected>Choose Your Province</option>
+</select>
+<input class="u-full-width" type="text" ng-model="data.billing.postalCode" placeholder="ZIP/Postal Code" />
+<label>Shipping address same as billing? <input type="checkbox" ng-model="data.shippingSame" ng-change="isShippingSame()"></label>
+</div>
+
+
+
+
+
+<div class="six columns">
+<h5 class="text-center">Shipping Address</h5>
+<form ng-submit="submitAddress(address)">
+<input class="u-full-width" type="text" ng-model="data.shipping.name" placeholder="Recipient Name" />
+<select class="u-full-width" data-ng-model="data.shipping.country" ng-options="country.name for country in countries">
+  <option value="" disabled selected>Choose Your Country</option>
+</select>
+<input class="u-full-width" type="text" ng-model="data.shipping.address1" placeholder="Address 1" />
+<input class="u-full-width" type="text" ng-model="data.shipping.address2" placeholder="Address 2" />
+<input class="u-full-width" type="text" ng-model="data.shipping.city" placeholder="City" />
+<select ng-if="data.shipping.country.code === 'US'" class="u-full-width" data-ng-model="data.shipping.stateProvince" ng-options="state.name for state in states">
+  <option value="" disabled selected>Choose Your State</option>
+</select>
+<select ng-if="data.shipping.country.code === 'CA'" class="u-full-width" data-ng-model="data.shipping.stateProvince" ng-options="province.name for province in provinces">
+  <option value="" disabled selected>Choose Your Province</option>
+</select>
+<input class="u-full-width" type="text" ng-model="data.shipping.postalCode" placeholder="ZIP/Postal Code" />
+</div>
+</div>
+<button class="three columns" type="submit">Submit</button>
+</form>

@@ -40,6 +40,13 @@ app.post("/checkout", function(req, res) {
   console.log("what is currentOrder? ",req.session.currentOrder);
 });
 
+app.post("/checkoutAddress", function(req, res) {
+  console.log("req.query: ",req.query);
+  req.session.currentAddress = req.query.address;
+  console.log("what is currentAddress? ",req.session.currentAddress);
+  res.send("success");
+});
+
 
 app.get('/*', function(req, res) {
   res.sendFile(path.join(__dirname, 'app/index.html'));

@@ -1,15 +1,31 @@
 angular.module('SistersCtrls')
 
 
-.controller('StoreCtrl', function($scope, $state, $http){
+.controller('StoreCtrl', function($scope, $state, $http, $location){
   $scope.selected = {};
+  $scope.data = {};
 
   $scope.submitAddress = function(address){
-    if ($scope.selected.country === 'US' || $scope.selected.country === 'CA'){
+    if ($scope.selected.country.code === 'US' || $scope.selected.country.code === 'CA'){
       address.stateProvince = $scope.selected.stateProvince.short;
     }
     address.country = $scope.selected.country.name;
-    console.log("what is address object? ",address);
+
+    var req = {
+    url: '/checkoutAddress',
+    method: 'POST',
+    params: {
+      address: address,
+    }
+   } 
+
+  $http(req).then(function success(res) {
+    //do something with the response if successful
+    $location.url('/store/payment');
+  }, function error(res) {
+    //do something if the response has an error
+    console.log("error ",res);
+  });
   }
 
 
@@ -61,7 +77,15 @@ angular.module('SistersCtrls')
 
 
 
-
+  $scope.handleStripe = function(status, response){
+  if(response.error) {
+    // there was an error. Fix it.
+  } else {
+    // got stripe token, now charge it or smt
+    token = response.id
+    console.log("what is token? ",token);
+  }
+  }
 
 
 

@@ -75,9 +75,16 @@ angular.module('SistersCtrls')
         $scope.provinces = data;
   });
 
+  $scope.submitForm = function(){
+    Stripe.card.createToken({
+    number: $scope.number,
+    cvc: $scope.cvc,
+    exp: $scope.exp,
+    address_zip: $scope.address_zip
+    }, handleStripe);
+  }
 
-
-  $scope.handleStripe = function(status, response){
+  var handleStripe = function(status, response){
   if(response.error) {
     // there was an error. Fix it.
   } else {

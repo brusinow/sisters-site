@@ -193,7 +193,7 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
   .state('storeAddress', {
     url: '/store/address',
     templateUrl: '/views/store/checkoutAddress.html',
-    controller: 'StoreCtrl',
+    controller: 'StoreAddressCtrl',
     resolve: {
       "currentAuth": authWait
     }
@@ -201,7 +201,7 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
   .state('storePayment', {
     url: '/store/payment',
     templateUrl: '/views/store/checkoutPayment.html',
-    controller: 'StoreCtrl',
+    controller: 'StorePaymentCtrl',
     resolve: {
       "currentAuth": authWait
     }

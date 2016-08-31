@@ -1,0 +1,38 @@
+
+<div class="two columns" ng-show="ngCart.getTotalItems() > 0">
+
+    <table class="table table-striped ngCart cart">
+
+        <thead>
+        <tr>
+            <th>Summary</th>
+        </tr>
+        <tr>
+            <td>Subtotal: </td>
+            <td>{{ngCart.getSubTotal() | currency}}</td> 
+        </tr>
+        <tr >
+            <td>Tax<span ng-show="ngCart.getTax()"> ({{ ngCart.getTaxRate() }}%)</span>:</td>
+            <td>{{ ngCart.getTax() || '--' | currency }}</td>
+        </tr>
+        <tr>
+            <td>Shipping:</td>
+            <td>{{ ngCart.getShipping()|| '--' | currency }}</td>
+        </tr>
+        <tr>
+            <td>Total:</td>
+            <td>{{ ngCart.totalCost() | currency }}</td>
+        </tr>
+        </tfoot>
+        <tbody>
+        </tbody>
+    </table>
+</div>
+<style>
+    .ngCart.cart span[ng-click] {
+        cursor: pointer;
+    }
+    .ngCart.cart .glyphicon.disabled {
+        color:#aaa;
+    }
+</style>

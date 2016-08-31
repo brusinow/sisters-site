@@ -1,8 +1,13 @@
+<div class="row">
+<div class="six columns">
 <form ng-submit="submitForm()"> 
-<input type="text" ng-model="data.number" payments-validate="card" placeholder="Credit Card Number" payments-format="data.card" payments-type-model="type"/>
- <input type="text" ng-model="data.exp" placeholder="Expiration Date"payments-validate="expiry" payments-format="expiry" />
-<input type="text" ng-model="cvc" placeholder="CVC" payments-validate="cvc" payments-format="cvc" payments-type-model="type"/>
-<!-- <input type="text" ng-model="address_zip" placeholder="Billing ZIP/Postal Code"/> -->
+<input class="u-full-width" type="text" ng-model="number" placeholder="card" payments-format="card" payments-validate="card" payments-type-model="type"/>
+<input class="u-full-width" type="text" ng-model="expiry" placeholder="expiration date" payments-validate="expiry" payments-format="expiry" />
+<input class="u-full-width" type="text" ng-model="cvc" placeholder="cvc" payments-validate="cvc" payments-type-model="type" payments-format="cvc"/> 
 <input type="submit"/>
 </form>
-{{data}}
+</div>
+  <div class="two columns offset-by-four">
+    <ngcart-small-cart></ngcart-small-cart>
+  </div>
+</div>

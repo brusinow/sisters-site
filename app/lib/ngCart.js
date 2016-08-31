@@ -404,6 +404,24 @@ angular.module('ngCart.directives', ['ngCart.fulfilment'])
         };
     }])
 
+    .directive('ngcartSmallCart', [function(){
+        return {
+            restrict : 'E',
+            controller : 'CartController',
+            scope: {},
+            templateUrl: function(element, attrs) {
+                if ( typeof attrs.templateUrl == 'undefined' ) {
+                    return 'views/ngCart/small-cart.html';
+                } else {
+                    return attrs.templateUrl;
+                }
+            },
+            link:function(scope, element, attrs){
+
+            }
+        };
+    }])
+
     .directive('ngcartSummary', [function(){
         return {
             restrict : 'E',
@@ -419,6 +437,7 @@ angular.module('ngCart.directives', ['ngCart.fulfilment'])
             }
         };
     }])
+
 
     .directive('ngcartCheckout', [function(){
         return {

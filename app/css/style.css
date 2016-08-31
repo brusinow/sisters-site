@@ -49,6 +49,14 @@ a:hover {
   margin-right: 0;
 }
 
+.disabled-inputs {
+  color: #555;
+}
+
+.disabled-inputs input, .disabled-inputs textarea, .disabled-inputs select {
+  background-color : #efefef;
+}
+
 .checkbox input {
   margin-top: 0;
 }

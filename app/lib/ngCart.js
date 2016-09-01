@@ -327,9 +327,9 @@ angular.module('ngCart', ['ngCart.directives'])
         }
     }])
 
-    .controller('CartController',['$scope', 'ngCart', function($scope, ngCart) {
+    .controller('CartController',['$scope', 'ngCart','$sessionStorage', function($scope, ngCart, $sessionStorage) {
         $scope.ngCart = ngCart;
-
+        $scope.sessionStorage = $sessionStorage;
     }])
 
     .value('version', '1.0.0');
@@ -394,6 +394,24 @@ angular.module('ngCart.directives', ['ngCart.fulfilment'])
             templateUrl: function(element, attrs) {
                 if ( typeof attrs.templateUrl == 'undefined' ) {
                     return 'views/ngCart/cart.html';
+                } else {
+                    return attrs.templateUrl;
+                }
+            },
+            link:function(scope, element, attrs){
+
+            }
+        };
+    }])
+
+    .directive('ngcartCartConfirm', [function(){
+        return {
+            restrict : 'E',
+            controller : 'CartController',
+            scope: {},
+            templateUrl: function(element, attrs) {
+                if ( typeof attrs.templateUrl == 'undefined' ) {
+                    return 'views/ngCart/cart-confirm.html';
                 } else {
                     return attrs.templateUrl;
                 }

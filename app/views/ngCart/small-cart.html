@@ -12,8 +12,8 @@
             <td>{{ngCart.getSubTotal() | currency}}</td> 
         </tr>
         <tr >
-            <td>Tax<span ng-show="ngCart.getTax()"> ({{ ngCart.getTaxRate() }}%)</span>:</td>
-            <td>{{ ngCart.getTax() || '--' | currency }}</td>
+            <td>Tax ({{ngCart.getTaxRate() || 0}}%):</td>
+            <td>{{ ngCart.getTax() || 0 | currency }}</td>
         </tr>
         <tr>
             <td>Shipping:</td>

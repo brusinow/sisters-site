@@ -57,6 +57,7 @@ app.get("/taxRate", function(req, res) {
 app.post("/cardToken", function(req, res) {
   console.log("req.query: ",req.query);
   req.session.token = req.query.token;
+  req.session.priceTotal = req.query.total;
   res.send()  
 });
 

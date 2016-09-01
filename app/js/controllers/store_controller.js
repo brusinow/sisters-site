@@ -95,7 +95,7 @@ angular.module('SistersCtrls')
 
     $sessionStorage.addressData = data;
     console.log("what was saved? ",$sessionStorage.addressData)
-    if ($sessionStorage.addressData.shipping.country.code === 'US'){
+    if ($sessionStorage.addressData.shipping.country.code === 'US' && $sessionStorage.addressData.shipping.stateProvince.short === 'WA'){
       var req = {
         url: '/taxRate',
         method: 'GET',
@@ -109,11 +109,21 @@ angular.module('SistersCtrls')
         console.log("Success! ",res.data);
         ngCart.setTaxRate(res.data.totalRate);
         $sessionStorage.taxRate = ngCart.getTaxRate();
+        ngCart.setShipping(5);
+        $sessionStorage.shipping = ngCart.getShipping();
         $location.url('/store/payment');
       }, function error(res) {
     //do something if the response has an error
     console.log("error ",res);
   });
+    } else if ($sessionStorage.addressData.shipping.country.code === 'US' && $sessionStorage.addressData.shipping.stateProvince.short != 'WA'){
+      console.log("not in WA state");
+      ngCart.setTaxRate(0);
+      $sessionStorage.taxRate = ngCart.getTaxRate();
+      $sessionStorage.taxAmount = ngCart.getTax();
+      ngCart.setShipping(5);
+      $sessionStorage.shipping = ngCart.getShipping();
+       $location.url('/store/payment');
     }
   }
 
@@ -151,13 +161,14 @@ angular.module('SistersCtrls')
         url: '/cardToken',
         method: 'POST',
         params: {
-          token: token
+          token: token,
+          total: ngCart.totalCost()
         }
       } 
 
       $http(req).then(function success(res) {
         console.log("Success! ",res.data);
-       
+        $location.url('/store/confirm');
       }, function error(res) {
     //do something if the response has an error
     console.log("error ",res);
@@ -165,6 +176,16 @@ angular.module('SistersCtrls')
 
   }
   }
+
+
+
+
+})
+
+.controller('StoreConfirmCtrl', function($scope, $state, $http, $location, $sessionStorage, ngCart){
+
+console.log("What is tax rate? ",ngCart.getTaxRate());
+
 
 
 

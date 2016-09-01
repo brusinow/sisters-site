@@ -37,10 +37,10 @@ app.get('/instagram', function(req, res) {
 
 
 
-app.post("/checkout", function(req, res) {
-  req.session.currentOrder = req.body;
-  console.log("what is currentOrder? ",req.session.currentOrder);
-});
+// app.post("/checkout", function(req, res) {
+//   req.session.currentOrder = req.body;
+//   console.log("what is currentOrder? ",req.session.currentOrder);
+// });
 
 app.get("/taxRate", function(req, res) {
   console.log("What is req? ",req.query);
@@ -54,11 +54,10 @@ app.get("/taxRate", function(req, res) {
 
 });
 
-app.post("/cardToken", function(req, res) {
+app.post("/submitOrder", function(req, res) {
   console.log("req.query: ",req.query);
-  req.session.token = req.query.token;
-  req.session.priceTotal = req.query.total;
-  res.send()  
+  req.session.orderData = req.query;
+  res.send(); 
 });
 
 

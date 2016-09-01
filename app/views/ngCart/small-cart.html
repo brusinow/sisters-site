@@ -1,24 +1,27 @@
 
-<div class="store-card" ng-show="ngCart.getTotalItems() > 0">
-    <div class="small-store-header-div">
-        <h6 class="text-center">Order Summary</h6>
-    </div>
-    <table class="table table-striped ngCart cart">
+<div class="small-cart-card" ng-show="ngCart.getTotalItems() > 0">
+        <h6 class="text-center">Review Your Order:</h6>
+    <table class="table ngCart cart">
+        <tr ng-repeat="item in ngCart.getCart().items track by $index">
+            <td>{{item.getQuantity() | number}}x {{item.getName()}}</td>
+            <td>{{ item.getTotal() | currency }}</td>
+        </tr>
+
         <tr>
             <td>Subtotal: </td>
-            <td>{{ngCart.getSubTotal() | currency}}</td> 
+            <td class="text-right">{{ngCart.getSubTotal() | currency}}</td> 
         </tr>
         <tr >
             <td>Tax ({{ngCart.getTaxRate() || 0}}%):</td>
-            <td>{{ ngCart.getTax() || 0 | currency }}</td>
+            <td class="text-right">{{ ngCart.getTax() || 0 | currency }}</td>
         </tr>
         <tr>
             <td>Shipping:</td>
-            <td>{{ ngCart.getShipping()|| '--' | currency }}</td>
+            <td class="text-right">{{ ngCart.getShipping()|| '--' | currency }}</td>
         </tr>
         <tr>
-            <td>Total:</td>
-            <td>{{ ngCart.totalCost() | currency }}</td>
+            <td><strong>TOTAL:</strong></td>
+            <td class="text-right"><strong>{{ ngCart.totalCost() | currency }}</strong></td>
         </tr>
     </table>
 </div>

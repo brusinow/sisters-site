@@ -54,6 +54,7 @@ input[type="email"], input[type="number"], input[type="search"], input[type="tex
     box-shadow: none;
     box-sizing: border-box;
     margin-bottom: .5rem;
+    font-size: .9em;
 }
 
 .row {
@@ -66,7 +67,7 @@ input[type="email"], input[type="number"], input[type="search"], input[type="tex
 }
 
 .disabled-inputs input, .disabled-inputs textarea, .disabled-inputs select {
-  background-color : #efefef;
+  background-color : #f2ede8;
 }
 
 .checkbox input {
@@ -91,40 +92,66 @@ input[type="email"], input[type="number"], input[type="search"], input[type="tex
 }
 
 .store-header-div {
-  height: 50px;
+  height: 40px;
   background-color: #d038af;
   width: 100%;
   border-radius: 30px;
   margin-bottom: 10px;
 }
 
-.small-store-header-div {
-  height: 30px;
-  background-color: #d038af;
+.small-cart-card {
+  background-color: #d95fbf;
+  border: 10px solid #d038af;
   width: 100%;
   border-radius: 30px;
   margin-bottom: 10px;
+  padding: 18px 24px;
 }
 
-
-.store-header-div h5 {
-  font-family: 'Fjalla One', sans-serif;
-  text-transform: uppercase;
-  color: white;
-  line-height: 50px;
-}
-
-.small-store-header-div h6 {
+.small-cart-card h6 {
   font-family: 'Fjalla One', sans-serif;
   text-transform: uppercase;
   color: white;
   line-height: 30px;
 }
 
+.small-cart-card td {
+  font-family: 'PT Serif', serif;
+  font-size: .9em;
+  color: white;
+  font-weight: 400;
+  border-top: none !important;
+  border-bottom: 1px solid #d038af !important;
+}
+
+
+.store-header-div h6 {
+  font-family: 'Fjalla One', sans-serif;
+  text-transform: uppercase;
+  color: white;
+  line-height: 40px;
+}
 
 .store-card {
   padding: 18px;
   background-color: #dfd2c7;
+}
+
+.store-card label {
+  font-family: 'PT Serif', serif;
+  font-size: .9em;
+  color: #5e504f;
+  margin-bottom: 0;
+}
+
+.card-brands {
+  width:80%;
+  margin: 0 auto 10px auto;
+}
+
+.card-brands img {
+  position: relative;
+  width: 23.5%;
 }
 
 

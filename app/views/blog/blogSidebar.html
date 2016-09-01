@@ -8,7 +8,7 @@
   </div>
   <div class="fancy"><span>RECENT POSTS</span></div>
   <ul class="recent-posts-list">
-    <a ng-repeat="recent in recentPosts | orderBy:'-timestamp' | limitTo:4" ng-href="/blog/show/{{post.slug}}"><li style="text-align: center;">{{recent.postTitle}}</li></a>
+    <a ng-repeat="recent in recentPosts | orderBy:'-timestamp' | limitTo:4" ng-href="/blog/show/{{recent.slug}}"><li style="text-align: center;">{{recent.postTitle}}</li></a>
   </ul>
   <div class="fancy"><span>ARCHIVES</span></div>
 

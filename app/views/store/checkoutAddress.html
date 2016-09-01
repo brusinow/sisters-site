@@ -73,6 +73,22 @@
 
 
 <div class="four columns">
+  <div class="store-card">
+    <div class="store-header-div">
+      <h6 class="text-center">Shipping Method</h6>
+    </div>
+    <div class="shipping-box">
+      <label>
+        <input type="radio" ng-model="shipping.method" value="standard">
+        Standard Shipping
+      </label><br/>
+      <label>
+        <input type="radio" ng-model="shipping.method" ng-value="expedited">
+        Expedited Shipping
+      </label>
+    </div>
+  </div>
+  <br>
   <ngcart-small-cart></ngcart-small-cart>
   <button class="u-full-width button" ng-click="submitForm()" type="submit">Confirm Your Order</button>
 </div>

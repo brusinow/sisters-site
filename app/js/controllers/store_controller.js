@@ -37,7 +37,9 @@ angular.module('SistersCtrls')
     }
 
 
-
+  $scope.toCheckout = function(){
+    $location.url('/store/checkout');
+  }
 
  
 
@@ -49,7 +51,7 @@ angular.module('SistersCtrls')
 })
 
 
-.controller('StoreAddressCtrl', function($scope, $state, $http, $location, $sessionStorage, ngCart){
+.controller('StoreCheckoutCtrl', function($scope, $state, $http, $location, $sessionStorage, ngCart){
   $scope.storage = $sessionStorage;
   $scope.data = {
     "shipping": {

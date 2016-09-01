@@ -1,10 +1,11 @@
 
-<div class="small-cart-card" ng-show="ngCart.getTotalItems() > 0">
+<div class="small-cart-outline" ng-show="ngCart.getTotalItems() > 0">
+<div class="small-cart-card">
         <h6 class="text-center">Review Your Order:</h6>
     <table class="table ngCart cart">
         <tr ng-repeat="item in ngCart.getCart().items track by $index">
             <td>{{item.getQuantity() | number}}x {{item.getName()}}</td>
-            <td>{{ item.getTotal() | currency }}</td>
+            <td class="text-right">{{ item.getTotal() | currency }}</td>
         </tr>
 
         <tr>
@@ -24,6 +25,7 @@
             <td class="text-right"><strong>{{ ngCart.totalCost() | currency }}</strong></td>
         </tr>
     </table>
+    </div>
 </div>
 
 

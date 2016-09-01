@@ -30,7 +30,6 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
     controller: 'AboutCtrl'
   })
   .state('blog', {
-    url: '/blog',
     templateUrl: '/views/blog/blog.html',
     controller: 'BlogCtrl',
     resolve: {
@@ -43,6 +42,111 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
       }      
     }
   })
+  .state('blog.main', {
+    url: '/blog',
+    templateUrl: '/views/blog/blog-content.html',
+    controller: 'BlogCtrl',
+    resolve: {
+      "currentAuth": authWait,
+      "Instagram": ['InstagramFactory', function(InstagramFactory){
+        return InstagramFactory;
+      }],
+      "Blog": function(BlogPosts){
+        return BlogPosts().$loaded();
+      }      
+    }
+  })
+    .state('blog.page', {
+    url: '/blog/:page',
+    templateUrl: '/views/blog/blog-content.html',
+    controller: 'BlogCtrl',
+    resolve: {
+      "currentAuth": authWait,
+      "Instagram": ['InstagramFactory', function(InstagramFactory){
+        return InstagramFactory;
+      }],
+      "Blog": function(BlogPosts){
+        return BlogPosts().$loaded();
+      }      
+    }
+  })
+
+     .state('blog.archive', {
+    url: '/blog/archives/:year/:month',
+    templateUrl: '/views/blog/blog-content.html',
+    controller: 'BlogArchiveCtrl',
+    resolve: {
+      "currentAuth": authWait,
+      "Instagram": ['InstagramFactory', function(InstagramFactory){
+        return InstagramFactory;
+      }],
+      "Blog": function(BlogPosts){
+        return BlogPosts().$loaded();
+      },
+      "Archive": function($stateParams, ArchiveShowService){
+        return ArchiveShowService($stateParams.year, $stateParams.month).$loaded();
+      }      
+    }
+  })
+
+    .state('blog.archivePage', {
+      url: '/blog/archives/:year/:month/:page',
+      templateUrl: '/views/blog/blog-content.html',
+      controller: 'BlogArchiveCtrl',
+      resolve: {
+        "currentAuth": authWait,
+        "Instagram": ['InstagramFactory', function(InstagramFactory){
+          return InstagramFactory;
+        }],
+        "Blog": function(BlogPosts){
+          return BlogPosts().$loaded();
+        },
+        "Archive": function($stateParams, ArchiveShowService){
+          return ArchiveShowService($stateParams.year, $stateParams.month).$loaded();
+        }
+
+      }
+    })
+
+    .state('blog.tags', {
+    url: '/blog/tags/:tagName',
+    templateUrl: '/views/blog/blog-content.html',
+    controller: 'BlogTagsCtrl',
+    resolve: {
+      "currentAuth": authWait,
+      "Instagram": ['InstagramFactory', function(InstagramFactory){
+        return InstagramFactory;
+      }],
+      "Blog": function(BlogPosts){
+        return BlogPosts().$loaded();
+      },
+      "TagsShow": function($stateParams, TagsShowService){
+        return TagsShowService($stateParams.tagName).$loaded();
+      }      
+    }
+  })
+
+
+
+  .state('blog.show', {
+    url: '/blog/show/:slug',
+    templateUrl: '/views/blog/blog-content.html',
+    controller: 'BlogShowCtrl',
+    resolve: {
+      "currentAuth": authWait,
+      "Instagram": ['InstagramFactory', function(InstagramFactory){
+        return InstagramFactory;
+      }],
+      "thisPost": function($stateParams, ThisPostService){        
+        return ThisPostService($stateParams.slug).$loaded();
+      },
+      "Blog": function(BlogPosts){
+        return BlogPosts().$loaded();
+      }       
+    }
+  })
+  
+
   .state('blog-new', {
     url: '/blog/new',
     templateUrl: '/views/blog/newBlogPost.html',
@@ -68,97 +172,13 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
       }
     }
   })
-  .state('blogPage', {
-    url: '/blog/:page',
-    templateUrl: '/views/blog/blog.html',
-    controller: 'BlogCtrl',
-    resolve: {
-      "currentAuth": authWait,
-      "Instagram": ['InstagramFactory', function(InstagramFactory){
-        return InstagramFactory;
-      }],
-      "Blog": function(BlogPosts){
-        return BlogPosts().$loaded();
-      }      
-    }
-  })
 
-  .state('blogArchive', {
-    url: '/blog/archives/:year/:month',
-    templateUrl: '/views/blog/blog.html',
-    controller: 'BlogArchiveCtrl',
-    resolve: {
-      "currentAuth": authWait,
-      "Instagram": ['InstagramFactory', function(InstagramFactory){
-        return InstagramFactory;
-      }],
-      "Blog": function(BlogPosts){
-        return BlogPosts().$loaded();
-      },
-      "Archive": function($stateParams, ArchiveShowService){
-        return ArchiveShowService($stateParams.year, $stateParams.month).$loaded();
-      }      
-    }
-  })
 
-    .state('blogArchivePage', {
-    url: '/blog/archives/:year/:month/:page',
-    templateUrl: '/views/blog/blog.html',
-    controller: 'BlogArchiveCtrl',
-    resolve: {
-      "currentAuth": authWait,
-      "Instagram": ['InstagramFactory', function(InstagramFactory){
-        return InstagramFactory;
-      }],
-      "Blog": function(BlogPosts){
-        return BlogPosts().$loaded();
-      },
-      "Archive": function($stateParams, ArchiveShowService){
-        return ArchiveShowService($stateParams.year, $stateParams.month).$loaded();
-      }
-      
-    }
-  })
-
-  .state('blogTags', {
-    url: '/blog/tags/:tagName',
-    templateUrl: '/views/blog/blog.html',
-    controller: 'BlogTagsCtrl',
-    resolve: {
-      "currentAuth": authWait,
-      "Instagram": ['InstagramFactory', function(InstagramFactory){
-        return InstagramFactory;
-      }],
-      "Blog": function(BlogPosts){
-        return BlogPosts().$loaded();
-      },
-      "TagsShow": function($stateParams, TagsShowService){
-        return TagsShowService($stateParams.tagName).$loaded();
-      }      
-    }
-  })
+ 
 
 
 
-  .state('blog-show', {
-    url: '/blog/show/:slug',
-    templateUrl: '/views/blog/blog.html',
-    controller: 'BlogShowCtrl',
-    resolve: {
-      "currentAuth": authWait,
-      "Instagram": ['InstagramFactory', function(InstagramFactory){
-        return InstagramFactory;
-      }],
-      "thisPost": function($stateParams, ThisPostService){        
-        return ThisPostService($stateParams.slug).$loaded();
-      },
-      "Blog": function(BlogPosts){
-        return BlogPosts().$loaded();
-      }       
-    }
-  })
   
-
 
 
 
@@ -190,10 +210,10 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
       "currentAuth": authWait
     }
   })
-  .state('storeAddress', {
-    url: '/store/address',
+  .state('storeCheckout', {
+    url: '/store/checkout',
     templateUrl: '/views/store/checkoutAddress.html',
-    controller: 'StoreAddressCtrl',
+    controller: 'StoreCheckoutCtrl',
     resolve: {
       "currentAuth": authWait
     }

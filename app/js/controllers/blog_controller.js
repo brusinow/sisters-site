@@ -34,7 +34,7 @@ angular.module('SistersCtrls')
 .controller('BlogArchiveCtrl', ['$scope', '$state','$stateParams','Instagram','Blog','Archive','Auth','HelperService','AllTagsService', function($scope, $state, $stateParams, Instagram, Blog, Archive, Auth, HelperService, AllTagsService){
   $scope.allTags = AllTagsService();
   $scope.enable = true;
-  $scope.photos = Instagram.data;
+  // $scope.photos = Instagram.data;
   $scope.fullBlog = Blog;
   $scope.allPosts = Archive; 
 
@@ -69,7 +69,7 @@ angular.module('SistersCtrls')
 .controller('BlogTagsCtrl', ['$scope', '$state','$stateParams','Instagram','Blog','TagsShow','Auth','HelperService','AllTagsService', function($scope, $state, $stateParams, Instagram, Blog, TagsShow, Auth, HelperService, AllTagsService){
   $scope.allTags = AllTagsService();
   $scope.enable = true;
-  $scope.photos = Instagram.data;
+  // $scope.photos = Instagram.data;
   var allPosts = TagsShow[0].posts;
   var selectPosts = [];
   var length = 0;
@@ -114,7 +114,7 @@ angular.module('SistersCtrls')
  $scope.enable = false;
  $scope.recentPosts = Blog;
  console.log($scope.recentPosts);
- $scope.photos = Instagram.data; 
+ // $scope.photos = Instagram.data; 
  $scope.posts = thisPost;
  $scope.allPosts = thisPost;
 }])  

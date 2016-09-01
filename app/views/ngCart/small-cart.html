@@ -1,12 +1,9 @@
 
-<div class="two columns" ng-show="ngCart.getTotalItems() > 0">
-
+<div class="store-card" ng-show="ngCart.getTotalItems() > 0">
+    <div class="small-store-header-div">
+        <h6 class="text-center">Order Summary</h6>
+    </div>
     <table class="table table-striped ngCart cart">
-
-        <thead>
-        <tr>
-            <th>Summary</th>
-        </tr>
         <tr>
             <td>Subtotal: </td>
             <td>{{ngCart.getSubTotal() | currency}}</td> 
@@ -23,11 +20,11 @@
             <td>Total:</td>
             <td>{{ ngCart.totalCost() | currency }}</td>
         </tr>
-        </tfoot>
-        <tbody>
-        </tbody>
     </table>
 </div>
+
+
+
 <style>
     .ngCart.cart span[ng-click] {
         cursor: pointer;

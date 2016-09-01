@@ -1,5 +1,6 @@
 /*Pink is #d038af*/
 /*Blue is #5F9EDD*/
+/*Footer is #dfd2c7*/
 
 
 
@@ -44,6 +45,17 @@ a:hover {
   color: #82B0DD;
 }
 
+input[type="email"], input[type="number"], input[type="search"], input[type="text"], input[type="tel"], input[type="url"], input[type="password"], textarea, select {
+    height: 28px;
+    padding: 6px 10px;
+    background-color: #fff;
+    border: 1px solid #D1D1D1;
+    border-radius: 4px;
+    box-shadow: none;
+    box-sizing: border-box;
+    margin-bottom: .5rem;
+}
+
 .row {
   margin-left: 0;
   margin-right: 0;
@@ -76,6 +88,43 @@ a:hover {
 
 #image-choice {
   display: inline-block;
+}
+
+.store-header-div {
+  height: 50px;
+  background-color: #d038af;
+  width: 100%;
+  border-radius: 30px;
+  margin-bottom: 10px;
+}
+
+.small-store-header-div {
+  height: 30px;
+  background-color: #d038af;
+  width: 100%;
+  border-radius: 30px;
+  margin-bottom: 10px;
+}
+
+
+.store-header-div h5 {
+  font-family: 'Fjalla One', sans-serif;
+  text-transform: uppercase;
+  color: white;
+  line-height: 50px;
+}
+
+.small-store-header-div h6 {
+  font-family: 'Fjalla One', sans-serif;
+  text-transform: uppercase;
+  color: white;
+  line-height: 30px;
+}
+
+
+.store-card {
+  padding: 18px;
+  background-color: #dfd2c7;
 }
 
 

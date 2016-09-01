@@ -1,7 +1,9 @@
 
 <div class="row">
-<div class="five columns">
-<h5 class="text-center">Billing Address</h5>
+<div class="store-card four columns">
+<div class="store-header-div">
+  <h5 class="text-center">Billing Address</h5>
+</div>
 <form>
 <input class="u-full-width" type="text" ng-model="data.billing.name" placeholder="Billing Name" />
 <input class="u-full-width" type="email" ng-model="data.billing.email" placeholder="Email Address (for receipt)" />
@@ -26,8 +28,10 @@
 
 
 
-<div class="five columns" ng-class="{'disabled-inputs': shippingSameBool}">
+<div class="store-card four columns" ng-class="{'disabled-inputs': shippingSameBool}">
+<div class="store-header-div">
 <h5 class="text-center">Shipping Address</h5>
+</div>
 <form ng-submit="submitAddress(address)">
 <input class="u-full-width" type="text" ng-model="data.shipping.name" ng-disabled="shippingSameBool" placeholder="Recipient Name" />
 <select class="u-full-width" data-ng-model="data.shipping.country" ng-disabled="shippingSameBool" ng-options="country.name for country in countries">
@@ -44,7 +48,9 @@
 </select>
 <input class="u-full-width" type="text" ng-model="data.shipping.postalCode" ng-disabled="shippingSameBool" placeholder="ZIP/Postal Code" />
 </div>
+<div class="four columns">
 <ngcart-small-cart></ngcart-small-cart>
+</div>
 </div>
 <button class="three columns offset-by-nine" ng-click="submitAddress(data)" type="submit">Next</button>
 </form>

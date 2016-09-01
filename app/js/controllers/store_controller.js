@@ -53,6 +53,39 @@ angular.module('SistersCtrls')
 
 .controller('StoreCheckoutCtrl', function($scope, $state, $http, $location, $sessionStorage, ngCart){
   $scope.storage = $sessionStorage;
+
+ 
+
+  $scope.shipRates = {
+    domestic: {
+      regular: {
+        price: 5,
+        service: "USPS First Class Mail"
+      },
+      expedited: {
+        price: 20,
+        service: "USPS Priority Mail 2-Day"
+      }
+    },
+    international: {
+      regular: {
+        price: 15,
+        service: "International Regular Option"
+      },
+      expedited: {
+        price: 40,
+        service: "International Fast Option"
+      }
+    }
+  }
+
+
+  $scope.shippingType = $scope.shipRates.domestic;
+  $scope.shipChoice = $scope.shippingType.regular;
+  $scope.$watch('shipChoice', function (newValue, oldValue, scope) {
+    ngCart.setShipping($scope.shipChoice.price);  
+  }, false);
+
   $scope.data = {
     "shipping": {
       "country": {}
@@ -103,8 +136,7 @@ angular.module('SistersCtrls')
 
       $http(req).then(function success(res) {
         console.log("Success! ",res.data);
-        ngCart.setTaxRate(res.data.totalRate);
-        ngCart.setShipping(5);   
+        ngCart.setTaxRate(res.data.totalRate);    
       }, function error(res) {
     //do something if the response has an error
     console.log("error ",res);
@@ -112,7 +144,6 @@ angular.module('SistersCtrls')
     } else if ($sessionStorage.addressData.shipping.country.code === 'US' && $sessionStorage.addressData.shipping.stateProvince.short != 'WA'){
       console.log("not in WA state");
       ngCart.setTaxRate(0);
-      ngCart.setShipping(5); 
     }
   }
 

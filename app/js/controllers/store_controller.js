@@ -50,10 +50,22 @@ angular.module('SistersCtrls')
 
 })
 
+.controller('MainCheckoutCtrl', function($scope, $state, $location){
+  console.log("what is $location? ",$location.$$path);
+  $scope.locationObj = $location;
+  $scope.$watch('locationObj', function (newValue, oldValue, scope) {
+   $scope.path = $location.$$path;  
+  }, true);
+  
+})
+
+
+
 
 .controller('StoreCheckoutCtrl', function($scope, $state, $http, $location, $sessionStorage, ngCart){
   $scope.storage = $sessionStorage;
-
+  console.log("what is $location? ",$location.$$path);
+  $scope.path = $location.$$path;
  
 
   $scope.shipRates = {
@@ -234,7 +246,8 @@ angular.module('SistersCtrls')
 
 
 .controller('StoreConfirmCtrl', function($scope, $state, $http, $location, $sessionStorage, ngCart){
-
+console.log("what is $location? ",$location.$$path);
+  $scope.path = $location.$$path;
 $scope.ngCart = ngCart;
 
 $http.get('/orderConfirm').success (function(data){
@@ -262,7 +275,7 @@ $scope.createCharge = function(){
 
       $http(req).then(function success(res) {
         console.log("Success! ",res);
-        ngCart.empty();
+        // ngCart.empty();
       }, function error(res) {
     //do something if the response has an error
     console.log("error ",res);

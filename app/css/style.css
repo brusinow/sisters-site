@@ -91,6 +91,55 @@ input[type="email"], input[type="number"], input[type="search"], input[type="tex
   display: inline-block;
 }
 
+.store-path-div {
+  margin-bottom: 10px;
+}
+
+.number-circle {
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: inline-block;
+  text-align: center;
+  background-color: #8c8281;
+  color: white;
+  height: 30px;
+  width: 30px;
+  line-height: 28px;
+  border-radius: 50%;
+  font-family: 'PT Serif', serif;
+  font-size: 1.3em;
+  font-weight: bold;
+}
+
+.store-path-text {
+  color: #8c8281;
+  margin-left: 35px;
+  font-family: 'Fjalla One', sans-serif;
+  font-size: 1.3em;
+  text-transform: uppercase;
+  line-height: 30px;
+}
+
+.chevron-path {
+  font-size: 1.3em;
+  line-height: 30px;
+}
+
+.store-path-container {
+  position: relative;
+  display: inline-block;
+  height: 30px;
+}
+
+.active-circle {
+  background-color: #1A0504;
+}
+
+.active-path {
+  color: #1A0504;
+}
+
 .store-header-div {
   height: 40px;
   background-color: #d038af;
@@ -104,6 +153,11 @@ input[type="email"], input[type="number"], input[type="search"], input[type="tex
   border: 2px solid white;
   width: 100%;
   padding: 10px 16px;
+}
+
+.small-cart-card th {
+  color: white;
+  border-bottom: 2px solid white !important;
 }
 
 .small-cart-outline {
@@ -145,7 +199,7 @@ input[type="email"], input[type="number"], input[type="search"], input[type="tex
 }
 
 
-.store-header-div h6 {
+.store-header-div h6, .store-confirm-header-div h6 {
   font-family: 'Fjalla One', sans-serif;
   text-transform: uppercase;
   color: white;
@@ -162,6 +216,29 @@ input[type="email"], input[type="number"], input[type="search"], input[type="tex
   font-size: .9em;
   color: #5e504f;
   margin-bottom: 0;
+
+}
+
+.store-card-confirm {
+/*  min-height: 175px;*/
+
+}
+
+.white-confirm {
+  color: #333;
+  padding: 8px;
+  background-color: white;
+  font-size:.9em;
+  line-height:1.2;
+  min-height: 88.89px;
+}
+
+.white-payment-confirm {
+  color: #333;
+  padding: 16px;
+  background-color: white;
+  font-size:1.2em;
+  line-height:1.2;
 }
 
 .card-brands {
@@ -930,7 +1007,6 @@ input[type="email"], input[type="number"], input[type="search"], input[type="tex
 .nav-right {
   position: relative;
   width: 95%;
-  display: inline-block;
 }
 
 .home-content {

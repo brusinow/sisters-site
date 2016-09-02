@@ -35,6 +35,7 @@
     <div class="store-header-div">
       <h6 class="text-center">Billing Address</h6>
     </div>
+      <input class="u-full-width" type="text" ng-model="data.billing.name" placeholder="Billing Name" />
       <select class="u-full-width" data-ng-model="data.billing.country" ng-disabled="shippingSameBool" ng-options="country.name for country in countries">
         <option value="" disabled selected>Choose Your Country</option>
       </select>

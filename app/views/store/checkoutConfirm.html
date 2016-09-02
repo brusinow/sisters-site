@@ -1,6 +1,46 @@
-<div class="u-full-width store-card">
 
-    <table class="table table-striped ngCart cart">
+<div class="row">
+<div class="four columns">
+<div class="store-card store-card-confirm text-center">
+<div class="store-header-div">
+  <h6 class="text-center">Shipping Address</h6>
+</div>
+  <div class="white-confirm">
+{{orderDetails.shippingAddress.name}}<br>
+{{orderDetails.shippingAddress.address1}}<br>
+<span ng-if="orderDetails.shippingAddress.address2">{{orderDetails.shippingAddress.address2}}<br></span>
+{{orderDetails.shippingAddress.city}}, {{orderDetails.shippingAddress.stateProvince.short}} {{orderDetails.shippingAddress.postalCode}}<br>
+{{orderDetails.shippingAddress.country.name}}
+  </div>
+<div style="margin-top: 15px;" class="store-header-div">
+  <h6 class="text-center">Billing Address</h6>
+</div>
+ <div class="white-confirm">
+{{orderDetails.billingAddress.name}}<br>
+{{orderDetails.billingAddress.address1}}<br>
+<span ng-if="orderDetails.billingAddress.address2">{{orderDetails.billingAddress.address2}}<br></span>
+{{orderDetails.billingAddress.city}}, {{orderDetails.billingAddress.stateProvince.short}} {{orderDetails.billingAddress.postalCode}}<br>
+{{orderDetails.billingAddress.country.name}}
+</div>
+<div style="margin-top: 15px;" class="store-header-div">
+  <h6 class="text-center">Payment Details</h6>
+</div>
+ <div class="white-payment-confirm">
+Card Type: 
+<img ng-if="token.card.brand === 'Visa'" class="card-icon" src="/img/credit-cards/icons/visa.png"/>
+<img ng-if="token.card.brand === 'MasterCard'" class="card-icon" src="/img/credit-cards/icons/mastercard.png"/>
+<img ng-if="token.card.brand === 'American Express'" class="card-icon" src="/img/credit-cards/icons/amex.png"/>
+<img ng-if="token.card.brand === 'Discover'" class="card-icon" src="/img/credit-cards/icons/discover.png"/>
+<br>
+**** **** **** {{token.card.last4}}
+</div>
+</div>
+</div>
+
+<div class="eight columns">
+<div class="small-cart-outline">
+<div class="small-cart-card">
+    <table class="table ngCart cart">
 
         <thead>
         <tr>
@@ -48,43 +88,27 @@
         </tbody>
     </table>
 </div>
-<br>
-<div class="row">
-<div class="store-card four columns text-center">
-<div class="store-header-div">
-  <h6 class="text-center">Shipping Address</h6>
-</div>
-{{orderDetails.shippingAddress.name}}<br>
-{{orderDetails.shippingAddress.address1}}<br>
-<span ng-if="orderDetails.shippingAddress.address2">{{orderDetails.shippingAddress.address2}}<br></span>
-{{orderDetails.shippingAddress.city}}, {{orderDetails.shippingAddress.stateProvince.short}} {{orderDetails.shippingAddress.postalCode}}<br>
-{{orderDetails.shippingAddress.country.name}}
-</div>
-<div class="store-card four columns text-center">
-<div class="store-header-div">
-  <h6 class="text-center">Billing Address</h6>
-</div>
-{{orderDetails.billingAddress.address1}}<br>
-<span ng-if="orderDetails.billingAddress.address2">{{orderDetails.billingAddress.address2}}<br></span>
-{{orderDetails.billingAddress.city}}, {{orderDetails.billingAddress.stateProvince.short}} {{orderDetails.billingAddress.postalCode}}<br>
-{{orderDetails.billingAddress.country.name}}
 </div>
 
+<div class="text-center">
+<button class="button button-primary" ng-click="createCharge()">Submit Order</button>
+</div>
+
+</div>
+
+
+
+
+</div>
+<br>
+<div class="row">
+
+
+
 <div class="four columns">
-<div class="store-card text-center">
-<div class="store-header-div">
-  <h6 class="text-center">Payment Details</h6>
-</div>
-Card Type: 
-<img ng-if="token.card.brand === 'Visa'" class="card-icon" src="/img/credit-cards/icons/visa.png"/>
-<img ng-if="token.card.brand === 'MasterCard'" class="card-icon" src="/img/credit-cards/icons/mastercard.png"/>
-<img ng-if="token.card.brand === 'American Express'" class="card-icon" src="/img/credit-cards/icons/amex.png"/>
-<img ng-if="token.card.brand === 'Discover'" class="card-icon" src="/img/credit-cards/icons/discover.png"/>
-<br>
-**** **** **** {{token.card.last4}}
-</div>
-<br>
-<button class="u-full-width button" ng-click="createCharge()">Submit Order</button>
+
+
+
 </div>
 
 </div>

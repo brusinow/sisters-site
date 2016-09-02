@@ -62,15 +62,27 @@ app.get("/orderConfirm", function(req, res) {
 });
 
 app.post("/createCharge", function(req, res) {
+  var order = JSON.parse(req.session.orderDetails);
+  var token = JSON.parse(req.session.stripeToken);
+  var orderTotal = Math.floor(order.total * 100);
+  var orderName = order.shippingAddress.name;
+  var tokenId = token.id;
+  console.log("WHAT IS ORDER TOTAL!?!?!?!?!?!?!?!? :",orderTotal);
+  console.log("WHAT IS ORDER NAME!?!?!?!?!?!?!?!? :",orderName);
+  console.log("WHAT IS TOKEN!?!?!?!?!?!?!?!? :",tokenId);
   stripe.charges.create({
-  amount: req.query.total,
+  amount: orderTotal,
   currency: "usd",
-  source: req.query.token, // obtained with Stripe.js
-  description: "Charge for "+req.query.name
+  source: tokenId, // obtained with Stripe.js
+  description: "Charge for "+orderName
   }, function(err, charge) {
-  // asynchronously called
+    if(charge){
+      res.send("CHARGE!!!!!! ",charge);
+    } else {
+      res.send("ERROR!!!!! ",err);
+    } 
   });
-  res.send(); 
+   
 });
 
 

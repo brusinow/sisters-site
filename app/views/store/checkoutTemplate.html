@@ -1,0 +1,13 @@
+<div class="row">
+<div class="store-path-div u-full-width">
+  <div class="store-path-container">
+    <div class="number-circle" ng-class="{'active-circle': path === '/store/checkout'}">1</div><span class="store-path-text" ng-class="{'active-path': path === '/store/checkout'}">Checkout</span>
+  </div>
+  <i class="fa fa-chevron-right chevron-path" aria-hidden="true"></i> 
+    <div class="store-path-container">
+    <div class="number-circle" ng-class="{'active-circle': path === '/store/confirm'}">2</div><span class="store-path-text" ng-class="{'active-path': path === '/store/confirm'}">Confirm</span>
+  </div> 
+</div>
+</div>
+
+<ui-view></ui-view>

@@ -70,7 +70,7 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
       }
     }
   })
-  
+
   .state('blog.main', {
     url: '/blog',
     templateUrl: '/views/blog/blog-content.html',
@@ -199,6 +199,7 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
       }
     }
   })
+
   .state('store', {
     url: '/store',
     templateUrl: '/views/store/store.html',
@@ -207,6 +208,30 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
       "currentAuth": authWait
     }
   })
+  .state('checkout', {
+    templateUrl: '/views/store/checkoutTemplate.html',
+    controller: 'MainCheckoutCtrl',
+    resolve: {
+      "currentAuth": authWait,
+    }
+  })
+  .state('checkout.main', {
+    url: '/store/checkout',
+    templateUrl: '/views/store/checkoutAddress.html',
+    controller: 'StoreCheckoutCtrl',
+    resolve: {
+      "currentAuth": authWait
+    }
+  })
+   .state('checkout.confirm', {
+    url: '/store/confirm',
+    templateUrl: '/views/store/checkoutConfirm.html',
+    controller: 'StoreConfirmCtrl',
+    resolve: {
+      "currentAuth": authWait
+    }
+  })
+  
   .state('storeCart', {
     url: '/store/cart',
     templateUrl: '/views/store/cart.html',
@@ -215,30 +240,7 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
       "currentAuth": authWait
     }
   })
-  .state('storeCheckout', {
-    url: '/store/checkout',
-    templateUrl: '/views/store/checkoutAddress.html',
-    controller: 'StoreCheckoutCtrl',
-    resolve: {
-      "currentAuth": authWait
-    }
-  })
-  .state('storePayment', {
-    url: '/store/payment',
-    templateUrl: '/views/store/checkoutPayment.html',
-    controller: 'StorePaymentCtrl',
-    resolve: {
-      "currentAuth": authWait
-    }
-  })
-   .state('storeConfirm', {
-    url: '/store/confirm',
-    templateUrl: '/views/store/checkoutConfirm.html',
-    controller: 'StoreConfirmCtrl',
-    resolve: {
-      "currentAuth": authWait
-    }
-  })
+  
   .state('login', {
     url: '/login',
     templateUrl: '/views/login.html',

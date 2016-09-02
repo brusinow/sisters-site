@@ -80,15 +80,23 @@ angular.module('SistersCtrls')
   }
 
 
-  $scope.shippingType = $scope.shipRates.domestic;
+  $scope.shippingType = $scope.shipRates.domestic; 
   $scope.shipChoice = $scope.shippingType.regular;
+
   $scope.$watch('shipChoice', function (newValue, oldValue, scope) {
     ngCart.setShipping($scope.shipChoice.price);  
   }, false);
 
+  $scope.$watch('shippingType', function (newValue, oldValue, scope) {
+    $scope.shipChoice = $scope.shippingType.regular; 
+  }, false);
+
   $scope.data = {
     "shipping": {
-      "country": {}
+      "country": {},
+      "stateProvince": {
+        "short": ''
+      }
     }
   };
   $scope.mailingListAdd = true;
@@ -123,26 +131,36 @@ angular.module('SistersCtrls')
     }
   }
 
-  $scope.getTaxRate = function(country, stateProvince, postalCode){
-       if (country.code === 'US' && stateProvince.short === 'WA'){
-      var req = {
-        url: '/taxRate',
-        method: 'GET',
-        params: {
-          country: 'usa',
-          postal: postalCode
-        }
-      } 
 
-      $http(req).then(function success(res) {
-        console.log("Success! ",res.data);
-        ngCart.setTaxRate(res.data.totalRate);    
-      }, function error(res) {
-    //do something if the response has an error
-    console.log("error ",res);
-  });
-    } else if ($sessionStorage.addressData.shipping.country.code === 'US' && $sessionStorage.addressData.shipping.stateProvince.short != 'WA'){
+  $scope.getTaxRate = function(country, stateProvince, postalCode){
+    if (country.code === 'US' && stateProvince.short === 'WA' && postalCode){
+      if ($sessionStorage.currentWaRate){
+        ngCart.setTaxRate($sessionStorage.currentWaRate);    
+      } else {
+
+        console.log("in WA State!!!!!");
+        var req = {
+          url: '/taxRate',
+          method: 'GET',
+          params: {
+            country: 'usa',
+            postal: postalCode
+          }
+        } 
+
+        $http(req).then(function success(res) {
+          console.log("Success! ",res.data);
+          ngCart.setTaxRate(res.data.totalRate); 
+          $sessionStorage.currentWaRate = res.data.totalRate;   
+        }, function error(res) {
+          console.log("error ",res);             
+        });
+      }
+    } else if (country.code === 'US' && stateProvince.short !== 'WA'){
       console.log("not in WA state");
+      ngCart.setTaxRate(0);
+    } else if (country.code !== 'US'){
+      console.log("Outside US!!!!!!!");
       ngCart.setTaxRate(0);
     }
   }
@@ -150,6 +168,19 @@ angular.module('SistersCtrls')
 
 
 
+  $scope.countryChange = function(country){
+    if (country.code === 'US'){
+      $scope.shippingType = $scope.shipRates.domestic;
+    } else {
+      $scope.shippingType = $scope.shipRates.international;
+    }
+  }
+
+
+
+
+
+
   $scope.submitForm = function(){
     Stripe.card.createToken({
     number: $scope.number,
@@ -166,19 +197,24 @@ angular.module('SistersCtrls')
   } else {
     // got stripe token, now charge it or smt
     token = response.id
+
+    var orderDetails = {
+      items: ngCart.getItems(),
+      subTotal: ngCart.getSubTotal(),
+      total: ngCart.totalCost(),
+      taxRate: ngCart.getTaxRate(),
+      taxTotal: ngCart.getTax(),
+      shippingPrice: ngCart.getShipping(),
+      shippingInfo: $scope.shipChoice,
+      shippingAddress: $scope.data.shipping,
+      billingAddress: $scope.data.billing
+    }
      var req = {
         url: '/submitOrder',
         method: 'POST',
         params: {
           token: token,
-          items: ngCart.getItems(),
-          subTotal: ngCart.getSubTotal(),
-          total: ngCart.totalCost(),
-          taxRate: ngCart.getTaxRate(),
-          taxTotal: ngCart.getTax(),
-          shipping: ngCart.getShipping(),
-          shippingAddress: $scope.data.shipping,
-          billingAddress: $scope.data.billing
+          orderDetails: orderDetails
         }
       } 
 
@@ -196,60 +232,13 @@ angular.module('SistersCtrls')
 
 })
 
-
-.controller('StorePaymentCtrl', function($scope, $state, $http, $location, $sessionStorage, ngCart){
-
-
- 
-  $scope.submitForm = function(){
-    console.log("number is ",$scope.number);
-    console.log("cvc is ",$scope.cvc);
-    console.log("exp is ",$scope.expiry);
-
-    Stripe.card.createToken({
-    number: $scope.number,
-    cvc: $scope.cvc,
-    exp: $scope.expiry
-    }, handleStripe);
-  }
-
-
-
- var handleStripe = function(status, response){
-  if(response.error) {
-    // there was an error. Fix it.
-  } else {
-    // got stripe token, now charge it or smt
-    token = response.id
-    console.log("what is token? ",token);
-     var req = {
-        url: '/cardToken',
-        method: 'POST',
-        params: {
-          token: token,
-          total: ngCart.totalCost()
-        }
-      } 
-
-      $http(req).then(function success(res) {
-        console.log("Success! ",res.data);
-        $location.url('/store/confirm');
-      }, function error(res) {
-    //do something if the response has an error
-    console.log("error ",res);
-  });
-
-  }
-  }
-
-
-
-
-})
 
 .controller('StoreConfirmCtrl', function($scope, $state, $http, $location, $sessionStorage, ngCart){
 
-console.log("What is tax rate? ",ngCart.getTaxRate());
+$http.get('/orderConfirm').success (function(data){
+        $scope.data = data;
+        console.log("what is data? ",data);
+  });
 
 
 

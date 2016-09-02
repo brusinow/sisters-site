@@ -8,16 +8,16 @@
 <input class="u-full-width" type="text" ng-model="data.shipping.name" placeholder="Customer Name" />
 <input class="u-full-width" type="email" ng-model="data.shipping.email" placeholder="Email Address" />
 <input class="u-full-width" type="text" ng-model="data.shipping.phone" placeholder="Phone Number" />
-<select class="u-full-width" ng-options="country.name for country in countries track by country.name" data-ng-model="data.shipping.country">
+<select class="u-full-width" ng-options="country.name for country in countries track by country.name" data-ng-model="data.shipping.country" ng-change="countryChange(data.shipping.country)">
 <!--   <option value="" disabled>Choose Your Country</option> -->
 </select>
 <input class="u-full-width" type="text" ng-model="data.shipping.address1" placeholder="Address 1" />
 <input class="u-full-width" type="text" ng-model="data.shipping.address2" placeholder="Address 2" />
 <div class="row">
 <input class="six columns" type="text" ng-model="data.shipping.city" placeholder="City" />
-<input class="six columns" type="text" ng-model="data.shipping.postalCode" placeholder="ZIP/Postal Code"/>
+<input class="six columns" type="text" ng-model="data.shipping.postalCode" placeholder="ZIP/Postal Code" ng-blur="getTaxRate(data.shipping.country, data.shipping.stateProvince, data.shipping.postalCode)"/>
 </div>
-<select ng-if="data.shipping.country.code === 'US'" class="u-full-width" data-ng-model="data.shipping.stateProvince" ng-options="state.name for state in states track by state.name" ng-blur="getTaxRate(data.shipping.country, data.shipping.stateProvince, data.shipping.postalCode)">
+<select ng-if="data.shipping.country.code === 'US'" class="u-full-width" data-ng-model="data.shipping.stateProvince" ng-options="state.name for state in states track by state.name" ng-change="getTaxRate(data.shipping.country, data.shipping.stateProvince, data.shipping.postalCode)">
   <option value="" disabled selected>Choose Your State</option>
 </select>
 <select ng-if="data.shipping.country.code === 'CA'" class="u-full-width" data-ng-model="data.shipping.stateProvince" ng-options="province.name for province in provinces track by province.name">

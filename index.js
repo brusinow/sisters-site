@@ -35,13 +35,6 @@ app.get('/instagram', function(req, res) {
   });
 });
 
-
-
-// app.post("/checkout", function(req, res) {
-//   req.session.currentOrder = req.body;
-//   console.log("what is currentOrder? ",req.session.currentOrder);
-// });
-
 app.get("/taxRate", function(req, res) {
   console.log("What is req? ",req.query);
   var url = 'https://taxrates.api.avalara.com:443/postal?country='+req.query.country+'&postal='+req.query.postal+'&apikey='+process.env.TAX_KEY;
@@ -56,15 +49,14 @@ app.get("/taxRate", function(req, res) {
 
 app.post("/submitOrder", function(req, res) {
   console.log("req.query: ",req.query);
-  req.session.orderData = req.query;
+  req.session.orderDetails = req.query.orderDetails;
+  req.session.stripeToken = req.query.token;
   res.send(); 
 });
 
-
-
- 
-
-
+app.get("/orderConfirm", function(req, res) {
+  res.send(req.session.orderDetails); 
+});
 
 
 app.get('/*', function(req, res) {

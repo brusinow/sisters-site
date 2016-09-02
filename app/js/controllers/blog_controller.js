@@ -131,7 +131,7 @@ angular.module('SistersCtrls')
 
   $scope.allTags = AllTagsService();
 
-   $scope.newBlogPost = function(){
+  $scope.newBlogPost = function(){
     $state.go("blog-new");
   }
 

@@ -69,7 +69,7 @@ angular.module('SistersCtrls')
         firebase.database().ref('tags/' + prop + '/posts/' + key).set(thisPost); 
         }
       }
-      $state.go('blog');
+      $state.go('blog.main');
     });
   }
 }])
@@ -191,7 +191,7 @@ angular.module('SistersCtrls')
       }
     },100)
 
-      $state.go('blog');
+      $state.go('blog.main');
     });
   }
   

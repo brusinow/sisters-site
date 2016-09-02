@@ -174,7 +174,9 @@ input[type="email"], input[type="number"], input[type="search"], input[type="tex
     float: left;
 }
 
-
+.card-icon {
+  width: 35px;
+}
 
 
 .videoWrapper {

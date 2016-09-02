@@ -1,1 +1,91 @@
-<ngcart-cart-confirm></ngcart-cart-confirm>
+<div class="u-full-width store-card">
+
+    <table class="table table-striped ngCart cart">
+
+        <thead>
+        <tr>
+            <th></th>
+            <th>Item</th>
+            <th>Quantity</th>
+            <th>Amount</th>
+            <th>Total</th>
+        </tr>
+        </thead>
+        <tfoot>
+        <tr class="main-cart-row">
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>Tax ({{ orderDetails.taxRate }}%):</td>
+            <td>{{ orderDetails.taxTotal | currency }}</td>
+        </tr>
+        <tr class="main-cart-row">
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>Shipping ({{orderDetails.shippingInfo.service}}):</td>
+            <td>{{ orderDetails.shippingInfo.price | currency }}</td>
+        </tr>
+        <tr class="main-cart-row">
+            <td></td>
+            <td></td>
+            <td></td>
+            <td>Total:</td>
+            <td>{{ orderDetails.total | currency }}</td>
+        </tr>
+        </tfoot>
+        <tbody>
+        <tr ng-repeat="item in ngCart.getCart().items track by $index">
+            <td></td>
+
+            <td>{{ item.getName() }}</td>
+            <td>
+                {{ item.getQuantity() | number }}
+                </td>
+            <td>{{ item.getPrice() | currency}}</td>
+            <td>{{ item.getTotal() | currency }}</td>
+        </tr>
+        </tbody>
+    </table>
+</div>
+<br>
+<div class="row">
+<div class="store-card four columns text-center">
+<div class="store-header-div">
+  <h6 class="text-center">Shipping Address</h6>
+</div>
+{{orderDetails.shippingAddress.name}}<br>
+{{orderDetails.shippingAddress.address1}}<br>
+<span ng-if="orderDetails.shippingAddress.address2">{{orderDetails.shippingAddress.address2}}<br></span>
+{{orderDetails.shippingAddress.city}}, {{orderDetails.shippingAddress.stateProvince.short}} {{orderDetails.shippingAddress.postalCode}}<br>
+{{orderDetails.shippingAddress.country.name}}
+</div>
+<div class="store-card four columns text-center">
+<div class="store-header-div">
+  <h6 class="text-center">Billing Address</h6>
+</div>
+{{orderDetails.billingAddress.address1}}<br>
+<span ng-if="orderDetails.billingAddress.address2">{{orderDetails.billingAddress.address2}}<br></span>
+{{orderDetails.billingAddress.city}}, {{orderDetails.billingAddress.stateProvince.short}} {{orderDetails.billingAddress.postalCode}}<br>
+{{orderDetails.billingAddress.country.name}}
+</div>
+
+<div class="four columns">
+<div class="store-card text-center">
+<div class="store-header-div">
+  <h6 class="text-center">Payment Details</h6>
+</div>
+Card Type: 
+<img ng-if="token.card.brand === 'Visa'" class="card-icon" src="/img/credit-cards/icons/visa.png"/>
+<img ng-if="token.card.brand === 'MasterCard'" class="card-icon" src="/img/credit-cards/icons/mastercard.png"/>
+<img ng-if="token.card.brand === 'American Express'" class="card-icon" src="/img/credit-cards/icons/amex.png"/>
+<img ng-if="token.card.brand === 'Discover'" class="card-icon" src="/img/credit-cards/icons/discover.png"/>
+<br>
+**** **** **** {{token.card.last4}}
+</div>
+<br>
+<button class="u-full-width button" ng-click="createCharge()">Submit Order</button>
+</div>
+
+</div>
+

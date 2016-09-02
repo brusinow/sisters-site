@@ -51,11 +51,26 @@ app.post("/submitOrder", function(req, res) {
   console.log("req.query: ",req.query);
   req.session.orderDetails = req.query.orderDetails;
   req.session.stripeToken = req.query.token;
+  console.log("what is req.session? ",req.session);
   res.send(); 
 });
 
+
 app.get("/orderConfirm", function(req, res) {
-  res.send(req.session.orderDetails); 
+  console.log("what is session? ",req.session);
+  res.send(req.session); 
+});
+
+app.post("/createCharge", function(req, res) {
+  stripe.charges.create({
+  amount: req.query.total,
+  currency: "usd",
+  source: req.query.token, // obtained with Stripe.js
+  description: "Charge for "+req.query.name
+  }, function(err, charge) {
+  // asynchronously called
+  });
+  res.send(); 
 });
 
 

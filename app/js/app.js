@@ -29,6 +29,8 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
     templateUrl: '/views/about.html',
     controller: 'AboutCtrl'
   })
+
+
   .state('blog', {
     templateUrl: '/views/blog/blog.html',
     controller: 'BlogCtrl',
@@ -42,6 +44,33 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
       }      
     }
   })
+
+  .state('blog-new', {
+    url: '/blog/new',
+    templateUrl: '/views/blog/newBlogPost.html',
+    controller: 'NewBlogCtrl',
+    resolve: {
+      "currentAuth": authRequire,
+      "AllTags": function(AllTagsService){
+        return AllTagsService().$loaded();
+      }
+    }
+  })
+  .state('blog-edit', {
+    url: '/blog/edit/:slug',
+    templateUrl: '/views/blog/editBlogPost.html',
+    controller: 'EditBlogCtrl',
+    resolve: {
+      "currentAuth": authRequire,
+      "AllTags": function(AllTagsService){
+        return AllTagsService().$loaded();
+      },
+      "thisPost": function($stateParams, ThisPostService){
+        return ThisPostService($stateParams.slug).$loaded();
+      }
+    }
+  })
+  
   .state('blog.main', {
     url: '/blog',
     templateUrl: '/views/blog/blog-content.html',
@@ -147,31 +176,7 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
   })
   
 
-  .state('blog-new', {
-    url: '/blog/new',
-    templateUrl: '/views/blog/newBlogPost.html',
-    controller: 'NewBlogCtrl',
-    resolve: {
-      "currentAuth": authRequire,
-      "AllTags": function(AllTagsService){
-        return AllTagsService().$loaded();
-      }
-    }
-  })
-  .state('blog-edit', {
-    url: '/blog/edit/:slug',
-    templateUrl: '/views/blog/editBlogPost.html',
-    controller: 'EditBlogCtrl',
-    resolve: {
-      "currentAuth": authRequire,
-      "AllTags": function(AllTagsService){
-        return AllTagsService().$loaded();
-      },
-      "thisPost": function($stateParams, ThisPostService){
-        return ThisPostService($stateParams.slug).$loaded();
-      }
-    }
-  })
+  
 
 
  

@@ -196,7 +196,7 @@ angular.module('SistersCtrls')
     // there was an error. Fix it.
   } else {
     // got stripe token, now charge it or smt
-    token = response.id
+    token = response;
 
     var orderDetails = {
       items: ngCart.getItems(),
@@ -235,10 +235,39 @@ angular.module('SistersCtrls')
 
 .controller('StoreConfirmCtrl', function($scope, $state, $http, $location, $sessionStorage, ngCart){
 
+$scope.ngCart = ngCart;
+
 $http.get('/orderConfirm').success (function(data){
-        $scope.data = data;
-        console.log("what is data? ",data);
+  if (!data.stripeToken){
+  $location.url('/store/cart'); 
+  return; 
+  }
+  console.log("what is data? ",data);
+  $scope.orderDetails = angular.fromJson(data.orderDetails);
+  console.log("order details parsed: ",$scope.orderDetails);
+  $scope.token = angular.fromJson(data.stripeToken);
+  console.log("token parsed: ",$scope.token);
+});
+
+$scope.createCharge = function(){
+  var req = {
+        url: '/createCharge',
+        method: 'POST',
+        params: {
+          total: $scope.orderDetails.total,
+          token: $scope.token.id,
+          name: $scope.orderDetails.name
+        }
+      } 
+
+      $http(req).then(function success(res) {
+        console.log("Success! ",res);
+        ngCart.empty();
+      }, function error(res) {
+    //do something if the response has an error
+    console.log("error ",res);
   });
+}
 
 
 

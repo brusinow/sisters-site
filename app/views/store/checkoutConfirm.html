@@ -1,8 +1,11 @@
-
+<div class="checkout" ng-class="{'fade-in': loaded}">
 <div class="alert alert-success" role="alert" ng-show="orderComplete">
     Your order is complete! You should be receiving an email receipt shortly.
 </div>
-<div class="row">
+<div ng-if="orderComplete" class="confirm-complete">
+  <img src="/img/press-shot.jpg">
+</div>
+<div class="row confirm-content" ng-hide="orderComplete">
 <div class="four columns">
 <div class="store-card store-card-confirm text-center">
 <div class="store-header-div">
@@ -103,17 +106,6 @@ Card Type:
 
 
 </div>
-<br>
-<div class="row">
-
-
-
-<div class="four columns">
-
-
 
 </div>
-
-</div>
-{{test}}
 

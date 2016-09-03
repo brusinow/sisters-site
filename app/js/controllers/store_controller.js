@@ -58,6 +58,9 @@ angular.module('SistersCtrls')
 .controller('StoreCheckoutCtrl', function($scope, $state, $http, $location, $sessionStorage, ngCart, $rootScope){
   $rootScope.path = $location.$$path;
   $scope.storage = $sessionStorage;
+  $scope.loaded = [];
+
+
   console.log("what is rootScope? ",$rootScope);
   $scope.shipRates = {
     domestic: {
@@ -119,14 +122,17 @@ angular.module('SistersCtrls')
         console.log("what is first country? ",$scope.countries[0]);
         $scope.data.shipping.country = $scope.countries[0];
         $scope.data.billing.country = $scope.countries[0];
+        $scope.loaded.push("go");
   });
 
   $http.get('/js/JSON/states.json').success (function(data){
         $scope.states = data;
+        $scope.loaded.push("go");
   });
 
   $http.get('/js/JSON/provinces.json').success (function(data){
         $scope.provinces = data;
+        $scope.loaded.push("go");
   });
 
 
@@ -191,13 +197,17 @@ angular.module('SistersCtrls')
 
 
 
-  $scope.submitForm = function(){
+  $scope.submitForm = function(form){
+    if(form.$valid){
     Stripe.card.createToken({
     number: $scope.number,
     cvc: $scope.cvc,
     exp: $scope.expiry,
     name: $scope.data.billing.name
     }, handleStripe);
+  } else {
+    console.log("form invalid!!");
+  }
   }
 
 
@@ -260,6 +270,7 @@ $http.get('/orderConfirm').success (function(data){
   console.log("order details parsed: ",$scope.orderDetails);
   $scope.token = angular.fromJson(data.stripeToken);
   console.log("token parsed: ",$scope.token);
+  $scope.loaded = true;
 });
 
 $scope.createCharge = function(){

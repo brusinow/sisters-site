@@ -1,96 +1,49 @@
-
+<form name="form" class="checkout-form checkout" ng-class="{'fade-in': loaded.length === 3}" novalidate ng-submit="submitForm(form)">
 <div class="row">
-<div class="store-card four columns">
-<div class="store-header-div">
-  <h6 class="text-center">Shipping Address</h6>
-</div>
-<form>
-<input class="u-full-width" type="text" ng-model="data.shipping.name" placeholder="Customer Name" />
-<input class="u-full-width" type="email" ng-model="data.shipping.email" placeholder="Email Address" />
-<input class="u-full-width" type="text" ng-model="data.shipping.phone" placeholder="Phone Number" />
-<select class="u-full-width" ng-options="country.name for country in countries track by country.name" data-ng-model="data.shipping.country" ng-change="countryChange(data.shipping.country)">
-<!--   <option value="" disabled>Choose Your Country</option> -->
-</select>
-<input class="u-full-width" type="text" ng-model="data.shipping.address1" placeholder="Address 1" />
-<input class="u-full-width" type="text" ng-model="data.shipping.address2" placeholder="Address 2" />
-<div class="row">
-<input class="six columns" type="text" ng-model="data.shipping.city" placeholder="City" />
-<input class="six columns" type="text" ng-model="data.shipping.postalCode" placeholder="ZIP/Postal Code" ng-blur="getTaxRate(data.shipping.country, data.shipping.stateProvince, data.shipping.postalCode)"/>
-</div>
-<select ng-if="data.shipping.country.code === 'US'" class="u-full-width" data-ng-model="data.shipping.stateProvince" ng-options="state.name for state in states track by state.name" ng-change="getTaxRate(data.shipping.country, data.shipping.stateProvince, data.shipping.postalCode)">
-  <option value="" disabled selected>Choose Your State</option>
-</select>
-<select ng-if="data.shipping.country.code === 'CA'" class="u-full-width" data-ng-model="data.shipping.stateProvince" ng-options="province.name for province in provinces track by province.name">
-  <option value="" disabled selected>Choose Your Province</option>
-</select>
-
-<label class="text-center">Billing address same as shipping? <input type="checkbox" ng-model="data.shippingSame" ng-change="isShippingSame()"></label>
-<label class="text-center">Add me to the SISTERS mailing list! <input type="checkbox" ng-model="mailingListAdd"></label>
-</div>
-
-
-
-<div class="four columns">
-  <div class="store-card" ng-class="{'disabled-inputs': shippingSameBool}">
+  <div class="four columns">
+  <div class="store-card">
     <div class="store-header-div">
-      <h6 class="text-center">Billing Address</h6>
+      <h6 class="text-center">Shipping Address</h6>
     </div>
-      <input class="u-full-width" type="text" ng-model="data.billing.name" placeholder="Billing Name" />
-      <select class="u-full-width" data-ng-model="data.billing.country" ng-disabled="shippingSameBool" ng-options="country.name for country in countries">
-        <option value="" disabled selected>Choose Your Country</option>
+
+      <div class="input-container">
+        <input name="shippingName" class="u-full-width" type="text" ng-model="data.shipping.name" required placeholder="Customer Name" />
+        <span class="input-validate-text" ng-class="{'show': form.shippingName.$error.required && form.$submitted}">*Required</span>
+      </div>
+
+      <div class="input-container">
+        <input class="u-full-width" name="shippingEmail" type="email" ng-model="data.shipping.email" required placeholder="Email Address" />
+        <span class="input-validate-text" ng-class="{'show': form.shippingEmail.$error.required && form.$submitted}">*Required</span>
+        <span class="input-validate-text" ng-class="{'show': form.shippingEmail.$error.email && form.$submitted}">*Not a valid email</span>
+      </div>
+
+      <div class="input-container">
+        <input name="shippingPhone" class="u-full-width" type="text" ng-model="data.shipping.phone" required placeholder="Phone Number" />
+        <span class="input-validate-text" ng-class="{'show': form.shippingPhone.$error.required && form.$submitted}">*Required</span>
+      </div>
+
+      
+      <select class="u-full-width" ng-options="country.name for country in countries track by country.name" required data-ng-model="data.shipping.country" ng-change="countryChange(data.shipping.country)">
+        <!--   <option value="" disabled>Choose Your Country</option> -->
       </select>
-      <input class="u-full-width" type="text" ng-model="data.billing.address1" ng-disabled="shippingSameBool" placeholder="Address 1" />
-      <input class="u-full-width" type="text" ng-model="data.billing.address2" ng-disabled="shippingSameBool" placeholder="Address 2" />
-      <input class="u-full-width" type="text" ng-model="data.billing.city" ng-disabled="shippingSameBool" placeholder="City" />
-      <select ng-if="data.billing.country.code === 'US'" class="u-full-width" data-ng-model="data.billing.stateProvince" ng-disabled="shippingSameBool" ng-options="state.name for state in states track by state.name">
+      <input class="u-full-width" type="text" ng-model="data.shipping.address1" required placeholder="Address 1" />
+      <input class="u-full-width" type="text" ng-model="data.shipping.address2" placeholder="Address 2" />
+      <div class="row">
+        <input class="six columns" type="text" ng-model="data.shipping.city" required placeholder="City" />
+        <input class="six columns" type="text" ng-model="data.shipping.postalCode" required placeholder="ZIP/Postal Code" ng-blur="getTaxRate(data.shipping.country, data.shipping.stateProvince, data.shipping.postalCode)"/>
+      </div>
+      <select ng-if="data.shipping.country.code === 'US'" class="u-full-width" data-ng-model="data.shipping.stateProvince" ng-options="state.name for state in states track by state.name" ng-change="getTaxRate(data.shipping.country, data.shipping.stateProvince, data.shipping.postalCode)">
         <option value="" disabled selected>Choose Your State</option>
       </select>
-      <select ng-if="data.billing.country.code === 'CA'" class="u-full-width" data-ng-model="data.billing.stateProvince" ng-disabled="shippingSameBool" ng-options="province.name for province in provinces track by province.name">
+      <select ng-if="data.shipping.country.code === 'CA'" class="u-full-width" data-ng-model="data.shipping.stateProvince" ng-options="province.name for province in provinces track by province.name">
         <option value="" disabled selected>Choose Your Province</option>
       </select>
-      <input class="u-full-width" type="text" ng-model="data.billing.postalCode" ng-disabled="shippingSameBool" placeholder="ZIP/Postal Code" />
+
+      <label class="text-center">Billing address same as shipping? <input type="checkbox" ng-model="data.shippingSame" ng-change="isShippingSame()"></label>
+      <label class="text-center">Add me to the SISTERS mailing list! <input type="checkbox" ng-model="mailingListAdd"></label>
   </div>
   <br>
-  <div class="store-card">
-  <div class="store-header-div">
-    <h6 class="text-center">Payment Method</h6>
-  </div>
-  <div class="card-brands-container">
-    <div class="card-brands-div">
-      <div class="card-brands-border">
-      <img src="/img/credit-cards/visa.png"/>
-      </div>
-    </div>
-    <div class="card-brands-div">
-       <div class="card-brands-border">
-      <img src="/img/credit-cards/mastercard.png"/>
-      </div>
-    </div>
-    <div class="card-brands-div">
-       <div class="card-brands-border">
-      <img src="/img/credit-cards/amex.png"/>
-      </div>
-    </div>
-    <div class="card-brands-div">
-       <div class="card-brands-border">
-      <img src="/img/credit-cards/discover.png"/>
-      </div>
-    </div>
-  </div>
-  <input class="u-full-width" type="text" ng-model="number" placeholder="card" payments-format="card" payments-validate="card" payments-type-model="type"/>
-  <div class="row">
-<input class="six columns" type="text" ng-model="expiry" placeholder="expiration date" payments-validate="expiry" payments-format="expiry" />
-<input class="six columns" type="text" ng-model="cvc" placeholder="cvc" payments-validate="cvc" payments-type-model="type" payments-format="cvc"/> 
-</div>
-</div>
-
-
-
-</div>
-
-
-<div class="four columns">
-  <div class="store-card">
+    <div class="store-card">
     <div class="store-header-div">
       <h6 class="text-center">Shipping Method</h6>
     </div>
@@ -105,9 +58,72 @@
       </label>
     </div>
   </div>
-  <br>
+  </div>
+
+
+
+    <div class="four columns">
+      <div class="store-card" ng-class="{'disabled-inputs': shippingSameBool}">
+        <div class="store-header-div">
+          <h6 class="text-center">Billing Address</h6>
+        </div>
+        <input class="u-full-width" type="text" ng-model="data.billing.name" required placeholder="Billing Name" />
+        <select class="u-full-width" data-ng-model="data.billing.country" ng-disabled="shippingSameBool" ng-options="country.name for country in countries">
+          <option value="" disabled selected>Choose Your Country</option>
+        </select>
+        <input class="u-full-width" type="text" ng-model="data.billing.address1" required ng-disabled="shippingSameBool" placeholder="Address 1" />
+        <input class="u-full-width" type="text" ng-model="data.billing.address2" ng-disabled="shippingSameBool" placeholder="Address 2" />
+        <input class="u-full-width" type="text" ng-model="data.billing.city" required ng-disabled="shippingSameBool" placeholder="City" />
+        <select ng-if="data.billing.country.code === 'US'" class="u-full-width" required data-ng-model="data.billing.stateProvince" ng-disabled="shippingSameBool" ng-options="state.name for state in states track by state.name">
+          <option value="" disabled selected>Choose Your State</option>
+        </select>
+        <select ng-if="data.billing.country.code === 'CA'" class="u-full-width" data-ng-model="data.billing.stateProvince" ng-disabled="shippingSameBool" ng-options="province.name for province in provinces track by province.name">
+          <option value="" disabled selected>Choose Your Province</option>
+        </select>
+        <input class="u-full-width" type="text" ng-model="data.billing.postalCode" required ng-disabled="shippingSameBool" placeholder="ZIP/Postal Code" />
+      </div>
+      <br>
+      <div class="store-card">
+        <div class="store-header-div">
+          <h6 class="text-center">Payment Method</h6>
+        </div>
+        <div class="card-brands-container">
+          <div class="card-brands-div">
+            <div class="card-brands-border" ng-class="{'active-card': type === 'visa'}">
+              <img src="/img/credit-cards/visa.png"/>
+            </div>
+          </div>
+          <div class="card-brands-div">
+           <div class="card-brands-border" ng-class="{'active-card': type === 'mastercard'}">
+            <img src="/img/credit-cards/mastercard.png"/>
+          </div>
+        </div>
+        <div class="card-brands-div">
+         <div class="card-brands-border" ng-class="{'active-card': type === 'amex'}">
+          <img src="/img/credit-cards/amex.png"/>
+        </div>
+      </div>
+      <div class="card-brands-div">
+       <div class="card-brands-border" ng-class="{'active-card': type === 'discover'}">
+        <img src="/img/credit-cards/discover.png"/>
+      </div>
+    </div>
+  </div>
+  <input class="u-full-width" type="text" ng-model="number" placeholder="card" required payments-format="card" payments-validate="card" payments-type-model="type"/>
+  <div class="row">
+    <input class="six columns" type="text" ng-model="expiry" placeholder="expiration date" required payments-validate="expiry" payments-format="expiry" />
+    <input class="six columns" type="text" ng-model="cvc" placeholder="cvc" required payments-validate="cvc" payments-type-model="type" payments-format="cvc"/> 
+  </div>
+</div>
+
+
+
+</div>
+
+
+<div class="four columns">
   <ngcart-small-cart></ngcart-small-cart>
-  <button class="u-full-width button" ng-click="submitForm()" type="submit">Confirm Your Order</button>
+  <button class="u-full-width button" type="submit">Confirm Your Order</button>
 </div>
 
 
@@ -115,3 +131,4 @@
 
 </div>
 </form>
+

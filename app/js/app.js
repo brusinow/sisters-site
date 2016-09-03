@@ -3,7 +3,7 @@ var authRequire = ["Auth", function(Auth) { return Auth.$requireSignIn(); }]
 
 angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui.bootstrap','firebase','angularMoment','ngCart','ngStorage','angularPayments'])
 
-.run(["$rootScope", "$state", function($rootScope, $state) {
+.run(["$rootScope", "$state", function($rootScope, $state, $scope) {
   $rootScope.$on("$stateChangeError", function(event, toState, toParams, fromState, fromParams, error) {
     // We can catch the error thrown when the $requireSignIn promise is rejected
     // and redirect the user back to the home page
@@ -210,7 +210,6 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
   })
   .state('checkout', {
     templateUrl: '/views/store/checkoutTemplate.html',
-    controller: 'MainCheckoutCtrl',
     resolve: {
       "currentAuth": authWait,
     }

@@ -77,6 +77,8 @@ app.post("/createCharge", function(req, res) {
   description: "Charge for "+orderName
   }, function(err, charge) {
     if(charge){
+      req.session.orderDetails = {};
+      req.session.stripeToken = {};
       res.send("CHARGE!!!!!! ",charge);
     } else {
       res.send("ERROR!!!!! ",err);

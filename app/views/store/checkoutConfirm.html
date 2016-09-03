@@ -1,4 +1,7 @@
 
+<div class="alert alert-success" role="alert" ng-show="orderComplete">
+    Your order is complete! You should be receiving an email receipt shortly.
+</div>
 <div class="row">
 <div class="four columns">
 <div class="store-card store-card-confirm text-center">
@@ -91,7 +94,7 @@ Card Type:
 </div>
 
 <div class="text-center">
-<button class="button button-primary" ng-click="createCharge()">Submit Order</button>
+<button ng-hide="orderComplete" class="button button-primary" ng-click="createCharge()">Submit Order</button>
 </div>
 
 </div>
@@ -112,4 +115,5 @@ Card Type:
 </div>
 
 </div>
+{{test}}
 

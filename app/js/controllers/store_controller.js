@@ -50,24 +50,15 @@ angular.module('SistersCtrls')
 
 })
 
-.controller('MainCheckoutCtrl', function($scope, $state, $location){
-  console.log("what is $location? ",$location.$$path);
-  $scope.locationObj = $location;
-  $scope.$watch('locationObj', function (newValue, oldValue, scope) {
-   $scope.path = $location.$$path;  
-  }, true);
-  
-})
 
 
 
 
-.controller('StoreCheckoutCtrl', function($scope, $state, $http, $location, $sessionStorage, ngCart){
+
+.controller('StoreCheckoutCtrl', function($scope, $state, $http, $location, $sessionStorage, ngCart, $rootScope){
+  $rootScope.path = $location.$$path;
   $scope.storage = $sessionStorage;
-  console.log("what is $location? ",$location.$$path);
-  $scope.path = $location.$$path;
- 
-
+  console.log("what is rootScope? ",$rootScope);
   $scope.shipRates = {
     domestic: {
       regular: {
@@ -109,6 +100,12 @@ angular.module('SistersCtrls')
       "stateProvince": {
         "short": ''
       }
+    },
+    "billing": {
+      "country": {},
+      "stateProvince": {
+        "short": ''
+      }
     }
   };
   $scope.mailingListAdd = true;
@@ -121,6 +118,7 @@ angular.module('SistersCtrls')
         $scope.countries = data;
         console.log("what is first country? ",$scope.countries[0]);
         $scope.data.shipping.country = $scope.countries[0];
+        $scope.data.billing.country = $scope.countries[0];
   });
 
   $http.get('/js/JSON/states.json').success (function(data){
@@ -197,7 +195,8 @@ angular.module('SistersCtrls')
     Stripe.card.createToken({
     number: $scope.number,
     cvc: $scope.cvc,
-    exp: $scope.expiry
+    exp: $scope.expiry,
+    name: $scope.data.billing.name
     }, handleStripe);
   }
 
@@ -245,9 +244,10 @@ angular.module('SistersCtrls')
 })
 
 
-.controller('StoreConfirmCtrl', function($scope, $state, $http, $location, $sessionStorage, ngCart){
-console.log("what is $location? ",$location.$$path);
-  $scope.path = $location.$$path;
+.controller('StoreConfirmCtrl', function($scope, $state, $http, $location, $sessionStorage, ngCart, $rootScope){
+$scope.orderComplete = false;
+$rootScope.path = $location.$$path;
+console.log("what is rootScope? ",$rootScope);
 $scope.ngCart = ngCart;
 
 $http.get('/orderConfirm').success (function(data){
@@ -275,7 +275,10 @@ $scope.createCharge = function(){
 
       $http(req).then(function success(res) {
         console.log("Success! ",res);
-        // ngCart.empty();
+        $scope.orderComplete = true;
+        ngCart.setTaxRate();
+        ngCart.setShipping();   
+        ngCart.empty();
       }, function error(res) {
     //do something if the response has an error
     console.log("error ",res);

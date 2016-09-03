@@ -241,14 +241,23 @@ input[type="email"], input[type="number"], input[type="search"], input[type="tex
   line-height:1.2;
 }
 
-.card-brands {
+.card-brands-container {
   width:100%;
 }
 
-.card-brands img {
+.card-brands-div {
+    display: inline-block;
     width: 23%;
     margin: 0 1% 10px 1%;
     float: left;
+}
+
+.card-brands-border {
+  width: 100%;
+}
+
+.card-brands-div img {
+  width: 100%;
 }
 
 .card-icon {

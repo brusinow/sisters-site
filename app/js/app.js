@@ -214,16 +214,25 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
       "currentAuth": authWait,
     }
   })
-  .state('checkout.main', {
-    url: '/store/checkout',
+  .state('checkout.address', {
+    url: '/store/checkout/address',
     templateUrl: '/views/store/checkoutAddress.html',
-    controller: 'StoreCheckoutCtrl',
+    controller: 'StoreAddressCtrl',
     resolve: {
       "currentAuth": authWait
     }
   })
+  .state('checkout.payment', {
+    url: '/store/checkout/payment',
+    templateUrl: '/views/store/checkoutPayment.html',
+    controller: 'StorePaymentCtrl',
+    resolve: {
+      "currentAuth": authWait
+    }
+  })
+
    .state('checkout.confirm', {
-    url: '/store/confirm',
+    url: '/store/checkout/confirm',
     templateUrl: '/views/store/checkoutConfirm.html',
     controller: 'StoreConfirmCtrl',
     resolve: {

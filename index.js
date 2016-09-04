@@ -55,6 +55,23 @@ app.get("/stripe/allProducts", function(req, res){
   );
 })
 
+app.post("/stripe/createOrder", function(req, res){
+  console.log("what is the order? ",req.query.order);
+  var thisOrder = req.query.order;
+  var parsedOrder = JSON.parse(thisOrder);
+  req.session.stripeToken = req.query.token;
+  console.log("what is req.session? ",req.session);
+  stripe.orders.create(parsedOrder, function(err, order) {
+    if (order){
+      console.log("order succeeded!! ",order);
+      res.send(order);
+    }
+    if (err){
+      console.log("ERROR!! ",err);
+    }
+  });
+})
+
 app.post("/submitOrder", function(req, res) {
   console.log("req.query: ",req.query);
   req.session.orderDetails = req.query.orderDetails;

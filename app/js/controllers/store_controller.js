@@ -13,6 +13,9 @@ angular.module('SistersCtrls')
     $location.url('/store/checkout');
   }
 
+  $scope.continue = function(){
+    $location.url('/store');
+  }
  
 
 
@@ -27,10 +30,10 @@ angular.module('SistersCtrls')
 
 
 
-.controller('StoreCheckoutCtrl', function($scope, $state, $http, $location, $sessionStorage, ngCart, $rootScope){
+.controller('StoreAddressCtrl', function($scope, $state, $http, $location, $sessionStorage, ngCart, $rootScope){
   console.log("show me items: ",ngCart.getItems());
+  $scope.cartItems = ngCart.getItems();
   $rootScope.path = $location.$$path;
-  $scope.storage = $sessionStorage;
   $scope.loaded = [];
 
 
@@ -39,21 +42,29 @@ angular.module('SistersCtrls')
     domestic: {
       regular: {
         price: 500,
-        service: "USPS First Class Mail"
+        carrier: 'USPS',
+        service: "USPS First Class Mail",
+        type: "standard-domestic"
       },
       expedited: {
         price: 2000,
-        service: "USPS Priority Mail 2-Day"
+        carrier: "USPS",
+        service: "USPS Priority Mail 2-Day",
+        type: "expedited-domestic"
       }
     },
     international: {
       regular: {
         price: 1500,
-        service: "International Regular Option"
+        carrier: "Placeholder",
+        service: "International Regular Option",
+        type: "standard-international"
       },
       expedited: {
         price: 4000,
-        service: "International Fast Option"
+        carrier: "Placeholder",
+        service: "International Fast Option",
+        type: "expedited-international"
       }
     }
   }
@@ -63,6 +74,7 @@ angular.module('SistersCtrls')
   $scope.shipChoice = $scope.shippingType.regular;
 
   $scope.$watch('shipChoice', function (newValue, oldValue, scope) {
+    console.log("what is shipChoice? ",$scope.shipChoice);
     ngCart.setShipping($scope.shipChoice.price);  
   }, false);
 
@@ -170,54 +182,60 @@ angular.module('SistersCtrls')
 
 
 
-  $scope.submitForm = function(form){
-    if(form.$valid){
-    Stripe.card.createToken({
-    number: $scope.number,
-    cvc: $scope.cvc,
-    exp: $scope.expiry,
-    name: $scope.data.billing.name
-    }, handleStripe);
-  } else {
-    console.log("form invalid!!");
-  }
-  }
 
 
 
  var handleStripe = function(status, response){
+  var ship = $scope.data.shipping;
+  var bill = $scope.data.billing;
+  var taxObj = {
+    "amount": ngCart.getTax(),
+    "currency": "usd",
+    "description": "Taxes (included)",
+    "parent": null,
+    "quantity": null,
+    "type": "tax"
+  };
+  var cartItems = $scope.cartItems;
+  cartItems.push(taxObj);
   if(response.error) {
     // there was an error. Fix it.
   } else {
     // got stripe token, now charge it or smt
     token = response;
+    var req = {
+          url: '/stripe/createOrder',
+          method: 'POST',
+          params: {
+            order: {
+            currency: 'usd',
+            items: $scope.cartItems,
+            shipping: {
+              name: ship.name,
+              address: {
+                line1: ship.address1,
+                line2: ship.address2 || null,
+                city: ship.city,
+                state: ship.stateProvince.short || null,
+                country: ship.country.code,
+                postal_code: ship.postalCode
+              }
+            },
+            email: ship.email
+            },
+            token: token
+          }
+        } 
 
-    var orderDetails = {
-      items: ngCart.getItems(),
-      subTotal: ngCart.getSubTotal(),
-      total: ngCart.totalCost(),
-      taxRate: ngCart.getTaxRate(),
-      taxTotal: ngCart.getTax(),
-      shippingPrice: ngCart.getShipping(),
-      shippingInfo: $scope.shipChoice,
-      shippingAddress: $scope.data.shipping,
-      billingAddress: $scope.data.billing
-    }
-     var req = {
-        url: '/submitOrder',
-        method: 'POST',
-        params: {
-          token: token,
-          orderDetails: orderDetails
-        }
-      } 
+        $http(req).then(function success(res) {
+          console.log("Success! ",res.data);
+          // ngCart.setTaxRate(res.data.totalRate); 
+          // $sessionStorage.currentWaRate = res.data.totalRate;   
+        }, function error(res) {
+          console.log("error ",res);             
+        });
 
-      $http(req).then(function success(res) {
-        $location.url('/store/confirm');
-      }, function error(res) {
-    //do something if the response has an error
-    console.log("error ",res);
-  });
+
 
   }
   }
@@ -225,6 +243,51 @@ angular.module('SistersCtrls')
 
 
 })
+
+
+
+.controller('StorePaymentCtrl', function($scope, $state, $http, $location, $sessionStorage, ngCart, $rootScope){
+
+  $scope.submitForm = function(form){
+    if(form.$valid){
+      Stripe.card.createToken({
+        number: $scope.number,
+        cvc: $scope.cvc,
+        exp: $scope.expiry,
+        name: $scope.data.billing.name
+      }, handleStripe);
+    } else {
+      console.log("form invalid!!");
+    }
+  }
+
+  var handleStripe = function(status, response){
+    if(response.error) {
+    // there was an error. Fix it.
+  } else {
+    token = response;
+
+    var req = {
+      url: '/stripe/getToken',
+      method: 'POST',
+      params: {
+        token: token
+      }
+    }
+
+    $http(req).then(function success(res) {
+          console.log("Success! ",res.data);
+          // ngCart.setTaxRate(res.data.totalRate); 
+          // $sessionStorage.currentWaRate = res.data.totalRate;   
+        }, function error(res) {
+          console.log("error ",res);             
+        });
+  }
+  }
+
+
+
+});
 
 
 .controller('StoreConfirmCtrl', function($scope, $state, $http, $location, $sessionStorage, ngCart, $rootScope){

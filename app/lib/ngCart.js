@@ -201,7 +201,7 @@ angular.module('ngCart', ['ngCart.directives'])
             _self.$cart.tax = storedCart.tax;
 
             angular.forEach(storedCart.items, function (item) {
-                _self.$cart.items.push(new ngCartItem(item._id,  item._name, item._price, item._quantity, item._data));
+                _self.$cart.items.push(new ngCartItem(item.parent,  item.description, item.amount, item.quantity));
             });
             this.$save();
         };
@@ -214,35 +214,36 @@ angular.module('ngCart', ['ngCart.directives'])
 
     .factory('ngCartItem', ['$rootScope', '$log', function ($rootScope, $log) {
 
-        var item = function (id, name, price, quantity, data) {
+        var item = function (id, name, price, quantity) {
             this.setId(id);
             this.setName(name);
             this.setPrice(price);
             this.setQuantity(quantity);
-            this.setData(data);
+            // this.type = "sku"
+            // this.setData(data);
         };
 
 
         item.prototype.setId = function(id){
-            if (id)  this._id = id;
+            if (id)  this.parent = id;
             else {
                 $log.error('An ID must be provided');
             }
         };
 
         item.prototype.getId = function(){
-            return this._id;
+            return this.parent;
         };
 
 
         item.prototype.setName = function(name){
-            if (name)  this._name = name;
+            if (name)  this.description = name;
             else {
                 $log.error('A name must be provided');
             }
         };
         item.prototype.getName = function(){
-            return this._name;
+            return this.description;
         };
 
         item.prototype.setPrice = function(price){
@@ -251,14 +252,14 @@ angular.module('ngCart', ['ngCart.directives'])
                 if (priceFloat <= 0) {
                     $log.error('A price must be over 0');
                 } else {
-                    this._price = (priceFloat);
+                    this.amount = (priceFloat);
                 }
             } else {
                 $log.error('A price must be provided');
             }
         };
         item.prototype.getPrice = function(){
-            return this._price;
+            return this.amount;
         };
 
     
@@ -268,14 +269,14 @@ angular.module('ngCart', ['ngCart.directives'])
             var quantityInt = parseInt(quantity);
             if (quantityInt % 1 === 0){
                 if (relative === true){
-                    this._quantity  += quantityInt;
+                    this.quantity  += quantityInt;
                 } else {
-                    this._quantity = quantityInt;
+                    this.quantity = quantityInt;
                 }
-                if (this._quantity < 1) this._quantity = 1;
+                if (this.quantity < 1) this.quantity = 1;
 
             } else {
-                this._quantity = 1;
+                this.quantity = 1;
                 $log.info('Quantity must be an integer and was defaulted to 1');
             }
 
@@ -283,7 +284,7 @@ angular.module('ngCart', ['ngCart.directives'])
         };
 
         item.prototype.getQuantity = function(){
-            return this._quantity;
+            return this.quantity;
         };
 
         item.prototype.setData = function(data){

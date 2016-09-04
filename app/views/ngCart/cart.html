@@ -3,7 +3,7 @@
     Your cart is empty
 </div>
 
-<div class="u-full-width store-card" ng-show="ngCart.getTotalItems() > 0">
+<div class="table-responsive col-lg-12" ng-show="ngCart.getTotalItems() > 0">
 
     <table class="table table-striped ngCart cart">
 
@@ -17,39 +17,39 @@
         </tr>
         </thead>
         <tfoot>
-        <tr class="main-cart-row" ng-show="ngCart.getTax()">
+        <tr ng-show="ngCart.getTax()">
             <td></td>
             <td></td>
             <td></td>
             <td>Tax ({{ ngCart.getTaxRate() }}%):</td>
-            <td>{{ ngCart.getTax() | currency }}</td>
+            <td>{{ ngCart.getTax() | centsToDollars | currency }}</td>
         </tr>
-        <tr class="main-cart-row" ng-show="ngCart.getShipping()">
+        <tr ng-show="ngCart.getShipping()">
             <td></td>
             <td></td>
             <td></td>
             <td>Shipping:</td>
-            <td>{{ ngCart.getShipping() | currency }}</td>
+            <td>{{ ngCart.getShipping() | centsToDollars | currency }}</td>
         </tr>
-        <tr class="main-cart-row">
+        <tr>
             <td></td>
             <td></td>
             <td></td>
             <td>Total:</td>
-            <td>{{ ngCart.totalCost() | currency }}</td>
+            <td>{{ ngCart.totalCost() | centsToDollars | currency }}</td>
         </tr>
         </tfoot>
         <tbody>
         <tr ng-repeat="item in ngCart.getCart().items track by $index">
             <td><span ng-click="ngCart.removeItemById(item.getId())" class="glyphicon glyphicon-remove"></span></td>
-
+            
             <td>{{ item.getName() }}</td>
             <td><span class="glyphicon glyphicon-minus" ng-class="{'disabled':item.getQuantity()==1}"
-                      ng-click="item.setQuantity(-1, true)"></span>&nbsp;&nbsp;
+                      ng-click="ngCart.changeQuantity(item.getId(), -1)"></span>&nbsp;&nbsp;
                 {{ item.getQuantity() | number }}&nbsp;&nbsp;
-                <span class="glyphicon glyphicon-plus" ng-click="item.setQuantity(1, true)"></span></td>
-            <td>{{ item.getPrice() | currency}}</td>
-            <td>{{ item.getTotal() | currency }}</td>
+                <span class="glyphicon glyphicon-plus" ng-click="ngCart.changeQuantity(item.getId(), 1)"></span></td>
+            <td>{{ item.getPrice() | centsToDollars | currency}}</td>
+            <td>{{ item.getTotal() | centsToDollars | currency }}</td>
         </tr>
         </tbody>
     </table>

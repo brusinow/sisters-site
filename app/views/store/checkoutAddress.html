@@ -43,18 +43,18 @@
       <label class="text-center">Add me to the SISTERS mailing list! <input type="checkbox" ng-model="mailingListAdd"></label>
   </div>
   <br>
-    <div class="store-card">
+    <div style="margin-bottom: 20px" class="store-card">
     <div class="store-header-div">
       <h6 class="text-center">Shipping Method</h6>
     </div>
     <div class="shipping-box">
       <label>
         <input type="radio" ng-model="shipChoice" ng-value="shippingType.regular">
-        {{shippingType.regular.price | currency}} ({{shippingType.regular.service}})
+        {{shippingType.regular.price | centsToDollars | currency}} ({{shippingType.regular.service}})
       </label><br/>
       <label>
         <input type="radio" ng-model="shipChoice" ng-value="shippingType.expedited">
-        {{shippingType.expedited.price | currency}} ({{shippingType.expedited.service}})
+        {{shippingType.expedited.price | centsToDollars | currency}} ({{shippingType.expedited.service}})
       </label>
     </div>
   </div>

@@ -3,38 +3,10 @@ angular.module('SistersCtrls')
 
 .controller('StoreCtrl', function($scope, $state, $http, $location, $sessionStorage){
 
-  $scope.items = [{
-      id: 10001,
-      name: "Drink Champagne LP",
-      description: "Scratch the box. Curl up and sleep on the freshly laundered towels playing with balls of wool sleep on keyboard. Sit on human cough furball. Cough furball leave hair everywhere, or knock over christmas tree loves cheeseburgers.",
-      price: 20
-    },
-    {
-      id: 10002,
-      name: "Drink Champagne CD",
-      description: "Scratch the box. Curl up and sleep on the freshly laundered towels playing with balls of wool sleep on keyboard. Sit on human cough furball. Cough furball leave hair everywhere, or knock over christmas tree loves cheeseburgers.",
-      price: 10
-    },
-    {
-      id: 10003,
-      name: "SISTERS Tank Top",
-      description: "Scratch the box. Curl up and sleep on the freshly laundered towels playing with balls of wool sleep on keyboard. Sit on human cough furball. Cough furball leave hair everywhere, or knock over christmas tree loves cheeseburgers.",
-      price: 30
-    },
-    {
-      id: 10004,
-      name: "SISTERS T-Shirt",
-      description: "Scratch the box. Curl up and sleep on the freshly laundered towels playing with balls of wool sleep on keyboard. Sit on human cough furball. Cough furball leave hair everywhere, or knock over christmas tree loves cheeseburgers.",
-      price: 30
-    }
-  ]
-
-  $scope.item = {
-      id: 10001,
-      name: "Drink Champagne LP",
-      description: "Scratch the box. Curl up and sleep on the freshly laundered towels playing with balls of wool sleep on keyboard. Sit on human cough furball. Cough furball leave hair everywhere, or knock over christmas tree loves cheeseburgers.",
-      price: 20
-    }
+    $http.get('/stripe/allProducts').success(function(data){
+      $scope.products = data.data;
+      console.log("what are products? ",$scope.products);
+    })
 
 
   $scope.toCheckout = function(){
@@ -56,6 +28,7 @@ angular.module('SistersCtrls')
 
 
 .controller('StoreCheckoutCtrl', function($scope, $state, $http, $location, $sessionStorage, ngCart, $rootScope){
+  console.log("show me items: ",ngCart.getItems());
   $rootScope.path = $location.$$path;
   $scope.storage = $sessionStorage;
   $scope.loaded = [];
@@ -65,21 +38,21 @@ angular.module('SistersCtrls')
   $scope.shipRates = {
     domestic: {
       regular: {
-        price: 5,
+        price: 500,
         service: "USPS First Class Mail"
       },
       expedited: {
-        price: 20,
+        price: 2000,
         service: "USPS Priority Mail 2-Day"
       }
     },
     international: {
       regular: {
-        price: 15,
+        price: 1500,
         service: "International Regular Option"
       },
       expedited: {
-        price: 40,
+        price: 4000,
         service: "International Fast Option"
       }
     }

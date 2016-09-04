@@ -295,5 +295,11 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
   return function(val){
     return  moment(val).format('MMMM Do, YYYY');
   }
-}]);
+}])
+
+.filter('centsToDollars', function(){
+  return function(val){
+    return  val/100;
+  }
+});
 

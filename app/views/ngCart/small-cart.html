@@ -5,24 +5,24 @@
     <table class="table ngCart cart">
         <tr ng-repeat="item in ngCart.getCart().items track by $index">
             <td>{{item.getQuantity() | number}}x {{item.getName()}}</td>
-            <td class="text-right">{{ item.getTotal() | currency }}</td>
+            <td class="text-right">{{ item.getTotal() | centsToDollars | currency }}</td>
         </tr>
 
         <tr>
             <td>Subtotal: </td>
-            <td class="text-right">{{ngCart.getSubTotal() | currency}}</td> 
+            <td class="text-right">{{ngCart.getSubTotal() | centsToDollars | currency}}</td> 
         </tr>
         <tr >
             <td>Tax ({{ngCart.getTaxRate() || 0}}%):</td>
-            <td class="text-right">{{ ngCart.getTax() || 0 | currency }}</td>
+            <td class="text-right">{{ ngCart.getTax() || 0 | centsToDollars | currency }}</td>
         </tr>
         <tr>
             <td>Shipping:</td>
-            <td class="text-right">{{ ngCart.getShipping()|| '--' | currency }}</td>
+            <td class="text-right">{{ ngCart.getShipping()|| '--' | centsToDollars | currency }}</td>
         </tr>
         <tr>
             <td><strong>TOTAL:</strong></td>
-            <td class="text-right"><strong>{{ ngCart.totalCost() | currency }}</strong></td>
+            <td class="text-right"><strong>{{ ngCart.totalCost() | centsToDollars | currency }}</strong></td>
         </tr>
     </table>
     </div>

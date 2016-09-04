@@ -51,8 +51,22 @@ angular.module('ngCart', ['ngCart.directives'])
                 this.$cart.items.push(newItem);
                 $rootScope.$broadcast('ngCart:itemAdded', newItem);
             }
+
             $rootScope.$broadcast('ngCart:change', {});
         };
+
+
+        this.changeQuantity = function (id, quantity){
+            var inCart = this.getItemById(id);
+            if (typeof inCart === 'object'){
+            inCart.setQuantity(quantity, true);
+            $rootScope.$broadcast('ngCart:itemUpdated', inCart);
+            } else {
+                console.log("nothing there");
+            }
+            $rootScope.$broadcast('ngCart:change', {});
+        }
+
 
         this.getItemById = function (itemId) {
             var items = this.getCart().items;
@@ -247,7 +261,7 @@ angular.module('ngCart', ['ngCart.directives'])
             return this._price;
         };
 
-
+    
         item.prototype.setQuantity = function(quantity, relative){
 
 
@@ -327,9 +341,9 @@ angular.module('ngCart', ['ngCart.directives'])
         }
     }])
 
-    .controller('CartController',['$scope', 'ngCart','$sessionStorage', function($scope, ngCart, $sessionStorage) {
+    .controller('CartController',['$scope', 'ngCart', function($scope, ngCart) {
         $scope.ngCart = ngCart;
-        $scope.sessionStorage = $sessionStorage;
+
     }])
 
     .value('version', '1.0.0');
@@ -338,10 +352,8 @@ angular.module('ngCart', ['ngCart.directives'])
 
 angular.module('ngCart.directives', ['ngCart.fulfilment'])
 
-    .controller('CartController',['$scope', 'ngCart','$sessionStorage', function($scope, ngCart, $sessionStorage) {
+    .controller('CartController',['$scope', 'ngCart', function($scope, ngCart) {
         $scope.ngCart = ngCart;
-        $scope.sessionStorage = $sessionStorage;
-        console.log("cart controller!!!!!");
     }])
 
     .directive('ngcartAddtocart', ['ngCart', function(ngCart){
@@ -404,7 +416,23 @@ angular.module('ngCart.directives', ['ngCart.fulfilment'])
         };
     }])
 
-    .directive('ngcartCartConfirm', [function(){
+    .directive('ngcartSummary', [function(){
+        return {
+            restrict : 'E',
+            controller : 'CartController',
+            scope: {},
+            transclude: true,
+            templateUrl: function(element, attrs) {
+                if ( typeof attrs.templateUrl == 'undefined' ) {
+                    return 'views/ngCart/summary.html';
+                } else {
+                    return attrs.templateUrl;
+                }
+            }
+        };
+    }])
+
+     .directive('ngcartCartConfirm', [function(){
         return {
             restrict : 'E',
             controller : 'CartController',
@@ -440,23 +468,6 @@ angular.module('ngCart.directives', ['ngCart.fulfilment'])
         };
     }])
 
-    .directive('ngcartSummary', [function(){
-        return {
-            restrict : 'E',
-            controller : 'CartController',
-            scope: {},
-            transclude: true,
-            templateUrl: function(element, attrs) {
-                if ( typeof attrs.templateUrl == 'undefined' ) {
-                    return 'views/ngCart/summary.html';
-                } else {
-                    return attrs.templateUrl;
-                }
-            }
-        };
-    }])
-
-
     .directive('ngcartCheckout', [function(){
         return {
             restrict : 'E',
@@ -485,7 +496,7 @@ angular.module('ngCart.directives', ['ngCart.fulfilment'])
             transclude: true,
             templateUrl: function(element, attrs) {
                 if ( typeof attrs.templateUrl == 'undefined' ) {
-                    return 'views/ngCart/checkout.html';
+                    return 'template/ngCart/checkout.html';
                 } else {
                     return attrs.templateUrl;
                 }
@@ -521,7 +532,7 @@ angular.module('ngCart.fulfilment', [])
 .service('ngCart.fulfilment.log', ['$q', '$log', 'ngCart', function($q, $log, ngCart){
 
         this.checkout = function(){
-            console.log("LOG FUNCTION!!!")
+
             var deferred = $q.defer();
 
             $log.info(ngCart.toObject());
@@ -535,10 +546,9 @@ angular.module('ngCart.fulfilment', [])
 
  }])
 
-.service('ngCart.fulfilment.http', ['$http', 'ngCart','$location', function($http, ngCart, $location){
+.service('ngCart.fulfilment.http', ['$http', 'ngCart', function($http, ngCart){
 
         this.checkout = function(settings){
-        $location.path( '/store/address' )
             return $http.post(settings.url,
                 { data: ngCart.toObject(), options: settings.options});
         }

@@ -44,8 +44,16 @@ app.get("/taxRate", function(req, res) {
       res.send(body);
     }
   });
-
 });
+
+app.get("/stripe/allProducts", function(req, res){
+  stripe.products.list(
+  { limit: 10 },
+  function(err, products) {
+    res.send(products);
+  }
+  );
+})
 
 app.post("/submitOrder", function(req, res) {
   console.log("req.query: ",req.query);

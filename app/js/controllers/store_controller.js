@@ -141,16 +141,14 @@ angular.module('SistersCtrls')
 $scope.submitForm = function(){
   var ship = $scope.data.shipping;
   var bill = $scope.data.billing;
-  var taxObj = {
-    "amount": ngCart.getTax(),
-    "currency": "usd",
-    "description": "Taxes (included)",
-    "parent": null,
-    "quantity": null,
-    "type": "tax"
-  };
-  var cartItems = $scope.cartItems;
-  cartItems.push(taxObj);
+  // var taxObj = {
+  //   "amount": ngCart.getTax(),
+  //   "currency": "usd",
+  //   "description": "Taxes (included)",
+  //   "type": "tax"
+  // };
+  // var cartItems = $scope.cartItems;
+  // cartItems.push(taxObj);
  
   var req = {
     url: '/stripe/createOrder',
@@ -189,7 +187,8 @@ $scope.submitForm = function(){
 
 
 .controller('StorePaymentCtrl', function($scope, $state, $http, $location, $sessionStorage, ngCart, $rootScope){
-
+  $rootScope.path = $location.$$path;
+  $scope.loaded = true;
   $scope.submitForm = function(form){
     if(form.$valid){
       Stripe.card.createToken({

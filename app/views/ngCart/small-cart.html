@@ -18,7 +18,7 @@
         </tr>
         <tr>
             <td>Shipping:</td>
-            <td class="text-right">{{ ngCart.getShipping()|| '--' | centsToDollars | currency }}</td>
+            <td class="text-right">{{ ngCart.getShipping()|| 0 | centsToDollars | currency }}</td>
         </tr>
         <tr>
             <td><strong>TOTAL:</strong></td>

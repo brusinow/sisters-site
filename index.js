@@ -72,6 +72,12 @@ app.post("/stripe/createOrder", function(req, res){
   });
 })
 
+app.post("/stripe/saveToken", function(req, res){
+  req.session.stripeToken = req.query.token;
+  res.send("success");
+})
+
+
 app.post("/submitOrder", function(req, res) {
   console.log("req.query: ",req.query);
   req.session.orderDetails = req.query.orderDetails;

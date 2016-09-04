@@ -3,6 +3,8 @@ angular.module('SistersCtrls')
 
 .controller('StoreCtrl', function($scope, $state, $http, $location, $sessionStorage){
 
+
+
     $http.get('/stripe/allProducts').success(function(data){
       $scope.products = data.data;
       console.log("what are products? ",$scope.products);
@@ -10,7 +12,7 @@ angular.module('SistersCtrls')
 
 
   $scope.toCheckout = function(){
-    $location.url('/store/checkout');
+    $location.url('/store/checkout/address');
   }
 
   $scope.continue = function(){
@@ -31,6 +33,7 @@ angular.module('SistersCtrls')
 
 
 .controller('StoreAddressCtrl', function($scope, $state, $http, $location, $sessionStorage, ngCart, $rootScope){
+  console.log("what is shipping? ",ngCart.getShipping());
   console.log("show me items: ",ngCart.getItems());
   $scope.cartItems = ngCart.getItems();
   $rootScope.path = $location.$$path;
@@ -38,49 +41,7 @@ angular.module('SistersCtrls')
 
 
   console.log("what is rootScope? ",$rootScope);
-  $scope.shipRates = {
-    domestic: {
-      regular: {
-        price: 500,
-        carrier: 'USPS',
-        service: "USPS First Class Mail",
-        type: "standard-domestic"
-      },
-      expedited: {
-        price: 2000,
-        carrier: "USPS",
-        service: "USPS Priority Mail 2-Day",
-        type: "expedited-domestic"
-      }
-    },
-    international: {
-      regular: {
-        price: 1500,
-        carrier: "Placeholder",
-        service: "International Regular Option",
-        type: "standard-international"
-      },
-      expedited: {
-        price: 4000,
-        carrier: "Placeholder",
-        service: "International Fast Option",
-        type: "expedited-international"
-      }
-    }
-  }
 
-
-  $scope.shippingType = $scope.shipRates.domestic; 
-  $scope.shipChoice = $scope.shippingType.regular;
-
-  $scope.$watch('shipChoice', function (newValue, oldValue, scope) {
-    console.log("what is shipChoice? ",$scope.shipChoice);
-    ngCart.setShipping($scope.shipChoice.price);  
-  }, false);
-
-  $scope.$watch('shippingType', function (newValue, oldValue, scope) {
-    $scope.shipChoice = $scope.shippingType.regular; 
-  }, false);
 
   $scope.data = {
     "shipping": {
@@ -177,15 +138,7 @@ angular.module('SistersCtrls')
     }
   }
 
-
-
-
-
-
-
-
-
- var handleStripe = function(status, response){
+$scope.submitForm = function(){
   var ship = $scope.data.shipping;
   var bill = $scope.data.billing;
   var taxObj = {
@@ -198,50 +151,39 @@ angular.module('SistersCtrls')
   };
   var cartItems = $scope.cartItems;
   cartItems.push(taxObj);
-  if(response.error) {
-    // there was an error. Fix it.
-  } else {
-    // got stripe token, now charge it or smt
-    token = response;
-    var req = {
-          url: '/stripe/createOrder',
-          method: 'POST',
-          params: {
-            order: {
-            currency: 'usd',
-            items: $scope.cartItems,
-            shipping: {
-              name: ship.name,
-              address: {
-                line1: ship.address1,
-                line2: ship.address2 || null,
-                city: ship.city,
-                state: ship.stateProvince.short || null,
-                country: ship.country.code,
-                postal_code: ship.postalCode
-              }
-            },
-            email: ship.email
-            },
-            token: token
+ 
+  var req = {
+    url: '/stripe/createOrder',
+    method: 'POST',
+    params: {
+      order: {
+        currency: 'usd',
+        items: $scope.cartItems,
+        shipping: {
+          name: ship.name,
+          address: {
+            line1: ship.address1,
+            line2: ship.address2 || null,
+            city: ship.city,
+            state: ship.stateProvince.short || null,
+            country: ship.country.code,
+            postal_code: ship.postalCode
           }
-        } 
+        },
+        email: ship.email
+      }
+    }
+  } 
 
         $http(req).then(function success(res) {
           console.log("Success! ",res.data);
+          $location.url('/store/checkout/payment'); 
           // ngCart.setTaxRate(res.data.totalRate); 
           // $sessionStorage.currentWaRate = res.data.totalRate;   
         }, function error(res) {
           console.log("error ",res);             
         });
-
-
-
   }
-  }
-
-
-
 })
 
 
@@ -268,7 +210,7 @@ angular.module('SistersCtrls')
     token = response;
 
     var req = {
-      url: '/stripe/getToken',
+      url: '/stripe/saveToken',
       method: 'POST',
       params: {
         token: token
@@ -277,6 +219,7 @@ angular.module('SistersCtrls')
 
     $http(req).then(function success(res) {
           console.log("Success! ",res.data);
+          $location.url('/store/checkout/confirm'); 
           // ngCart.setTaxRate(res.data.totalRate); 
           // $sessionStorage.currentWaRate = res.data.totalRate;   
         }, function error(res) {
@@ -286,8 +229,52 @@ angular.module('SistersCtrls')
   }
 
 
+  //   $scope.shipRates = {
+  //   domestic: {
+  //     regular: {
+  //       price: 500,
+  //       carrier: 'USPS',
+  //       service: "USPS First Class Mail",
+  //       type: "standard-domestic"
+  //     },
+  //     expedited: {
+  //       price: 2000,
+  //       carrier: "USPS",
+  //       service: "USPS Priority Mail 2-Day",
+  //       type: "expedited-domestic"
+  //     }
+  //   },
+  //   international: {
+  //     regular: {
+  //       price: 1500,
+  //       carrier: "Placeholder",
+  //       service: "International Regular Option",
+  //       type: "standard-international"
+  //     },
+  //     expedited: {
+  //       price: 4000,
+  //       carrier: "Placeholder",
+  //       service: "International Fast Option",
+  //       type: "expedited-international"
+  //     }
+  //   }
+  // }
 
-});
+
+  // $scope.shippingType = $scope.shipRates.domestic; 
+  // $scope.shipChoice = $scope.shippingType.regular;
+
+  // $scope.$watch('shipChoice', function (newValue, oldValue, scope) {
+  //   console.log("what is shipChoice? ",$scope.shipChoice);
+  //   ngCart.setShipping($scope.shipChoice.price);  
+  // }, false);
+
+  // $scope.$watch('shippingType', function (newValue, oldValue, scope) {
+  //   $scope.shipChoice = $scope.shippingType.regular; 
+  // }, false);
+
+
+})
 
 
 .controller('StoreConfirmCtrl', function($scope, $state, $http, $location, $sessionStorage, ngCart, $rootScope){

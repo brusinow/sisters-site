@@ -43,21 +43,7 @@
       <label class="text-center">Add me to the SISTERS mailing list! <input type="checkbox" ng-model="mailingListAdd"></label>
   </div>
   <br>
-    <div style="margin-bottom: 20px" class="store-card">
-    <div class="store-header-div">
-      <h6 class="text-center">Shipping Method</h6>
-    </div>
-    <div class="shipping-box">
-      <label>
-        <input type="radio" ng-model="shipChoice" ng-value="shippingType.regular">
-        {{shippingType.regular.price | centsToDollars | currency}} ({{shippingType.regular.service}})
-      </label><br/>
-      <label>
-        <input type="radio" ng-model="shipChoice" ng-value="shippingType.expedited">
-        {{shippingType.expedited.price | centsToDollars | currency}} ({{shippingType.expedited.service}})
-      </label>
-    </div>
-  </div>
+
   </div>
 
 
@@ -83,38 +69,7 @@
         <input class="u-full-width" type="text" ng-model="data.billing.postalCode" required ng-disabled="shippingSameBool" placeholder="ZIP/Postal Code" />
       </div>
       <br>
-      <div class="store-card">
-        <div class="store-header-div">
-          <h6 class="text-center">Payment Method</h6>
-        </div>
-        <div class="card-brands-container">
-          <div class="card-brands-div">
-            <div class="card-brands-border" ng-class="{'active-card': type === 'visa'}">
-              <img src="/img/credit-cards/visa.png"/>
-            </div>
-          </div>
-          <div class="card-brands-div">
-           <div class="card-brands-border" ng-class="{'active-card': type === 'mastercard'}">
-            <img src="/img/credit-cards/mastercard.png"/>
-          </div>
-        </div>
-        <div class="card-brands-div">
-         <div class="card-brands-border" ng-class="{'active-card': type === 'amex'}">
-          <img src="/img/credit-cards/amex.png"/>
-        </div>
-      </div>
-      <div class="card-brands-div">
-       <div class="card-brands-border" ng-class="{'active-card': type === 'discover'}">
-        <img src="/img/credit-cards/discover.png"/>
-      </div>
-    </div>
-  </div>
-  <input class="u-full-width" type="text" ng-model="number" placeholder="card" required payments-format="card" payments-validate="card" payments-type-model="type"/>
-  <div class="row">
-    <input class="six columns" type="text" ng-model="expiry" placeholder="expiration date" required payments-validate="expiry" payments-format="expiry" />
-    <input class="six columns" type="text" ng-model="cvc" placeholder="cvc" required payments-validate="cvc" payments-type-model="type" payments-format="cvc"/> 
-  </div>
-</div>
+ 
 
 
 

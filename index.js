@@ -100,9 +100,8 @@ app.post("/stripe/taxCallback", function(req, res){
   console.log("What is url? ",url);
    request(url, function (error, response, body) {
     if (!error && response.statusCode == 200) {
-      console.log("what is body? ",body);
-      var taxRate = body.totalRate;
-      console.log("what is total tax rate? ",taxRate);
+      console.log("what is body? ",body.totalRate);
+      var taxRate = parseFloat(body.totalRate);
       var totalTax = (totalPreTax * taxRate);
       console.log("what is taxable amount? ",totalTax);
 

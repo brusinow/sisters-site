@@ -84,7 +84,7 @@ app.get('/stripe/testtest', function(req, res) {
     res.json({ message: 'hooray! welcome to our api!' });   
 });
 
-app.get("/stripe/taxCallback", function(req, res){
+app.post("/stripe/taxCallback", function(req, res){
   console.log("TAX CALLBACKKKKKKKKKK!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
   // console.log("what is req inside callback? ",req);
   // var order = req.body;

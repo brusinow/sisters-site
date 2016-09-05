@@ -65,12 +65,12 @@ app.post("/stripe/createOrder", function(req, res){
     if (order){
       console.log("order succeeded!! ",order);
       var shipping = order.shipping.address;
-
       console.log("is this shipping country? ",shipping)
       res.send(order);
     }
     if (err){
       console.log("ERROR!! ",err);
+      res.send(err);
     }
   });
 })
@@ -88,42 +88,65 @@ app.post("/stripe/taxCallback", function(req, res){
   var order = req.body.order;
   console.log("what is order ",order);
   var shipping = order.shipping.address;
-  var items = order.items;
-  var totalPreTax = 0;
-  for (var i = 0;i < items.length;i++){
-    if (items[i].type === 'sku'){
-      totalPreTax += items[i].amount;
+  if (shipping.state === "WA"){
+    var items = order.items;
+    var totalPreTax = 0;
+      for (var i = 0;i < items.length;i++){
+        if (items[i].type === 'sku'){
+          totalPreTax += items[i].amount;
+        }
+      }
+      console.log("what is taxable amount after loop? ",totalPreTax);
+      var url = 'https://taxrates.api.avalara.com:443/postal?country='+shipping.country+'&postal='+shipping.postal_code+'&apikey='+process.env.TAX_KEY;
+      console.log("What is url? ",url);
+      request(url, function (error, response, body) {
+        if (!error && response.statusCode == 200) {
+          var bodyParsed = JSON.parse(body);
+          console.log("what is parsed body? ",bodyParsed);
+          var taxRate = bodyParsed.totalRate;
+          console.log("what is taxRate? ",taxRate)
+          var totalTax = (totalPreTax * (taxRate/100));
+          console.log("what is taxable amount? ",totalTax);
+
+
+        var myJSON = {
+          "order_update": {
+           "items": [
+           {
+            "parent": null,
+            "type": "tax",
+            "description": "Sales Tax ("+taxRate+"%)",
+            "amount": totalTax,
+            "currency": "usd"
+          }
+          ]
+        }
+      }
+
+
+
+
+
+    }
+    res.json(myJSON);
+  });
+  } else {
+    var myJSON = {
+      "order_update": {
+       "items": [
+       {
+        "parent": null,
+        "type": "tax",
+        "description": "Sales Tax (0%)",
+        "amount": 0,
+        "currency": "usd"
+      }
+      ]
     }
   }
-  console.log("what is taxable amount after loop? ",totalPreTax);
-  var url = 'https://taxrates.api.avalara.com:443/postal?country='+shipping.country+'&postal='+shipping.postal_code+'&apikey='+process.env.TAX_KEY;
-  console.log("What is url? ",url);
-   request(url, function (error, response, body) {
-    if (!error && response.statusCode == 200) {
-      console.log("what is body? ",body);
-      console.log("what is response ",response);
-      var taxRate = parseFloat(body.totalRate);
-      var totalTax = (totalPreTax * taxRate);
-      console.log("what is taxable amount? ",totalTax);
+  res.json(myJSON);
+}
 
-
-  var myJSON = {
-        "order_update": {
-         "items": [
-         {
-          "parent": null,
-          "type": "tax",
-          "description": "Sales taxes",
-          "amount": totalTax,
-          "currency": "usd"
-        }
-        ]
-      }
-    }
-      res.json(myJSON);
-
-    }
-  });
 })
 
 

@@ -164,9 +164,16 @@ $scope.submitForm = function(){
     }
   } 
 
+
+
         $http(req).then(function success(res) {
+          if (res.data.status === 'created'){
           console.log("Success! ",res.data);
           $location.url('/store/checkout/payment'); 
+        } else {
+          console.log("ERROR!!!! ",res.data);
+          $scope.errorMessage = res.data.message;
+        }
           // ngCart.setTaxRate(res.data.totalRate); 
           // $sessionStorage.currentWaRate = res.data.totalRate;   
         }, function error(res) {

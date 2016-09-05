@@ -35,16 +35,16 @@ app.get('/instagram', function(req, res) {
   });
 });
 
-app.get("/taxRate", function(req, res) {
-  console.log("What is req? ",req.query);
-  var url = 'https://taxrates.api.avalara.com:443/postal?country='+req.query.country+'&postal='+req.query.postal+'&apikey='+process.env.TAX_KEY;
-  console.log("What is url? ",url);
-   request(url, function (error, response, body) {
-    if (!error && response.statusCode == 200) {
-      res.send(body);
-    }
-  });
-});
+// app.get("/taxRate", function(req, res) {
+//   console.log("What is req? ",req.query);
+//   var url = 'https://taxrates.api.avalara.com:443/postal?country='+req.query.country+'&postal='+req.query.postal+'&apikey='+process.env.TAX_KEY;
+//   console.log("What is url? ",url);
+//    request(url, function (error, response, body) {
+//     if (!error && response.statusCode == 200) {
+//       res.send(body);
+//     }
+//   });
+// });
 
 app.get("/stripe/allProducts", function(req, res){
   stripe.products.list(
@@ -64,6 +64,9 @@ app.post("/stripe/createOrder", function(req, res){
   stripe.orders.create(parsedOrder, function(err, order) {
     if (order){
       console.log("order succeeded!! ",order);
+      var shipping = order.shipping.address;
+
+      console.log("is this shipping country? ",shipping)
       res.send(order);
     }
     if (err){
@@ -76,6 +79,73 @@ app.post("/stripe/saveToken", function(req, res){
   req.session.stripeToken = req.query.token;
   res.send("success");
 })
+
+app.get("/stripe/taxCallback", function(req, res){
+  console.log("what is req inside callback? ",req);
+  var order = req.body;
+  var shipping = order.shipping.address;
+  var items = order.items;
+  var totalPreTax = 0;
+  for (var i = 0;i < items.length;i++){
+    if (items[i].type === 'sku'){
+      totalPreTax += items[i].amount;
+    }
+  }
+  var url = 'https://taxrates.api.avalara.com:443/postal?country='+shipping.country+'&postal='+shipping.postal_code+'&apikey='+process.env.TAX_KEY;
+  console.log("What is url? ",url);
+   request(url, function (error, response, body) {
+    if (!error && response.statusCode == 200) {
+      console.log("what is body? ",body);
+      var taxRate = body.totalRate
+      var totalTax = totalPreTax * taxRate;
+      console.log("what is taxable amount? ",totalTax);
+
+
+  var myJSON = {
+        "order_update": {
+         "items": [
+         {
+          "parent": null,
+          "type": "tax",
+          "description": "Sales taxes",
+          "amount": totalTax,
+          "currency": "usd"
+        }
+        ]
+      }
+    }
+      res.send(myJSON);
+
+    }
+  });
+})
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 app.post("/submitOrder", function(req, res) {

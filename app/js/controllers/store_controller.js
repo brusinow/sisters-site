@@ -94,38 +94,38 @@ angular.module('SistersCtrls')
   }
 
 
-  $scope.getTaxRate = function(country, stateProvince, postalCode){
-    if (country.code === 'US' && stateProvince.short === 'WA' && postalCode){
-      if ($sessionStorage.currentWaRate){
-        ngCart.setTaxRate($sessionStorage.currentWaRate);    
-      } else {
+  // $scope.getTaxRate = function(country, stateProvince, postalCode){
+  //   if (country.code === 'US' && stateProvince.short === 'WA' && postalCode){
+  //     if ($sessionStorage.currentWaRate){
+  //       ngCart.setTaxRate($sessionStorage.currentWaRate);    
+  //     } else {
 
-        console.log("in WA State!!!!!");
-        var req = {
-          url: '/taxRate',
-          method: 'GET',
-          params: {
-            country: 'usa',
-            postal: postalCode
-          }
-        } 
+  //       console.log("in WA State!!!!!");
+  //       var req = {
+  //         url: '/taxRate',
+  //         method: 'GET',
+  //         params: {
+  //           country: 'usa',
+  //           postal: postalCode
+  //         }
+  //       } 
 
-        $http(req).then(function success(res) {
-          console.log("Success! ",res.data);
-          ngCart.setTaxRate(res.data.totalRate); 
-          $sessionStorage.currentWaRate = res.data.totalRate;   
-        }, function error(res) {
-          console.log("error ",res);             
-        });
-      }
-    } else if (country.code === 'US' && stateProvince.short !== 'WA'){
-      console.log("not in WA state");
-      ngCart.setTaxRate(0);
-    } else if (country.code !== 'US'){
-      console.log("Outside US!!!!!!!");
-      ngCart.setTaxRate(0);
-    }
-  }
+  //       $http(req).then(function success(res) {
+  //         console.log("Success! ",res.data);
+  //         ngCart.setTaxRate(res.data.totalRate); 
+  //         $sessionStorage.currentWaRate = res.data.totalRate;   
+  //       }, function error(res) {
+  //         console.log("error ",res);             
+  //       });
+  //     }
+  //   } else if (country.code === 'US' && stateProvince.short !== 'WA'){
+  //     console.log("not in WA state");
+  //     ngCart.setTaxRate(0);
+  //   } else if (country.code !== 'US'){
+  //     console.log("Outside US!!!!!!!");
+  //     ngCart.setTaxRate(0);
+  //   }
+  // }
 
 
 
@@ -140,16 +140,7 @@ angular.module('SistersCtrls')
 
 $scope.submitForm = function(){
   var ship = $scope.data.shipping;
-  var bill = $scope.data.billing;
-  // var taxObj = {
-  //   "amount": ngCart.getTax(),
-  //   "currency": "usd",
-  //   "description": "Taxes (included)",
-  //   "type": "tax"
-  // };
-  // var cartItems = $scope.cartItems;
-  // cartItems.push(taxObj);
- 
+  var bill = $scope.data.billing; 
   var req = {
     url: '/stripe/createOrder',
     method: 'POST',

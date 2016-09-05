@@ -95,13 +95,15 @@ app.post("/stripe/taxCallback", function(req, res){
       totalPreTax += items[i].amount;
     }
   }
+  console.log("what is taxable amount after loop? ",totalPreTax);
   var url = 'https://taxrates.api.avalara.com:443/postal?country='+shipping.country+'&postal='+shipping.postal_code+'&apikey='+process.env.TAX_KEY;
   console.log("What is url? ",url);
    request(url, function (error, response, body) {
     if (!error && response.statusCode == 200) {
       console.log("what is body? ",body);
-      var taxRate = body.totalRate
-      var totalTax = totalPreTax * taxRate;
+      var taxRate = body.totalRate;
+      console.log("what is total tax rate? ",taxRate);
+      var totalTax = (totalPreTax * taxRate);
       console.log("what is taxable amount? ",totalTax);
 
 

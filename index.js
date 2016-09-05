@@ -85,9 +85,7 @@ app.get('/stripe/testtest', function(req, res) {
 });
 
 app.post("/stripe/taxCallback", function(req, res){
-  console.log("TAX CALLBACKKKKKKKKKK!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!")
-  console.log("what is req inside callback? ",req);
-  var order = req.body;
+  var order = req.body.order;
   console.log("what is order ",order);
   var shipping = order.shipping.address;
   var items = order.items;

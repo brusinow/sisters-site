@@ -85,25 +85,25 @@ app.get('/stripe/testtest', function(req, res) {
 });
 
 app.get("/stripe/taxCallback", function(req, res){
-  console.log("what is req inside callback? ",req);
-  var order = req.body;
-  console.log("what is order ",order);
-  var shipping = order.shipping.address;
-  var items = order.items;
-  var totalPreTax = 0;
-  for (var i = 0;i < items.length;i++){
-    if (items[i].type === 'sku'){
-      totalPreTax += items[i].amount;
-    }
-  }
-  var url = 'https://taxrates.api.avalara.com:443/postal?country='+shipping.country+'&postal='+shipping.postal_code+'&apikey='+process.env.TAX_KEY;
-  console.log("What is url? ",url);
-   request(url, function (error, response, body) {
-    if (!error && response.statusCode == 200) {
-      console.log("what is body? ",body);
-      var taxRate = body.totalRate
-      var totalTax = totalPreTax * taxRate;
-      console.log("what is taxable amount? ",totalTax);
+  // console.log("what is req inside callback? ",req);
+  // var order = req.body;
+  // console.log("what is order ",order);
+  // var shipping = order.shipping.address;
+  // var items = order.items;
+  // var totalPreTax = 0;
+  // for (var i = 0;i < items.length;i++){
+  //   if (items[i].type === 'sku'){
+  //     totalPreTax += items[i].amount;
+  //   }
+  // }
+  // var url = 'https://taxrates.api.avalara.com:443/postal?country='+shipping.country+'&postal='+shipping.postal_code+'&apikey='+process.env.TAX_KEY;
+  // console.log("What is url? ",url);
+  //  request(url, function (error, response, body) {
+  //   if (!error && response.statusCode == 200) {
+  //     console.log("what is body? ",body);
+  //     var taxRate = body.totalRate
+  //     var totalTax = totalPreTax * taxRate;
+  //     console.log("what is taxable amount? ",totalTax);
 
 
   var myJSON = {
@@ -113,16 +113,17 @@ app.get("/stripe/taxCallback", function(req, res){
           "parent": null,
           "type": "tax",
           "description": "Sales taxes",
-          "amount": totalTax,
+          "amount": 200,
           "currency": "usd"
         }
-        ]
+        ],
+        "shipping_methods": []
       }
     }
       res.json(myJSON);
 
-    }
-  });
+  //   }
+  // });
 })
 
 

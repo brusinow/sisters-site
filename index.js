@@ -80,9 +80,14 @@ app.post("/stripe/saveToken", function(req, res){
   res.send("success");
 })
 
+app.get('/stripe/testtest', function(req, res) {
+    res.json({ message: 'hooray! welcome to our api!' });   
+});
+
 app.get("/stripe/taxCallback", function(req, res){
   console.log("what is req inside callback? ",req);
   var order = req.body;
+  console.log("what is order ",order);
   var shipping = order.shipping.address;
   var items = order.items;
   var totalPreTax = 0;
@@ -114,37 +119,11 @@ app.get("/stripe/taxCallback", function(req, res){
         ]
       }
     }
-      res.send(myJSON);
+      res.json(myJSON);
 
     }
   });
 })
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 

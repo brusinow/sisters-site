@@ -32,7 +32,8 @@ angular.module('SistersCtrls')
 
 
 
-.controller('StoreAddressCtrl', function($scope, $state, $window, $http, $location, $sessionStorage, ngCart, $rootScope, CurrentOrderService){
+.controller('StoreAddressCtrl', function($scope, $state, $window, $timeout, $http, $location, $localStorage, ngCart, $rootScope, CurrentOrderService){
+  $scope.$storage = $localStorage;
   console.log("what is shipping? ",ngCart.getShipping());
   console.log("show me items: ",ngCart.getItems());
   $scope.cartItems = ngCart.getItems();
@@ -123,16 +124,23 @@ angular.module('SistersCtrls')
               postal_code: ship.postalCode
             }
           },
-          email: ship.email
+          email: ship.email,
+          metadata: {
+            taxRate: ngCart.getTaxRate()
+          }
         }
       }
     } 
     $http(req).then(function success(res) {
           // console.log("what is res? ",res);
           if (res.data.status === 'created'){
-            console.log("Success! ",res);
-            CurrentOrderService.set(res);
-            $location.url('/store/checkout/payment'); 
+            console.log("SUCCESS! ", res);
+            $scope.$storage.orderData = res;
+            $scope.$evalAsync(function(){
+              $location.url('/store/checkout/payment');
+            });
+              
+           
           } else {
             console.log("ERROR!!!! ",res.data);
             $scope.errorMessage = res.data.message;
@@ -146,7 +154,8 @@ angular.module('SistersCtrls')
     $scope.getTaxRate = function(country, stateProvince, postalCode){
     if (country.code === 'US' && stateProvince.short === 'WA' && postalCode){
       if ($window.localStorage.currentWaRate){
-        ngCart.setTaxRate($window.localStorage.currentWaRate);    
+        var parsedTax = parseFloat($window.localStorage.currentWaRate)
+        ngCart.setTaxRate(parsedTax);    
       } else {
 
         console.log("in WA State!!!!!");
@@ -185,14 +194,12 @@ angular.module('SistersCtrls')
 
 
 
-.controller('StorePaymentCtrl', function($scope, $state, $http, $location, $sessionStorage, ngCart, $rootScope, currentOrder){
-  console.log("what is current tax rate? ",ngCart.getTaxRate());
+.controller('StorePaymentCtrl', function($scope, $state, $http, $location, $localStorage, ngCart, $rootScope, currentOrder){
+  $scope.$storage = $localStorage;
 
-  console.log("what is current order? ",currentOrder);
-  var orderData = currentOrder.data;
-  $scope.shipOptions = orderData.shipping_methods;
+  $scope.shipOptions = $scope.$storage.orderData.data.shipping_methods;
+  $scope.shipChoice = {};
 
-  
   $rootScope.path = $location.$$path;
   $scope.loaded = true;
   $scope.submitForm = function(form){

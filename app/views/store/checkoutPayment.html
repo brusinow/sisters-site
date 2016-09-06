@@ -6,9 +6,9 @@
           <h6 class="text-center">Shipping Method</h6>
         </div>
         <div class="shipping-box">
-          <label>
-            <input style="display:block;" type="radio" ng-repeat="option in shipOptions" ng-model="shipChoice" ng-value="option.id">
-            {{option.amount | centsToDollars | currency}} ({{option.description}})
+          <label ng-repeat="ship in shipOptions">
+            <input style="display:block;" type="radio" ng-model="shipChoice" ng-value="ship.id">
+            {{ship.amount | centsToDollars | currency}} ({{ship.description}})
           </label>
         <!--   <label>
             <input type="radio" ng-model="shipChoice" ng-value="shippingType.expedited">

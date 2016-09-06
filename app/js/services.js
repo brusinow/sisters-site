@@ -123,13 +123,14 @@ angular.module('SistersServices', ['ngResource'])
 
 })
 
-.factory('CurrentOrderService', function() {
- var savedData = {}
+.factory('CurrentOrderService', function($window) {
  function set(data) {
-   savedData = data;
+   $window.localStorage.setItem( 'orderData', angular.toJson(data) );
+   console.log("order saved!");
  }
  function get() {
-  return savedData;
+  var order = angular.fromJson( $window.localStorage.getItem('orderData') ) ;
+    return JSON.parse(order);
  }
 
  return {

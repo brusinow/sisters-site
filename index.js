@@ -82,11 +82,12 @@ app.get('/stripe/testtest', function(req, res) {
 });
 
 
+
 app.post("/stripe/taxCallback", function(req, res){
   var order = req.body.order;
-  console.log("what is order ",order);
   var shipping = order.shipping.address;
-  if (shipping.state === "WA"){
+  var taxRate = order.metadata.taxRate;
+  if (taxRate !== 0){
     var items = order.items;
     var totalPreTax = 0;
       for (var i = 0;i < items.length;i++){
@@ -94,57 +95,91 @@ app.post("/stripe/taxCallback", function(req, res){
           totalPreTax += items[i].amount;
         }
       }
-      console.log("what is taxable amount after loop? ",totalPreTax);
-      var url = 'https://taxrates.api.avalara.com:443/postal?country='+shipping.country+'&postal='+shipping.postal_code+'&apikey='+process.env.TAX_KEY;
-      console.log("What is url? ",url);
-      request(url, function (error, response, body) {
-        if (!error && response.statusCode == 200) {
-          var bodyParsed = JSON.parse(body);
-          var taxRate = bodyParsed.totalRate;
-          console.log("what is taxRate? ",taxRate)
-          var totalTax = (totalPreTax * (taxRate/100));
-          console.log("what is taxable amount? ",totalTax);
+  }
+
+
+  var myJSON = {
+      "order_update": {
+        "items": [
+          {
+          "parent": null,
+          "type": "tax",
+          "description": "Sales Tax ("+taxRate+"%)",
+          "amount": (taxRate/100) * totalPreTax,
+          "currency": "usd"
+          }
+        ]
+      }
+  }    
+  res.json(myJSON); 
+});
+
+
+
+
+
+
+
+
+
+// app.post("/stripe/taxCallback", function(req, res){
+//   var order = req.body.order;
+//   console.log("what is order ",order);
+//   var shipping = order.shipping.address;
+//   if (shipping.state === "WA"){
+//     var items = order.items;
+//     var totalPreTax = 0;
+//       for (var i = 0;i < items.length;i++){
+//         if (items[i].type === 'sku'){
+//           totalPreTax += items[i].amount;
+//         }
+//       }
+//       console.log("what is taxable amount after loop? ",totalPreTax);
+//       var url = 'https://taxrates.api.avalara.com:443/postal?country='+shipping.country+'&postal='+shipping.postal_code+'&apikey='+process.env.TAX_KEY;
+//       console.log("What is url? ",url);
+//       request(url, function (error, response, body) {
+//         if (!error && response.statusCode == 200) {
+//           var bodyParsed = JSON.parse(body);
+//           var taxRate = bodyParsed.totalRate;
+//           console.log("what is taxRate? ",taxRate)
+//           var totalTax = (totalPreTax * (taxRate/100));
+//           console.log("what is taxable amount? ",totalTax);
         
 
-        var myJSON = {
-          "order_update": {
-           "items": [
-           {
-            "parent": null,
-            "type": "tax",
-            "description": "Sales Tax ("+taxRate+"%)",
-            "amount": totalTax,
-            "currency": "usd"
-          }
-          ]
-        }
-      }
+//         var myJSON = {
+//           "order_update": {
+//            "items": [
+//            {
+//             "parent": null,
+//             "type": "tax",
+//             "description": "Sales Tax ("+taxRate+"%)",
+//             "amount": totalTax,
+//             "currency": "usd"
+//           }
+//           ]
+//         }
+//       }
+//     }
+//       res.json(myJSON); 
+//   });
+//   } else {
+//     var myJSON = {
+//       "order_update": {
+//        "items": [
+//        {
+//         "parent": null,
+//         "type": "tax",
+//         "description": "Sales Tax (0%)",
+//         "amount": 0,
+//         "currency": "usd"
+//       }
+//       ]
+//     }
+//   }
+//     res.json(myJSON);
+// }
 
-
-
-
-
-    }
-      res.json(myJSON); 
-  });
-  } else {
-    var myJSON = {
-      "order_update": {
-       "items": [
-       {
-        "parent": null,
-        "type": "tax",
-        "description": "Sales Tax (0%)",
-        "amount": 0,
-        "currency": "usd"
-      }
-      ]
-    }
-  }
-    res.json(myJSON);
-}
-
-})
+// })
 
 
 

@@ -123,6 +123,24 @@ angular.module('SistersServices', ['ngResource'])
 
 })
 
+.factory('CurrentOrderService', function() {
+ var savedData = {}
+ function set(data) {
+   savedData = data;
+ }
+ function get() {
+  return savedData;
+ }
+
+ return {
+  set: set,
+  get: get
+ }
+})
+
+
+
+
 .factory('HelperService', ["moment", function(moment) {
   return {
     parseYouTube: function(url){

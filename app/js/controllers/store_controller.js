@@ -32,7 +32,7 @@ angular.module('SistersCtrls')
 
 
 
-.controller('StoreAddressCtrl', function($scope, $state, $http, $location, $sessionStorage, ngCart, $rootScope){
+.controller('StoreAddressCtrl', function($scope, $state, $window, $http, $location, $sessionStorage, ngCart, $rootScope, CurrentOrderService){
   console.log("what is shipping? ",ngCart.getShipping());
   console.log("show me items: ",ngCart.getItems());
   $scope.cartItems = ngCart.getItems();
@@ -94,42 +94,6 @@ angular.module('SistersCtrls')
   }
 
 
-  // $scope.getTaxRate = function(country, stateProvince, postalCode){
-  //   if (country.code === 'US' && stateProvince.short === 'WA' && postalCode){
-  //     if ($sessionStorage.currentWaRate){
-  //       ngCart.setTaxRate($sessionStorage.currentWaRate);    
-  //     } else {
-
-  //       console.log("in WA State!!!!!");
-  //       var req = {
-  //         url: '/taxRate',
-  //         method: 'GET',
-  //         params: {
-  //           country: 'usa',
-  //           postal: postalCode
-  //         }
-  //       } 
-
-  //       $http(req).then(function success(res) {
-  //         console.log("Success! ",res.data);
-  //         ngCart.setTaxRate(res.data.totalRate); 
-  //         $sessionStorage.currentWaRate = res.data.totalRate;   
-  //       }, function error(res) {
-  //         console.log("error ",res);             
-  //       });
-  //     }
-  //   } else if (country.code === 'US' && stateProvince.short !== 'WA'){
-  //     console.log("not in WA state");
-  //     ngCart.setTaxRate(0);
-  //   } else if (country.code !== 'US'){
-  //     console.log("Outside US!!!!!!!");
-  //     ngCart.setTaxRate(0);
-  //   }
-  // }
-
-
-
-
   $scope.countryChange = function(country){
     if (country.code === 'US'){
       $scope.shippingType = $scope.shipRates.domestic;
@@ -138,53 +102,97 @@ angular.module('SistersCtrls')
     }
   }
 
-$scope.submitForm = function(){
-  var ship = $scope.data.shipping;
-  var bill = $scope.data.billing; 
-  var req = {
-    url: '/stripe/createOrder',
-    method: 'POST',
-    params: {
-      order: {
-        currency: 'usd',
-        items: $scope.cartItems,
-        shipping: {
-          name: ship.name,
-          address: {
-            line1: ship.address1,
-            line2: ship.address2 || null,
-            city: ship.city,
-            state: ship.stateProvince.short || null,
-            country: ship.country.code,
-            postal_code: ship.postalCode
-          }
-        },
-        email: ship.email
-      }
-    }
-  } 
-
-
-
-        $http(req).then(function success(res) {
-          if (res.data.status === 'created'){
-          console.log("Success! ",res.data);
-          $location.url('/store/checkout/payment'); 
-        } else {
-          console.log("ERROR!!!! ",res.data);
-          $scope.errorMessage = res.data.message;
+  $scope.submitForm = function(){
+    var ship = $scope.data.shipping;
+    var bill = $scope.data.billing; 
+    var req = {
+      url: '/stripe/createOrder',
+      method: 'POST',
+      params: {
+        order: {
+          currency: 'usd',
+          items: $scope.cartItems,
+          shipping: {
+            name: ship.name,
+            address: {
+              line1: ship.address1,
+              line2: ship.address2 || null,
+              city: ship.city,
+              state: ship.stateProvince.short || null,
+              country: ship.country.code,
+              postal_code: ship.postalCode
+            }
+          },
+          email: ship.email
         }
-          // ngCart.setTaxRate(res.data.totalRate); 
-          // $sessionStorage.currentWaRate = res.data.totalRate;   
+      }
+    } 
+    $http(req).then(function success(res) {
+          // console.log("what is res? ",res);
+          if (res.data.status === 'created'){
+            console.log("Success! ",res);
+            CurrentOrderService.set(res);
+            $location.url('/store/checkout/payment'); 
+          } else {
+            console.log("ERROR!!!! ",res.data);
+            $scope.errorMessage = res.data.message;
+          } 
         }, function error(res) {
           console.log("error ",res);             
         });
   }
+
+
+    $scope.getTaxRate = function(country, stateProvince, postalCode){
+    if (country.code === 'US' && stateProvince.short === 'WA' && postalCode){
+      if ($window.localStorage.currentWaRate){
+        ngCart.setTaxRate($window.localStorage.currentWaRate);    
+      } else {
+
+        console.log("in WA State!!!!!");
+        var req = {
+          url: '/taxRate',
+          method: 'GET',
+          params: {
+            country: 'usa',
+            postal: postalCode
+          }
+        } 
+
+        $http(req).then(function success(res) {
+          console.log("what is response? ",res.data);
+          console.log("type of total rate ", typeof res.data.totalRate);
+          ngCart.setTaxRate(res.data.totalRate); 
+          $window.localStorage.currentWaRate = res.data.totalRate;   
+        }, function error(res) {
+          console.log("error ",res);             
+        });
+      }
+    } else if (country.code === 'US' && stateProvince.short !== 'WA'){
+      console.log("not in WA state");
+      ngCart.setTaxRate(0);
+    } else if (country.code !== 'US'){
+      console.log("Outside US!!!!!!!");
+      ngCart.setTaxRate(0);
+    }
+  }
+
+
+
+
+
 })
 
 
 
-.controller('StorePaymentCtrl', function($scope, $state, $http, $location, $sessionStorage, ngCart, $rootScope){
+.controller('StorePaymentCtrl', function($scope, $state, $http, $location, $sessionStorage, ngCart, $rootScope, currentOrder){
+  console.log("what is current tax rate? ",ngCart.getTaxRate());
+
+  console.log("what is current order? ",currentOrder);
+  var orderData = currentOrder.data;
+  $scope.shipOptions = orderData.shipping_methods;
+
+  
   $rootScope.path = $location.$$path;
   $scope.loaded = true;
   $scope.submitForm = function(form){
@@ -217,7 +225,7 @@ $scope.submitForm = function(){
     $http(req).then(function success(res) {
           console.log("Success! ",res.data);
           $location.url('/store/checkout/confirm'); 
-          // ngCart.setTaxRate(res.data.totalRate); 
+        
           // $sessionStorage.currentWaRate = res.data.totalRate;   
         }, function error(res) {
           console.log("error ",res);             

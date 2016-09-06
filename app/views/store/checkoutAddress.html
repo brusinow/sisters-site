@@ -35,7 +35,7 @@
         <input class="six columns" type="text" ng-model="data.shipping.city" required placeholder="City" />
         <input class="six columns" type="text" ng-model="data.shipping.postalCode" required placeholder="ZIP/Postal Code" />
       </div>
-      <select ng-if="data.shipping.country.code === 'US'" class="u-full-width" data-ng-model="data.shipping.stateProvince" ng-options="state.name for state in states track by state.name" >
+      <select ng-if="data.shipping.country.code === 'US'" class="u-full-width" data-ng-model="data.shipping.stateProvince" ng-change="getTaxRate(data.shipping.country, data.shipping.stateProvince, data.shipping.postalCode)" ng-options="state.name for state in states track by state.name" >
         <option value="" disabled selected>Choose Your State</option>
       </select>
       <select ng-if="data.shipping.country.code === 'CA'" class="u-full-width" data-ng-model="data.shipping.stateProvince" ng-options="province.name for province in provinces track by province.name">
@@ -69,7 +69,7 @@
         <select ng-if="data.billing.country.code === 'CA'" class="u-full-width" data-ng-model="data.billing.stateProvince" ng-disabled="shippingSameBool" ng-options="province.name for province in provinces track by province.name">
           <option value="" disabled selected>Choose Your Province</option>
         </select>
-        <input class="u-full-width" type="text" ng-model="data.billing.postalCode" required ng-disabled="shippingSameBool" placeholder="ZIP/Postal Code" />
+        <input class="u-full-width" type="text" ng-model="data.billing.postalCode" ng-blur="getTaxRate(data.shipping.country, data.shipping.stateProvince, data.shipping.postalCode)" required ng-disabled="shippingSameBool" placeholder="ZIP/Postal Code" />
       </div>
       <br>
  
@@ -89,7 +89,3 @@
 
 </div>
 </form>
-<!-- THIS WAS ON THE ZIP/POSTAL INPUT -->
-<!-- ng-blur="getTaxRate(data.shipping.country, data.shipping.stateProvince, data.shipping.postalCode)" -->
-<!-- THIS WAS ON THE STATE SELECT? -->
-<!-- ng-change="getTaxRate(data.shipping.country, data.shipping.stateProvince, data.shipping.postalCode)" -->

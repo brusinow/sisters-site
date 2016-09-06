@@ -7,13 +7,13 @@
         </div>
         <div class="shipping-box">
           <label>
-            <input type="radio" ng-model="shipChoice" ng-value="shippingType.regular">
-            {{shippingType.regular.price | centsToDollars | currency}} ({{shippingType.regular.service}})
-          </label><br/>
-          <label>
+            <input style="display:block;" type="radio" ng-repeat="option in shipOptions" ng-model="shipChoice" ng-value="option.id">
+            {{option.amount | centsToDollars | currency}} ({{option.description}})
+          </label>
+        <!--   <label>
             <input type="radio" ng-model="shipChoice" ng-value="shippingType.expedited">
             {{shippingType.expedited.price | centsToDollars | currency}} ({{shippingType.expedited.service}})
-          </label>
+          </label> -->
         </div>
       </div>
       <br>

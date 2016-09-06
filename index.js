@@ -14,7 +14,7 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(express.static(path.join(__dirname, 'app')));
 
 app.use(session({
-  secret: "Murray is a dog buddy",
+  secret: process.env.SESSION_SECRET,
   resave: false,
   saveUninitialized: true,
   cookie: { secure: false },
@@ -35,16 +35,16 @@ app.get('/instagram', function(req, res) {
   });
 });
 
-// app.get("/taxRate", function(req, res) {
-//   console.log("What is req? ",req.query);
-//   var url = 'https://taxrates.api.avalara.com:443/postal?country='+req.query.country+'&postal='+req.query.postal+'&apikey='+process.env.TAX_KEY;
-//   console.log("What is url? ",url);
-//    request(url, function (error, response, body) {
-//     if (!error && response.statusCode == 200) {
-//       res.send(body);
-//     }
-//   });
-// });
+app.get("/taxRate", function(req, res) {
+  console.log("What is req? ",req.query);
+  var url = 'https://taxrates.api.avalara.com:443/postal?country='+req.query.country+'&postal='+req.query.postal+'&apikey='+process.env.TAX_KEY;
+  console.log("What is url? ",url);
+   request(url, function (error, response, body) {
+    if (!error && response.statusCode == 200) {
+      res.send(body);
+    }
+  });
+});
 
 app.get("/stripe/allProducts", function(req, res){
   stripe.products.list(
@@ -59,13 +59,10 @@ app.post("/stripe/createOrder", function(req, res){
   console.log("what is the order? ",req.query.order);
   var thisOrder = req.query.order;
   var parsedOrder = JSON.parse(thisOrder);
-  req.session.stripeToken = req.query.token;
-  console.log("what is req.session? ",req.session);
   stripe.orders.create(parsedOrder, function(err, order) {
     if (order){
+      console.log("session storage at order create? ",req.session);
       console.log("order succeeded!! ",order);
-      var shipping = order.shipping.address;
-      console.log("is this shipping country? ",shipping)
       res.send(order);
     }
     if (err){
@@ -83,6 +80,7 @@ app.post("/stripe/saveToken", function(req, res){
 app.get('/stripe/testtest', function(req, res) {
     res.json({ message: 'hooray! welcome to our api!' });   
 });
+
 
 app.post("/stripe/taxCallback", function(req, res){
   var order = req.body.order;
@@ -102,12 +100,11 @@ app.post("/stripe/taxCallback", function(req, res){
       request(url, function (error, response, body) {
         if (!error && response.statusCode == 200) {
           var bodyParsed = JSON.parse(body);
-          console.log("what is parsed body? ",bodyParsed);
           var taxRate = bodyParsed.totalRate;
           console.log("what is taxRate? ",taxRate)
           var totalTax = (totalPreTax * (taxRate/100));
           console.log("what is taxable amount? ",totalTax);
-
+        
 
         var myJSON = {
           "order_update": {
@@ -128,7 +125,7 @@ app.post("/stripe/taxCallback", function(req, res){
 
 
     }
-    res.json(myJSON);
+      res.json(myJSON); 
   });
   } else {
     var myJSON = {
@@ -144,20 +141,20 @@ app.post("/stripe/taxCallback", function(req, res){
       ]
     }
   }
-  res.json(myJSON);
+    res.json(myJSON);
 }
 
 })
 
 
 
-app.post("/submitOrder", function(req, res) {
-  console.log("req.query: ",req.query);
-  req.session.orderDetails = req.query.orderDetails;
-  req.session.stripeToken = req.query.token;
-  console.log("what is req.session? ",req.session);
-  res.send(); 
-});
+// app.post("/submitOrder", function(req, res) {
+//   console.log("req.query: ",req.query);
+//   req.session.orderDetails = req.query.orderDetails;
+//   req.session.stripeToken = req.query.token;
+//   console.log("what is req.session? ",req.session);
+//   res.send(); 
+// });
 
 
 app.get("/orderConfirm", function(req, res) {

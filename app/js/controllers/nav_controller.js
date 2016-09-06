@@ -2,13 +2,13 @@ angular.module('SistersCtrls')
 
 
 .controller('NavCtrl', ['$scope','$timeout','$http','Auth','$state','$sessionStorage', function($scope, $timeout, $http, Auth, $state, $sessionStorage){
-  $scope.sessionStorage = $sessionStorage;
-  if (!$scope.sessionStorage.hash){
-    $scope.sessionStorage.hash = Math.random().toString(36).slice(2);
-  } else {
-    console.log("already a session hash");
-  }
-  console.log("What is session storage? ",$scope.sessionStorage);
+  // $scope.sessionStorage = $sessionStorage;
+  // if (!$scope.sessionStorage.hash){
+  //   $scope.sessionStorage.hash = Math.random().toString(36).slice(2);
+  // } else {
+  //   console.log("already a session hash");
+  // }
+  // console.log("What is session storage? ",$scope.sessionStorage);
 
 
   $scope.auth = Auth;

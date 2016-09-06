@@ -227,7 +227,10 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
     templateUrl: '/views/store/checkoutPayment.html',
     controller: 'StorePaymentCtrl',
     resolve: {
-      "currentAuth": authWait
+      "currentAuth": authWait,
+      currentOrder: function(CurrentOrderService){
+        return CurrentOrderService.get();
+      }
     }
   })
 

@@ -15,10 +15,12 @@ angular.module('ngCart', ['ngCart.directives'])
     .run(['$rootScope', 'ngCart','ngCartItem', 'store', function ($rootScope, ngCart, ngCartItem, store) {
 
         $rootScope.$on('ngCart:change', function(){
+            console.log("cart being saved");
             ngCart.$save();
         });
 
         if (angular.isObject(store.get('cart'))) {
+            console.log("cart being restored");
             ngCart.$restore(store.get('cart'));
 
         } else {
@@ -92,6 +94,7 @@ angular.module('ngCart', ['ngCart.directives'])
 
         this.setTaxRate = function(taxRate){
             this.$cart.taxRate = +parseFloat(taxRate).toFixed(2);
+            $rootScope.$broadcast('ngCart:change', {});
             return this.getTaxRate();
         };
 
@@ -198,6 +201,7 @@ angular.module('ngCart', ['ngCart.directives'])
             var _self = this;
             _self.init();
             _self.$cart.shipping = storedCart.shipping;
+            _self.$cart.taxRate = storedCart.taxRate;
             _self.$cart.tax = storedCart.tax;
 
             angular.forEach(storedCart.items, function (item) {

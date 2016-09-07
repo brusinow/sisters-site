@@ -126,11 +126,11 @@ input[type="email"], input[type="number"], input[type="search"], input[type="tex
   right: 15px;
 }
 
-.checkout-form.ng-submitted input.ng-invalid {
+.checkout-form.ng-submitted input.ng-invalid, .checkout-form.ng-submitted select.ng-invalid {
   border: 2px solid red;
   }
 
-.checkout-form.ng-submitted input.ng-valid {
+.checkout-form.ng-submitted input.ng-valid, .checkout-form.ng-submitted select.ng-valid {
   border: 1px solid #D1D1D1;
 }
 

@@ -46,16 +46,10 @@ angular.module('SistersCtrls')
 
   $scope.data = {
     "shipping": {
-      "country": {},
-      "stateProvince": {
-        "short": ''
-      }
+      "country": {}
     },
     "billing": {
-      "country": {},
-      "stateProvince": {
-        "short": ''
-      }
+      "country": {}
     }
   };
   $scope.mailingListAdd = true;
@@ -104,6 +98,8 @@ angular.module('SistersCtrls')
   }
 
   $scope.submitForm = function(){
+     if(form.$valid){
+      
     $scope.loaded = [];
     var ship = $scope.data.shipping;
     var bill = $scope.data.billing; 
@@ -151,6 +147,11 @@ angular.module('SistersCtrls')
         }, function error(res) {
           console.log("error ",res);             
         });
+
+    } else {
+      console.log("form invalid!!");
+      }
+
   }
 
 

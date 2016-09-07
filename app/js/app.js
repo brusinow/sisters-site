@@ -1,7 +1,7 @@
 var authWait = ["Auth", function(Auth) { return Auth.$waitForSignIn(); }]
 var authRequire = ["Auth", function(Auth) { return Auth.$requireSignIn(); }]
 
-angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui.bootstrap','firebase','angularMoment','ngCart','ngStorage','angularPayments','ngAnimate'])
+angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui.bootstrap','firebase','angularMoment','ngCart','ngStorage','angularPayments','ngAnimate','picardy.fontawesome'])
 
 .run(["$rootScope", "$state", function($rootScope, $state, $scope) {
   $rootScope.$on("$stateChangeError", function(event, toState, toParams, fromState, fromParams, error) {
@@ -309,9 +309,23 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
   }
 }])
 
+.filter('DeliveryEstDate', ['moment', function(moment){
+  return function(val){
+    return  moment(val).format('dddd, MMMM Do');
+  }
+}])
+
+
+
+
+
 .filter('centsToDollars', function(){
   return function(val){
     return  val/100;
   }
 });
+
+
+
+
 

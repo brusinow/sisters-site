@@ -2,6 +2,7 @@
 <div class="alert alert-success" role="alert" ng-show="orderComplete">
     Your order is complete! You should be receiving an email receipt shortly.
 </div>
+<div ng-hide="loaded" class="spinner"></div>
 <div ng-if="orderComplete" class="confirm-complete">
   <img src="/img/press-shot.jpg">
 </div>
@@ -12,21 +13,22 @@
   <h6 class="text-center">Shipping Address</h6>
 </div>
   <div class="white-confirm">
-{{orderDetails.shippingAddress.name}}<br>
-{{orderDetails.shippingAddress.address1}}<br>
-<span ng-if="orderDetails.shippingAddress.address2">{{orderDetails.shippingAddress.address2}}<br></span>
-{{orderDetails.shippingAddress.city}}, {{orderDetails.shippingAddress.stateProvince.short}} {{orderDetails.shippingAddress.postalCode}}<br>
-{{orderDetails.shippingAddress.country.name}}
+{{order.shipping.name}}<br>
+{{order.shipping.address.line1}}<br>
+<span ng-if="order.shipping.address.line2">{{order.shipping.address.line2}}<br></span>
+{{order.shipping.address.city}}, <span ng-if="order.shipping.address.state">{{order.shipping.address.state}}</span> {{order.shipping.address.postal_code}}<br>
+<span country-name country-code="order.shipping.address.country"></span>
   </div>
 <div style="margin-top: 15px;" class="store-header-div">
   <h6 class="text-center">Billing Address</h6>
 </div>
  <div class="white-confirm">
-{{orderDetails.billingAddress.name}}<br>
-{{orderDetails.billingAddress.address1}}<br>
-<span ng-if="orderDetails.billingAddress.address2">{{orderDetails.billingAddress.address2}}<br></span>
-{{orderDetails.billingAddress.city}}, {{orderDetails.billingAddress.stateProvince.short}} {{orderDetails.billingAddress.postalCode}}<br>
-{{orderDetails.billingAddress.country.name}}
+{{token.card.name}}<br>
+{{token.card.address_line1}}<br>
+<span ng-if="token.card.address_line2">{{token.card.address_line2}}<br></span>
+{{token.card.address_city}}, <span ng-if="token.card.address_state">{{token.card.address_state}}</span> {{token.card.address_zip}}<br>
+<!-- {{token.card.address_country}} -->
+<span country-name country-code="token.card.address_country"></span>
 </div>
 <div style="margin-top: 15px;" class="store-header-div">
   <h6 class="text-center">Payment Details</h6>
@@ -62,22 +64,22 @@ Card Type:
             <td></td>
             <td></td>
             <td></td>
-            <td>Tax ({{ orderDetails.taxRate }}%):</td>
-            <td>{{ orderDetails.taxTotal | currency }}</td>
+            <td>Tax ({{ ngCart.getTaxRate() }}%):</td>
+            <td>{{ ngCart.getTax() | centsToDollars | currency }}</td>
         </tr>
         <tr class="main-cart-row">
             <td></td>
             <td></td>
             <td></td>
-            <td>Shipping ({{orderDetails.shippingInfo.service}}):</td>
-            <td>{{ orderDetails.shippingInfo.price | currency }}</td>
+            <td>Shipping ({{shipService}}) :</td>
+            <td>{{ ngCart.getShipping() | centsToDollars | currency }}</td>
         </tr>
         <tr class="main-cart-row">
             <td></td>
             <td></td>
             <td></td>
             <td>Total:</td>
-            <td>{{ orderDetails.total | currency }}</td>
+            <td>{{ ngCart.totalCost() | centsToDollars | currency }}</td>
         </tr>
         </tfoot>
         <tbody>
@@ -88,8 +90,8 @@ Card Type:
             <td>
                 {{ item.getQuantity() | number }}
                 </td>
-            <td>{{ item.getPrice() | currency}}</td>
-            <td>{{ item.getTotal() | currency }}</td>
+            <td>{{ item.getPrice() | centsToDollars | currency }}</td>
+            <td>{{ item.getTotal() | centsToDollars | currency }}</td>
         </tr>
         </tbody>
     </table>

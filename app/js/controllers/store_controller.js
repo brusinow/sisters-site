@@ -104,8 +104,10 @@ angular.module('SistersCtrls')
   }
 
   $scope.submitForm = function(){
+    $scope.loaded = [];
     var ship = $scope.data.shipping;
     var bill = $scope.data.billing; 
+    $scope.$storage.billingAddress = $scope.data.billing;
     var req = {
       url: '/stripe/createOrder',
       method: 'POST',
@@ -142,6 +144,7 @@ angular.module('SistersCtrls')
               
            
           } else {
+            $scope.loaded = [1, 2, 3];
             console.log("ERROR!!!! ",res.data);
             $scope.errorMessage = res.data.message;
           } 
@@ -194,25 +197,53 @@ angular.module('SistersCtrls')
 
 
 
-.controller('StorePaymentCtrl', function($scope, $state, $http, $location, $localStorage, ngCart, $rootScope, currentOrder){
+.controller('StorePaymentCtrl', function($scope, $state, $http, $timeout, $location, $localStorage, ngCart, $rootScope, currentOrder){
+  $rootScope.path = $location.$$path;
   $scope.$storage = $localStorage;
 
   $scope.shipOptions = $scope.$storage.orderData.data.shipping_methods;
-  $scope.shipChoice = {};
+  $scope.savedSelectedShip = $scope.$storage.orderData.data.selected_shipping_method;
 
-  $rootScope.path = $location.$$path;
-  $scope.loaded = true;
+  
+
+
+
+  for (var i = 0; i < $scope.shipOptions.length; i++){
+    if ($scope.shipOptions[i].id === $scope.savedSelectedShip){
+      $scope.selectedShip = $scope.shipOptions[i];
+      break;
+    }
+  }
+  
+   $scope.$watch('selectedShip', function (newValue, oldValue, scope) {
+    console.log("what is shipChoice? ",$scope.selectedShip);
+    ngCart.setShipping($scope.selectedShip.amount);  
+  }, false);
+
+  $timeout(function(){
+   $scope.loaded = true; 
+  })
+
+  
+  
   $scope.submitForm = function(form){
-    if(form.$valid){
+    // if(form.$valid){
+      $scope.loaded = false; 
       Stripe.card.createToken({
         number: $scope.number,
         cvc: $scope.cvc,
         exp: $scope.expiry,
-        name: $scope.data.billing.name
+        name: $scope.$storage.billingAddress.name,
+        address_line1: $scope.$storage.billingAddress.address1,
+        address_line2: $scope.$storage.billingAddress.address2 || null,
+        address_city: $scope.$storage.billingAddress.city,
+        address_state: $scope.$storage.billingAddress.stateProvince.short || null,
+        address_zip: $scope.$storage.billingAddress.postalCode,
+        address_country: $scope.$storage.billingAddress.country.code
       }, handleStripe);
-    } else {
-      console.log("form invalid!!");
-    }
+    // } else {
+      // console.log("form invalid!!");
+    // }
   }
 
   var handleStripe = function(status, response){
@@ -220,102 +251,63 @@ angular.module('SistersCtrls')
     // there was an error. Fix it.
   } else {
     token = response;
+    
 
     var req = {
-      url: '/stripe/saveToken',
+      url: '/stripe/updateShipping',
       method: 'POST',
       params: {
-        token: token
+        token: token,
+        orderId: $scope.$storage.orderData.data.id,
+        selectedShip: $scope.selectedShip.id
       }
     }
 
     $http(req).then(function success(res) {
-          console.log("Success! ",res.data);
-          $location.url('/store/checkout/confirm'); 
-        
-          // $sessionStorage.currentWaRate = res.data.totalRate;   
+          console.log("Success! ",res);
+          $scope.$storage.orderData = res;
+          $scope.$storage.tokenData = token;
+          $location.url('/store/checkout/confirm');   
         }, function error(res) {
+          $scope.loaded = true; 
           console.log("error ",res);             
         });
   }
   }
 
 
-  //   $scope.shipRates = {
-  //   domestic: {
-  //     regular: {
-  //       price: 500,
-  //       carrier: 'USPS',
-  //       service: "USPS First Class Mail",
-  //       type: "standard-domestic"
-  //     },
-  //     expedited: {
-  //       price: 2000,
-  //       carrier: "USPS",
-  //       service: "USPS Priority Mail 2-Day",
-  //       type: "expedited-domestic"
-  //     }
-  //   },
-  //   international: {
-  //     regular: {
-  //       price: 1500,
-  //       carrier: "Placeholder",
-  //       service: "International Regular Option",
-  //       type: "standard-international"
-  //     },
-  //     expedited: {
-  //       price: 4000,
-  //       carrier: "Placeholder",
-  //       service: "International Fast Option",
-  //       type: "expedited-international"
-  //     }
-  //   }
-  // }
-
-
-  // $scope.shippingType = $scope.shipRates.domestic; 
-  // $scope.shipChoice = $scope.shippingType.regular;
-
-  // $scope.$watch('shipChoice', function (newValue, oldValue, scope) {
-  //   console.log("what is shipChoice? ",$scope.shipChoice);
-  //   ngCart.setShipping($scope.shipChoice.price);  
-  // }, false);
-
-  // $scope.$watch('shippingType', function (newValue, oldValue, scope) {
-  //   $scope.shipChoice = $scope.shippingType.regular; 
-  // }, false);
-
-
 })
 
 
-.controller('StoreConfirmCtrl', function($scope, $state, $http, $location, $sessionStorage, ngCart, $rootScope){
+.controller('StoreConfirmCtrl', function($scope, $state, $http, $timeout, $location, $localStorage, ngCart, $rootScope){
+$scope.$storage = $localStorage;
+
 $scope.orderComplete = false;
 $rootScope.path = $location.$$path;
 console.log("what is rootScope? ",$rootScope);
 $scope.ngCart = ngCart;
-
-$http.get('/orderConfirm').success (function(data){
-  if (!data.stripeToken){
-  $location.url('/store/cart'); 
-  return; 
+$scope.token = $scope.$storage.tokenData;
+$scope.order = $scope.$storage.orderData.data;
+var items = $scope.order.items;
+for (var i = 0; i < items.length; i++){
+  if (items[i].type === 'shipping'){
+    $scope.shipService = items[i].description;
   }
-  console.log("what is data? ",data);
-  $scope.orderDetails = angular.fromJson(data.orderDetails);
-  console.log("order details parsed: ",$scope.orderDetails);
-  $scope.token = angular.fromJson(data.stripeToken);
-  console.log("token parsed: ",$scope.token);
+}
+$timeout(function(){
   $scope.loaded = true;
-});
+})
+  
+
 
 $scope.createCharge = function(){
+  $scope.loaded = false; 
   var req = {
-        url: '/createCharge',
+        url: '/stripe/orderComplete',
         method: 'POST',
         params: {
-          total: $scope.orderDetails.total,
-          token: $scope.token.id,
-          name: $scope.orderDetails.name
+          orderId: $scope.order.id,
+          token: $scope.token.id
         }
       } 
 
@@ -325,7 +317,9 @@ $scope.createCharge = function(){
         ngCart.setTaxRate();
         ngCart.setShipping();   
         ngCart.empty();
+        $localStorage.$reset();
       }, function error(res) {
+        $scope.loaded = true; 
     //do something if the response has an error
     console.log("error ",res);
   });

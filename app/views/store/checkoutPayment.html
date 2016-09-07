@@ -1,4 +1,6 @@
+<div ng-hide="loaded" class="spinner"></div>
 <div class="checkout" ng-class="{'fade-in': loaded}">
+  <form name="payment-form" novalidate ng-submit="submitForm(payment-form)">
   <div class="row">
     <div class="six columns">
       <div class="store-card">
@@ -6,10 +8,15 @@
           <h6 class="text-center">Shipping Method</h6>
         </div>
         <div class="shipping-box">
-          <label ng-repeat="ship in shipOptions">
-            <input style="display:block;" type="radio" ng-model="shipChoice" ng-value="ship.id">
-            {{ship.amount | centsToDollars | currency}} ({{ship.description}})
+        <ul>
+          <li ng-repeat="ship in shipOptions">
+          <label>
+            <input type="radio" ng-model="$parent.selectedShip" ng-value="ship">
+            <span class="ship-info-main">{{ship.amount | centsToDollars | currency}} ({{ship.description}})</span><br>
+            <span class="ship-info-sub">Delivery Estimate: {{ship.delivery_estimate.date | DeliveryEstDate}}</span>
           </label>
+          </li>
+          </ul>
         <!--   <label>
             <input type="radio" ng-model="shipChoice" ng-value="shippingType.expedited">
             {{shippingType.expedited.price | centsToDollars | currency}} ({{shippingType.expedited.service}})
@@ -43,10 +50,10 @@
             </div>
           </div>
         </div>
-        <input class="u-full-width" type="text" ng-model="number" placeholder="card" required payments-format="card" payments-validate="card" payments-type-model="type"/>
+        <input class="u-full-width" type="text" ng-model="number" placeholder="card" payments-format="card" payments-validate="card" payments-type-model="type"/>
         <div class="row">
-          <input class="six columns" type="text" ng-model="expiry" placeholder="expiration date" required payments-validate="expiry" payments-format="expiry" />
-          <input class="six columns" type="text" ng-model="cvc" placeholder="cvc" required payments-validate="cvc" payments-type-model="type" payments-format="cvc"/> 
+          <input class="six columns" type="text" ng-model="expiry" placeholder="expiration date" payments-validate="expiry" payments-format="expiry" />
+          <input class="six columns" type="text" ng-model="cvc" placeholder="cvc" payments-validate="cvc" payments-type-model="type" payments-format="cvc"/> 
         </div>
       </div>
     </div>
@@ -59,6 +66,7 @@
 
     </div>
   </div>
+  </form>
 </div>
 
 

@@ -84,6 +84,7 @@ angular.module('ngCart', ['ngCart.directives'])
 
         this.setShipping = function(shipping){
             this.$cart.shipping = shipping;
+            $rootScope.$broadcast('ngCart:change', {});
             return this.getShipping();
         };
 

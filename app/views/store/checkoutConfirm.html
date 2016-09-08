@@ -1,11 +1,15 @@
-<div class="checkout" ng-class="{'fade-in': loaded}">
-<div class="alert alert-success" role="alert" ng-show="orderComplete">
+
+<div ng-hide="loaded" class="spinner"></div>
+<div class="alert alert-success" role="alert" ng-if="orderComplete">
     Your order is complete! You should be receiving an email receipt shortly.
 </div>
-<div ng-hide="loaded" class="spinner"></div>
 <div ng-if="orderComplete" class="confirm-complete">
   <img src="/img/press-shot.jpg">
 </div>
+
+
+<div class="checkout" ng-class="{'fade-in': loaded}">
+
 <div class="row confirm-content" ng-hide="orderComplete">
 <div class="four columns">
 <div class="store-card store-card-confirm text-center">

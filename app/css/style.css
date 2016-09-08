@@ -57,7 +57,7 @@ input[type="email"], input[type="number"], input[type="search"], input[type="tex
   font-size: .9em;
 }
 
-.spinner {
+/*.spinner {
   position: fixed;
   z-index: 999;
   height: 152px;
@@ -69,7 +69,7 @@ input[type="email"], input[type="number"], input[type="search"], input[type="tex
   left: 0;
   bottom: 0;
   right: 0;
-}
+}*/
 
 
 .row {

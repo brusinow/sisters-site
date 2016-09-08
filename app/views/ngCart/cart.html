@@ -3,6 +3,8 @@
     Your cart is empty
 </div>
 
+
+<div ng-show="loaded">
 <div class="u-full-width" ng-show="ngCart.getTotalItems() > 0">
 
     <table class="table table-striped ngCart cart">
@@ -53,6 +55,7 @@
         </tr>
         </tbody>
     </table>
+</div>
 </div>
 <style>
     .ngCart.cart span[ng-click] {

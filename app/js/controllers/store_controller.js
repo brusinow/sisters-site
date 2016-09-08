@@ -8,14 +8,11 @@ angular.module('SistersCtrls')
     $http.get('/stripe/allProducts').success(function(data){
       $scope.products = data.data;
       console.log("what are products? ",$scope.products);
-       
+      $timeout(function(){
+        $scope.loaded = true; 
+      })
      
     })
-
-    $scope.$on('$viewContentLoaded', function(){
-      console.log("loaded!")
-    $scope.loaded = true; 
-    });
 
 
   $scope.toCheckout = function(){

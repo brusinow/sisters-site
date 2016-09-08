@@ -347,8 +347,13 @@ angular.module('ngCart', ['ngCart.directives'])
         }
     }])
 
-    .controller('CartController',['$scope', 'ngCart', function($scope, ngCart) {
+    .controller('CartController',['$scope', 'ngCart','$timeout', function($scope, ngCart, $timeout) {
+        $scope.loaded = false;
         $scope.ngCart = ngCart;
+        $timeout(function(){
+            console.log("loaded in ngCart controller!");
+            $scope.loaded = true;
+        })
 
     }])
 
@@ -359,7 +364,9 @@ angular.module('ngCart', ['ngCart.directives'])
 angular.module('ngCart.directives', ['ngCart.fulfilment'])
 
     .controller('CartController',['$scope', 'ngCart', function($scope, ngCart) {
+        
         $scope.ngCart = ngCart;
+        
     }])
 
     .directive('ngcartAddtocart', ['ngCart', function(ngCart){

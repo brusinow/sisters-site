@@ -1,44 +1,37 @@
-<!-- <div class="row">
-<div class="store-item one-third column" ng-repeat="item in items">
-{{item.name}}
-<div class="item-image-div">
-  <img src="/img/placeholder.jpg"/>
-</div>
-<ngcart-addtocart id="{{ item.id }}" name="{{ item.name }}" price="{{ item.price }}" quantity="1" quantity-max="30" data="item">Add to Cart</ngcart-addtocart>
-</div>
-</div> -->
 
-
+<div ng-show="loaded">
 <div ng-repeat="product in products" ng-if="$index % 3 === 0" class="store-row row">
   
     <div class="one-third column store-item">
-      <h6>{{products[$index].name}}</h6>
         <div class="item-image-div">
-          <img src="/img/placeholder.jpg"/>
+          <img ng-src="{{products[$index].images[0]}}"/>
         </div>
-        <p>{{products[$index].description}}</p>
+        <h6>{{products[$index].name}}</h6>
+        <!-- <p>{{products[$index].description}}</p> -->
         <h6 class="text-center no-margin">{{products[$index].skus.data[0].price | centsToDollars | currency}}</h6>
         <ngcart-addtocart id="{{ products[$index].skus.data[0].id }}" name="{{ products[$index].name }}" price="{{ products[$index].skus.data[0].price }}" quantity="1" quantity-max="30" data="products[$index]">Add to Cart</ngcart-addtocart>
     </div>
     <div class="one-third column store-item" ng-if="products.length > ($index + 1)">
-       <h6>{{products[$index + 1].name}}</h6>
+      
         <div class="item-image-div">
-          <img src="/img/placeholder.jpg"/>
+           <img ng-src="{{products[$index + 1].images[0]}}"/>
         </div>
-        <p>{{products[$index + 1].description}}</p>
+         <h6>{{products[$index + 1].name}}</h6>
+       <!--  <p>{{products[$index + 1].description}}</p> -->
         <h6 class="text-center no-margin">{{products[$index + 1].skus.data[0].price | centsToDollars | currency}}</h6>
         <ngcart-addtocart id="{{ products[$index + 1].skus.data[0].id }}" name="{{ products[$index + 1].name }}" price="{{ products[$index + 1].skus.data[0].price }}" quantity="1" quantity-max="30" data="products[$index + 1]">Add to Cart</ngcart-addtocart>
 
     </div>
     <div class="one-third column store-item" ng-if="products.length > ($index + 2)">
-       <h6>{{products[$index + 2].name}}</h6>
+       
         <div class="item-image-div">
-          <img src="/img/placeholder.jpg"/>
+           <img ng-src="{{products[$index + 2].images[0]}}"/>
         </div>
-        <p>{{products[$index + 2].description}}</p>
+        <h6>{{products[$index + 2].name}}</h6>
+       <!--  <p>{{products[$index + 2].description}}</p> -->
         <h6 class="text-center no-margin">{{products[$index + 2].skus.data[0].price | centsToDollars | currency}}</h6>
         <ngcart-addtocart id="{{ products[$index + 2].skus.data[0].id }}" name="{{ products[$index + 2].name }}" price="{{ products[$index + 2].skus.data[0].price }}" quantity="1" quantity-max="30" data="products[$index + 2]">Add to Cart</ngcart-addtocart>
     </div>
 </div>
-
+</div>
 

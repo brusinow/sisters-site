@@ -8,11 +8,13 @@
             <select name="quantity" id="quantity" ng-model="q"
                     ng-options=" v for v in qtyOpt"></select>
         </span>
-        <a class="button"
+        <a class="button button-primary"
            ng-click="ngCart.addItem(id, name, price, q, data)"
            ng-transclude></a>
     </div>
+    <div style="height: 20px">
     <div  ng-show="inCart()">
         This item is in your cart. <a ng-click="ngCart.removeItemById(id)" style="cursor: pointer;">Remove</a>
+    </div>
     </div>
 </div>

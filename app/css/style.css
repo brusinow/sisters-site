@@ -900,9 +900,9 @@ display: none;
   line-height: 1.4;
   padding: 16px 8px;
   text-align: center;
-  display: inline-block;
-  height: 435px;
-  border: 2px solid black;
+  display: block;
+  overflow:auto;
+  border: 2px solid #1A0504;
   background-color: white;
 }
 
@@ -933,7 +933,6 @@ display: none;
 
 .item-image-div {
   width: 90%;
-  height: auto;
   margin: 10px auto;
   overflow: hidden;
 }

@@ -97,7 +97,7 @@ angular.module('SistersCtrls')
     }
   }
 
-  $scope.submitForm = function(){
+  $scope.submitForm = function(form){
      if(form.$valid){
       
     $scope.loaded = [];

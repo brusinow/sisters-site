@@ -36,9 +36,9 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
     controller: 'BlogCtrl',
     resolve: {
       "currentAuth": authWait,
-      "Instagram": ['InstagramFactory', function(InstagramFactory){
-        return InstagramFactory;
-      }],
+      // "Instagram": ['InstagramFactory', function(InstagramFactory){
+      //   return InstagramFactory;
+      // }],
       "Blog": function(BlogPosts){
         return BlogPosts().$loaded();
       }      
@@ -76,13 +76,7 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
     templateUrl: '/views/blog/blog-content.html',
     controller: 'BlogCtrl',
     resolve: {
-      "currentAuth": authWait,
-      "Instagram": ['InstagramFactory', function(InstagramFactory){
-        return InstagramFactory;
-      }],
-      "Blog": function(BlogPosts){
-        return BlogPosts().$loaded();
-      }      
+      "currentAuth": authWait
     }
   })
     .state('blog.page', {
@@ -90,13 +84,7 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
     templateUrl: '/views/blog/blog-content.html',
     controller: 'BlogCtrl',
     resolve: {
-      "currentAuth": authWait,
-      "Instagram": ['InstagramFactory', function(InstagramFactory){
-        return InstagramFactory;
-      }],
-      "Blog": function(BlogPosts){
-        return BlogPosts().$loaded();
-      }      
+      "currentAuth": authWait     
     }
   })
 
@@ -106,9 +94,6 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
     controller: 'BlogArchiveCtrl',
     resolve: {
       "currentAuth": authWait,
-      "Instagram": ['InstagramFactory', function(InstagramFactory){
-        return InstagramFactory;
-      }],
       "Blog": function(BlogPosts){
         return BlogPosts().$loaded();
       },
@@ -124,9 +109,6 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
       controller: 'BlogArchiveCtrl',
       resolve: {
         "currentAuth": authWait,
-        "Instagram": ['InstagramFactory', function(InstagramFactory){
-          return InstagramFactory;
-        }],
         "Blog": function(BlogPosts){
           return BlogPosts().$loaded();
         },
@@ -143,9 +125,6 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
     controller: 'BlogTagsCtrl',
     resolve: {
       "currentAuth": authWait,
-      "Instagram": ['InstagramFactory', function(InstagramFactory){
-        return InstagramFactory;
-      }],
       "Blog": function(BlogPosts){
         return BlogPosts().$loaded();
       },
@@ -163,9 +142,6 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
     controller: 'BlogShowCtrl',
     resolve: {
       "currentAuth": authWait,
-      "Instagram": ['InstagramFactory', function(InstagramFactory){
-        return InstagramFactory;
-      }],
       "thisPost": function($stateParams, ThisPostService){        
         return ThisPostService($stateParams.slug).$loaded();
       },

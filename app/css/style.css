@@ -976,6 +976,15 @@ display: none;
   opacity:1;
 }
 
+.blog-post {
+  opacity:0;
+}
+
+.blog-post.fade-in {
+  transition: all 200ms ease-in-out;
+  opacity:1;
+}
+
 .confirm-complete {
   width: 100%;
   margin: 0 auto;

@@ -33,7 +33,8 @@ angular.module('SistersServices', ['ngResource'])
 }])
 
 
-.service('InstagramFactory', ['$http', '$q', function ($http, $q) {
+.service('InstagramFactory', ['$http', '$q', 
+  function ($http, $q) {
     var deferred = $q.defer();
     $http({
         method: 'GET',

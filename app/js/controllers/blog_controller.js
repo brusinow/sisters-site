@@ -1,8 +1,14 @@
 angular.module('SistersCtrls')
 
-.controller('BlogCtrl', ['$scope', '$state','$http','$location','$stateParams','Auth','Blog','HelperService','Instagram','AllTagsService', function($scope, $state, $http, $location, $stateParams, Auth, Blog, HelperService, Instagram, AllTagsService){
+.controller('BlogCtrl', ['$scope', '$state','$http','$timeout','$location','$stateParams','Auth','Blog','HelperService','InstagramFactory','AllTagsService', function($scope, $state, $http, $timeout, $location, $stateParams, Auth, Blog, HelperService, InstagramFactory, AllTagsService){
   $scope.allTags = AllTagsService();
-  $scope.photos = Instagram.data;
+  
+  // $scope.photos = Instagram.data;
+  InstagramFactory.then(function(data){
+    console.log("what is data? ",data);
+    $scope.photos = data.data;
+    $scope.loaded = true;
+  })
   $scope.enable = true;
   $scope.parseTitle = HelperService.titleToURL;
 
@@ -20,18 +26,20 @@ angular.module('SistersCtrls')
 
 
   $scope.last = $scope.length - (4 * $scope.page);
- 
   $scope.posts = Blog.slice($scope.first, $scope.last);
+
   
 
   $scope.editPost = function(slug){ 
     $location.url('/blog/edit/'+slug);
   }
 
+  
+
 }])
 
 
-.controller('BlogArchiveCtrl', ['$scope', '$state','$stateParams','Instagram','Blog','Archive','Auth','HelperService','AllTagsService', function($scope, $state, $stateParams, Instagram, Blog, Archive, Auth, HelperService, AllTagsService){
+.controller('BlogArchiveCtrl', ['$scope', '$state','$timeout','$stateParams','Blog','Archive','Auth','HelperService','AllTagsService', function($scope, $state, $timeout, $stateParams, Blog, Archive, Auth, HelperService, AllTagsService){
   $scope.allTags = AllTagsService();
   $scope.enable = true;
   // $scope.photos = Instagram.data;
@@ -59,6 +67,10 @@ angular.module('SistersCtrls')
   $scope.posts = $scope.allPosts.slice($scope.first, $scope.last);
   console.log($scope.posts);
 
+  $timeout(function(){
+    $scope.loaded = true;
+  })
+
   $scope.editPost = function(post){
     var titleParsed = HelperService.titleToURL(post.postTitle);
     $location.url('/blog/edit/'+titleParsed);
@@ -66,7 +78,7 @@ angular.module('SistersCtrls')
 }]) 
 
 
-.controller('BlogTagsCtrl', ['$scope', '$state','$stateParams','Instagram','Blog','TagsShow','Auth','HelperService','AllTagsService', function($scope, $state, $stateParams, Instagram, Blog, TagsShow, Auth, HelperService, AllTagsService){
+.controller('BlogTagsCtrl', ['$scope', '$state','$stateParams','$timeout','Blog','TagsShow','Auth','HelperService','AllTagsService', function($scope, $state, $stateParams, $timeout, Blog, TagsShow, Auth, HelperService, AllTagsService){
   $scope.allTags = AllTagsService();
   $scope.enable = true;
   // $scope.photos = Instagram.data;
@@ -102,6 +114,10 @@ angular.module('SistersCtrls')
   $scope.posts = selectPosts.slice($scope.first, $scope.last);
   console.log($scope.posts);
 
+  $timeout(function(){
+    $scope.loaded = true;
+  })
+
   $scope.editPost = function(post){
     var titleParsed = HelperService.titleToURL(post.postTitle);
     $location.url('/blog/edit/'+titleParsed);
@@ -109,7 +125,7 @@ angular.module('SistersCtrls')
 }]) 
 
 
-.controller('BlogShowCtrl', ['$scope', '$state','$stateParams','thisPost','Instagram','Blog','AllTagsService', function($scope, $state, $stateParams,thisPost, Instagram, Blog, AllTagsService){
+.controller('BlogShowCtrl', ['$scope', '$state','$stateParams','$timeout','thisPost','Blog','AllTagsService', function($scope, $state, $stateParams, $timeout, thisPost, Blog, AllTagsService){
  $scope.allTags = AllTagsService();
  $scope.enable = false;
  $scope.recentPosts = Blog;
@@ -117,6 +133,10 @@ angular.module('SistersCtrls')
  // $scope.photos = Instagram.data; 
  $scope.posts = thisPost;
  $scope.allPosts = thisPost;
+
+  $timeout(function(){
+    $scope.loaded = true;
+  })
 }])  
 
 

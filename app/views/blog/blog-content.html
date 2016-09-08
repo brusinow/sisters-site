@@ -1,4 +1,4 @@
-  <div class="blog-post" ng-repeat="post in posts | orderBy:'-timestamp'">
+  <div class="blog-post" ng-class="{'fade-in': loaded}" ng-repeat="post in posts | orderBy:'-timestamp'">
       <div ng-if="post.img.length > 0" class="image-panel">
         <img ng-src="{{post.img}}"/>
       </div>

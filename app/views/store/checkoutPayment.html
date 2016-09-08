@@ -2,7 +2,7 @@
 <div class="checkout" ng-class="{'fade-in': loaded}">
   <form name="payment-form" novalidate ng-submit="submitForm(payment-form)">
   <div class="row">
-    <div class="six columns">
+    <div class="four columns">
       <div class="store-card">
         <div class="store-header-div">
           <h6 class="text-center">Shipping Method</h6>
@@ -23,8 +23,10 @@
           </label> -->
         </div>
       </div>
-      <br>
-      <div class="store-card">
+   
+    </div>
+    <div class="four columns">
+       <div class="store-card">
         <div class="store-header-div">
           <h6 class="text-center">Payment Method</h6>
         </div>
@@ -57,7 +59,7 @@
         </div>
       </div>
     </div>
-    <div class="six columns text-center">
+    <div class="four columns text-center">
       <ngcart-small-cart></ngcart-small-cart>
       <button class="button" type="submit">Confirm Your Order</button>
 

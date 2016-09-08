@@ -71,6 +71,16 @@ input[type="email"], input[type="number"], input[type="search"], input[type="tex
   right: 0;
 }*/
 
+.store-front.ng-enter {
+  transition:0.3s linear all;
+  opacity:0;
+}
+
+/* The finishing CSS styles for the enter animation */
+.store-front.ng-enter.ng-enter-active {
+  opacity:1;
+}
+
 
 .row {
   margin-left: 0;

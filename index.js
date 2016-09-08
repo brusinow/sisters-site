@@ -77,10 +77,10 @@ app.post("/stripe/updateShipping", function(req, res){
     selected_shipping_method: req.query.selectedShip
   }, function(err, order){
      if(order){
-      res.send("order! ",order);
+      res.status(200).send(order);
     }
     if(err){
-      res.send("error!! ",err);
+      res.send(err);
     }
 
   });

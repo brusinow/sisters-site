@@ -10,101 +10,101 @@
 
 <div class="checkout" ng-class="{'fade-in': loaded}">
 
-<div class="row confirm-content" ng-hide="orderComplete">
-<div class="four columns">
-<div class="store-card store-card-confirm text-center">
-<div class="store-header-div">
-  <h6 class="text-center">Shipping Address</h6>
-</div>
-  <div class="white-confirm">
-{{order.shipping.name}}<br>
-{{order.shipping.address.line1}}<br>
-<span ng-if="order.shipping.address.line2">{{order.shipping.address.line2}}<br></span>
-{{order.shipping.address.city}}, <span ng-if="order.shipping.address.state">{{order.shipping.address.state}}</span> {{order.shipping.address.postal_code}}<br>
-<span country-name country-code="order.shipping.address.country"></span>
-  </div>
-<div style="margin-top: 15px;" class="store-header-div">
-  <h6 class="text-center">Billing Address</h6>
-</div>
- <div class="white-confirm">
-{{token.card.name}}<br>
-{{token.card.address_line1}}<br>
-<span ng-if="token.card.address_line2">{{token.card.address_line2}}<br></span>
-{{token.card.address_city}}, <span ng-if="token.card.address_state">{{token.card.address_state}}</span> {{token.card.address_zip}}<br>
-<!-- {{token.card.address_country}} -->
-<span country-name country-code="token.card.address_country"></span>
-</div>
-<div style="margin-top: 15px;" class="store-header-div">
-  <h6 class="text-center">Payment Details</h6>
-</div>
- <div class="white-payment-confirm">
-Card Type: 
-<img ng-if="token.card.brand === 'Visa'" class="card-icon" src="/img/credit-cards/icons/visa.png"/>
-<img ng-if="token.card.brand === 'MasterCard'" class="card-icon" src="/img/credit-cards/icons/mastercard.png"/>
-<img ng-if="token.card.brand === 'American Express'" class="card-icon" src="/img/credit-cards/icons/amex.png"/>
-<img ng-if="token.card.brand === 'Discover'" class="card-icon" src="/img/credit-cards/icons/discover.png"/>
-<br>
-**** **** **** {{token.card.last4}}
-</div>
+    <div class="row confirm-content" ng-hide="orderComplete">
+        <div class="four columns">
+            <div class="store-card store-card-confirm text-center">
+                <div class="store-header-div">
+                  <h6 class="text-center">Shipping Address</h6>
+              </div>
+              <div class="white-confirm">
+                {{order.shipping.name}}<br>
+                {{order.shipping.address.line1}}<br>
+                <span ng-if="order.shipping.address.line2">{{order.shipping.address.line2}}<br></span>
+                {{order.shipping.address.city}}, <span ng-if="order.shipping.address.state">{{order.shipping.address.state}}</span> {{order.shipping.address.postal_code}}<br>
+                <span country-name country-code="order.shipping.address.country"></span>
+            </div>
+            <div style="margin-top: 15px;" class="store-header-div">
+              <h6 class="text-center">Billing Address</h6>
+          </div>
+          <div class="white-confirm">
+            {{token.card.name}}<br>
+            {{token.card.address_line1}}<br>
+            <span ng-if="token.card.address_line2">{{token.card.address_line2}}<br></span>
+            {{token.card.address_city}}, <span ng-if="token.card.address_state">{{token.card.address_state}}</span> {{token.card.address_zip}}<br>
+            <!-- {{token.card.address_country}} -->
+            <span country-name country-code="token.card.address_country"></span>
+        </div>
+        <div style="margin-top: 15px;" class="store-header-div">
+          <h6 class="text-center">Payment Details</h6>
+      </div>
+      <div class="white-payment-confirm">
+        Card Type: 
+        <img ng-if="token.card.brand === 'Visa'" class="card-icon" src="/img/credit-cards/icons/visa.png"/>
+        <img ng-if="token.card.brand === 'MasterCard'" class="card-icon" src="/img/credit-cards/icons/mastercard.png"/>
+        <img ng-if="token.card.brand === 'American Express'" class="card-icon" src="/img/credit-cards/icons/amex.png"/>
+        <img ng-if="token.card.brand === 'Discover'" class="card-icon" src="/img/credit-cards/icons/discover.png"/>
+        <br>
+        **** **** **** {{token.card.last4}}
+    </div>
 </div>
 </div>
 
 <div class="eight columns">
-<div class="small-cart-outline">
-<div class="small-cart-card">
-    <table class="table ngCart cart">
+    <div class="small-cart-outline">
+        <div class="small-cart-card">
+            <table class="table ngCart cart">
 
-        <thead>
-        <tr>
-            <th></th>
-            <th>Item</th>
-            <th>Quantity</th>
-            <th>Amount</th>
-            <th>Total</th>
-        </tr>
-        </thead>
-        <tfoot>
-        <tr class="main-cart-row">
-            <td></td>
-            <td></td>
-            <td></td>
-            <td>Tax ({{ ngCart.getTaxRate() }}%):</td>
-            <td>{{ ngCart.getTax() | centsToDollars | currency }}</td>
-        </tr>
-        <tr class="main-cart-row">
-            <td></td>
-            <td></td>
-            <td></td>
-            <td>Shipping ({{shipService}}) :</td>
-            <td>{{ ngCart.getShipping() | centsToDollars | currency }}</td>
-        </tr>
-        <tr class="main-cart-row">
-            <td></td>
-            <td></td>
-            <td></td>
-            <td>Total:</td>
-            <td>{{ ngCart.totalCost() | centsToDollars | currency }}</td>
-        </tr>
-        </tfoot>
-        <tbody>
-        <tr ng-repeat="item in ngCart.getCart().items track by $index">
-            <td></td>
+                <thead>
+                    <tr>
+                        <th></th>
+                        <th>Item</th>
+                        <th>Quantity</th>
+                        <th>Amount</th>
+                        <th>Total</th>
+                    </tr>
+                </thead>
+                <tfoot>
+                    <tr class="main-cart-row">
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td>Tax ({{ ngCart.getTaxRate() }}%):</td>
+                        <td>{{ ngCart.getTax() | centsToDollars | currency }}</td>
+                    </tr>
+                    <tr class="main-cart-row">
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td>Shipping ({{shipService}}) :</td>
+                        <td>{{ ngCart.getShipping() | centsToDollars | currency }}</td>
+                    </tr>
+                    <tr class="main-cart-row">
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td>Total:</td>
+                        <td>{{ ngCart.totalCost() | centsToDollars | currency }}</td>
+                    </tr>
+                </tfoot>
+                <tbody>
+                    <tr ng-repeat="item in ngCart.getCart().items track by $index">
+                        <td></td>
 
-            <td>{{ item.getName() }}</td>
-            <td>
-                {{ item.getQuantity() | number }}
-                </td>
-            <td>{{ item.getPrice() | centsToDollars | currency }}</td>
-            <td>{{ item.getTotal() | centsToDollars | currency }}</td>
-        </tr>
-        </tbody>
-    </table>
-</div>
-</div>
+                        <td>{{ item.getName() }}</td>
+                        <td>
+                            {{ item.getQuantity() | number }}
+                        </td>
+                        <td>{{ item.getPrice() | centsToDollars | currency }}</td>
+                        <td>{{ item.getTotal() | centsToDollars | currency }}</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
 
-<div class="text-center">
-<button ng-hide="orderComplete" class="button button-primary" ng-click="createCharge()">Submit Order</button>
-</div>
+    <div class="text-center">
+        <button ng-hide="orderComplete" class="button button-primary" ng-click="createCharge()">Submit Order</button>
+    </div>
 
 </div>
 

@@ -11,6 +11,7 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
       $state.go("login");
     }
   });
+  
 }])
 
 

@@ -1,0 +1,40 @@
+
+<div class="small-cart-outline" ng-click="toggleCart = !toggleCart"  ng-show="ngCart.getTotalItems() > 0">
+<div class="small-cart-card small-cart-collapse" ng-class="{'cart-show': toggleCart}">
+        <h6 class="text-center">Review Your Order:</h6>
+    <table class="table ngCart cart">
+        <tr ng-repeat="item in ngCart.getCart().items track by $index">
+            <td>{{item.getQuantity() | number}}x {{item.getName()}}</td>
+            <td class="text-right">{{ item.getTotal() | centsToDollars | currency }}</td>
+        </tr>
+
+        <tr>
+            <td>Subtotal: </td>
+            <td class="text-right">{{ngCart.getSubTotal() | centsToDollars | currency}}</td> 
+        </tr>
+        <tr >
+            <td>Tax ({{ngCart.getTaxRate() || 0}}%):</td>
+            <td class="text-right">{{ ngCart.getTax() || 0 | centsToDollars | currency }}</td>
+        </tr>
+        <tr>
+            <td>Shipping:</td>
+            <td class="text-right">{{ ngCart.getShipping()|| 0 | centsToDollars | currency }}</td>
+        </tr>
+        <tr>
+            <td><strong>TOTAL:</strong></td>
+            <td class="text-right"><strong>{{ ngCart.totalCost() || ngCart.getSubTotal()  | centsToDollars | currency }}</strong></td>
+        </tr>
+    </table>
+    </div>
+</div>
+
+
+
+<style>
+    .ngCart.cart span[ng-click] {
+        cursor: pointer;
+    }
+    .ngCart.cart .glyphicon.disabled {
+        color:#aaa;
+    }
+</style>

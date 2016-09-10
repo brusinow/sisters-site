@@ -1,7 +1,8 @@
 <div class="alert alert-danger" role="alert" ng-if="errorMessage">
   {{errorMessage}} Please check that your information is correct and try again.
 </div>
-<div ng-hide="loaded.length === 3" class='uil-spin-css' style='-webkit-transform:scale(0.5)'><div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div></div>
+<div ng-hide="loaded.length === 3" class='uil-spin-css' style='-webkit-transform:scale(0.81)'><div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div></div>
+<ngcart-small-cart-collapse class="cart-summary-mobile"></ngcart-small-cart-collapse>
 <form name="form" class="checkout-form checkout" ng-class="{'fade-in': loaded.length === 3}" novalidate ng-submit="submitForm(form)">
   <div class="row">
     <div class="four columns">
@@ -117,7 +118,8 @@
 
 
     <div class="four columns">
-      <ngcart-small-cart></ngcart-small-cart>
+
+      <ngcart-small-cart class="cart-summary-large"></ngcart-small-cart>
       <button class="u-full-width button" type="submit">Continue to Payment</button>
     </div>
   </div>

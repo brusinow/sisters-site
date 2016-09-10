@@ -1,6 +1,7 @@
 
-<div ng-hide="loaded" class='uil-spin-css' style='-webkit-transform:scale(0.5)'><div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div></div>
+<div ng-hide="loaded" class='uil-spin-css' style='-webkit-transform:scale(0.81)'><div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div></div>
 <div class="checkout" ng-class="{'fade-in': loaded}">
+<ngcart-small-cart-collapse class="cart-summary-mobile"></ngcart-small-cart-collapse>
   <form name="payment-form" novalidate ng-submit="submitForm(payment-form)">
   <div class="row">
     <div class="four columns">
@@ -61,7 +62,7 @@
       </div>
     </div>
     <div class="four columns text-center">
-      <ngcart-small-cart></ngcart-small-cart>
+      <ngcart-small-cart class="cart-summary-large"></ngcart-small-cart>
       <button class="button" type="submit">Confirm Your Order</button>
 
 

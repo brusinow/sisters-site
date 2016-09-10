@@ -1,6 +1,6 @@
 
 
-<div ng-hide="loaded || orderComplete" class='uil-spin-css' style='-webkit-transform:scale(0.5)'><div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div></div>
+<div ng-hide="loaded || orderComplete" class='uil-spin-css' style='-webkit-transform:scale(0.81)'><div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div></div>
 <div class="alert alert-success" role="alert" ng-if="orderComplete">
     Your order is complete! You should be receiving an email receipt shortly.
 </div>
@@ -10,7 +10,7 @@
 
 
 <div class="checkout" ng-class="{'fade-in': loaded}">
-
+<ngcart-small-cart-collapse ng-hide='orderComplete' class="cart-summary-mobile"></ngcart-small-cart-collapse>
     <div class="row confirm-content" ng-hide="orderComplete">
         <div class="four columns">
             <div class="store-card store-card-confirm text-center">
@@ -51,7 +51,7 @@
 </div>
 
 <div class="eight columns">
-    <div class="small-cart-outline">
+    <div class="small-cart-outline cart-summary-large">
         <div class="small-cart-card">
             <table class="table ngCart cart">
 

@@ -19,26 +19,14 @@
         </tr>
         </thead>
         <tfoot>
-        <tr ng-show="ngCart.getTax()">
-            <td></td>
-            <td></td>
-            <td></td>
-            <td>Tax ({{ ngCart.getTaxRate() }}%):</td>
-            <td>{{ ngCart.getTax() | centsToDollars | currency }}</td>
-        </tr>
-        <tr ng-show="ngCart.getShipping()">
-            <td></td>
-            <td></td>
-            <td></td>
-            <td>Shipping:</td>
-            <td>{{ ngCart.getShipping() | centsToDollars | currency }}</td>
-        </tr>
+   
+    
         <tr>
             <td></td>
             <td></td>
             <td></td>
             <td>Total:</td>
-            <td>{{ ngCart.totalCost() | centsToDollars | currency }}</td>
+            <td>{{ ngCart.getSubTotal() | centsToDollars | currency }}</td>
         </tr>
         </tfoot>
         <tbody>

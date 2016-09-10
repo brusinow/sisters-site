@@ -5,14 +5,19 @@ angular.module('SistersCtrls')
     $scope.loaded = false;
 
 
+
+    
     $http.get('/stripe/allProducts').success(function(data){
       $scope.products = data.data;
       console.log("what are products? ",$scope.products);
-      $timeout(function(){
-        $scope.loaded = true; 
-      })
+      
      
     })
+    $timeout(function(){
+        $scope.loaded = true; 
+      },500)
+    
+
 
 
   $scope.toCheckout = function(){

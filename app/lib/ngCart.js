@@ -349,6 +349,7 @@ angular.module('ngCart', ['ngCart.directives'])
 
     .controller('CartController',['$scope', 'ngCart','$timeout', function($scope, ngCart, $timeout) {
         $scope.loaded = false;
+        $scope.toggleCart = false;
         $scope.ngCart = ngCart;
         $timeout(function(){
             console.log("loaded in ngCart controller!");
@@ -471,6 +472,24 @@ angular.module('ngCart.directives', ['ngCart.fulfilment'])
             templateUrl: function(element, attrs) {
                 if ( typeof attrs.templateUrl == 'undefined' ) {
                     return 'views/ngCart/small-cart.html';
+                } else {
+                    return attrs.templateUrl;
+                }
+            },
+            link:function(scope, element, attrs){
+
+            }
+        };
+    }])
+
+    .directive('ngcartSmallCartCollapse', [function(){
+        return {
+            restrict : 'E',
+            controller : 'CartController',
+            scope: {},
+            templateUrl: function(element, attrs) {
+                if ( typeof attrs.templateUrl == 'undefined' ) {
+                    return 'views/ngCart/small-cart-collapse.html';
                 } else {
                     return attrs.templateUrl;
                 }

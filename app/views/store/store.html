@@ -1,4 +1,5 @@
-
+<div ng-hide="loaded" class='uil-spin-css' style='-webkit-transform:scale(.81)'><div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div></div>
+<div class="store-container">
 <div class="store-front" ng-if="loaded">
 <div ng-repeat="product in products" ng-if="$index % 3 === 0" class="store-row row">
   
@@ -32,6 +33,7 @@
         <h6 class="text-center no-margin">{{products[$index + 2].skus.data[0].price | centsToDollars | currency}}</h6>
         <ngcart-addtocart id="{{ products[$index + 2].skus.data[0].id }}" name="{{ products[$index + 2].name }}" price="{{ products[$index + 2].skus.data[0].price }}" quantity="1" quantity-max="30" data="products[$index + 2]">Add to Cart</ngcart-addtocart>
     </div>
+</div>
 </div>
 </div>
 

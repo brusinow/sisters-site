@@ -8,7 +8,7 @@
             <select name="quantity" id="quantity" ng-model="q"
                     ng-options=" v for v in qtyOpt"></select>
         </span>
-        <a class="button button-primary"
+        <a style="cursor: pointer;" class="button button-flat"
            ng-click="ngCart.addItem(id, name, price, q, data)"
            ng-transclude></a>
     </div>

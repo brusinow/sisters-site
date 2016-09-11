@@ -9,7 +9,7 @@
         </div>
         <h6>{{products[$index].name}}</h6>
         <!-- <p>{{products[$index].description}}</p> -->
-        <h6 class="text-center no-margin">{{products[$index].skus.data[0].price | centsToDollars | currency}}</h6>
+        <h5 class="text-center no-margin">{{products[$index].skus.data[0].price | centsToDollars | currency}}</h5>
         <ngcart-addtocart id="{{ products[$index].skus.data[0].id }}" name="{{ products[$index].name }}" price="{{ products[$index].skus.data[0].price }}" quantity="1" quantity-max="30" data="products[$index]">Add to Cart</ngcart-addtocart>
     </div>
     <div class="storefront columns store-item" ng-if="products.length > ($index + 1)">
@@ -19,7 +19,7 @@
         </div>
          <h6>{{products[$index + 1].name}}</h6>
        <!--  <p>{{products[$index + 1].description}}</p> -->
-        <h6 class="text-center no-margin">{{products[$index + 1].skus.data[0].price | centsToDollars | currency}}</h6>
+        <h5 class="text-center no-margin">{{products[$index + 1].skus.data[0].price | centsToDollars | currency}}</h5>
         <ngcart-addtocart id="{{ products[$index + 1].skus.data[0].id }}" name="{{ products[$index + 1].name }}" price="{{ products[$index + 1].skus.data[0].price }}" quantity="1" quantity-max="30" data="products[$index + 1]">Add to Cart</ngcart-addtocart>
 
     </div>
@@ -30,7 +30,7 @@
         </div>
         <h6>{{products[$index + 2].name}}</h6>
        <!--  <p>{{products[$index + 2].description}}</p> -->
-        <h6 class="text-center no-margin">{{products[$index + 2].skus.data[0].price | centsToDollars | currency}}</h6>
+        <h5 class="text-center no-margin">{{products[$index + 2].skus.data[0].price | centsToDollars | currency}}</h5>
         <ngcart-addtocart id="{{ products[$index + 2].skus.data[0].id }}" name="{{ products[$index + 2].name }}" price="{{ products[$index + 2].skus.data[0].price }}" quantity="1" quantity-max="30" data="products[$index + 2]">Add to Cart</ngcart-addtocart>
     </div>
 </div>

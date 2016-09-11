@@ -1,14 +1,14 @@
 
 
 
-<form ng-if="!submitted && !logged">
+<form style="margin-top: 10%" ng-if="!submitted && !logged">
 
   <label for="adminEmail">Admin Email:</label>     
   <input class="u-full-width" id="adminEmail" type="email" ng-model="user.email" placeholder="admin email">
   <label for="adminPassword">Password:</label>
   <input id="adminPassword" class="u-full-width" type="password" ng-model="user.password" placeholder="admin password">
   <div style="text-align: center;"class="row">
-    <input class="button-primary" type="submit" ng-click="login()">
+    <input style="margin-top: 25px;" class="button button-flat-pink" type="submit" ng-click="login()">
   </div>
 </form>
 <div ng-if="submitted && !logged" id="spinner-div">

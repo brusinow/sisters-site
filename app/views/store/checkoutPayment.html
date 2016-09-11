@@ -4,7 +4,7 @@
 <ngcart-small-cart-collapse class="cart-summary-mobile"></ngcart-small-cart-collapse>
   <form name="payment-form" novalidate ng-submit="submitForm(payment-form)">
   <div class="row">
-    <div class="four columns">
+    <div style="margin-bottom: 10px;" class="storefront columns">
       <div class="store-card">
         <div class="store-header-div">
           <h6 class="text-center">Shipping Method</h6>
@@ -27,7 +27,7 @@
       </div>
    
     </div>
-    <div class="four columns">
+    <div style="margin-bottom: 10px;" class="storefront columns">
        <div class="store-card">
         <div class="store-header-div">
           <h6 class="text-center">Payment Method</h6>
@@ -54,16 +54,18 @@
             </div>
           </div>
         </div>
-        <input class="u-full-width" type="text" ng-model="number" placeholder="card" payments-format="card" payments-validate="card" payments-type-model="type"/>
+        <div class="payment-input">
+        <input class="credit-card-num columns" type="text" ng-model="number" placeholder="card" payments-format="card" payments-validate="card" payments-type-model="type"/>
         <div class="row">
-          <input class="six columns" type="text" ng-model="expiry" placeholder="expiration date" payments-validate="expiry" payments-format="expiry" />
-          <input class="six columns" type="text" ng-model="cvc" placeholder="cvc" payments-validate="cvc" payments-type-model="type" payments-format="cvc"/> 
+          <input class="exp-cvc-line exp-left columns" type="text" ng-model="expiry" placeholder="exp" payments-validate="expiry" payments-format="expiry" />
+          <input class="exp-cvc-line columns cvc-right" type="text" ng-model="cvc" placeholder="cvc" payments-validate="cvc" payments-type-model="type" payments-format="cvc"/> 
+        </div>
         </div>
       </div>
     </div>
-    <div class="four columns text-center">
+    <div class="storefront columns text-center">
       <ngcart-small-cart class="cart-summary-large"></ngcart-small-cart>
-      <button class="button" type="submit">Confirm Your Order</button>
+      <button style="margin-top: 10px;" class="button button-flat-blue" type="submit">Confirm Your Order</button>
 
 
 

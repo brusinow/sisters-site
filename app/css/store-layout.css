@@ -1,3 +1,8 @@
+ .credit-card-num.columns { width: 100%; margin-bottom: 2%;}
+  .exp-cvc-line.columns { width: 48%; }
+  .exp-cvc-line.exp-left { margin: 0 2% 0 0; }
+  .exp-cvc-line.cvc-right { margin: 0 0 0 2%; }
+
 @media (min-width: 400px) {
   .container {
     width: 85%;
@@ -16,6 +21,7 @@
 
 
   .storefront.columns { width: 48%; }
+  .exp-cvc-line.columns { width: 48%; }
 }
 
 @media (min-width: 769px) {
@@ -29,5 +35,9 @@
     margin-left: 0; }
 
   .storefront.columns { width: 30.6666666667%;}
+/*  .credit-card-num.columns { width: 80%; margin-left: 10%; margin-right: 10%; margin-bottom: 2%;}
+  .exp-cvc-line.columns { width: 38%; }
+  .exp-cvc-line.exp-left { margin: 0 2% 0 10%; }
+  .exp-cvc-line.cvc-right { margin: 0 10% 0 2%; }*/
 
 }

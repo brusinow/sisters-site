@@ -21,7 +21,7 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 table {
-  font-size: .9em;
+  font-size: .7em;
 }
 
 th {
@@ -45,7 +45,7 @@ a:hover {
   color: #82B0DD;
 }
 
-input[type="email"], input[type="number"], input[type="search"], input[type="text"], input[type="tel"], input[type="url"], input[type="password"], textarea, select {
+input[type="email"], input[type="number"], input[type="search"], input[type="text"], input[type="tel"], input[type="url"], input[type="password"], textarea {
   height: 28px;
   padding: 6px 10px;
   background-color: #fff;
@@ -55,6 +55,18 @@ input[type="email"], input[type="number"], input[type="search"], input[type="tex
   box-sizing: border-box;
   margin-bottom: .5rem;
   font-size: .9em;
+}
+
+select {
+  height: 28px;
+  padding: 2px 5px;
+  background-color: #fff;
+  border: 1px solid #D1D1D1;
+  border-radius: 4px;
+  box-shadow: none;
+  box-sizing: border-box;
+  margin-bottom: .5rem;
+  font-size: .9em; 
 }
 
 /*.spinner {
@@ -216,7 +228,7 @@ input[type="email"], input[type="number"], input[type="search"], input[type="tex
 }
 
 .small-cart-outline {
-  background-color: #d95fbf;
+  background-color: #d038af;
   padding: 8px;
   margin-bottom: 10px;
 }
@@ -301,12 +313,11 @@ input[type="email"], input[type="number"], input[type="search"], input[type="tex
   }
 
   .white-confirm {
-    color: #333;
+    color: #1A0504;
     padding: 8px;
     background-color: white;
     font-size:.9em;
     line-height:1.2;
-    min-height: 88.89px;
   }
 
   .white-payment-confirm {
@@ -384,7 +395,7 @@ input[type="email"], input[type="number"], input[type="search"], input[type="tex
   }
 
   .white-space-pre {
-    white-space: pre-wrap;
+    white-space: pre-line;
     text-align: justify;
   }
 
@@ -570,7 +581,7 @@ input[type="email"], input[type="number"], input[type="search"], input[type="tex
 }
 
 .blog-panel p {
-  margin-bottom: 0;
+  margin-bottom: 15px;
 }
 
 .blog-panel h6 {
@@ -782,7 +793,7 @@ input[type="email"], input[type="number"], input[type="search"], input[type="tex
     color: #5e504f;
   }
 
-  #footer a {
+  .footer-link {
     /*font-family: 'PT Serif', serif;*/
     text-decoration: none;
     font-size: .9em;
@@ -796,7 +807,7 @@ input[type="email"], input[type="number"], input[type="search"], input[type="tex
     margin-top: 8px;
   }
 
-  #footer i {
+  .footer-icon {
     color: #5e504f;
     font-size: 1.7em;
     padding: 0 5px;

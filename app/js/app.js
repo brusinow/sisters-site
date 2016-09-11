@@ -11,7 +11,9 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
       $state.go("login");
     }
   });
-  
+  $rootScope.$on('$stateChangeSuccess', function() {
+   document.body.scrollTop = document.documentElement.scrollTop = 0;
+});
 }])
 
 

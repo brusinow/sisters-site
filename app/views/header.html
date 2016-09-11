@@ -1,54 +1,56 @@
 <div id="mobile-nav" class="row">
   <div class="u-pull-left">
-  <a ng-href="/"><img id="logo" src="/img/logo.png"/></a>
+    <a ng-href="/"><img id="logo" src="/img/logo.png"/></a>
   </div>
-  <div style="text-align: right;"class="u-pull-right">
-  <i ng-click="toggle = !toggle" class="fa fa-bars fa-2x" aria-hidden="true"></i>
+
+
+  <div style="text-align: right;" class="u-pull-right">
+    <i ng-click="toggle = !toggle" class="fa fa-bars fa-2x" aria-hidden="true"></i>
     <ul ng-class="{'drop-hidden' : toggle}">
       <li><a ng-click="toggle = !toggle" ng-href="/">home</a></li>
       <li><a ng-click="toggle = !toggle" ng-href="/shows">shows</a></li>
       <li><a ng-click="toggle = !toggle" href="https://open.spotify.com/artist/2Hb8mc3CoUktri3i4Q4ACR" target="_blank">listen</a></li>
       <li><a ng-click="toggle = !toggle" ng-href="/blog">blog</a></li>
-       <li><a ng-click="toggle = !toggle" ng-href="/store">store</a></li>
+      <li><a ng-click="toggle = !toggle" ng-href="/store">store</a></li>
     </ul>
-  </div>
+  </div> 
 </div>
 
 
 <div id="main-nav" class="container navbar row">
-    <div style="vertical-align: middle;" class="six columns">
-      <a ng-href="/"><img id="logo" src="/img/logo.png"/></a>
-      <ul class="nav-left">
+  <div style="vertical-align: middle;" class="six columns">
+    <a ng-href="/"><img id="logo" src="/img/logo.png"/></a>
+    <ul class="nav-left">
       <li><a ng-href="/shows">shows</a></li>
       <li><a href="https://open.spotify.com/artist/2Hb8mc3CoUktri3i4Q4ACR" target="_blank">listen</a></li>
       <li><a ng-href="/blog">blog</a></li>
       <li><a ng-href="/store">store</a></li>
-      </ul>
+    </ul>
 
-    </div>
-    <div class="clear-float"></div>
-    <div class="six columns">
-      <div class="nav-right">
-            <form name="form" class="nav-form" ng-submit="form.$valid && mailchimpSubmit()" novalidate>
-            <button type="submit" class="float-right"><i style="position: relative; bottom: 8px;"class="fa fa-paper-plane-o fa-lg" aria-hidden="true"></i></button>
-            <input class="float-right" name="uEmail" type="email" placeholder="Drink champagne with us!" ng-model="user.email"/>
-              <div class="mail-alerts">
-                <span class="error" ng-show="form.uEmail.$error.email && form.$submitted">*This is not a valid email.</span>
-                <span class="mailchimp-alert-confirm" ng-class="{'confirmAnimate': mailConfirm}">YAY! SISTERS loves you. <i class="fa fa-heart" aria-hidden="true"></i></span>
-              </div>
-            </form>
-          <div class="social float-right">
-          <a href="https://soundcloud.com/sisterstheband" target="_blank"><i class="fa fa-soundcloud fa-lg" aria-hidden="true"></i></a>
-           <a href="https://www.snapchat.com/add/iheartsisters" target="_blank"><i class="fa fa-snapchat-ghost fa-lg" aria-hidden="true"></i></a>
-          <a href="https://www.facebook.com/sisterstheband" target="_blank"><i class="fa fa-facebook fa-lg" aria-hidden="true"></i></a>
-          <a href="https://www.instagram.com/sisterstheband/" target="_blank"><i class="fa fa-instagram fa-lg" aria-hidden="true"></i></a>
-          <a href="https://twitter.com/sisterstheband" target="_blank"><i class="fa fa-twitter fa-lg" aria-hidden="true"></i></a>
+  </div>
+  <div class="clear-float"></div>
+  <div class="six columns">
+    <div class="nav-right">
+      <form name="form" class="nav-form" ng-submit="form.$valid && mailchimpSubmit()" novalidate>
+        <button type="submit" class="float-right"><i style="position: relative; bottom: 8px;"class="fa fa-paper-plane-o fa-lg" aria-hidden="true"></i></button>
+        <input class="float-right" name="uEmail" type="email" placeholder="Drink champagne with us!" ng-model="user.email"/>
+        <div class="mail-alerts">
+          <span class="error" ng-show="form.uEmail.$error.email && form.$submitted">*This is not a valid email.</span>
+          <span class="mailchimp-alert-confirm" ng-class="{'confirmAnimate': mailConfirm}">YAY! SISTERS loves you. <i class="fa fa-heart" aria-hidden="true"></i></span>
         </div>
+      </form>
+      <div class="social float-right">
+        <a href="https://soundcloud.com/sisterstheband" target="_blank"><i class="fa fa-soundcloud fa-lg" aria-hidden="true"></i></a>
+        <a href="https://www.snapchat.com/add/iheartsisters" target="_blank"><i class="fa fa-snapchat-ghost fa-lg" aria-hidden="true"></i></a>
+        <a href="https://www.facebook.com/sisterstheband" target="_blank"><i class="fa fa-facebook fa-lg" aria-hidden="true"></i></a>
+        <a href="https://www.instagram.com/sisterstheband/" target="_blank"><i class="fa fa-instagram fa-lg" aria-hidden="true"></i></a>
+        <a href="https://twitter.com/sisterstheband" target="_blank"><i class="fa fa-twitter fa-lg" aria-hidden="true"></i></a>
       </div>
     </div>
+  </div> 
 </div>
+<a ng-href="/store/cart"><ngcart-summary></ngcart-summary></a> 
 
-<a ng-href="/store/cart"><ngcart-summary></ngcart-summary></a>
 
 
 

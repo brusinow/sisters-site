@@ -38,6 +38,25 @@ angular.module('SistersCtrls')
 
 
 
+.controller('CheckoutTemplateCtrl', function($scope, $state, $http, $timeout, $location, $localStorage){
+  $scope.$storage = $localStorage;
+
+  $scope.$on('cartChange', function(event, data) { 
+    console.log("CART CHANGE UPDATED!!!!!!!!!!!!! ",data);
+    $scope.showPath = data; 
+  });
+
+  console.log("what is showPath? ",$scope.showPath);
+  if (!$scope.showPath){
+    $scope.showPath = $scope.$storage.pathCount;
+    console.log("showPath is now ",$scope.showPath);
+  }
+
+
+})
+
+
+
 
 
 
@@ -47,6 +66,11 @@ angular.module('SistersCtrls')
   console.log("show me items: ",ngCart.getItems());
   $scope.cartItems = ngCart.getItems();
   $rootScope.path = $location.$$path;
+  if (!$scope.$storage.pathCount || $scope.$storage.pathCount < 1){
+    $scope.$storage.pathCount = 0;
+    $scope.$emit('cartChange', $scope.$storage.pathCount); 
+  } 
+  
   $scope.loaded = [];
 
 
@@ -142,6 +166,12 @@ angular.module('SistersCtrls')
           // console.log("what is res? ",res);
           if (res.data.status === 'created'){
             console.log("SUCCESS! ", res);
+            $scope.$storage.mailingList = $scope.mailingListAdd;
+            if (!$scope.$storage.addressSubmit){
+             $scope.$storage.pathCount++;
+             $scope.$emit('cartChange', $scope.$storage.pathCount);  
+            }
+            $scope.$storage.addressSubmit = true;            
             $scope.$storage.orderData = res;
             $scope.$evalAsync(function(){
               $location.url('/store/checkout/payment');
@@ -210,7 +240,7 @@ angular.module('SistersCtrls')
 .controller('StorePaymentCtrl', function($scope, $state, $http, $timeout, $location, $localStorage, ngCart, $rootScope, currentOrder){
   $rootScope.path = $location.$$path;
   $scope.$storage = $localStorage;
-
+  $scope.pathCount = parseInt($scope.$storage.pathCount); 
   $scope.shipOptions = $scope.$storage.orderData.data.shipping_methods;
   $scope.savedSelectedShip = $scope.$storage.orderData.data.selected_shipping_method;
 
@@ -275,6 +305,11 @@ angular.module('SistersCtrls')
 
     $http(req).then(function success(res) {
           console.log("Success! ",res);
+           if (!$scope.$storage.paymentSubmit){
+             $scope.$storage.pathCount++;
+             $scope.$emit('cartChange', $scope.$storage.pathCount);  
+            }
+            $scope.$storage.paymentSubmit = true;  
           $scope.$storage.orderData = res;
           $scope.$storage.tokenData = token;
           $location.url('/store/checkout/confirm');   
@@ -291,7 +326,7 @@ angular.module('SistersCtrls')
 
 .controller('StoreConfirmCtrl', function($scope, $state, $http, $timeout, $location, $localStorage, ngCart, $rootScope){
 $scope.$storage = $localStorage;
-
+$scope.pathCount = parseInt($scope.$storage.pathCount); 
 $scope.orderComplete = false;
 $rootScope.path = $location.$$path;
 console.log("what is rootScope? ",$rootScope);
@@ -324,6 +359,9 @@ $scope.createCharge = function(){
       $http(req).then(function success(res) {
         console.log("Success! ",res);
         $scope.orderComplete = true;
+        if ($scope.$storage.mailingList){
+          mailchimpSubmit();
+        }
         ngCart.setTaxRate();
         ngCart.setShipping();   
         ngCart.empty();
@@ -339,21 +377,15 @@ $scope.createCharge = function(){
 
 
 
-// $scope.mailchimpSubmit = function(){
-//     console.log("submit clicked!")
-//     var url = "//sisterstheband.us14.list-manage.com/subscribe/post-json?u=bc38720b0bcc7a32641bb572c&amp;id=242f4adc89&EMAIL="+$scope.user.email+"&c=JSON_CALLBACK"
-//     $http.jsonp(url).then(function success(res){
-//       console.log(res);
-//       $scope.user = {};
-//       $scope.mailConfirm = true;
-//       $timeout(function(){
-//         $scope.mailConfirm = false;
-//         console.log("mail confirm reset");
-//       },7000);
-//     }, function error(res){
-//       console.log(res);
-//     });
-//   }
+var mailchimpSubmit = function(){
+    console.log("submit clicked!")
+    var url = "//sisterstheband.us14.list-manage.com/subscribe/post-json?u=bc38720b0bcc7a32641bb572c&amp;id=242f4adc89&EMAIL="+$scope.$storage.orderData.data.email+"&c=JSON_CALLBACK"
+    $http.jsonp(url).then(function success(res){
+      console.log("success!!! ",res);
+    }, function error(res){
+      console.log(res);
+    });
+}
 
 
 

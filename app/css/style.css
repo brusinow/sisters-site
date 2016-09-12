@@ -195,6 +195,10 @@ select {
   line-height: 16px;
 }
 
+.store-path-text a {
+  text-decoration: none;
+}
+
 .chevron-path {
   font-size: .8em;
   line-height: 16px;
@@ -212,6 +216,11 @@ select {
 
 .active-path {
   color: #1A0504 !important;
+  text-decoration: none;
+}
+
+.active-path a {
+  text-decoration: none !important;
 }
 
 .store-header-div {
@@ -600,7 +609,7 @@ select {
   object-fit: cover;
   object-position: 100% 50%;
   width: 100%;
-  height: 315px;
+  height: 275px;
 }
 
 .blog-panel {
@@ -1352,6 +1361,10 @@ display: none;
     line-height: 30px;
 }
 
+.store-path-text a {
+  text-decoration: none;
+}
+
   .shopping-cart {
   position: absolute;
   top: 10px; 
@@ -1385,6 +1398,13 @@ display: none;
 }
 
 @media (min-width: 1134px){
+  .image-panel img {
+    object-fit: cover;
+    object-position: 100% 50%;
+    width: 100%;
+    height: 500px;
+  }
+
   .cart-btn {
     font-size: 1.1em;
   }

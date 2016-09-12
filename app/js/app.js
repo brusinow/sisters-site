@@ -14,6 +14,7 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
   $rootScope.$on('$stateChangeSuccess', function() {
    document.body.scrollTop = document.documentElement.scrollTop = 0;
 });
+
 }])
 
 
@@ -189,6 +190,7 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
   })
   .state('checkout', {
     templateUrl: '/views/store/checkoutTemplate.html',
+    controller: 'CheckoutTemplateCtrl',
     resolve: {
       "currentAuth": authWait,
     }

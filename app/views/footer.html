@@ -26,8 +26,8 @@
         <li class="right-border">press</li>
         <li>Three</li>
       </ul>
-      <span class="copyright">All Content ©2016 Sylvia Morris LLC.</span> <button style="margin-bottom: 4px;" class="button button-circle button-flat button-tiny-circle" ng-show="!firebaseUser.email" ng-click="login()"><i class="fa fa-sign-in"></i></button>
-      <button style="margin-bottom: 4px;" class="button button-circle button-flat-royal button-tiny-circle" ng-show="firebaseUser.email" ng-click="logout()"><i class="fa fa-sign-out"></i></button>
+      <span class="copyright">All Content ©2016 Sylvia Morris LLC.</span> <button ng-hide="firebaseUser.email" style="margin-bottom: 4px;" class="button button-circle button-flat button-tiny-circle"  ng-click="login()"><i class="fa fa-sign-in"></i></button>
+      <button ng-show="firebaseUser.email" style="margin-bottom: 4px;" class="button button-circle button-flat-royal button-tiny-circle" ng-click="logout()"><i class="fa fa-sign-out"></i></button>
     </div>
   </div>
 </div>

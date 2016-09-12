@@ -1,3 +1,4 @@
+<div class="blog-container">
   <div class="blog-post" ng-class="{'fade-in': loaded}" ng-repeat="post in posts | orderBy:'-timestamp'">
       <div ng-if="post.img.length > 0" class="image-panel">
         <img ng-src="{{post.img}}"/>
@@ -7,7 +8,7 @@
      </div>
      <div class="blog-panel">
       <div class="blog-header text-center">
-        <button ng-if="firebaseUser.email" class="blog-edit-button" ng-click="editPost(post.slug)"><i class="fa fa-pencil" aria-hidden="true"></i></button>
+        <button ng-if="firebaseUser.email" class="button button-border-pink button-large blog-edit-button" ng-click="editPost(post.slug)"><i class="fa fa-pencil" aria-hidden="true"></i></button>
         <h5 class="no-margin"><a ng-href="/blog/show/{{post.slug}}">{{post.postTitle}}</a></h5>
         <span class="blog-date">{{post.timestamp | MomentFilter}}</span>
       </div>
@@ -26,3 +27,4 @@
     <a id="back-link" ng-hide="last === length" ng-href="{{pageDown}}"><i class="fa fa-long-arrow-left" aria-hidden="true"></i> Newer</a>
     <a id="next-link" ng-hide="first <= 0 || allPosts.length < 5" ng-href="{{pageUp}}">Older <i class="fa fa-long-arrow-right" aria-hidden="true"></i></a>
   </div>
+</div>

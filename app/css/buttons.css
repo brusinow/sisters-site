@@ -776,7 +776,7 @@ input.button-tiny, button.button-tiny {
 
 input.button-tiny-circle, button.button-tiny-circle {
   font-size: 1em;
-  line-height: 24px;
+  line-height: 23px;
   height: 24.4px; 
   width: 24.4px;
 }

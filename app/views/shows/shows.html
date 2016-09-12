@@ -12,12 +12,13 @@
       <img src="/img/sistersVidStill.png" />
     </video>
   </div>
-  <div style="text-align: center;" class="row">
-  <button ng-if="firebaseUser.email" type="button" class="button-primary bold-button" ng-click="open('new')"><i class="fa fa-plus" aria-hidden="true"></i> Add New Show</button>
+  <div style="text-align: center; margin-top: 10px;" class="row">
+  <button ng-if="firebaseUser.email" type="button" class="button-border-pink button-jumbo" ng-click="open('new')"><i class="fa fa-plus" aria-hidden="true"></i> Add New Show</button>
   </div>
-  <table ng-if="shows.length > 0" class="u-full-width">
+  <table id="show-table" ng-if="shows.length > 0" class="u-full-width">
   <thead>
     <tr>
+      <th ng-if="firebaseUser.email"></th>
       <th>Date</th>
       <th>Location</th>
       <th>Venue</th>
@@ -26,7 +27,8 @@
   </thead>
   <tbody>
     <tr ng-repeat="show in shows track by $index">
-      <td><button ng-if="firebaseUser.email" type="button" class="btn btn-default edit-button" ng-click="open('edit',$index)"><i class="fa fa-pencil" aria-hidden="true"></i></button>{{show.date}}</td>
+      <td ng-if="firebaseUser.email"><button type="button" class="button button-border-pink edit-button" ng-click="open('edit',$index)"><i class="fa fa-pencil" aria-hidden="true"></i></button></td>
+      <td>{{show.date}}</td>
       <td>{{show.location}}</td>
       <td>{{show.venue}}</td>
       <td>

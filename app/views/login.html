@@ -1,23 +1,24 @@
 
 
-
-<form style="margin-top: 10%" ng-if="!submitted && !logged">
-
-  <label for="adminEmail">Admin Email:</label>     
-  <input class="u-full-width" id="adminEmail" type="email" ng-model="user.email" placeholder="admin email">
-  <label for="adminPassword">Password:</label>
-  <input id="adminPassword" class="u-full-width" type="password" ng-model="user.password" placeholder="admin password">
-  <div style="text-align: center;"class="row">
-    <input style="margin-top: 25px;" class="button button-flat-pink" type="submit" ng-click="login()">
+<div ng-if="!submitted && !logged" class="row">
+  <div class="four columns offset-by-four login-outer">
+    <div class="login-inner">
+    <form style="margin-top: 10%" class="login-form">
+      <div class="text-center login-header">
+      <h4 >Admin Control Panel</h4>
+      </div>
+      <label for="adminEmail">Admin Email:</label>     
+      <input class="u-full-width" id="adminEmail" type="email" ng-model="user.email" placeholder="admin email">
+      <label for="adminPassword">Password:</label>
+      <input id="adminPassword" class="u-full-width" type="password" ng-model="user.password" placeholder="admin password">
+      <div style="text-align: center;"class="row">
+        <input style="margin-top: 25px;" class="button button-flat-pink" type="submit" ng-click="login()">
+      </div>
+    </form>
+    </div>
   </div>
-</form>
-<div ng-if="submitted && !logged" id="spinner-div">
-  <fa name="spinner" spin></fa>
-  <!-- rendered -->
-  <i class="fa fa-circle-o-notch fa-spin"></i>
 </div>
-
-
+<div ng-if="submitted && !logged" class='uil-spin-css' style='-webkit-transform:scale(0.81)'><div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div></div>
 
 
 

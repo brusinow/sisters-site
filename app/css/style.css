@@ -155,6 +155,8 @@ select {
   right: 15px;
 }
 
+
+
 .checkout-form.ng-submitted input.ng-invalid, .checkout-form.ng-submitted select.ng-invalid {
   border: 2px solid red;
   }
@@ -535,15 +537,12 @@ select {
 }
 
 .blog-edit-button {
-  position: absolute;
-  right: 10px;
-  bottom: 10px;
-  margin-bottom: 0;
-  padding: 0px 4px;
-  font-size: 20px;
-  line-height: 14px;
-  height: 28px;
-  border-radius: 2px;
+    position: absolute;
+    right: 10px;
+    bottom: 10px;
+    font-size: 1.8em;
+    width: 40px;
+    padding: 0;
 }
 
 .tag-div {
@@ -779,13 +778,17 @@ select {
   padding: 0 15px;
 }
 
+#show-table th {
+  padding: 12px 0;
+}
+
 .edit-button {
   margin-bottom: 0;
-  font-size: .8em;
+  width: 34px;
+  font-size: 1em;
   height: 24px;
-  line-height: 13px;
-  padding: 5px 5px;
-  margin-right: 4px;
+  padding: 0;
+  margin-right: 5px;
 }
 
 .btn-circle {
@@ -1221,6 +1224,27 @@ display: none;
   clear: both;
 }
 
+.login-outer {
+  background-color: #dfd2c7;
+  padding: 20px;
+}
+
+.login-inner {
+  background-color: white;
+  padding: 10px;
+}
+
+.login-form {
+  background-color: white;
+}
+
+.login-header {
+  font-family: 'Fjalla One', sans-serif;
+  text-transform: uppercase;
+  text-decoration: underline;
+  letter-spacing: .03em;
+}
+
 
 .nav-left {
   float: left;
@@ -1238,7 +1262,8 @@ display: none;
 
 .home-content h4 {
   letter-spacing: .02em;
-  font-family: 'PT Serif', serif;;
+  font-family: "Raleway", sans-serif;
+  weight: 300;
 }
 
 .home-content h2 {

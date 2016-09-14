@@ -7,10 +7,9 @@ Installation: use "git clone" to copy to your computer and then open in your pre
 
 Technologies used: AngularJS, Express, Node.js, Firebase, AJAX, HTML5, CSS3, Javascript, [ngCart](https://github.com/snapjay/ngCart), and [moment.js](http://momentjs.com/).
 
-APIs Used: Stripe Orders, Avalara, Mailchimp.
+APIs Used: [Stripe Orders](https://stripe.com/docs/orders), [Avalara](http://taxratesapi.avalara.com/), [Mailchimp](https://apidocs.mailchimp.com/).
 
 
 Room for improvement: 
-* desktop version (which will mostly be used by tour managers for data entry)
-* allowing users to connect to see when friends are playing in the same place
-* offline data persistence (Firebase currently only offers this for native iOS or Android development, not their web based solution)
+* incorporate automatic management of shipping through Shippo (automatically formatting labels)
+* Add a creative way for the band to interact with fans (interactive Q & A)

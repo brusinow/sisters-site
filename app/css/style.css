@@ -1332,9 +1332,12 @@ display: none;
   display: none;
 }
 
-#show-vid-small {
-  display: inherit;
+#show-img {
+    display: inherit;
+    width: 100%;
 }
+
+
 
 .contact {
   height: 100%;
@@ -1422,6 +1425,10 @@ display: none;
 
   #show-vid-large {
     display: inherit;
+  }
+
+  #show-img {
+    display: none;
   }
 
   #show-vid-small {

@@ -7,6 +7,7 @@ angular.module('SistersCtrls')
   $scope.BlogPosts = BlogPosts();
   $scope.tags = AllTags;
   $scope.checkedTags = {};
+  $scope.data = {};
 
   $scope.resetMedia = function(){
     $scope.data.youtube = "";
@@ -30,6 +31,10 @@ angular.module('SistersCtrls')
       console.log("what is post id? ",ref.key);
       $scope.data.newTag = "";
     });
+  }
+
+  $scope.resizeImg = function(img){
+    var resize = HelperService.imgResize(img);
   }
 
   $scope.deleteTag = function(item){

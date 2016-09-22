@@ -162,9 +162,11 @@ angular.module('SistersServices', ['ngResource'])
       if (mime && mime.length) {
         result = mime[1];
       }
+      console.log("image type is ",result);
       return result;
     },
     getBase64Image: function(dataURL) {
+      console.log("what is dataURL? ",dataURL);
       var base64 = dataURL.replace(/^data:image\/(png|jpeg);base64,/, "");
       return base64;
     },
@@ -211,13 +213,34 @@ angular.module('SistersServices', ['ngResource'])
       .replace(/\-\-+/g, '-')         // Replace multiple - with single -
       .replace(/^-+/, '')             // Trim - from start of text
       .replace(/-+$/, '');            // Trim - from end of text
+    },
+    imgResize: function (img) {
+    var loadIMG = new Image;
+    loadIMG.src = img;
+    var aspectRatio = loadIMG.width / loadIMG.height;
+    var canvas = document.createElement('canvas');
+    if (aspectRatio >= 1.776 && loadIMG.height >= 500){
+      var percentChange = (loadIMG.height - 500) / loadIMG.height;
+      canvas.height = 500;
+      canvas.width = loadIMG.width - (loadIMG.width * percentChange);
+    } else if (aspectRatio < 1.776 && loadIMG.width >= 889){
+      var percentChange = (loadIMG.width - 889) / loadIMG.width;
+      canvas.width = 889;
+      canvas.height = loadIMG.height - (loadIMG.height * percentChange);
+    } else {
+      console.log("image is not big enough!");
     }
-  };
+    var ctx = canvas.getContext("2d");
+    ctx.drawImage(loadIMG, 0, 0, canvas.width, canvas.height);
+    return canvas.toDataURL();
+    }
+  } 
 }])
 
 
 .factory('SubmitImage', ["HelperService", function(HelperService) {
   return function(post, postArray, image, callback){
+    image = HelperService.imgResize(image);
     var mime = HelperService.base64MimeType(image);
     var base64result = HelperService.getBase64Image(image)
     var file = HelperService.b64toBlob(base64result, mime)

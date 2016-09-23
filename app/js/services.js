@@ -23,10 +23,12 @@ angular.module('SistersServices', ['ngResource'])
   }
 ])
 
-.factory("GetShows", ["$firebaseArray", 
-  function($firebaseArray){
+.factory("GetShows", ["$firebaseArray","moment", 
+  function($firebaseArray, moment){
+    var currentDay = moment().unix();
+    console.log("current day: ",currentDay);
     return function(){
-    var showsRef = firebase.database().ref('shows').orderByChild("unix");
+    var showsRef = firebase.database().ref('shows').orderByChild("unix").startAt(currentDay);
     console.log("I'm in GetShows");
     return $firebaseArray(showsRef);
   }
@@ -166,7 +168,6 @@ angular.module('SistersServices', ['ngResource'])
       return result;
     },
     getBase64Image: function(dataURL) {
-      console.log("what is dataURL? ",dataURL);
       var base64 = dataURL.replace(/^data:image\/(png|jpeg);base64,/, "");
       return base64;
     },
@@ -232,7 +233,7 @@ angular.module('SistersServices', ['ngResource'])
     }
     var ctx = canvas.getContext("2d");
     ctx.drawImage(loadIMG, 0, 0, canvas.width, canvas.height);
-    return canvas.toDataURL();
+    return canvas.toDataURL("image/jpeg");
     }
   } 
 }])
@@ -242,6 +243,7 @@ angular.module('SistersServices', ['ngResource'])
   return function(post, postArray, image, callback){
     image = HelperService.imgResize(image);
     var mime = HelperService.base64MimeType(image);
+    console.log("TYPE IS ",mime);
     var base64result = HelperService.getBase64Image(image)
     var file = HelperService.b64toBlob(base64result, mime)
     var metadata = {

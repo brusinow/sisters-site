@@ -290,6 +290,20 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
   }
 }])
 
+.filter('tooOld', function() {
+  return function(events) {
+    var currentDay = moment().unix()
+    var filtered = [];
+    angular.forEach(events, function(event) {
+      var thisEvent = event.unixDate/1000;
+      if ((currentDay - thisEvent) <= 86400) {
+        filtered.push(event);
+      }
+    });
+    return filtered;
+  };
+})
+
 .filter('DeliveryEstDate', ['moment', function(moment){
   return function(val){
     return  moment(val).format('dddd, MMMM Do');

@@ -13,7 +13,7 @@ angular.module('SistersCtrls')
 
   $scope.ok = function () {
     $scope.show.date = moment($scope.dateObj).format('ddd, MMMM Do');
-    $scope.show.unix = $scope.dateObj.getTime();
+    $scope.show.unix = $scope.dateObj.getTime() / 1000;
     $scope.shows.$save($scope.show).then(function(ref) {
       console.log("success");
     }, function(error) {
@@ -46,7 +46,7 @@ angular.module('SistersCtrls')
 
   $scope.ok = function () {
     var thisDate = moment($scope.show.showDate).format('ddd, MMMM Do');
-    var thisUnix = $scope.show.showDate.getTime();
+    var thisUnix = $scope.show.showDate.getTime() / 1000;
     console.log(thisDate);
     var object = {
       "date": thisDate,

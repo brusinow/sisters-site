@@ -89,6 +89,48 @@ select {
   bottom: 0;
   right: 0;
 }*/
+@keyframes overlay-fadein {
+    from {background-color: rgba(0,0,0,0);}
+    to {background-color: rgba(0,0,0,.5)}
+}
+
+@keyframes overlay-content-fadein {
+    from {background-color: rgba(255,255,255,0);}
+    to {background-color: rgba(255,255,255,.9);}
+}
+
+
+.overlay-start {
+  width: 100%;
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index:500;
+  background-color: rgba(0,0,0,0);
+   animation-name: overlay-fadein;
+    animation-duration: .5s;
+}
+
+.overlay-start.active {
+  background-color: rgba(0,0,0,.5);
+}
+
+.overlay-content-start {
+  position: absolute;
+  margin: auto;
+  top: 0; left: 0; right: 0; bottom: 0;
+  width: 600px;
+  height: 300px;
+  z-index:501;
+  background-color: rgba(255,255,255,0);
+  animation-name: overlay-content-fadein;
+  animation-duration: .5s;
+}
+
+.overlay-content-start.active {
+  background-color: rgba(255,255,255,.9);
+}
+
 
 .store-front.ng-enter {
   transition:0.2s linear all;
@@ -1301,7 +1343,7 @@ display: none;
 
 
 .home-content.fade-in { 
-  transition: all 1500ms ease-in-out; 
+  transition: all 1000ms ease-in-out; 
   opacity:1; 
 }
 

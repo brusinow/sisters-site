@@ -26,6 +26,9 @@ angular.module('SistersCtrls')
 
   $timeout(function(){
     // OVERLAY CREATION
+    var w = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+    if (w >= 678){
+    $scope.isPopup = true;
     var div = document.createElement("div");
     div.id = "overlayMail";
     div.className = "overlay-start";
@@ -35,26 +38,20 @@ angular.module('SistersCtrls')
     popUp.appendChild(div);
     var overlay = document.querySelector("#overlayMail");
     overlay.classList.add("active");
-  
-    var content = document.createElement("div");
-    content.id = "overlayContent";
-    content.className = "overlay-content-start";
-    content.innerHTML = '<h3 class="text-center">Join our Mailing List!</h3><p>We will not mail you often, but this way you get our updates about the album and upcoming shows.</p><form name="form" class="nav-form" ng-submit="form.$valid && mailchimpSubmit()" novalidate><button type="submit" class="button-flat float-right"><i style="position: relative; bottom: 8px;"class="fa fa-paper-plane-o fa-lg" aria-hidden="true"></i></button><input class="float-right" name="uEmail" type="email" placeholder="Pop Bottles With Us!" ng-model="user.email"/><div class="mail-alerts"><span class="error" ng-show="form.uEmail.$error.email && form.$submitted">*This is not a valid email.</span><span class="mailchimp-alert-confirm" ng-class="{"confirmAnimate": mailConfirm}">YAY! SISTERS loves you. <i class="fa fa-heart" aria-hidden="true"></i></span></div></form>';
-    popUp.appendChild(content);
-    var ovContent = document.querySelector("#overlayContent");
-    ovContent.classList.add("active");
-
-
-
+    };
   },8000)
     
 
+  $scope.closePopup = function(){
+    $scope.isPopup = false;
+  }
     
    
 
 
   $scope.mailchimpSubmit = function(){
     console.log("submit clicked!")
+     $scope.isPopup = false;
     var url = "//sisterstheband.us14.list-manage.com/subscribe/post-json?u=bc38720b0bcc7a32641bb572c&amp;id=242f4adc89&EMAIL="+$scope.user.email+"&c=JSON_CALLBACK"
     $http.jsonp(url).then(function success(res){
       console.log(res);

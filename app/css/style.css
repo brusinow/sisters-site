@@ -115,21 +115,56 @@ select {
   background-color: rgba(0,0,0,.5);
 }
 
-.overlay-content-start {
+.overlay-content {
   position: absolute;
   margin: auto;
+  padding: 20px;
   top: 0; left: 0; right: 0; bottom: 0;
-  width: 600px;
-  height: 300px;
+  width: 500px;
+  height: 250px;
   z-index:501;
-  background-color: rgba(255,255,255,0);
+  background-color: rgba(255,255,255,.9);
+  border-radius: 2px;
   animation-name: overlay-content-fadein;
   animation-duration: .5s;
 }
 
-.overlay-content-start.active {
-  background-color: rgba(255,255,255,.9);
+.popup-form {
+  display: inline-block;
 }
+
+.popup-form input {
+  width: 250px;
+  border-radius: 4px 0 0 4px;
+  height: 40px;
+  line-height: 40px;
+  font-size: 1.3em;
+}
+
+#popup-submit {
+  height: 40px;
+  width: 40px;
+  line-height: 40px;
+  border-radius: 0 4px 4px 0;
+  outline: none;
+}
+
+#popup-submit i {
+  font-size: 1.3em;
+  line-height: 40px;
+}
+
+#exit-popup {
+  position: absolute;
+  top: 5px;
+  right: 5px;
+  border: none;
+  outline: none;
+}
+
+/*.overlay-content-start.active {
+  background-color: rgba(255,255,255,.9);
+}*/
 
 
 .store-front.ng-enter {

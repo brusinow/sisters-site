@@ -52,7 +52,23 @@
   </div> 
 </div>
 <a ng-href="/store/cart"><ngcart-summary></ngcart-summary></a> 
-<div id="pop-up"></div>
-
+<div ng-show="isPopup">
+  <div id="pop-up"></div>
+  <div class="overlay-content">
+    <button id="exit-popup" class="button-border" ng-click="closePopup()"><i class="fa fa-times" aria-hidden="true"></i></button>
+    <h3 class="text-center">Join our Mailing List!</h3>
+    <p>
+      We will not mail you often, but this way you get our updates about the album and upcoming shows.
+    </p>
+    <div class="text-center">
+    <form name="form" class="popup-form" ng-submit="form.$valid && mailchimpSubmit()" novalidate>
+      <button id="popup-submit" type="submit" class="button-flat-blue float-right">
+        <i style="position: relative; bottom: 8px;"class="fa fa-paper-plane-o fa-lg" aria-hidden="true"></i>
+      </button>
+      <input class="float-right" name="uEmail" type="email" placeholder="Pop Bottles With Us!" ng-model="user.email"/>
+      </form>
+    </div>
+  </div>
+</div>
 
 

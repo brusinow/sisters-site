@@ -1387,7 +1387,7 @@ display: none;
 
 
 .home-content.fade-in { 
-  transition: all 1000ms ease-in-out; 
+  transition: all 800ms ease-in-out; 
   opacity:1; 
 }
 
@@ -1440,6 +1440,10 @@ display: none;
 
 .cart-btn-right {
   margin-left: 50%;
+}
+
+.in-cart {
+  margin-top: 10px;
 }
 
 

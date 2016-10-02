@@ -1,17 +1,16 @@
 angular.module('SistersCtrls')
 
 
-.controller('StoreCtrl', function($scope, $state, $http, $timeout, $location, $sessionStorage, allProducts){
+.controller('StoreCtrl', function($scope, $state, $http, $timeout, $location, $sessionStorage, allProducts, ProductsService){
     $scope.loaded = false;
     $scope.products = allProducts;
     console.log("what are products? ",$scope.products);
 
 
     
-    // $http.get('/stripe/allProducts').success(function(data){
-    //   $scope.products = data.data;
-    //   console.log("what are products? ",$scope.products); 
-    // })
+    $scope.showProduct = function(id){
+      $state.go('storeShow', {id:id});
+    }
 
     $timeout(function(){
         $scope.loaded = true; 
@@ -29,14 +28,25 @@ angular.module('SistersCtrls')
   $scope.continue = function(){
     $location.url('/store');
   }
- 
-
-
-
-
-
-
 })
+
+
+
+
+.controller('StoreShowCtrl', function($scope, $stateParams, $state, $http, $timeout, $location, $sessionStorage, oneProduct){
+console.log("what is oneProduct? ",oneProduct);
+$scope.product = oneProduct;
+$scope.images = oneProduct.images;
+
+
+var mainImg = document.querySelector(".main-product-photo");
+console.log(mainImg);
+mainImg.style.background = 'url('+$scope.product.images[0]+') no-repeat center center';
+mainImg.style.backgroundSize = 'contain';
+})
+
+
+
 
 
 

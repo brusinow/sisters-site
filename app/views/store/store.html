@@ -3,7 +3,7 @@
 <div class="store-front" ng-if="loaded">
 <div ng-repeat="product in products" ng-if="$index % 3 === 0" class="store-row row">
   
-    <div class="storefront columns store-item">
+    <div ng-click="showProduct(products[$index].id)" class="storefront columns store-item">
         <div class="item-image-div">
           <img ng-src="{{products[$index].images[0]}}"/>
         </div>

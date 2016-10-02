@@ -27,7 +27,6 @@ angular.module('SistersServices', ['ngResource'])
 .factory("ProductsService", ["$http","$q", function($http, $q){
   return {
     allProducts: function(){
-      var products;
       var deferred = $q.defer();
       console.log("inside all products service")
       $http.get('/stripe/allProducts').success(function(data){
@@ -36,6 +35,22 @@ angular.module('SistersServices', ['ngResource'])
         // console.log("products in service: ",products);   
       }); 
       return deferred.promise;   
+    },
+    oneProduct: function(productId){
+      console.log("what's id? ",productId);
+      var deferred = $q.defer();
+      var req = {
+        method: 'GET',
+        url: '/stripe/oneProduct',
+        params: {
+          productId: productId
+        }
+      }
+      $http(req).success(function(data){
+        console.log("success!!!")
+        deferred.resolve(data);
+      })
+      return deferred.promise;
     }
   }
 }])

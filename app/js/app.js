@@ -191,6 +191,17 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
       }
     }
   })
+  .state('storeShow', {
+    url: '/store/:id',
+    templateUrl: '/views/store/storeShow.html',
+    controller: 'StoreShowCtrl',
+    resolve: {
+      "currentAuth": authWait,
+      "oneProduct": function(ProductsService, $stateParams){
+        return ProductsService.oneProduct($stateParams.id);
+      }
+    }
+  })
   .state('checkout', {
     templateUrl: '/views/store/checkoutTemplate.html',
     controller: 'CheckoutTemplateCtrl',

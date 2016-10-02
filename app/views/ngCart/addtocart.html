@@ -5,16 +5,16 @@
 <div ng-show="attrs.id">
     <div>
         <span ng-show="quantityMax">
-            <select name="quantity" id="quantity" ng-model="q"
+            <select ng-click="$event.stopPropagation();" name="quantity" id="quantity" ng-model="q"
                     ng-options=" v for v in qtyOpt"></select>
         </span>
         <a style="cursor: pointer;" class="button button-flat"
-           ng-click="ngCart.addItem(id, name, price, q, data)"
+           ng-click="ngCart.addItem(id, name, price, q, data); $event.stopPropagation();"
            ng-transclude></a>
     </div>
     <div style="height: 20px">
     <div  class="in-cart" ng-show="inCart()">
-        This item is in your cart. <a ng-click="ngCart.removeItemById(id)" style="cursor: pointer;">Remove</a>
+        This item is in your cart. <a ng-click="ngCart.removeItemById(id); $event.stopPropagation();" style="cursor: pointer;">Remove</a>
     </div>
     </div>
 </div>

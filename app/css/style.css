@@ -1089,7 +1089,20 @@ display: none;
   /*margin-bottom: 20px;*/
 }
 
+.main-product-photo {
+  height: 400px;
+}
 
+.product-thumb-div {
+  height: 100px;
+  width: 100px;
+}
+
+.product-thumb-div img {
+  width: 100%;
+  object-fit: cover;
+  object-position: 100% 50%;
+}
 
 .store-item {
   font-size: .9em;
@@ -1100,6 +1113,11 @@ display: none;
   overflow:auto;
   background-color: white;
   margin-bottom: 10px;
+  border: 2px solid white;
+}
+
+.store-item:hover {
+  border: 2px solid #555;
 }
 
 .store-item h6 {

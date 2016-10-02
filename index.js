@@ -47,6 +47,7 @@ app.get("/taxRate", function(req, res) {
 });
 
 app.get("/stripe/oneProduct", function(req, res){
+  console.log("product id is: ",req.query.productId);
   stripe.products.retrieve(
   req.query.productId,
   function(err, product) {

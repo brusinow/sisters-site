@@ -46,6 +46,14 @@ app.get("/taxRate", function(req, res) {
   });
 });
 
+app.get("/stripe/oneProduct", function(req, res){
+  stripe.products.retrieve(
+  req.query.productId,
+  function(err, product) {
+    res.send(product);
+  });
+});
+
 app.get("/stripe/allProducts", function(req, res){
   stripe.products.list(
   { limit: 10 },

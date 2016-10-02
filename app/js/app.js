@@ -185,7 +185,10 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
     templateUrl: '/views/store/store.html',
     controller: 'StoreCtrl',
     resolve: {
-      "currentAuth": authWait
+      "currentAuth": authWait,
+      "allProducts": function(ProductsService){
+        return ProductsService.allProducts();
+      }
     }
   })
   .state('checkout', {

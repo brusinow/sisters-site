@@ -23,17 +23,22 @@ angular.module('SistersServices', ['ngResource'])
   }
 ])
 
-.factory("GetShows", ["$firebaseArray","moment", 
-  function($firebaseArray, moment){
-    var currentDay = moment().unix();
-    console.log("current day: ",currentDay);
-    return function(){
-    var showsRef = firebase.database().ref('shows').orderByChild("unix").startAt(currentDay);
-    console.log("I'm in GetShows");
-    return $firebaseArray(showsRef);
+
+.factory("ProductsService", ["$http","$q", function($http, $q){
+  return {
+    allProducts: function(){
+      var products;
+      var deferred = $q.defer();
+      console.log("inside all products service")
+      $http.get('/stripe/allProducts').success(function(data){
+        // products = data.data;
+        deferred.resolve(data.data);
+        // console.log("products in service: ",products);   
+      }); 
+      return deferred.promise;   
+    }
   }
 }])
-
 
 .service('InstagramFactory', ['$http', '$q', 
   function ($http, $q) {
@@ -49,6 +54,23 @@ angular.module('SistersServices', ['ngResource'])
     });
     return deferred.promise;
 }])
+
+
+
+
+.factory("GetShows", ["$firebaseArray","moment", 
+  function($firebaseArray, moment){
+    var currentDay = moment().unix();
+    console.log("current day: ",currentDay);
+    return function(){
+    var showsRef = firebase.database().ref('shows').orderByChild("unix").startAt(currentDay);
+    console.log("I'm in GetShows");
+    return $firebaseArray(showsRef);
+  }
+}])
+
+
+
 
 
 .factory("BlogPosts", ["$firebaseArray", 

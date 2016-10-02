@@ -1,21 +1,23 @@
 angular.module('SistersCtrls')
 
 
-.controller('StoreCtrl', function($scope, $state, $http, $timeout, $location, $sessionStorage){
+.controller('StoreCtrl', function($scope, $state, $http, $timeout, $location, $sessionStorage, allProducts){
     $scope.loaded = false;
-
+    $scope.products = allProducts;
+    console.log("what are products? ",$scope.products);
 
 
     
-    $http.get('/stripe/allProducts').success(function(data){
-      $scope.products = data.data;
-      console.log("what are products? ",$scope.products);
-      
-     
-    })
+    // $http.get('/stripe/allProducts').success(function(data){
+    //   $scope.products = data.data;
+    //   console.log("what are products? ",$scope.products); 
+    // })
+
     $timeout(function(){
         $scope.loaded = true; 
-      },500)
+    })
+    
+    
     
 
 

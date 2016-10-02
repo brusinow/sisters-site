@@ -1,6 +1,6 @@
 <h2 class="text-center">{{product.name}}</h2>
 <div class="main-product-photo"></div>
 
-<div style="float: right">
-<div ng-repeat="img in images" class="product-thumb-div"><img ng-src="{{img}}"/></div>
+<div ng-if="images.length > 1" class="product-thumb-container">
+<div ng-click="changeActive()" ng-repeat="img in images" class="product-thumb-div"><img ng-class="{'activeThumb': isActiveImg()}" ng-src="{{img}}"/></div>
 </div>

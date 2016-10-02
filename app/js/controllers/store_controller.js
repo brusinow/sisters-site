@@ -37,12 +37,33 @@ angular.module('SistersCtrls')
 console.log("what is oneProduct? ",oneProduct);
 $scope.product = oneProduct;
 $scope.images = oneProduct.images;
-
+var currentActiveSrc = $scope.images[0];
 
 var mainImg = document.querySelector(".main-product-photo");
 console.log(mainImg);
 mainImg.style.background = 'url('+$scope.product.images[0]+') no-repeat center center';
 mainImg.style.backgroundSize = 'contain';
+
+$scope.isActiveImg = function(){
+  if (this.img === currentActiveSrc){
+    return true;
+  } else {
+    return false;
+  }
+}
+
+$scope.changeActive = function(){
+  currentActiveSrc = this.img;
+  mainImg.style.background = 'url('+this.img+') no-repeat center center'; 
+  mainImg.style.backgroundSize = 'contain';
+}
+
+
+
+
+
+
+
 })
 
 

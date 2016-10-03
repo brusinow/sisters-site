@@ -15,12 +15,10 @@ angular.module('SistersCtrls')
     $timeout(function(){
         $scope.loaded = true; 
     })
-    
-    
-    
+ 
+})
 
-
-
+.controller('StoreCartCtrl', function($scope, $state, $http, $timeout, $location, $sessionStorage){
   $scope.toCheckout = function(){
     $location.url('/store/checkout/address');
   }
@@ -32,17 +30,21 @@ angular.module('SistersCtrls')
 
 
 
-
 .controller('StoreShowCtrl', function($scope, $stateParams, $state, $http, $timeout, $location, $sessionStorage, oneProduct){
 console.log("what is oneProduct? ",oneProduct);
 $scope.product = oneProduct;
 $scope.images = oneProduct.images;
 var currentActiveSrc = $scope.images[0];
 
-var mainImg = document.querySelector(".main-product-photo");
-console.log(mainImg);
-mainImg.style.background = 'url('+$scope.product.images[0]+') no-repeat center center';
-mainImg.style.backgroundSize = 'contain';
+$scope.skus = $scope.product.skus.data;
+console.log("skus: ",$scope.skus);
+$scope.data = {};
+$scope.data.selected = $scope.product.skus.data[0];
+console.log("selected: ",$scope.data.selected);
+
+var mainImg = document.querySelector(".main-product-photo img");
+mainImg.src = $scope.images[0];
+
 
 $scope.isActiveImg = function(){
   if (this.img === currentActiveSrc){
@@ -52,10 +54,13 @@ $scope.isActiveImg = function(){
   }
 }
 
+$scope.whatSelected = function(){
+  console.log($scope.data.selected);
+}
+
 $scope.changeActive = function(){
   currentActiveSrc = this.img;
-  mainImg.style.background = 'url('+this.img+') no-repeat center center'; 
-  mainImg.style.backgroundSize = 'contain';
+  mainImg.src = this.img;
 }
 
 

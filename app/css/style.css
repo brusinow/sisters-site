@@ -1089,25 +1089,52 @@ display: none;
   /*margin-bottom: 20px;*/
 }
 
+.single-product-name {
+  font-family: 'Fjalla One', sans-serif;
+  text-transform: uppercase;
+}
+
+.store-back-link {
+  font-size: 1.2em;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 10px;
+}
+
+.store-back-link:hover {
+  color: #333;
+  cursor: pointer;
+}
+
 .main-product-photo {
-  height: 400px;
-  width: 60%;
-  margin: 0 0 0 20%;
+  float: left;
+  width: 70%;
+  margin: 0 20px;
   display: inline-block;
+}
+
+.main-product-photo img {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  object-position: 50% 50%;
 }
 
 .product-thumb-container {
   display: inline-block;
-  float: right;
+  float: left;
+  width: 15%;
 }
 
 .product-thumb-div {
-  height: 170px;
-  width: 170px;
-  margin: 15px;
+  width: 8vw;
+  height: 8vw;
+  margin-bottom: 10px;
   border: 1px solid #555;
   overflow: hidden;
+  cursor: pointer;
 }
+
 
 .product-thumb-div img {
     width: 100%;

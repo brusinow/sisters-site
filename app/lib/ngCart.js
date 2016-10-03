@@ -29,7 +29,7 @@ angular.module('ngCart', ['ngCart.directives'])
 
     }])
 
-    .service('ngCart', ['$rootScope', '$window', 'ngCartItem', 'store', function ($rootScope, $window, ngCartItem, store) {
+    .service('ngCart', ['$rootScope', '$location', '$window', 'ngCartItem', 'store', function ($rootScope, $location, $window, ngCartItem, store) {
 
         this.init = function(){
             this.$cart = {
@@ -40,7 +40,29 @@ angular.module('ngCart', ['ngCart.directives'])
             };
         };
 
-        this.addItem = function (id, name, price, quantity, data) {
+        this.addItem = function (id, name, price, quantity, data, attr) {
+            console.log("what is data? ",data);
+            var inCart = this.getItemById(id);
+
+            if (typeof inCart === 'object'){
+                //Update quantity of an item if it's already in the cart
+                inCart.setQuantity(quantity, false);
+                $rootScope.$broadcast('ngCart:itemUpdated', inCart);
+            } else {
+                var newItem = new ngCartItem(id, name, price, quantity, data, attr);
+                console.log("new item: ",newItem);
+                this.$cart.items.push(newItem);
+                $rootScope.$broadcast('ngCart:itemAdded', newItem);
+            }
+
+            $rootScope.$broadcast('ngCart:change', {});
+        };
+
+        this.addItemBtn = function (id, name, price, quantity, data) {
+            console.log("id is ",id);
+            console.log("data: ",data);
+            var skus = data.skus.data;
+            if (skus.length === 1){
             var inCart = this.getItemById(id);
 
             if (typeof inCart === 'object'){
@@ -54,6 +76,9 @@ angular.module('ngCart', ['ngCart.directives'])
             }
 
             $rootScope.$broadcast('ngCart:change', {});
+            } else {
+                $location.url('/store/'+ data.id);
+            }
         };
 
 
@@ -205,7 +230,8 @@ angular.module('ngCart', ['ngCart.directives'])
             _self.$cart.tax = storedCart.tax;
 
             angular.forEach(storedCart.items, function (item) {
-                _self.$cart.items.push(new ngCartItem(item.parent,  item.description, item.amount, item.quantity));
+                console.log(item);
+                _self.$cart.items.push(new ngCartItem(item.parent,  item.description, item.amount, item.quantity, item._data, item.attr));
             });
             this.$save();
         };
@@ -218,13 +244,13 @@ angular.module('ngCart', ['ngCart.directives'])
 
     .factory('ngCartItem', ['$rootScope', '$log', function ($rootScope, $log) {
 
-        var item = function (id, name, price, quantity) {
+        var item = function (id, name, price, quantity, data, attr) {
             this.setId(id);
             this.setName(name);
             this.setPrice(price);
             this.setQuantity(quantity);
-            // this.type = "sku"
-            // this.setData(data);
+            this.setData(data);
+            this.setAttr(attr);
         };
 
 
@@ -300,6 +326,23 @@ angular.module('ngCart', ['ngCart.directives'])
             else $log.info('This item has no data');
         };
 
+        item.prototype.setAttr = function(attributes){
+            if (attributes) this.attr = attributes;
+        };
+
+        item.prototype.getAttr = function(){
+            if (this.attr){
+                if (this.attr["size"]){
+                    return this.attr["size"]
+                } else if (this.attr["color"]) {
+                    return this.attr["size"]
+                };
+            } 
+            else $log.info('This item has no attributes');
+        };
+        
+
+
 
         item.prototype.getTotal = function(){
             return +parseFloat(this.getQuantity() * this.getPrice()).toFixed(2);
@@ -351,7 +394,17 @@ angular.module('ngCart', ['ngCart.directives'])
         $scope.toggleCart = false;
         $scope.ngCart = ngCart;
         $timeout(function(){
-            console.log("loaded in ngCart controller!");
+            $scope.loaded = true;
+        })
+
+    }])
+
+    .controller('CartBtnController',['$scope', 'ngCart','$timeout', function($scope, ngCart, $timeout) {
+        console.log("cart button controller!!!!");
+        $scope.loaded = false;
+        $scope.toggleCart = false;
+        $scope.ngCart = ngCart;
+        $timeout(function(){
             $scope.loaded = true;
         })
 
@@ -367,6 +420,48 @@ angular.module('ngCart.directives', ['ngCart.fulfilment'])
         
         $scope.ngCart = ngCart;
         
+    }])
+
+          .directive('ngcartAddBtn', ['ngCart', function(ngCart){
+        return {
+            restrict : 'E',
+            controller : 'CartBtnController',
+            scope: {
+                id:'@',
+                name:'@',
+                quantity:'@',
+                quantityMax:'@',
+                price:'@',
+                data:'='
+            },
+            transclude: true,
+            templateUrl: function(element, attrs) {
+                if ( typeof attrs.templateUrl == 'undefined' ) {
+                    return 'views/ngCart/addtocartBtn.html';
+                } else {
+                    return attrs.templateUrl;
+                }
+            },
+            link:function(scope, element, attrs){
+                scope.attrs = attrs;
+                scope.inCart = function(){
+                    return  ngCart.getItemById(attrs.id);
+                };
+
+                if (scope.inCart()){
+                    scope.q = ngCart.getItemById(attrs.id).getQuantity();
+                } else {
+                    scope.q = parseInt(scope.quantity);
+                }
+
+                scope.qtyOpt =  [];
+                for (var i = 1; i <= scope.quantityMax; i++) {
+                    scope.qtyOpt.push(i);
+                }
+
+            }
+
+        };
     }])
 
     .directive('ngcartAddtocart', ['ngCart', function(ngCart){
@@ -410,6 +505,8 @@ angular.module('ngCart.directives', ['ngCart.fulfilment'])
 
         };
     }])
+
+
 
     .directive('ngcartCart', [function(){
         return {

@@ -1,6 +1,30 @@
-<h2 class="text-center">{{product.name}}</h2>
-<div class="main-product-photo"></div>
+<div style="margin-left: 5px; margin-bottom: 15px;">
+    <a class="store-back-link" href="/store"><i class="fa fa-long-arrow-left" aria-hidden="true"></i> Back to Store</a>
+</div>
+<div class="row">
+    <div class="eight columns">
 
-<div ng-if="images.length > 1" class="product-thumb-container">
-<div ng-click="changeActive()" ng-repeat="img in images" class="product-thumb-div"><img ng-class="{'activeThumb': isActiveImg()}" ng-src="{{img}}"/></div>
+
+        <div ng-if="images.length > 1" class="product-thumb-container">
+        <div id="attr-select" ng-click="changeActive()" ng-repeat="img in images" class="product-thumb-div"><img ng-class="{'activeThumb': isActiveImg()}" ng-src="{{img}}"/></div>
+        </div>
+
+        <div class="main-product-photo"><img /></div>
+    </div>
+    <div class="four columns">
+        <h3 class="single-product-name text-center">{{product.name}}</h3>
+        <p>{{product.description}}</p>
+        <div class="text-center" ng-if="product.skus.data.length > 1" id="sku-radio-div">
+            <div ng-if="data.selected.attributes.size">
+                <label style="display: inline" for="attr-select">Size:</label>
+                <select id="attr-select" ng-options="sku as sku.attributes.size for sku in skus"  ng-change="whatSelected()" ng-model="data.selected"></select>
+            </div>
+            <div ng-if="data.selected.attributes.color">
+                <label style="display: inline" for="attr-select">Color:</label>
+                <select id="attr-select" ng-options="sku as sku.attributes.color for sku in skus"  ng-change="whatSelected()" ng-model="data.selected"></select>
+            </div>
+        </div>
+        <h5 class="text-center">{{ data.selected.price | centsToDollars | currency}}</h5>
+        <ngcart-addtocart class="text-center" id="{{ data.selected.id }}" name="{{ product.name }}" price="{{ data.selected.price }}" quantity="1" quantity-max="30" data="data.selected">Add to Cart</ngcart-addtocart>
+    </div>
 </div>

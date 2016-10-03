@@ -4,12 +4,8 @@
 </div>
 <div ng-show="attrs.id">
     <div>
-        <span ng-show="quantityMax">
-            <select ng-click="$event.stopPropagation();" name="quantity" id="quantity" ng-model="q"
-                    ng-options=" v for v in qtyOpt"></select>
-        </span>
-        <a style="cursor: pointer;" class="button button-flat-blue"
-           ng-click="ngCart.addItem(id, name, price, q, data, data.attributes); $event.stopPropagation();"
+        <a style="cursor: pointer;" class="button button-flat"
+           ng-click="ngCart.addItemBtn(id, name, price, 1, data); $event.stopPropagation();"
            ng-transclude></a>
     </div>
     <div style="height: 20px">

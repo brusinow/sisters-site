@@ -87,6 +87,11 @@ angular.module('SistersCtrls')
 }])
 
 .controller('FooterCtrl', ['$scope','$timeout','$log','$uibModal','$http','Auth','$state','$sessionStorage', function($scope, $timeout,$log, $uibModal, $http, Auth, $state, $sessionStorage){
+  $scope.auth = Auth;
+  $scope.auth.$onAuthStateChanged(function(firebaseUser) {
+    $scope.firebaseUser = firebaseUser;
+  });
+  
   $scope.logout = function(){
     console.log("clicked log out");
     Auth.$signOut();

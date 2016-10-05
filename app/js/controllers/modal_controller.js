@@ -6,13 +6,13 @@ angular.module('SistersCtrls')
   $scope.show = editShow[index];
 
   console.log("index is ",index);
-  $scope.dateObj = new Date($scope.show.unix);
+  $scope.dateObj = new Date($scope.show.unix * 1000);
   console.log($scope.dateObj);
 
 
 
   $scope.ok = function () {
-    $scope.show.date = moment($scope.dateObj).format('ddd, MMMM Do');
+    $scope.show.date = moment($scope.dateObj).format('dddd, MMMM Do');
     $scope.show.unix = $scope.dateObj.getTime() / 1000;
     $scope.shows.$save($scope.show).then(function(ref) {
       console.log("success");

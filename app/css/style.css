@@ -992,7 +992,7 @@ select {
 
   .footer-right {
     height: 100%;
-    padding: 15px;
+    padding: 40px 15px 40px 15px;
     background-color: #dfd2c7;
   }
 

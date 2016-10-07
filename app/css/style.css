@@ -175,6 +175,10 @@ select {
   background-color: rgba(255,255,255,.9);
 }*/
 
+.header-social {
+  display: none !important;
+}
+
 
 .store-front.ng-enter {
   transition:0.2s linear all;
@@ -513,6 +517,7 @@ select {
     padding-bottom: 56.25%; /* 16:9 */
     padding-top: 25px;
     height: 0;
+    margin-top: 25%;
   }
   .videoWrapper iframe {
     position: absolute;
@@ -1623,6 +1628,14 @@ display: none;
 }
 
 @media (min-width: 1134px){
+  .videoWrapper {
+    margin-top: 0;
+  }
+
+  .header-social {
+  display: inline-block !important;
+  }
+
   .image-panel img {
     object-fit: cover;
     object-position: 100% 50%;

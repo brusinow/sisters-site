@@ -49,6 +49,7 @@ angular.module('SistersCtrls')
     var postDate = new Date().getTime();
     var year = moment(postDate).format("YYYY");
     var month = moment(postDate).format("MMMM");
+    // var postBodyBreaks = post.body.replace(/\n/g, "<br />");
     console.log(post.tags);
 
     var newTags = {};

@@ -14,9 +14,7 @@
         <h5 class="no-margin">{{post.postTitle}}</h5>
         <span class="blog-date">{{post.timestamp | MomentFilter}}</span>
       </div>
-      <p class="white-space-pre">
-      {{post.postBody}}
-      </p>
+      <div ng-bind-html="post.postBody" class="white-space-pre"></div>
       <div class="tag-div">
         <h6 class="no-margin">TAGS</h6>
         <ul class="tags">

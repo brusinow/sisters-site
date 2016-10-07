@@ -12,14 +12,15 @@
         <h5 class="no-margin"><a ng-href="/blog/show/{{post.slug}}">{{post.postTitle}}</a></h5>
         <span class="blog-date">{{post.timestamp | MomentFilter}}</span>
       </div>
-      <p class="white-space-pre">
-        {{post.postBody | cut:enable:true:275:'...' }} <a ng-if="enable && post.postBody.length >= 275" ng-href="/blog/show/{{post.slug}}">Read More!</a>
-      </p>
+      <div ng-bind-html="post.postBody | cut:enable:true:275:'...'" class="white-space-pre"></div>
+      <a ng-if="enable && post.postBody.length >= 275" ng-href="/blog/show/{{post.slug}}">Read More!</a>
       <div class="tag-div">
-        <h6 style="margin-bottom: 5px;">TAGS</h6>
-        <ul class="tags">
-          <li ng-repeat="tag in allTags" ng-if="post.tags[tag.$id]">{{tag.name}}</li>   
-        </ul>
+        <div ng-if="allTags.length > 0" class="tag-content">
+          <h6 style="margin-bottom: 5px;">TAGS</h6>
+          <ul class="tags">
+            <li ng-repeat="tag in allTags" ng-if="post.tags[tag.$id]">{{tag.name}}</li>   
+          </ul>
+        </div>
       </div>
     </div>
   </div>

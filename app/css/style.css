@@ -527,6 +527,16 @@ select {
     text-align: justify;
   }
 
+  .ta-scroll-window > .ta-bind {
+    height: auto;
+    min-height: 300px;
+    padding: 6px 12px;
+  }
+
+  .form-control {
+    height: auto;
+  }
+
   .footer h5 {
     font-family: 'Fjalla One', sans-serif;
   }
@@ -599,12 +609,15 @@ select {
    width: 100%;
  }
 
+ .blog-header {
+   margin-bottom: 5px;
+ }
+
 
  .blog-header h5 {
   font-family: 'Fjalla One', sans-serif;
   font-weight: 400;
   letter-spacing: .02em;
-  text-transform: lowercase;
 }
 
 .blog-header a {
@@ -651,11 +664,16 @@ select {
   border-radius: 4px 0 0 4px;
 }
 
+.ta-hidden-input {
+  display: none;
+}
+
 .tag-div {
   display: block;
   text-align: center;
   width: 80%;
   margin: 0 auto 10px auto;
+  min-height: 60px;
 }
 
 .tags {
@@ -673,7 +691,6 @@ select {
   min-width: 50px;
   list-style: none;
   display: inline-block;
-  text-transform: uppercase;
   font-size: .8em;
   color: white;
   font-weight: 600;

@@ -1,5 +1,5 @@
 <div class="row">
-<div class="eight columns offset-by-two login-outer">
+<div class="twelve columns login-outer">
 <form style="margin-bottom: 0;" class="new-blog-form">
   <label for="blogTitle">Post Title</label>
   <input type="text" class="u-full-width" placeholder="This is a post title..." ng-model="post.postTitle" id="blogTitle"/>
@@ -25,8 +25,7 @@
       </div>
     </div> <br>
     </div>
-  <label for="blogBody">Post Body</label>
-  <textarea class="u-full-width" rows="10" ng-model="post.postBody" placeholder="This is a new blog post..." id="blogBody"></textarea>
+  <text-angular ng-model="post.postBody"></text-angular>
   <div class="tag-input">
   <input type="text" placeholder="new tag name" ng-model="data.newTag"/>
   <button class="button button-flat-blue button-tiny add-tag-btn" ng-click="addTag(data.newTag)">Add Tag</button>

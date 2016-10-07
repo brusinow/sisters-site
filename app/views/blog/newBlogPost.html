@@ -1,9 +1,12 @@
-<form class="new-blog-form">
+
+<div class="row">
+<div class="twelve columns login-outer">
+<form style="margin-bottom: 0;" class="new-blog-form">
   <label for="blogTitle">Post Title</label>
   <input type="text" class="u-full-width" placeholder="This is a post title..." ng-model="post.title" id="blogTitle"/>
   <div class="row">
     <div class="two columns">
-      <label for="singleSelect"> Media Type: </label>
+        <label for="singleSelect"> Media Type: </label>
       <select name="singleSelect" ng-model="data.mediaSelect" ng-init="data.mediaSelect='image'" ng-change="resetMedia()">
         <option value="image">Image</option>
         <option value="youtube">YouTube URL</option>
@@ -11,7 +14,7 @@
       </select>
     </div>
     <div class="ten columns">
-      <div ng-if="data.mediaSelect === 'image'" id="image-choice">
+       <div ng-if="data.mediaSelect === 'image'" id="image-choice">
         <label for="imageUpload"> Image: </label>
         <input type="file" name="imageUpload" fileread="data.image"/>
       </div>
@@ -21,20 +24,26 @@
       </div>
     </div> <br>
     </div>
-  <label for="blogBody">Post Body</label>
-  <textarea class="u-full-width" rows="10" ng-model="post.body" placeholder="This is a new blog post..." id="blogBody"></textarea>
-  <input type="text" placeholder="new tag name" ng-model="data.newTag"/><button ng-click="addTag(data.newTag)">Add Tag</button>
-  <!-- <label ng-repeat="tag in tags"> -->
-  <!-- <input class="checkbox" type="checkbox" name="{{tag.name}}" checklist-model="post.tags" checklist-value="tag"> {{tag.name}} -->
-  <div class="checkbox-group">
+     <label for="blogBody">Post Body</label>
+  <text-angular ng-model="post.postBody"></text-angular>
+  <div class="tag-input">
+  <input type="text" placeholder="new tag name" ng-model="data.newTag"/>
+  <button class="button button-flat-blue button-tiny add-tag-btn" ng-click="addTag(data.newTag)">Add Tag</button>
+  </div>
+  <br>
+     <div class="checkbox-group">
   <label ng-repeat="(key, value) in tags">
         <input type="checkbox" id="{{ key }}" value="{{ value }}" ng-init="checkedTags[value.$id] = false" ng-model="checkedTags[value.$id]">{{value.name}}
    </label>
    </div>
-<!--   <button class="tag-delete-btn" ng-click="deleteTag(tag)"><i class="fa fa-trash" aria-hidden="true"></i></button> -->
-<!--   </label> -->
-  <input class="button-primary" ng-click="submit()" type='submit'>
-
+  <!-- <button class="tag-delete-btn" ng-click="deleteTag(tag)"><i class="fa fa-trash" aria-hidden="true"></i></button> -->
+  <div>
+  <input class="u-full-width no-margin button-flat-blue button-jumbo" ng-click="submit()" type='submit'>
+  </div>
 </form>
-{{data.image}}
-<button ng-click="resizeImg(data.image)">Test button</button>
+</div>
+</div>
+
+
+
+

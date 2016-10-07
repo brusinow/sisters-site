@@ -24,22 +24,22 @@ angular.module('SistersCtrls')
 
   
 
-  // $timeout(function(){
-  //   // OVERLAY CREATION
-  //   var w = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
-  //   if (w >= 678){
-  //   $scope.isPopup = true;
-  //   var div = document.createElement("div");
-  //   div.id = "overlayMail";
-  //   div.className = "overlay-start";
-  //   var body = document.body;
-  //   var popUp = document.querySelector("#pop-up");
-  //   div.style.height = body.scrollHeight + "px";
-  //   popUp.appendChild(div);
-  //   var overlay = document.querySelector("#overlayMail");
-  //   overlay.classList.add("active");
-  //   };
-  // },8000)
+  $timeout(function(){
+    // OVERLAY CREATION
+    var w = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+    if (w >= 678){
+    $scope.isPopup = true;
+    var div = document.createElement("div");
+    div.id = "overlayMail";
+    div.className = "overlay-start";
+    var body = document.body;
+    var popUp = document.querySelector("#pop-up");
+    div.style.height = body.scrollHeight + "px";
+    popUp.appendChild(div);
+    var overlay = document.querySelector("#overlayMail");
+    overlay.classList.add("active");
+    };
+  },8000)
     
 
   $scope.closePopup = function(){

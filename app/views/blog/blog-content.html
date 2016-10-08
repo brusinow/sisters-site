@@ -1,3 +1,15 @@
+<!--<div ng-if="location !== '/blog/'">
+  {{location}}
+</div>-->
+<div class="blog-path-nav" ng-if="location !== '/blog/' && location.indexOf('/blog/archives/') > -1">
+ <a href="/blog">Blog</a> <span class="blog-path-chevron"><i class="fa fa-chevron-right" aria-hidden="true"></i><i class="fa fa-chevron-right" aria-hidden="true"></i></span> <span>{{params.month}} {{params.year}}</span>
+</div>
+<div class="blog-path-nav" ng-if="location !== '/blog/' && location.indexOf('/blog/show/') > -1">
+   <a href="/blog">Blog</a> <span class="blog-path-chevron"><i class="fa fa-chevron-right" aria-hidden="true"></i><i class="fa fa-chevron-right" aria-hidden="true"></i></span> <span>{{posts[0].postTitle}}</span>
+</div>
+<div class="blog-path-nav" ng-if="location !== '/blog/' && location.indexOf('/blog/tags/') > -1">
+  <a href="/blog">Blog</a> <span class="blog-path-chevron"><i class="fa fa-chevron-right" aria-hidden="true"></i><i class="fa fa-chevron-right" aria-hidden="true"></i></span> <span>{{tagName}}</span>
+</div>
 <div class="blog-container">
   <div class="blog-post" ng-class="{'fade-in': loaded}" ng-repeat="post in posts | orderBy:'-timestamp'">
       <div ng-if="post.img.length > 0" class="image-panel">

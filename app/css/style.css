@@ -27,6 +27,14 @@ h1, h2, h3, h4, h5, h6 {
   color: #1A0504;
 }
 
+.master-header {
+  margin: 20px;
+  font-family: 'Fjalla One', sans-serif;
+  text-transform: uppercase;
+  font-weight: 400;
+  letter-spacing: .02em;
+}
+
 table {
   font-size: .7em;
 }
@@ -40,8 +48,13 @@ th {
 
 td {
   font-family: 'PT Serif', serif;
-  padding: 6px 2px;
+  padding: 6px;
   border-bottom: 1px solid #dfd2c7;
+  height: 60px;
+}
+
+td:last-child {
+    padding-right: 10px;
 }
 
 a {
@@ -373,13 +386,6 @@ select {
   list-style: none;
 }
 
-/*#bor-outline {
-  width:100px;
-  height:100px;
-  background:grey;
-  border: 5px solid #292929;
-  outline: 5px solid #e3e3e3;
-  }*/
 
   .small-cart-card h6 {
     font-family: 'Fjalla One', sans-serif;
@@ -589,6 +595,36 @@ select {
     margin-left: 8px;
   }
 
+  .blog-path-nav {
+    margin-left: 15px;
+    padding: 5px;
+    height: 35px;
+    line-height: 35px;
+    margin-bottom: 15px;
+  }
+
+  .blog-path-nav span {
+    font-size: .7em;
+    font-weight: 300;
+    text-transform: lowercase;
+  }
+
+  .blog-path-nav a {
+    color: #1A0504;
+    text-decoration: underline;
+    font-size: .7em;
+    font-weight: 600;
+    text-transform: lowercase;
+  }
+
+  .blog-path-chevron {
+    position: relative;
+    margin-left: 5px;
+    margin-right: 5px;
+}
+
+
+
   .blog-main {
     display: inline-block;
     min-height: 500px;
@@ -635,6 +671,7 @@ select {
 }
 
 .blog-date {
+  font-family: 'PT Serif', serif;
   font-size: 1em;
   color: #aaa;
   font-weight: 500;
@@ -914,6 +951,18 @@ select {
   padding: 12px 0;
 }
 
+#show-table th:first-child) {
+  padding-left: 0;
+}
+
+#show-table th:not(:first-child) {
+  padding-left: 6px;
+}
+
+#venue-header {
+  padding-left: 12px;
+}
+
 .edit-button {
   margin-bottom: 0;
   width: 34px;
@@ -1017,7 +1066,7 @@ select {
     margin-top: 6px;
     font-family: 'Fjalla One', sans-serif;
     color: #5e504f;
-    font-size: .8em;
+    font-size: .7em;
     letter-spacing: .07em;
     font-weight: 400;
   }
@@ -1527,6 +1576,19 @@ display: none;
 
 
 @media (min-width: 766px){
+    .blog-path-nav {
+    margin-bottom: 25px;
+  }
+
+  .blog-path-nav span {
+    font-size: 1em;
+    
+  }
+
+  .blog-path-nav a {
+    font-size: 1em; 
+  }
+
 .cart-btn {
   width: 25%; 
   cursor: pointer;

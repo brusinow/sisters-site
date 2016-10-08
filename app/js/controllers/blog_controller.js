@@ -2,6 +2,9 @@ angular.module('SistersCtrls')
 
 .controller('BlogCtrl', ['$scope', '$state','$http','$timeout','$location','$stateParams','Auth','Blog','HelperService','InstagramFactory','AllTagsService', function($scope, $state, $http, $timeout, $location, $stateParams, Auth, Blog, HelperService, InstagramFactory, AllTagsService){
   $scope.allTags = AllTagsService();
+
+  $scope.location = $location.$$path;
+  console.log("location: ",$scope.location);
   
   // $scope.photos = Instagram.data;
   InstagramFactory.then(function(data){
@@ -39,12 +42,14 @@ angular.module('SistersCtrls')
 }])
 
 
-.controller('BlogArchiveCtrl', ['$scope', '$state','$timeout','$stateParams','Blog','Archive','Auth','HelperService','AllTagsService', function($scope, $state, $timeout, $stateParams, Blog, Archive, Auth, HelperService, AllTagsService){
+.controller('BlogArchiveCtrl', ['$scope', '$state','$timeout','$stateParams','$location', 'Blog','Archive','Auth','HelperService','AllTagsService', function($scope, $state, $timeout, $stateParams, $location, Blog, Archive, Auth, HelperService, AllTagsService){
+   $scope.location = $location.$$path;
   $scope.allTags = AllTagsService();
   $scope.enable = true;
   // $scope.photos = Instagram.data;
   $scope.fullBlog = Blog;
   $scope.allPosts = Archive; 
+  $scope.params = $stateParams;
 
 
   $scope.parseTitle = HelperService.titleToURL;
@@ -78,10 +83,12 @@ angular.module('SistersCtrls')
 }]) 
 
 
-.controller('BlogTagsCtrl', ['$scope', '$state','$stateParams','$timeout','Blog','TagsShow','Auth','HelperService','AllTagsService', function($scope, $state, $stateParams, $timeout, Blog, TagsShow, Auth, HelperService, AllTagsService){
+.controller('BlogTagsCtrl', ['$scope', '$state','$stateParams','$location', '$timeout','Blog','TagsShow','Auth','HelperService','AllTagsService', function($scope, $state, $stateParams, $location, $timeout, Blog, TagsShow, Auth, HelperService, AllTagsService){
+   $scope.location = $location.$$path;
   $scope.allTags = AllTagsService();
   $scope.enable = true;
   // $scope.photos = Instagram.data;
+  $scope.tagName = TagsShow[0].name;
   var allPosts = TagsShow[0].posts;
   var selectPosts = [];
   var length = 0;
@@ -125,7 +132,8 @@ angular.module('SistersCtrls')
 }]) 
 
 
-.controller('BlogShowCtrl', ['$scope', '$state','$stateParams','$timeout','thisPost','Blog','AllTagsService', function($scope, $state, $stateParams, $timeout, thisPost, Blog, AllTagsService){
+.controller('BlogShowCtrl', ['$scope', '$state','$stateParams','$location','$timeout','thisPost','Blog','AllTagsService', function($scope, $state, $stateParams, $location, $timeout, thisPost, Blog, AllTagsService){
+ $scope.location = $location.$$path;
  $scope.allTags = AllTagsService();
  $scope.enable = false;
  $scope.recentPosts = Blog;

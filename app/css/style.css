@@ -999,7 +999,7 @@ select {
   }
 
   .footer-social {
-    padding: 10px;
+    padding: 0 10px 5px 10px;
   }
 
   .copyright {
@@ -1012,9 +1012,19 @@ select {
     text-transform: uppercase;
   }
 
+   .website-design {
+    /*font-family: 'PT Serif', serif;*/
+    margin-top: 6px;
+    font-family: 'Fjalla One', sans-serif;
+    color: #5e504f;
+    font-size: .8em;
+    letter-spacing: .07em;
+    font-weight: 400;
+  }
+
   .footer-right {
     height: 100%;
-    padding: 40px 15px 40px 15px;
+    padding: 40px 15px 20px 15px;
     background-color: #dfd2c7;
   }
 

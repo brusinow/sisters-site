@@ -1,0 +1,21 @@
+{
+  "name": "sisters-site",
+  "description": "",
+  "main": "index.js",
+  "authors": [
+    "brusinow <brusinow@me.com>"
+  ],
+  "license": "ISC",
+  "homepage": "https://github.com/brusinow/sisters-site",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "app/components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angulartics-google-analytics": "^0.3.0"
+  }
+}

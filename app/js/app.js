@@ -3,7 +3,7 @@ var authRequire = ["Auth", function(Auth) { return Auth.$requireSignIn(); }]
 
 angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui.bootstrap','firebase','angularMoment','ngCart','ngStorage','angularPayments','ngAnimate','picardy.fontawesome','textAngular'])
 
-.run(["$rootScope", "$state", function($rootScope, $state, $scope) {
+.run(["$rootScope", "$state","$location","$window", function($rootScope, $state, $location, $window) {
   $rootScope.$on("$stateChangeError", function(event, toState, toParams, fromState, fromParams, error) {
     // We can catch the error thrown when the $requireSignIn promise is rejected
     // and redirect the user back to the home page
@@ -11,9 +11,16 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
       $state.go("login");
     }
   });
-  $rootScope.$on('$stateChangeSuccess', function() {
+  $rootScope.$on('$stateChangeSuccess', function(event) {
    document.body.scrollTop = document.documentElement.scrollTop = 0;
-});
+
+                if (!$window.ga)
+                    return;
+ 
+                $window.ga('send', 'pageview', { page: $location.path() });
+
+
+  });
 
 }])
 

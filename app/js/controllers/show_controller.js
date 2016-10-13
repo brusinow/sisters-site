@@ -7,13 +7,13 @@ angular.module('SistersCtrls')
   $scope.auth = Auth;
   $scope.auth.$onAuthStateChanged(function(firebaseUser) {
     $scope.firebaseUser = firebaseUser;
-    console.log("firebase user is ",$scope.firebaseUser);
+    // console.log("firebase user is ",$scope.firebaseUser);
   });
 
 
   $scope.open = function(whichPage, index) {
-    console.log(whichPage);
-    console.log(index);
+    // console.log(whichPage);
+    // console.log(index);
     var modalInstance = $uibModal.open({
       animation: true,
       backdrop: true,

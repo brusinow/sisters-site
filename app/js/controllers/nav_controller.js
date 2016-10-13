@@ -51,12 +51,12 @@ angular.module('SistersCtrls')
 
   $scope.mailchimpSubmit = function(form, email, isNav){
     if(form.$valid){
-    console.log("what is email? ",email);
-    console.log("submit clicked!")
+    // console.log("what is email? ",email);
+    // console.log("submit clicked!")
      $scope.isPopup = false;
     var url = "//sisterstheband.us14.list-manage.com/subscribe/post-json?u=bc38720b0bcc7a32641bb572c&amp;id=242f4adc89&EMAIL="+email+"&c=JSON_CALLBACK"
     $http.jsonp(url).then(function success(res){
-      console.log(res);
+      // console.log(res);
       $scope.user = {};
         if(isNav){
         $scope.mailConfirm = true;
@@ -66,7 +66,7 @@ angular.module('SistersCtrls')
           },7000);
         }
     }, function error(res){
-      console.log(res);
+      // console.log(res);
     });
 
     }
@@ -93,12 +93,12 @@ angular.module('SistersCtrls')
   });
   
   $scope.logout = function(){
-    console.log("clicked log out");
+    // console.log("clicked log out");
     Auth.$signOut();
   };
 
   $scope.login = function(){
-    console.log("clicked log in");
+    // console.log("clicked log in");
     $state.go('login');  
   }
 
@@ -121,7 +121,7 @@ angular.module('SistersCtrls')
 
 .controller('MailModalCtrl', ['$scope','$timeout','$uibModal','$uibModalInstance','$http','Auth','$state','$sessionStorage', function($scope, $timeout,$uibModal,$uibModalInstance, $http, Auth, $state, $sessionStorage){
   $scope.close = function(){
-    console.log($uibModalInstance)
+    // console.log($uibModalInstance)
     $uibModalInstance.dismiss('cancel');
   }
 

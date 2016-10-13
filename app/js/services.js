@@ -28,7 +28,7 @@ angular.module('SistersServices', ['ngResource'])
   return {
     allProducts: function(){
       var deferred = $q.defer();
-      console.log("inside all products service")
+      // console.log("inside all products service")
       $http.get('/stripe/allProducts').success(function(data){
         // products = data.data;
         deferred.resolve(data.data);
@@ -37,7 +37,7 @@ angular.module('SistersServices', ['ngResource'])
       return deferred.promise;   
     },
     oneProduct: function(productId){
-      console.log("what's id? ",productId);
+      // console.log("what's id? ",productId);
       var deferred = $q.defer();
       var req = {
         method: 'GET',
@@ -47,7 +47,7 @@ angular.module('SistersServices', ['ngResource'])
         }
       }
       $http(req).success(function(data){
-        console.log("success!!!")
+        // console.log("success!!!")
         deferred.resolve(data);
       })
       return deferred.promise;
@@ -76,10 +76,10 @@ angular.module('SistersServices', ['ngResource'])
 .factory("GetShows", ["$firebaseArray","moment", 
   function($firebaseArray, moment){
     var currentDay = moment().unix();
-    console.log("current day: ",currentDay);
+    // console.log("current day: ",currentDay);
     return function(){
     var showsRef = firebase.database().ref('shows').orderByChild("unix").startAt(currentDay);
-    console.log("I'm in GetShows");
+    // console.log("I'm in GetShows");
     return $firebaseArray(showsRef);
   }
 }])
@@ -166,7 +166,7 @@ angular.module('SistersServices', ['ngResource'])
 .factory('CurrentOrderService', function($window) {
  function set(data) {
    $window.localStorage.setItem( 'orderData', angular.toJson(data) );
-   console.log("order saved!");
+  //  console.log("order saved!");
  }
  function get() {
   var order = angular.fromJson( $window.localStorage.getItem('orderData') ) ;

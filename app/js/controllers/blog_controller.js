@@ -4,11 +4,11 @@ angular.module('SistersCtrls')
   $scope.allTags = AllTagsService();
 
   $scope.location = $location.$$path;
-  console.log("location: ",$scope.location);
+  // console.log("location: ",$scope.location);
   
   // $scope.photos = Instagram.data;
   InstagramFactory.then(function(data){
-    console.log("what is data? ",data);
+    // console.log("what is data? ",data);
     $scope.photos = data.data;
     $scope.loaded = true;
   })
@@ -68,9 +68,9 @@ angular.module('SistersCtrls')
 
 
   $scope.last = $scope.length - (4 * $scope.page);
-  console.log("Last: ",$scope.last);
+  // console.log("Last: ",$scope.last);
   $scope.posts = $scope.allPosts.slice($scope.first, $scope.last);
-  console.log($scope.posts);
+  // console.log($scope.posts);
 
   $timeout(function(){
     $scope.loaded = true;

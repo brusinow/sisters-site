@@ -15,6 +15,8 @@ angular.module('SistersCtrls')
   }
 
   $scope.submit = function(){
+    console.log("submit clicked");
+    console.log("what is post? ",$scope.post);
     if ($scope.data.mediaSelect === 'image'){
       SubmitImage($scope.post, $scope.BlogPosts, $scope.data.image, addPost);
     } else if ($scope.data.mediaSelect === 'youtube'){
@@ -44,13 +46,10 @@ angular.module('SistersCtrls')
   }
 
   var addPost = function(post, postArray, img, youtube){
-    console.log("IN ADD POST!!!!!!!!!!!!");
     var slug = HelperService.slugify(post.title);
     var postDate = new Date().getTime();
     var year = moment(postDate).format("YYYY");
     var month = moment(postDate).format("MMMM");
-    // var postBodyBreaks = post.body.replace(/\n/g, "<br />");
-    console.log(post.tags);
 
     var newTags = {};
     for (var prop in $scope.checkedTags){
@@ -60,7 +59,7 @@ angular.module('SistersCtrls')
     var thisPost = {
       postTitle: post.title,
       slug: slug,
-      postBody: post.body,
+      postBody: post.postBody,
       youtube: youtube ? youtube : null,
       img: img ? img : null,
       tags: newTags,

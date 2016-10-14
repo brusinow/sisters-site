@@ -13,7 +13,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(express.static(path.join(__dirname, 'app')));
 
-app.use('/app/components', express.static(path.join(__dirname, 'components')))
 
 
 

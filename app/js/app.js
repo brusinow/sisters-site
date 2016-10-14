@@ -1,9 +1,12 @@
 var authWait = ["Auth", function(Auth) { return Auth.$waitForSignIn(); }]
 var authRequire = ["Auth", function(Auth) { return Auth.$requireSignIn(); }]
 
-angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui.bootstrap','firebase','angularMoment','ngCart','ngStorage','angularPayments','ngAnimate','picardy.fontawesome','textAngular'])
+angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui.bootstrap','firebase','angularMoment','ngCart','ngStorage','angularPayments','ngAnimate','picardy.fontawesome','textAngular','ui.router.metatags'])
 
-.run(["$rootScope", "$state","$location","$window", function($rootScope, $state, $location, $window) {
+
+
+.run(["$rootScope", "$state","$location","$window",'MetaTags', function($rootScope, $state, $location, $window,MetaTags) {
+  $rootScope.MetaTags = MetaTags;
   $rootScope.$on("$stateChangeError", function(event, toState, toParams, fromState, fromParams, error) {
     // We can catch the error thrown when the $requireSignIn promise is rejected
     // and redirect the user back to the home page
@@ -26,12 +29,29 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
 
 
 
-.config(['$stateProvider', '$urlRouterProvider','$locationProvider', function($stateProvider, $urlRouterProvider,$locationProvider){
+
+.config(['$stateProvider', '$urlRouterProvider','$locationProvider','UIRouterMetatagsProvider', function($stateProvider, $urlRouterProvider,$locationProvider, UIRouterMetatagsProvider){
+  UIRouterMetatagsProvider
+        .setDefaultTitle('SISTERS The Band')
+        .setDefaultDescription('description')
+        .setDefaultKeywords('keywords')
+        .setStaticProperties({
+                'fb:app_id': 'your fb app id',
+                'og:site_name': 'your site name'
+            })
+        .setOGURL(true);
+  
+  
+  
   $urlRouterProvider.otherwise('/');
 
   $stateProvider
   .state('home', {
     url: '/',
+    metaTags: {
+                title: 'SISTERS The Band',
+                description: 'Full-length debut album "Drink Champagne" coming soon!'
+            },
     templateUrl: '/views/home.html',
     controller: 'HomeCtrl'
   })
@@ -84,6 +104,10 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
 
   .state('blog.main', {
     url: '/blog',
+    metaTags: {
+            title: 'SISTERS Blog',
+            description: 'Updates, news, and commentary from Seattle band SISTERS.'
+        },
     templateUrl: '/views/blog/blog-content.html',
     controller: 'BlogCtrl',
     resolve: {
@@ -92,6 +116,10 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
   })
     .state('blog.page', {
     url: '/blog/:page',
+    metaTags: {
+            title: 'SISTERS Blog',
+            description: 'Updates, news, and commentary from Seattle band SISTERS.'
+        },
     templateUrl: '/views/blog/blog-content.html',
     controller: 'BlogCtrl',
     resolve: {
@@ -159,7 +187,17 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
       "Blog": function(BlogPosts){
         return BlogPosts().$loaded();
       }       
-    }
+    },
+    metaTags: {
+            title: function(thisPost){
+              console.log("what is Blog? ",thisPost);
+              var title = "SISTERS - " + thisPost[0].postTitle;
+              return title;
+            },
+            description: function(thisPost){
+              return thisPost[0].postBody;
+            }
+        },
   })
   
 

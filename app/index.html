@@ -1,8 +1,12 @@
 <!DOCTYPE html>
 <html ng-app="SistersApp">
 <head>
-  <title>SISTERS the Band</title>
-  <meta name="description" content='Full-length debut album "Drink Champagne" coming soon!'>
+  <title ng-bind="MetaTags.title">SISTERS The Band</title>
+<meta name="description" content="{{MetaTags.description}}">
+<meta name="keywords" content="{{MetaTags.keywords}}">
+<meta ng-repeat="(key, value) in MetaTags.properties" property="{{key}}" content="{{value}}" >
+<meta name="prerender-status-code" content="{{MetaTags.prerender.statusCode}}">
+<meta name="prerender-header" ng-if="MetaTags.prerender.header" content="{{MetaTags.prerender.header}}">
   <meta charset="utf-8">
   <base href="/">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
@@ -19,7 +23,7 @@
  <link rel="stylesheet" href="/css/normalize.css">
  <link rel="stylesheet" href="/css/skeleton.css">
  <link rel="stylesheet" href="/css/store-layout.css">
- <link rel='stylesheet' href='/app/components/textAngular/dist/textAngular.css'>
+ <link rel='stylesheet' href='/components/textAngular/dist/textAngular.css'>
  <link href='https://fonts.googleapis.com/css?family=Fjalla+One' rel='stylesheet' type='text/css'>
  <link href="https://fonts.googleapis.com/css?family=PT+Serif" rel="stylesheet">
   <link href="https://fonts.googleapis.com/css?family=Lato" rel="stylesheet">
@@ -69,6 +73,7 @@
 <script src="https://cdn.firebase.com/libs/angularfire/2.0.1/angularfire.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.0/angular-resource.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-router/0.2.18/angular-ui-router.js"></script>
+<script src="/components/ui-router-metatags/dist/ui-router-metatags.min.js"></script>
 <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.5.0/angular-animate.js"></script>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/ngStorage/0.3.11/ngStorage.min.js"></script>

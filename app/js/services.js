@@ -182,7 +182,7 @@ angular.module('SistersServices', ['ngResource'])
 
 
 
-.factory('HelperService', ["moment", function(moment) {
+.factory('HelperService', ["moment","$q", function(moment, $q) {
   return {
     parseYouTube: function(url){
       var videoid = url.match(/(?:https?:\/{2})?(?:w{3}\.)?youtu(?:be)?\.(?:com|be)(?:\/watch\?v=|\/)([^\s&]+)/);
@@ -253,6 +253,8 @@ angular.module('SistersServices', ['ngResource'])
       .replace(/-+$/, '');            // Trim - from end of text
     },
     imgResize: function (img) {
+      console.log("inside resize!!");
+    var deferred = $q.defer();
     var loadIMG = new Image;
     loadIMG.src = img;
     var aspectRatio = loadIMG.width / loadIMG.height;
@@ -270,18 +272,22 @@ angular.module('SistersServices', ['ngResource'])
     }
     var ctx = canvas.getContext("2d");
     ctx.drawImage(loadIMG, 0, 0, canvas.width, canvas.height);
-    return canvas.toDataURL("image/jpeg");
+    var resizedResult = canvas.toDataURL("image/jpeg");
+    deferred.resolve(resizedResult);
+    return deferred.promise; 
     }
   } 
 }])
 
 
+
+
 .factory('SubmitImage', ["HelperService", function(HelperService) {
   return function(post, postArray, image, callback){
-    image = HelperService.imgResize(image);
-    var mime = HelperService.base64MimeType(image);
+    HelperService.imgResize(image).then(function(newImage){
+      var mime = HelperService.base64MimeType(newImage);
     console.log("TYPE IS ",mime);
-    var base64result = HelperService.getBase64Image(image)
+    var base64result = HelperService.getBase64Image(newImage)
     var file = HelperService.b64toBlob(base64result, mime)
     var metadata = {
     contentType: mime
@@ -318,6 +324,11 @@ angular.module('SistersServices', ['ngResource'])
     var downloadURL = uploadTask.snapshot.downloadURL;
     callback(post, postArray, downloadURL, null);
   });
+    })
+    
+
+
+
   }
 
 }])

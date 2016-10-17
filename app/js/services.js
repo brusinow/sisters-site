@@ -253,6 +253,7 @@ angular.module('SistersServices', ['ngResource'])
       .replace(/-+$/, '');            // Trim - from end of text
     },
     imgResize: function (img) {
+      var isResized;
       console.log("inside resize!!");
     var deferred = $q.defer();
     var loadIMG = new Image;
@@ -265,17 +266,24 @@ angular.module('SistersServices', ['ngResource'])
       var percentChange = (loadIMG.height - 500) / loadIMG.height;
       canvas.height = 500;
       canvas.width = loadIMG.width - (loadIMG.width * percentChange);
+      isResized = true;
     } else if (aspectRatio < 1.776 && loadIMG.width >= 889){
       var percentChange = (loadIMG.width - 889) / loadIMG.width;
       canvas.width = 889;
       canvas.height = loadIMG.height - (loadIMG.height * percentChange);
+      isResized = true;
     } else {
       console.log("image is not big enough!");
+      isResized = false;
     }
+    if (isResized){
     var ctx = canvas.getContext("2d");
     ctx.drawImage(loadIMG, 0, 0, canvas.width, canvas.height);
     var resizedResult = canvas.toDataURL("image/jpeg");
     deferred.resolve(resizedResult);
+    } else {
+      deferred.resolve(img);
+    }    
     return deferred.promise; 
     }
   } 

@@ -258,6 +258,7 @@ angular.module('SistersServices', ['ngResource'])
     var deferred = $q.defer();
     var loadIMG = new Image;
     loadIMG.src = img;
+    console.log("what is loadIMG? ",loadIMG);
     console.log("loadIMG height is "+loadIMG.height+", width is "+loadIMG.width);
     var aspectRatio = loadIMG.width / loadIMG.height;
     var canvas = document.createElement('canvas');

@@ -257,6 +257,9 @@ angular.module('SistersServices', ['ngResource'])
       console.log("inside resize!!");
     var deferred = $q.defer();
     var loadIMG = new Image;
+    loadIMG.onload = function(){
+       alert(this.width + " " + this.height);
+    }
     loadIMG.src = img;
     console.log("what is loadIMG? ",loadIMG);
     console.log("loadIMG height is "+loadIMG.height+", width is "+loadIMG.width);

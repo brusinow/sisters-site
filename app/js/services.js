@@ -285,8 +285,6 @@ angular.module('SistersServices', ['ngResource'])
     ctx.drawImage(loadIMG, 0, 0, canvas.width, canvas.height);
     var resizedResult = canvas.toDataURL("image/jpeg");
     deferred.resolve(resizedResult);
-    } else {
-      deferred.resolve(img);
     }    
     return deferred.promise; 
     }

@@ -258,7 +258,7 @@ angular.module('SistersServices', ['ngResource'])
     var deferred = $q.defer();
     var loadIMG = new Image;
     loadIMG.onload = function(){
-       alert(this.width + " " + this.height);
+       console.log(this.width + " " + this.height);
     }
     loadIMG.src = img;
     console.log("what is loadIMG? ",loadIMG);

@@ -253,39 +253,36 @@ angular.module('SistersServices', ['ngResource'])
       .replace(/-+$/, '');            // Trim - from end of text
     },
     imgResize: function (img) {
-      var isResized;
       console.log("inside resize!!");
     var deferred = $q.defer();
     var loadIMG = new Image;
-    loadIMG.onload = function(){
-       console.log(this.width + " " + this.height);
-    }
-    loadIMG.src = img;
-    console.log("what is loadIMG? ",loadIMG);
-    console.log("loadIMG height is "+loadIMG.height+", width is "+loadIMG.width);
-    var aspectRatio = loadIMG.width / loadIMG.height;
-    var canvas = document.createElement('canvas');
+      loadIMG.onload = function(){
+        console.log(this.width + " " + this.height);
+        loadIMG.src = img;
+        var aspectRatio = loadIMG.width / loadIMG.height;
+        var canvas = document.createElement('canvas');
+        if (aspectRatio >= 1.776 && loadIMG.height >= 500){
+          var percentChange = (loadIMG.height - 500) / loadIMG.height;
+          canvas.height = 500;
+          canvas.width = loadIMG.width - (loadIMG.width * percentChange);
+          
+        } else if (aspectRatio < 1.776 && loadIMG.width >= 889){
+          var percentChange = (loadIMG.width - 889) / loadIMG.width;
+          canvas.width = 889;
+          canvas.height = loadIMG.height - (loadIMG.height * percentChange);
+          
+        } else {
+          console.log("image is not big enough!");
+          return false;
+        }
+        var ctx = canvas.getContext("2d");
+        ctx.drawImage(loadIMG, 0, 0, canvas.width, canvas.height);
+        var resizedResult = canvas.toDataURL("image/jpeg");
+        deferred.resolve(resizedResult); 
+
+      }
     
-    if (aspectRatio >= 1.776 && loadIMG.height >= 500){
-      var percentChange = (loadIMG.height - 500) / loadIMG.height;
-      canvas.height = 500;
-      canvas.width = loadIMG.width - (loadIMG.width * percentChange);
-      isResized = true;
-    } else if (aspectRatio < 1.776 && loadIMG.width >= 889){
-      var percentChange = (loadIMG.width - 889) / loadIMG.width;
-      canvas.width = 889;
-      canvas.height = loadIMG.height - (loadIMG.height * percentChange);
-      isResized = true;
-    } else {
-      console.log("image is not big enough!");
-      isResized = false;
-    }
-    if (isResized){
-    var ctx = canvas.getContext("2d");
-    ctx.drawImage(loadIMG, 0, 0, canvas.width, canvas.height);
-    var resizedResult = canvas.toDataURL("image/jpeg");
-    deferred.resolve(resizedResult);
-    }    
+    
     return deferred.promise; 
     }
   } 

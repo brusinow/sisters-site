@@ -25,7 +25,7 @@
     </div> <br>
     </div>
      <label for="blogBody">Post Body</label>
-  <text-angular ng-model="post.postBody"></text-angular>
+     <text-angular ta-toolbar="[['h1','h2','h3'],['bold','italics','underline'],['insertLink', 'wordcount', 'charcount']]" ng-model="post.postBody"></text-angular>
   <div class="tag-input">
   <input type="text" placeholder="new tag name" ng-model="data.newTag"/>
   <button class="button button-flat-blue button-tiny add-tag-btn" ng-click="addTag(data.newTag)">Add Tag</button>

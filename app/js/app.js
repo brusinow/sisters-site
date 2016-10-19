@@ -30,7 +30,7 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
 
 
 
-.config(['$stateProvider', '$urlRouterProvider','$locationProvider','UIRouterMetatagsProvider', function($stateProvider, $urlRouterProvider,$locationProvider, UIRouterMetatagsProvider){
+.config(['$stateProvider', '$urlRouterProvider','$locationProvider','UIRouterMetatagsProvider','$provide', function($stateProvider, $urlRouterProvider,$locationProvider, UIRouterMetatagsProvider, $provide){
   UIRouterMetatagsProvider
         .setDefaultTitle('SISTERS The Band')
         .setDefaultDescription('description')
@@ -40,6 +40,10 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
                 'og:site_name': 'your site name'
             })
         .setOGURL(true);
+
+
+
+  
   
   
   
@@ -301,13 +305,11 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
     if (value && !enable) {
       return value;
     } else if (value && enable){
-      console.log("value and enable");
       max = parseInt(max, 10);
       if (!max) {
         return value;
       }
       if (value.length <= max){
-        console.log("should not include tail!!!")
         return value;
       } 
 

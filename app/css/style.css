@@ -477,7 +477,7 @@ select {
 
   @keyframes card-flash {
     0%   {border-color: rgba(255, 255, 255, 0);}
-    100% {border-color: rgba(255, 0, 0, 1);;}
+    100% {border-color: rgba(255, 0, 0, 1);}
 }
 
 .payment-input input, .payment-input select, .payment-input textarea {
@@ -687,23 +687,28 @@ select {
     padding: 0;
 }
 .tag-input {
+  margin-top: 10px;
   position: relative;
   height: 28px;
 }
 
 .add-tag-btn {
     position: absolute;
-    left: 161px;
-    top: 1px;
-    height: 25px !important;
+    left: 70%;
+    width: 30%;
+    top: 0px;
+    height: 28px !important;
     border-radius: 0 4px 4px 0;
 }
 
 .tag-input input{
   position: absolute;
+  width: 70%;
   left: 0;
   top: 0;
   border-radius: 4px 0 0 4px;
+  border-color: #555;
+  border-right: none;
 }
 
 .ta-hidden-input {

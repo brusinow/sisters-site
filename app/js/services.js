@@ -256,33 +256,33 @@ angular.module('SistersServices', ['ngResource'])
       console.log("inside resize!!");
     var deferred = $q.defer();
     var loadIMG = new Image;
-      loadIMG.onload = function(){
-        console.log(this.width + " " + this.height);
-        loadIMG.src = img;
-        var aspectRatio = loadIMG.width / loadIMG.height;
-        var canvas = document.createElement('canvas');
+    loadIMG.src = img;
+    loadIMG.onload = function(){
+       console.log(this.width + " " + this.height);
+       var aspectRatio = loadIMG.width / loadIMG.height;
+       console.log("WHAT IS RATIO??? ",aspectRatio);
+       var canvas = document.createElement('canvas');
         if (aspectRatio >= 1.776 && loadIMG.height >= 500){
+          console.log("loadIMG: ",loadIMG);
           var percentChange = (loadIMG.height - 500) / loadIMG.height;
           canvas.height = 500;
           canvas.width = loadIMG.width - (loadIMG.width * percentChange);
-          
+        
         } else if (aspectRatio < 1.776 && loadIMG.width >= 889){
+          console.log("loadIMG: ",loadIMG);
           var percentChange = (loadIMG.width - 889) / loadIMG.width;
           canvas.width = 889;
           canvas.height = loadIMG.height - (loadIMG.height * percentChange);
           
         } else {
-          console.log("image is not big enough!");
-          return false;
+          console.log("loadIMG: ",loadIMG);
+          console.log("image is not big enough!");  
         }
         var ctx = canvas.getContext("2d");
         ctx.drawImage(loadIMG, 0, 0, canvas.width, canvas.height);
         var resizedResult = canvas.toDataURL("image/jpeg");
-        deferred.resolve(resizedResult); 
-
-      }
-    
-    
+        deferred.resolve(resizedResult);   
+    }
     return deferred.promise; 
     }
   } 

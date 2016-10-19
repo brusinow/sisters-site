@@ -18,7 +18,7 @@
 
 
 <div id="main-nav" class="container navbar row">
-  <div style="vertical-align: middle;" class="six columns">
+  <div style="vertical-align: middle;" class="eight columns">
     <a ng-href="/"><img id="logo" src="/img/logo.png"/></a>
     <ul class="nav-left">
       <li><a ng-href="/shows">shows</a></li>
@@ -29,16 +29,8 @@
 
   </div>
   <div class="clear-float"></div>
-  <div class="six columns">
+  <div class="four columns">
     <div class="nav-right">
-      <form name="navForm" class="nav-form" ng-submit="navForm.$valid && mailchimpSubmit(navForm, user.email, true)" novalidate>
-        <button type="submit" class="button-flat float-right"><i style="position: relative; bottom: 8px;"class="fa fa-paper-plane-o fa-lg" aria-hidden="true"></i></button>
-        <input class="float-right" name="uEmail" type="email" placeholder="Pop Bottles With Us!" ng-model="user.email" required/>
-        <div class="mail-alerts">
-          <span class="error" ng-show="form.uEmail.$error.email && form.$submitted">*This is not a valid email.</span>
-          <span class="mailchimp-alert-confirm" ng-class="{'confirmAnimate': mailConfirm}">YAY! SISTERS loves you. <i class="fa fa-heart" aria-hidden="true"></i></span>
-        </div>
-      </form>
       <div class="social header-social float-right">
         <a href="https://soundcloud.com/sisterstheband" target="_blank"><i class="fa fa-soundcloud fa-lg" aria-hidden="true"></i></a>
         <a href="https://open.spotify.com/artist/2Hb8mc3CoUktri3i4Q4ACR" target="_blank"><i class="fa fa-spotify fa-lg" aria-hidden="true"></i></a>

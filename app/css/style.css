@@ -171,7 +171,7 @@ select {
   height: 40px;
   width: 40px;
   line-height: 40px;
-  border-radius: 0 4px 4px 0;
+  border-radius: 0 2px 2px 0;
   outline: none;
 }
 
@@ -1001,14 +1001,15 @@ select {
 #main {
   overflow: auto;
   padding-bottom: 225px;
+  padding-top: 30px;
   }  /* must be same height as the footer */
 
   #footer {
     position: relative;
     text-align: center;
-    background-color: #dfd2c7;
-    margin-top: -150px; /* negative value of footer height */
-    height: 150px;
+    background-color: #e5dbd2;
+    margin-top: -175px; /* negative value of footer height */
+    height: 175px;
     clear:both;
   } 
 
@@ -1081,8 +1082,8 @@ select {
 
   .footer-right {
     height: 100%;
-    padding: 50px 15px 20px 15px;
-    background-color: #dfd2c7;
+    padding: 55px 15px 20px 15px;
+    background-color: #e5dbd2;
   }
 
   .right-border {
@@ -1312,9 +1313,11 @@ display: none;
 }
 
 .navbar {
-  height: 50px;
-  line-height: 50px;
-  padding: 25px 0px;
+    height: 145px;
+    line-height: 25px;
+    padding: 40px 0px;
+    background-color: #e5dbd2;
+    /*background-color: rgba(223,	210,	199, .5);*/
 }
 
 .site-header, .site-footer { 
@@ -1381,6 +1384,7 @@ display: none;
 
 .navbar a {
   line-height: 26px;
+  font-size: 1.2em;
   text-decoration: none;
   font-weight: 700;
   color: #1A0504;
@@ -1581,7 +1585,7 @@ display: none;
 
 .contact {
   height: 100%;
-  padding: 15px;
+  padding: 30px;
 }
 
 
@@ -1790,17 +1794,17 @@ display: none;
 
 
 
-  #main-nav #logo {
+#main-nav #logo {
     float: left;
-    height: 55px;
-    margin-top: 0px;
-  }
+    height: 70px;
+    margin-top: -5px;
+}
 
 
   .social i {
     font-size: 1.6em;
-    padding: 0 3px 5px 3px;
-  }
+    padding: 0 6px 5px 6px;
+}
 
   .navbar li {
     font-size: 1.2em;

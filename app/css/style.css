@@ -1811,6 +1811,10 @@ display: none;
 @media (min-width: 1134px){
   body {
     background: url('/img/sistersBackground.jpg');
+    background-repeat: no-repeat;
+  background-size: cover;
+  background-attachment: fixed;
+  background-position: center center; 
   }
 
   .container {

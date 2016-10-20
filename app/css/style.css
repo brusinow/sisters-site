@@ -1025,7 +1025,7 @@ select {
   overflow: auto;
   padding-left: 10px;
   padding-right: 10px;
-  padding-bottom: 40px;
+  padding-bottom: 170px;
   padding-top: 10px;
   opacity: 0;
   }  /* must be same height as the footer */
@@ -1038,7 +1038,7 @@ select {
 
 
   #footer {
-    background-color: rgba(255,255,255,.7);
+    background-color: rgba(255,255,255,1);
     position: relative;
     text-align: center;
     margin-top: 15px;

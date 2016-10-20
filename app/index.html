@@ -37,7 +37,7 @@
 <div id="wrap">
     <div id="top-of-page"></div>
     <div class="site-header" ng-include="'/views/header.html'" ng-controller="NavCtrl" ng-class="{'fade-in': fade}"></div>
-        <div id="main" class="container">
+        <div id="main" ng-class="{'show': mainLoaded}" ng-controller="MainCtrl" class="container">
           <ui-view></ui-view>
         </div>
 </div>

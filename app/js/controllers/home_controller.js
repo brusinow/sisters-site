@@ -1,5 +1,19 @@
 angular.module('SistersCtrls', ['SistersServices'])
 
+
+.controller('MainCtrl', ['$scope', '$state','$timeout','$http', function($scope, $state, $timeout,$http) {
+
+$scope.$on('loadMainContainer', function (event, data) {
+    if (data === "loaded"){
+      $scope.mainLoaded = true;
+    } else {
+      $scope.mainLoaded = false;
+    }
+  });
+
+
+}])
+
 .controller('HomeCtrl', ['$scope', '$state','$timeout','$http','LoadedService', function($scope, $state, $timeout,$http,LoadedService) {
   $scope.loaded = LoadedService.get();
   // console.log("what is loaded? ",$scope.loaded);
@@ -8,10 +22,12 @@ angular.module('SistersCtrls', ['SistersServices'])
   if (!$scope.loaded && width > 806){ 
     $timeout(function () {
       // console.log("fade in home!!!!");
+      $scope.$emit('loadMainContainer', 'loaded');
       $scope.fadeHome = true;
       LoadedService.set(true);
     }, 600);
   } else {
+    $scope.$emit('loadMainContainer', 'loaded');
     $scope.fadeHome = true;
     LoadedService.set(true);
   } 

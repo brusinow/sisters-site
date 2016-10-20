@@ -1,7 +1,7 @@
 angular.module('SistersCtrls')
 
 .controller('ShowsCtrl', ['$scope', '$state','currentAuth','$uibModal','$log','$firebaseArray','moment','Auth','getShows', function($scope, $state, currentAuth, $uibModal,$log, $firebaseArray, moment, Auth, getShows){
-
+$scope.$emit('loadMainContainer', 'loaded');
   $scope.shows = getShows;
 
   $scope.auth = Auth;

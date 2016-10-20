@@ -338,7 +338,7 @@ angular.module('ngCart', ['ngCart.directives'])
                     return this.attr["size"]
                 };
             } 
-            else $log.info('This item has no attributes');
+            else {};
         };
         
 
@@ -396,6 +396,8 @@ angular.module('ngCart', ['ngCart.directives'])
         $timeout(function(){
             $scope.loaded = true;
         })
+
+        
 
     }])
 

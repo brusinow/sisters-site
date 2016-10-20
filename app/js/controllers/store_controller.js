@@ -13,12 +13,15 @@ angular.module('SistersCtrls')
     }
 
     $timeout(function(){
-        $scope.loaded = true; 
+        $scope.loaded = true;
+        $scope.$emit('loadMainContainer', 'loaded'); 
     })
  
 })
 
 .controller('StoreCartCtrl', function($scope, $state, $http, $timeout, $location, $sessionStorage){
+  $scope.$emit('loadMainContainer', 'loaded');
+
   $scope.toCheckout = function(){
     $location.url('/store/checkout/address');
   }
@@ -31,6 +34,7 @@ angular.module('SistersCtrls')
 
 
 .controller('StoreShowCtrl', function($scope, $stateParams, $state, $http, $timeout, $location, $sessionStorage, oneProduct){
+  $scope.$emit('loadMainContainer', 'loaded');
 console.log("what is oneProduct? ",oneProduct);
 $scope.product = oneProduct;
 $scope.images = oneProduct.images;
@@ -77,6 +81,7 @@ $scope.changeActive = function(){
 
 
 .controller('CheckoutTemplateCtrl', function($scope, $state, $http, $timeout, $location, $localStorage){
+  $scope.$emit('loadMainContainer', 'loaded');
   $scope.$storage = $localStorage;
 
   $scope.$on('cartChange', function(event, data) { 
@@ -99,6 +104,7 @@ $scope.changeActive = function(){
 
 
 .controller('StoreAddressCtrl', function($scope, $state, $window, $timeout, $http, $location, $localStorage, ngCart, $rootScope, CurrentOrderService){
+  $scope.$emit('loadMainContainer', 'loaded');
   $scope.$storage = $localStorage;
   console.log("what is shipping? ",ngCart.getShipping());
   console.log("show me items: ",ngCart.getItems());
@@ -276,6 +282,7 @@ $scope.changeActive = function(){
 
 
 .controller('StorePaymentCtrl', function($scope, $state, $http, $timeout, $location, $localStorage, ngCart, $rootScope, currentOrder){
+  $scope.$emit('loadMainContainer', 'loaded');
   $rootScope.path = $location.$$path;
   $scope.$storage = $localStorage;
   $scope.pathCount = parseInt($scope.$storage.pathCount); 
@@ -363,6 +370,7 @@ $scope.changeActive = function(){
 
 
 .controller('StoreConfirmCtrl', function($scope, $state, $http, $timeout, $location, $localStorage, ngCart, $rootScope){
+$scope.$emit('loadMainContainer', 'loaded');
 $scope.$storage = $localStorage;
 $scope.pathCount = parseInt($scope.$storage.pathCount); 
 $scope.orderComplete = false;

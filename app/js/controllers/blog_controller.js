@@ -1,6 +1,7 @@
 angular.module('SistersCtrls')
 
 .controller('BlogCtrl', ['$scope', '$state','$http','$timeout','$location','$stateParams','Auth','Blog','HelperService','InstagramFactory','AllTagsService', function($scope, $state, $http, $timeout, $location, $stateParams, Auth, Blog, HelperService, InstagramFactory, AllTagsService){
+  $scope.$emit('loadMainContainer', 'loaded');
   $scope.allTags = AllTagsService();
 
   $scope.location = $location.$$path;
@@ -43,6 +44,7 @@ angular.module('SistersCtrls')
 
 
 .controller('BlogArchiveCtrl', ['$scope', '$state','$timeout','$stateParams','$location', 'Blog','Archive','Auth','HelperService','AllTagsService', function($scope, $state, $timeout, $stateParams, $location, Blog, Archive, Auth, HelperService, AllTagsService){
+   $scope.$emit('loadMainContainer', 'notLoaded');
    $scope.location = $location.$$path;
   $scope.allTags = AllTagsService();
   $scope.enable = true;
@@ -73,6 +75,7 @@ angular.module('SistersCtrls')
   // console.log($scope.posts);
 
   $timeout(function(){
+    $scope.$emit('loadMainContainer', 'loaded');    
     $scope.loaded = true;
   })
 
@@ -84,6 +87,7 @@ angular.module('SistersCtrls')
 
 
 .controller('BlogTagsCtrl', ['$scope', '$state','$stateParams','$location', '$timeout','Blog','TagsShow','Auth','HelperService','AllTagsService', function($scope, $state, $stateParams, $location, $timeout, Blog, TagsShow, Auth, HelperService, AllTagsService){
+   $scope.$emit('loadMainContainer', 'notLoaded');
    $scope.location = $location.$$path;
   $scope.allTags = AllTagsService();
   $scope.enable = true;
@@ -122,7 +126,8 @@ angular.module('SistersCtrls')
   console.log($scope.posts);
 
   $timeout(function(){
-    $scope.loaded = true;
+    $scope.$emit('loadMainContainer', 'loaded');
+    $scope.loaded = true;   
   })
 
   $scope.editPost = function(post){
@@ -133,6 +138,7 @@ angular.module('SistersCtrls')
 
 
 .controller('BlogShowCtrl', ['$scope', '$state','$stateParams','$location','$timeout','thisPost','Blog','AllTagsService', function($scope, $state, $stateParams, $location, $timeout, thisPost, Blog, AllTagsService){
+ $scope.$emit('loadMainContainer', 'notLoaded');
  $scope.location = $location.$$path;
  $scope.allTags = AllTagsService();
  $scope.enable = false;
@@ -143,6 +149,7 @@ angular.module('SistersCtrls')
  $scope.allPosts = thisPost;
 
   $timeout(function(){
+    $scope.$emit('loadMainContainer', 'loaded');  
     $scope.loaded = true;
   })
 }])  

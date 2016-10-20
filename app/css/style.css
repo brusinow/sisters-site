@@ -37,6 +37,7 @@ h1, h2, h3, h4, h5, h6 {
 
 .main-page-header {
   font-size: 1.3em;
+  margin: 0;
 }
 
 table {
@@ -1759,6 +1760,8 @@ display: none;
 @media (min-width: 1134px){
   .main-page-header {
   font-size: 1.5em;
+  margin-top: 50px;
+  margin-bottom: 0;
 }
 
     .videoWrapper {

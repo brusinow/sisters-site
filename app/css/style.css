@@ -20,7 +20,7 @@
 
 body {
   /*background-color: #e5dccd;*/
-  background: url('/img/sistersBackground.jpg');
+  background: url('/img/sistersBackgroundSmall.jpg');
   background-repeat: no-repeat;
   background-size: cover;
   background-attachment: fixed;
@@ -1809,6 +1809,10 @@ display: none;
 }
 
 @media (min-width: 1134px){
+  body {
+    background: url('/img/sistersBackground.jpg');
+  }
+
   .container {
     width: 92%;
   }

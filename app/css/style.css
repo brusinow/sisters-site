@@ -160,24 +160,24 @@ select {
 }
 
 .popup-form input {
-  width: 250px;
-  border-radius: 4px 0 0 4px;
-  height: 40px;
-  line-height: 40px;
-  font-size: 1.3em;
+    width: 200px;
+    border-radius: 4px 0 0 4px;
+    height: 30px;
+    line-height: 40px;
+    font-size: 1em;
 }
 
 #popup-submit {
-  height: 40px;
-  width: 40px;
-  line-height: 40px;
-  border-radius: 0 2px 2px 0;
-  outline: none;
+    height: 30px;
+    width: 30px;
+    line-height: 30px;
+    border-radius: 0 2px 2px 0;
+    outline: none;
 }
 
 #popup-submit i {
-  font-size: 1.3em;
-  line-height: 40px;
+  font-size: 1em;
+  line-height: 34px;
 }
 
 #exit-popup {
@@ -1313,11 +1313,11 @@ display: none;
 }
 
 .navbar {
-    height: 145px;
+    height: 91px;
     line-height: 25px;
-    padding: 40px 0px;
+    padding: 20px 0px;
     background-color: #e5dbd2;
-    /*background-color: rgba(223,	210,	199, .5);*/
+    /* background-color: rgba(223,	210,	199, .5); */
 }
 
 .site-header, .site-footer { 
@@ -1384,7 +1384,7 @@ display: none;
 
 .navbar a {
   line-height: 26px;
-  font-size: 1.2em;
+  font-size: .9em;
   text-decoration: none;
   font-weight: 700;
   color: #1A0504;
@@ -1415,7 +1415,7 @@ display: none;
     display: block;
     width: 100%;
     height: 100px;
-    margin: 0 auto 35px auto;
+    margin: 0 auto 10px auto;
   }
 
 .nav-form input {
@@ -1597,18 +1597,18 @@ display: none;
 
     .nav-form{
     display: block;
-    width: 400px;
+    width: 300px;
     height: 100px;
-    margin: 0 auto 35px auto;
+    margin: 0 auto 0px auto;
   }
 
 .nav-form input {
-  width: 355px;
+  width: 270px;
   float: left;
-  font-size: 1.3em;
+  font-size: 1em;
   padding: 8px;
   margin: 20px 0 0 0;
-  height: 45px;
+  height: 30px;
   border-color: #d038af;
   border-radius: 2px 0 0 2px;
   vertical-align: bottom;
@@ -1616,9 +1616,9 @@ display: none;
 
 
 .nav-form button, .nav-form button:hover, .nav-form button:visited, .nav-form button:focus  {
-  width: 45px;
+  width: 30px;
   float: left;
-  font-size: 1.3em;
+  font-size: 1em;
   vertical-align: middle;
   background-color: #d038af;
   color: white;
@@ -1627,8 +1627,8 @@ display: none;
   border-radius: 0 2px 2px 0;
   padding: 4px;
   margin: 20px 0 0 0;
-  height: 45px;
-  line-height: 45px;
+  height: 30px;
+  line-height: 30px;
   vertical-align: bottom;
 }
 
@@ -1758,11 +1758,16 @@ display: none;
 
 @media (min-width: 1134px){
   .main-page-header {
-  font-size: 1.8em;
+  font-size: 1.5em;
 }
 
-  .videoWrapper {
-    margin-top: 0;
+    .videoWrapper {
+    position: relative;
+    width: 80%;
+    padding-bottom: 56.25%; /* 16:9 */
+    padding-top: 25px;
+    height: 0;
+    margin: 0 auto;
   }
 
   .header-social {
@@ -1771,9 +1776,9 @@ display: none;
 
   .image-panel img {
     object-fit: cover;
-    object-position: 100% 50%;
+    object-position: 50% 50%;
     width: 100%;
-    height: 500px;
+    height: 400px;
   }
 
   .cart-btn {
@@ -1796,8 +1801,8 @@ display: none;
 
 #main-nav #logo {
     float: left;
-    height: 70px;
-    margin-top: -5px;
+    height: 40px;
+    margin-top: 0px;
 }
 
 

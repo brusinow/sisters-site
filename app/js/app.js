@@ -32,12 +32,11 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
 
 .config(['$stateProvider', '$urlRouterProvider','$locationProvider','UIRouterMetatagsProvider','$provide', function($stateProvider, $urlRouterProvider,$locationProvider, UIRouterMetatagsProvider, $provide){
   UIRouterMetatagsProvider
-        .setDefaultTitle('SISTERS The Band')
-        .setDefaultDescription('description')
-        .setDefaultKeywords('keywords')
+        .setDefaultTitle('SISTERS')
+        .setDefaultDescription('Seattle duo. Drink Champagne, the debut album, coming soon!')
         .setStaticProperties({
                 'fb:app_id': 'your fb app id',
-                'og:site_name': 'your site name'
+                'og:site_name': 'SISTERS'
             })
         .setOGURL(true);
 
@@ -53,8 +52,8 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
   .state('home', {
     url: '/',
     metaTags: {
-                title: 'SISTERS The Band',
-                description: 'Full-length debut album "Drink Champagne" coming soon!'
+                title: 'SISTERS',
+                description: 'Seattle duo. Drink Champagne, the debut album, coming soon!'
             },
     templateUrl: '/views/home.html',
     controller: 'HomeCtrl'
@@ -109,8 +108,8 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
   .state('blog.main', {
     url: '/blog',
     metaTags: {
-            title: 'SISTERS Blog',
-            description: 'Updates, news, and commentary from Seattle band SISTERS.'
+            title: 'SISTERS - Blog',
+            description: 'Updates, news, and commentary from Seattle duo SISTERS.'
         },
     templateUrl: '/views/blog/blog-content.html',
     controller: 'BlogCtrl',
@@ -121,8 +120,8 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
     .state('blog.page', {
     url: '/blog/:page',
     metaTags: {
-            title: 'SISTERS Blog',
-            description: 'Updates, news, and commentary from Seattle band SISTERS.'
+            title: 'SISTERS - Blog',
+            description: 'Updates, news, and commentary from Seattle duo SISTERS.'
         },
     templateUrl: '/views/blog/blog-content.html',
     controller: 'BlogCtrl',
@@ -133,6 +132,10 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
 
      .state('blog.archive', {
     url: '/blog/archives/:year/:month',
+     metaTags: {
+            title: 'SISTERS - Blog',
+            description: 'Updates, news, and commentary from Seattle duo SISTERS.'
+        },
     templateUrl: '/views/blog/blog-content.html',
     controller: 'BlogArchiveCtrl',
     resolve: {
@@ -148,6 +151,10 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
 
     .state('blog.archivePage', {
       url: '/blog/archives/:year/:month/:page',
+       metaTags: {
+            title: 'SISTERS - Blog',
+            description: 'Updates, news, and commentary from Seattle duo SISTERS.'
+        },
       templateUrl: '/views/blog/blog-content.html',
       controller: 'BlogArchiveCtrl',
       resolve: {
@@ -164,6 +171,10 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
 
     .state('blog.tags', {
     url: '/blog/tags/:tagName',
+     metaTags: {
+            title: 'SISTERS - Blog',
+            description: 'Updates, news, and commentary from Seattle duo SISTERS.'
+        },
     templateUrl: '/views/blog/blog-content.html',
     controller: 'BlogTagsCtrl',
     resolve: {
@@ -208,6 +219,10 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
 
   .state('shows', {
     url: '/shows',
+     metaTags: {
+            title: 'SISTERS - Shows',
+            description: 'Upcoming shows from Seattle duo SISTERS.'
+        },
     templateUrl: '/views/shows/shows.html',
     controller: 'ShowsCtrl',
     resolve: {

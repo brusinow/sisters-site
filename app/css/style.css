@@ -13,7 +13,7 @@
 }
 
 body {
-  background: url('../img/ticks.png');
+  background-color: #f8f6f2;
   color: #1A0504;
   height: 100%;
 }
@@ -1008,7 +1008,7 @@ select {
   #footer {
     position: relative;
     text-align: center;
-    background-color: #e5dbd2;
+    background-color: rgba(255, 216, 246,.7);
     margin-top: -175px; /* negative value of footer height */
     height: 175px;
     clear:both;
@@ -1084,7 +1084,6 @@ select {
   .footer-right {
     height: 100%;
     padding: 55px 15px 20px 15px;
-    background-color: #e5dbd2;
   }
 
   .right-border {
@@ -1317,8 +1316,7 @@ display: none;
     height: 91px;
     line-height: 25px;
     padding: 20px 0px;
-    background-color: #e5dbd2;
-    /* background-color: rgba(223,	210,	199, .5); */
+    background-color: rgba(255, 216, 246,.7);
 }
 
 .site-header, .site-footer { 

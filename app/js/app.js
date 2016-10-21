@@ -53,7 +53,7 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
   .state('home', {
     url: '/',
     metaTags: {
-                title: 'SISTERS The Band',
+                title: 'SISTERS',
                 description: 'Full-length debut album "Drink Champagne" coming soon!'
             },
     templateUrl: '/views/home.html',

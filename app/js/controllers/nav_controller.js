@@ -21,12 +21,30 @@ angular.module('SistersCtrls')
 
   $scope.user = {};
   $scope.mailConfirm = false;
+  var w = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
+  var h = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
+  $scope.height = h;
+  console.log("height: ",$scope.height)
+  var mobileBG = document.getElementById("mobile-background-div");
+  if (w < 900){
+  mobileBG.style.height = h + "px";
+  } else {
+  mobileBG.style.height = 0 + "px"; 
+  }
+  // console.log("inner width: ",width);
+  if (!$scope.loaded && w > 806){ 
+    $scope.mobileWidth = false;
+  } else {
+     $scope.mobileWidth = true;
+  } 
+
+
+
 
   
 
   $timeout(function(){
     // OVERLAY CREATION
-    var w = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
     if (w >= 678){
     $scope.isPopup = true;
     var div = document.createElement("div");

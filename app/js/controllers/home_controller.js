@@ -25,14 +25,14 @@ $scope.$on('loadMainContainer', function (event, data) {
       $scope.$emit('loadMainContainer', 'loaded');
       $scope.fadeHome = true;
       LoadedService.set(true);
-    }, 4000);
+    }, 2500);
   } else {
      $timeout(function () {
       // console.log("fade in home!!!!");
       $scope.$emit('loadMainContainer', 'loaded');
       $scope.fadeHome = true;
       LoadedService.set(true);
-    }, 4000);
+    }, 2500);
   } 
 
 

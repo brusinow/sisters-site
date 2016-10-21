@@ -20,14 +20,10 @@
 
 body {
   /*background-color: #e5dccd;*/
-  background: url('/img/sistersBackgroundSmall.jpg');
-  background-repeat: no-repeat;
-  background-size: cover;
-  background-attachment: fixed;
-  background-position: center center; 
-  background-color: #f9f6f9;
+  background-color: rgba(255,255,255,0);
   color: #1A0504;
   height: 100%;
+  z-index: -9;
 }
 
 html {
@@ -1116,7 +1112,7 @@ select {
   .footer-right {
     height: 100%;
     padding: 55px 15px 20px 15px;
-    /*background-color: #e5dccd;*/
+    background-color: white;
   }
 
   .right-border {
@@ -1582,7 +1578,7 @@ display: none;
 
 
 .home-content.fade-in {
-    transition: all 800ms ease-in-out;
+    transition: all 1000ms ease-in-out;
     opacity: 1;
     padding-bottom: 30px;
 }
@@ -1808,7 +1804,8 @@ display: none;
 
 }
 
-@media (min-width: 1134px){
+
+@media (min-width: 900px){
   body {
     background: url('/img/sistersBackground.jpg');
     background-repeat: no-repeat;
@@ -1816,6 +1813,15 @@ display: none;
   background-attachment: fixed;
   background-position: center center; 
   }
+}
+
+
+
+
+
+
+@media (min-width: 1134px){
+  
 
   .container {
     width: 92%;

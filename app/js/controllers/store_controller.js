@@ -2,6 +2,9 @@ angular.module('SistersCtrls')
 
 
 .controller('StoreCtrl', function($scope, $state, $http, $timeout, $location, $sessionStorage, allProducts, ProductsService){
+     var main = document.getElementById("main");
+  main.style.backgroundColor = '';
+    
     $scope.loaded = false;
     $scope.products = allProducts;
     console.log("what are products? ",$scope.products);

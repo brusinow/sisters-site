@@ -54,7 +54,7 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
     url: '/',
     metaTags: {
                 title: 'SISTERS',
-                description: 'Full-length debut album "Drink Champagne" coming soon!'
+                description: 'Seattle duo. "Drink Champagne", the debut album, coming soon!'
             },
     templateUrl: '/views/home.html',
     controller: 'HomeCtrl'
@@ -109,7 +109,7 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
   .state('blog.main', {
     url: '/blog',
     metaTags: {
-            title: 'SISTERS Blog',
+            title: 'SISTERS - Blog',
             description: 'Updates, news, and commentary from Seattle band SISTERS.'
         },
     templateUrl: '/views/blog/blog-content.html',
@@ -121,7 +121,7 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
     .state('blog.page', {
     url: '/blog/:page',
     metaTags: {
-            title: 'SISTERS Blog',
+            title: 'SISTERS - Blog',
             description: 'Updates, news, and commentary from Seattle band SISTERS.'
         },
     templateUrl: '/views/blog/blog-content.html',
@@ -133,6 +133,10 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
 
      .state('blog.archive', {
     url: '/blog/archives/:year/:month',
+    metaTags: {
+            title: 'SISTERS - Blog',
+            description: 'Updates, news, and commentary from Seattle band SISTERS.'
+        },
     templateUrl: '/views/blog/blog-content.html',
     controller: 'BlogArchiveCtrl',
     resolve: {
@@ -148,6 +152,10 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
 
     .state('blog.archivePage', {
       url: '/blog/archives/:year/:month/:page',
+      metaTags: {
+            title: 'SISTERS - Blog',
+            description: 'Updates, news, and commentary from Seattle band SISTERS.'
+        },
       templateUrl: '/views/blog/blog-content.html',
       controller: 'BlogArchiveCtrl',
       resolve: {
@@ -164,6 +172,10 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
 
     .state('blog.tags', {
     url: '/blog/tags/:tagName',
+    metaTags: {
+            title: 'SISTERS - Blog',
+            description: 'Updates, news, and commentary from Seattle band SISTERS.'
+        },
     templateUrl: '/views/blog/blog-content.html',
     controller: 'BlogTagsCtrl',
     resolve: {
@@ -208,6 +220,10 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
 
   .state('shows', {
     url: '/shows',
+    metaTags: {
+            title: 'SISTERS - Shows',
+            description: 'Upcoming shows for Seattle duo SISTERS.'
+        },
     templateUrl: '/views/shows/shows.html',
     controller: 'ShowsCtrl',
     resolve: {
@@ -221,6 +237,10 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
 
   .state('store', {
     url: '/store',
+    metaTags: {
+            title: 'SISTERS - Store',
+            description: 'The official store for Seattle duo SISTERS.'
+        },
     templateUrl: '/views/store/store.html',
     controller: 'StoreCtrl',
     resolve: {

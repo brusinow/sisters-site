@@ -57,7 +57,7 @@ angular.module('SistersCtrls')
     var overlay = document.querySelector("#overlayMail");
     overlay.classList.add("active");
     };
-  },8000)
+  },11000)
     
 
   $scope.closePopup = function(){

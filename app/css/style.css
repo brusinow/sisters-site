@@ -3,6 +3,7 @@
 /*Footer is #dfd2c7*/
 /*new color 1 is #e5dccd*/
 /*new color 2 is #eee8de*/
+/*real pink is #ffa3eb*/
 
 @font-face {
     font-family: creditCard;
@@ -79,11 +80,11 @@ td:last-child {
 }
 
 a {
-  color: #5F9EDD;
+  color: #d038af;
 }
 
 a:hover {
-  color: #82B0DD;
+  color: #ffa3eb;
 }
 
 input[type="email"], input[type="number"], input[type="search"], input[type="text"], input[type="tel"], input[type="url"], input[type="password"], textarea {
@@ -1017,7 +1018,7 @@ select {
 
 #main {
   /*background: url('../img/ticks.png');*/
-  background-color: rgba(238,232,222,.8);
+  background-color: rgba(238,232,222,.9);
   overflow: auto;
   padding-left: 10px;
   padding-right: 10px;
@@ -1037,7 +1038,6 @@ select {
     background-color: rgba(255,255,255,1);
     position: relative;
     text-align: center;
-    margin-top: 15px;
     height: 175px;
     clear: both;
 } 
@@ -1828,6 +1828,7 @@ display: none;
   }
 
   .main-page-header {
+    font-family: 'Lato', sans-serif;
   font-size: 1.4em;
   letter-spacing: .01em;
   margin-top: 0;
@@ -1883,6 +1884,7 @@ display: none;
     font-size: 1.6em;
     padding: 0 6px 5px 6px;
 }
+
 
   .navbar li {
     font-size: 1.2em;

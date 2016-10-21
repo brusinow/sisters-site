@@ -1,6 +1,9 @@
 angular.module('SistersCtrls')
 
 .controller('BlogCtrl', ['$scope', '$state','$http','$timeout','$location','$stateParams','Auth','Blog','HelperService','InstagramFactory','AllTagsService', function($scope, $state, $http, $timeout, $location, $stateParams, Auth, Blog, HelperService, InstagramFactory, AllTagsService){
+  var main = document.getElementById("main");
+  main.style.backgroundColor = '';
+  
   $scope.$emit('loadMainContainer', 'loaded');
   $scope.allTags = AllTagsService();
 

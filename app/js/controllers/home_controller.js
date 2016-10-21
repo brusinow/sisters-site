@@ -15,6 +15,10 @@ $scope.$on('loadMainContainer', function (event, data) {
 }])
 
 .controller('HomeCtrl', ['$scope', '$state','$timeout','$http','LoadedService', function($scope, $state, $timeout,$http,LoadedService) {
+  var main = document.getElementById("main");
+  main.style.backgroundColor = 'rgba(247, 237, 245, 0)';
+  
+  
   $scope.loaded = LoadedService.get();
   // console.log("what is loaded? ",$scope.loaded);
   var width = window.innerWidth;

@@ -1,6 +1,10 @@
 angular.module('SistersCtrls')
 
 .controller('ShowsCtrl', ['$scope', '$state','currentAuth','$uibModal','$log','$firebaseArray','moment','Auth','getShows', function($scope, $state, currentAuth, $uibModal,$log, $firebaseArray, moment, Auth, getShows){
+var main = document.getElementById("main");
+  main.style.backgroundColor = '';
+
+
 $scope.$emit('loadMainContainer', 'loaded');
   $scope.shows = getShows;
 

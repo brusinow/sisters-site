@@ -1,4 +1,5 @@
-<div class="home-content" ng-class="{'fade-in': fadeHome, 'loaded': loaded}">
+<div class="home-content text-center" ng-class="{'fade-in': fadeHome, 'loaded': loaded}">
+  <div id="main-signup-div">
   <h5 class="text-center main-page-header">Our debut album "Drink Champagne" will be out soon. <br><strong>Sign up to pop bottles with us!</strong></h5>
    <form name="navForm" class="nav-form" ng-submit="navForm.$valid && mailchimpSubmit(navForm, user.email, true)" novalidate>
      <input name="uEmail" type="email" placeholder="email address" ng-model="user.email" required/>
@@ -9,6 +10,7 @@
           <div class="mailchimp-alert-confirm" ng-class="{'confirmAnimate': mailConfirm}">YAY! SISTERS loves you. <i class="fa fa-heart" aria-hidden="true"></i></div>
         </div>
       </form>
+  </div>
   <div class="videoWrapper">
     <iframe width="1280" height="720" src="https://www.youtube.com/embed/ycXJ5-Uwhlo?rel=0" frameborder="0" allowfullscreen></iframe>
   </div>

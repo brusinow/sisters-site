@@ -37,16 +37,17 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .master-header {
+  display: inline-block;
   margin: 20px;
-  font-family: 'Fjalla One', sans-serif;
+  font-family: 'Oswald', sans-serif;
   text-transform: uppercase;
-  font-weight: 400;
-  letter-spacing: .02em;
+  font-weight: 300;
+  padding: 5px;
+  border: 1px solid #1A0504;
 }
 
 .main-page-header {
-  font-family: 'Lato', sans-serif;
-  font-size: .9em;
+  font-family: 'Oswald', sans-serif;
   margin: 0;
 }
 
@@ -134,8 +135,8 @@ select {
 }
 
 @keyframes overlay-content-fadein {
-    from {background-color: rgba(255,255,255,0);}
-    to {background-color: rgba(255,255,255,.9);}
+    from {background-color: rgba(242,242,242,0);}
+    to {background-color: rgba(242,242,242,1);}
 }
 
 
@@ -147,7 +148,7 @@ select {
   z-index:500;
   background-color: rgba(0,0,0,0);
    animation-name: overlay-fadein;
-    animation-duration: .5s;
+    animation-duration: .3s;
 }
 
 .overlay-start.active {
@@ -155,21 +156,42 @@ select {
 }
 
 .overlay-content {
-  position: absolute;
-  margin: auto;
-  padding: 20px;
-  top: 0; left: 0; right: 0; bottom: 0;
-  width: 500px;
-  height: 225px;
-  z-index:501;
-  background-color: rgba(255,255,255,.9);
-  border-radius: 2px;
-  animation-name: overlay-content-fadein;
-  animation-duration: .5s;
+    position: absolute;
+    margin: auto;
+    padding: 20px;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    width: 500px;
+    height: 600px;
+    z-index: 501;
+    border-radius: 2px;
+    animation-name: overlay-content-fadein;
+    animation-duration: .3s;
+    background-color: rgba(242,242,242,1);
 }
 
 .popup-header {
-  font-family: 'Fjalla One', sans-serif;
+  font-family: 'Oswald', sans-serif;
+  font-weight: 300;
+  text-transform: uppercase;
+}
+
+#popup-img-div {
+  width: 400px;
+  margin: 0 auto;
+}
+
+#popup-img-div img {
+  width: 100%;
+  height: 100%;
+}
+
+.popup-button {
+  font-family: 'Oswald', sans-serif;
+  font-weight: 300;
+  font-size: 1.5em; 
   text-transform: uppercase;
 }
 
@@ -677,9 +699,9 @@ select {
  }
 
 
- .blog-header h5 {
-  font-family: 'Fjalla One', sans-serif;
-  font-weight: 400;
+ .blog-header h5, .blog-header h4 {
+  font-family: 'Oswald', sans-serif;
+  font-weight: 300;
   letter-spacing: .02em;
 }
 
@@ -1011,11 +1033,12 @@ select {
 }
 
 #main-signup-div {
-  background-color: rgba(255, 244, 255, .9);
-  border: 3px solid #d038af;
+  background-color: rgba(247, 237, 245,.9);
+  /*border: 3px solid #d038af;*/
   display: inline-block;
   padding: 15px 30px 0 30px;
   margin: 0 auto 25px auto;
+  border-radius: 2px;
 }
 
 #wrap {
@@ -1098,7 +1121,7 @@ select {
 
   .copyright {
     /*font-family: 'PT Serif', serif;*/
-    font-family: 'Fjalla One', sans-serif;
+    font-family: 'Oswald', sans-serif;
     color: #5e504f;
     font-size: .8em;
     letter-spacing: .07em;
@@ -1108,7 +1131,7 @@ select {
 
    .website-design {
     /*font-family: 'PT Serif', serif;*/
-    font-family: 'Fjalla One', sans-serif;
+    font-family: 'Oswald', sans-serif;
     color: #5e504f;
     font-size: .6em;
     letter-spacing: .07em;
@@ -1490,7 +1513,6 @@ display: none;
 
 .mail-alerts {
   font-size: .8em;
-  margin-top: 8px;
   width: 100%;
   min-height: 40px;
   display: inline-block;
@@ -1503,11 +1525,12 @@ display: none;
 }
 
 .mailchimp-alert-confirm {
-  
-  color: #5F9EDD;
-  font-size: 2em;
-  font-weight: 500;
-  opacity: 0;
+    font-family: 'Oswald', sans-serif;
+    font-weight: 300;
+    color: #d038af;
+    font-size: 2em;
+    opacity: 0;
+    letter-spacing: .03em;
 }
 
 .error {
@@ -1651,26 +1674,27 @@ display: none;
 
     .nav-form{
     display: block;
-    width: 300px;
+    width: 306px;
     height: 100px;
     margin: 0 auto 0px auto;
   }
 
+
 .nav-form input {
-  width: 270px;
-  float: left;
-  font-size: 1em;
-  padding: 8px;
-  margin: 20px 0 0 0;
-  height: 30px;
-  border-color: #d038af;
-  border-radius: 2px 0 0 2px;
-  vertical-align: bottom;
+    width: 270px;
+    float: left;
+    font-size: 1.2em;
+    padding: 8px;
+    margin: 20px 0 0 0;
+    height: 36px;
+    border-color: #d038af;
+    border-radius: 2px 0 0 2px;
+    vertical-align: bottom;
 }
 
 
 .nav-form button, .nav-form button:hover, .nav-form button:visited, .nav-form button:focus  {
-  width: 30px;
+  width: 36px;
   float: left;
   font-size: 1em;
   vertical-align: middle;
@@ -1681,8 +1705,8 @@ display: none;
   border-radius: 0 2px 2px 0;
   padding: 4px;
   margin: 20px 0 0 0;
-  height: 30px;
-  line-height: 30px;
+  height: 36px;
+  line-height: 36px;
   vertical-align: bottom;
 }
 
@@ -1834,8 +1858,8 @@ display: none;
   }
 
   .main-page-header {
-    font-family: 'Lato', sans-serif;
-  font-size: 1.4em;
+    font-family: 'Oswald', sans-serif;
+    font-weight: 300;
   letter-spacing: .01em;
   margin-top: 0;
   margin-bottom: 0;

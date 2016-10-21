@@ -23,6 +23,8 @@ angular.module('SistersCtrls')
 })
 
 .controller('StoreCartCtrl', function($scope, $state, $http, $timeout, $location, $sessionStorage){
+  var main = document.getElementById("main");
+  main.style.backgroundColor = '';
   $scope.$emit('loadMainContainer', 'loaded');
 
   $scope.toCheckout = function(){

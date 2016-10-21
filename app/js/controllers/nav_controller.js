@@ -47,6 +47,7 @@ angular.module('SistersCtrls')
     // OVERLAY CREATION
     if (w >= 678){
     $scope.isPopup = true;
+    if (!document.getElementById("overlayMail")){
     var div = document.createElement("div");
     div.id = "overlayMail";
     div.className = "overlay-start";
@@ -56,6 +57,8 @@ angular.module('SistersCtrls')
     popUp.appendChild(div);
     var overlay = document.querySelector("#overlayMail");
     overlay.classList.add("active");
+    }
+   
     };
   },11000)
     
@@ -66,7 +69,10 @@ angular.module('SistersCtrls')
     
    
   
-
+  $scope.toStore = function(){
+    $scope.isPopup = false;
+    $state.go("store");
+  }
 
 
 

@@ -49,17 +49,15 @@
   <div id="pop-up"></div>
   <div class="overlay-content">
     <button id="exit-popup" class="button-border" ng-click="closePopup()"><i class="fa fa-times" aria-hidden="true"></i></button>
-    <h3 class="text-center popup-header">Join our Mailing List!</h3>
-    <p>
-      Our first full-length album "Drink Champagne" out soon! Sign up below for our mailing list for updates.
+    <h3 class="text-center popup-header">Pre-order the Album!</h3>
+    <div id="popup-img-div">
+      <img src="/img/drinkChampagne.jpg"/>
+    </div>
+    <p style="margin-top: 6px; margin-bottom: 6px;" class="text-center">
+      Our first full-length album "Drink Champagne" out soon!
     </p>
     <div class="text-center">
-    <form name="popupForm" class="popup-form" ng-submit="popupForm.$valid && mailchimpSubmit(popupForm, user.popEmail, false)" novalidate>
-      <button id="popup-submit" type="submit" class="button-flat-pink float-right">
-        <i style="position: relative; bottom: 8px;"class="fa fa-paper-plane-o fa-lg" aria-hidden="true"></i>
-      </button>
-      <input class="float-right" name="uEmail" type="email" placeholder="Pop Bottles With Us!" ng-model="user.popEmail" required/>
-      </form>
+   <button ng-click="toStore()" class="button popup-button button-flat-pink">Pre-order here</button>
     </div>
   </div>
 </div>

@@ -21,7 +21,7 @@
      <div class="blog-panel">
       <div class="blog-header text-center">
         <button ng-if="firebaseUser.email" class="button button-border-pink button-rounded button-large blog-edit-button" ng-click="editPost(post.slug)"><i class="fa fa-pencil" aria-hidden="true"></i></button>
-        <h5 class="no-margin"><a ng-href="/blog/show/{{post.slug}}">{{post.postTitle}}</a></h5>
+        <h4 class="no-margin"><a ng-href="/blog/show/{{post.slug}}">{{post.postTitle}}</a></h4>
         <span class="blog-date">{{post.timestamp | MomentFilter}}</span>
       </div>
       <div ng-bind-html="post.postBody | cut:enable:true:275:'...'" class="white-space-pre"></div>

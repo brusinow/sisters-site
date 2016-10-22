@@ -11,7 +11,9 @@
   <div style="text-align: center; margin-top: 10px;" class="row">
   <button ng-if="firebaseUser.email" type="button" class="button-border-pink button-jumbo" ng-click="open('new')"><i class="fa fa-plus" aria-hidden="true"></i> Add New Show</button>
   </div>
+  <div class="text-center">
   <h2 class="text-center master-header">Upcoming Shows</h2>
+  </div>
   <table id="show-table" ng-if="shows.length > 0" class="u-full-width">
   <thead>
     <tr>

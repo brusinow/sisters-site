@@ -32,12 +32,10 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
 
 .config(['$stateProvider', '$urlRouterProvider','$locationProvider','UIRouterMetatagsProvider','$provide', function($stateProvider, $urlRouterProvider,$locationProvider, UIRouterMetatagsProvider, $provide){
   UIRouterMetatagsProvider
-        .setDefaultTitle('SISTERS The Band')
-        .setDefaultDescription('description')
-        .setDefaultKeywords('keywords')
+        .setDefaultTitle('SISTERS')
+        .setDefaultDescription('Seattle duo. "Drink Champagne", the debut album, coming soon!')
         .setStaticProperties({
-                'fb:app_id': 'your fb app id',
-                'og:site_name': 'your site name'
+                'og:site_name': 'SISTERS'
             })
         .setOGURL(true);
 

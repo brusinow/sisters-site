@@ -86,6 +86,10 @@ td:last-child {
     padding-right: 10px;
 }
 
+#show-table td {
+  height: 60px;
+}
+
 a {
   color: #d038af;
 }

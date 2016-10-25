@@ -52,8 +52,9 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 .main-page-header {
-  font-family: 'Oswald', sans-serif;
-  margin: 0;
+    font-family: 'Oswald', sans-serif;
+    margin: 0;
+    font-size: 2.2rem;
 }
 
 #footer-rule {
@@ -1186,7 +1187,8 @@ display: none;
   list-style: none;
   width: 120px;
   padding: 5px 24px 5px 5px;
-  background-color: #dfd2c7;
+  background-color: #e79bd7;
+  z-index: 899;
 }
 
 #mobile-nav ul li {
@@ -1195,14 +1197,14 @@ display: none;
 }
 
 #mobile-nav ul li a {
-  padding: 10px;
-  display: inline-block;
-  font-family: 'Fjalla One', sans-serif;
-  line-height: 20px;
-  color: #1A0504;
-  text-transform: uppercase;
-  text-decoration: none;
-  letter-spacing: .08em;
+    padding: 5px 10px;
+    display: inline-block;
+    font-family: 'Oswald', sans-serif;
+    line-height: 20px;
+    color: white;
+    text-transform: uppercase;
+    text-decoration: none;
+    letter-spacing: .03em;
 }
 
 .shopping-cart {
@@ -1246,6 +1248,7 @@ display: none;
     text-align: center;
     font-size: 1em;
     color: white;
+    z-index: 900;
 }
 
 .store-row {
@@ -1874,6 +1877,7 @@ display: none;
   letter-spacing: .01em;
   margin-top: 0;
   margin-bottom: 0;
+  font-size: 3.6rem;
 }
 
 #main-video-container {

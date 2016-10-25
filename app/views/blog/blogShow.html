@@ -17,7 +17,7 @@
       <div class="tag-div">
         <h6 class="no-margin">TAGS</h6>
         <ul class="tags">
-          <li ng-repeat="tag in post.tags">{{tag}}</li>       
+          <a ng-repeat="tag in post.tags" ng-href="/blog/tags/{{tag}}"><li>{{tag}}</li></a>       
         </ul>
       </div>
     </div>

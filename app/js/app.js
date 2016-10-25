@@ -35,7 +35,6 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
         .setDefaultTitle('SISTERS')
         .setDefaultDescription('Seattle duo. Drink Champagne, the debut album, coming soon!')
         .setStaticProperties({
-                'fb:app_id': 'your fb app id',
                 'og:site_name': 'SISTERS'
             })
         .setOGURL(true);

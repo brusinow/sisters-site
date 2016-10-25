@@ -1,6 +1,6 @@
 
 <div class="row">
-<div class="twelve columns login-outer">
+<div class="eight columns offset-by-two blog-admin-outer">
 <form style="margin-bottom: 0;" class="new-blog-form">
   <label for="blogTitle">Post Title</label>
   <input type="text" class="u-full-width" placeholder="This is a post title..." ng-model="post.title" id="blogTitle"/>
@@ -22,6 +22,9 @@
       <label for="youtube">YouTube Link</label>
         <input class="u-full-width" type="text" name="youtube" placeholder="Enter YouTube link..." ng-model="data.youtube"/>
       </div>
+      <div ng-if="data.image" id="photo-preview">
+        <img ng-src="{{data.image}}"/>
+      </div>
     </div> <br>
     </div>
      <label for="blogBody">Post Body</label>
@@ -37,8 +40,8 @@
    </label>
    </div>
   <!-- <button class="tag-delete-btn" ng-click="deleteTag(tag)"><i class="fa fa-trash" aria-hidden="true"></i></button> -->
-  <div>
-  <input class="u-full-width no-margin button-flat-blue button-jumbo" ng-click="submit()" type='submit'>
+  <div class="text-center">
+  <input class="no-margin button-flat-blue button-jumbo" ng-click="submit()" type='submit'>
   </div>
 </form>
 </div>

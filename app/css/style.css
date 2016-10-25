@@ -741,16 +741,31 @@ select {
     line-height: 34px;
     padding: 0;
 }
+
+#photo-preview {
+    display: inline-block;
+    background-color: white;
+    width: 100px;
+    padding: 2px;
+    border: 1px solid #999;
+}
+
+#photo-preview img {
+  height: 100%;
+  width: 100%;
+}
+
 .tag-input {
-  margin-top: 10px;
+  margin: 10px auto 0 auto;
+  width: 50%;
   position: relative;
   height: 28px;
 }
 
 .add-tag-btn {
     position: absolute;
-    left: 70%;
-    width: 30%;
+    left: 80%;
+    width: 20%;
     top: 0px;
     height: 28px !important;
     border-radius: 0 4px 4px 0;
@@ -758,7 +773,7 @@ select {
 
 .tag-input input{
   position: absolute;
-  width: 70%;
+  width: 80%;
   left: 0;
   top: 0;
   border-radius: 4px 0 0 4px;
@@ -1568,8 +1583,13 @@ display: none;
   clear: both;
 }
 
+.blog-admin-outer {
+  background-color: rgba(247, 237, 245,1);
+  padding: 20px;
+}
+
 .login-outer {
-  background-color: #dfd2c7;
+  background-color: rgba(247, 237, 245,1);
   padding: 20px;
 }
 
@@ -1892,7 +1912,7 @@ display: none;
 
   .image-panel img {
     object-fit: cover;
-    object-position: 50% 50%;
+    object-position: 50% 0%;
     width: 100%;
     height: 400px;
   }

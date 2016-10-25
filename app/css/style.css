@@ -1111,18 +1111,19 @@ display: none;
 }
 
 #mobile-nav ul {
-  position: absolute;
-  z-index: 999;
-  right: 0px;
-  list-style: none;
-  width: 120px;
-  padding: 5px 24px 5px 5px;
-  background-color: #dfd2c7;
+    position: absolute;
+    z-index: 999;
+    right: 0px;
+    list-style: none;
+    width: 120px;
+    padding: 5px 24px 5px 5px;
+    background-color: #e79bd7;
 }
 
 #mobile-nav ul li {
   margin-bottom: 5px;
   text-align: right;
+  color: white;
 }
 
 #mobile-nav ul li a {
@@ -1130,7 +1131,7 @@ display: none;
   display: inline-block;
   font-family: 'Fjalla One', sans-serif;
   line-height: 20px;
-  color: #1A0504;
+    color: white;
   text-transform: uppercase;
   text-decoration: none;
   letter-spacing: .08em;

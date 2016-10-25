@@ -63,11 +63,11 @@ td:last-child {
 }
 
 a {
-  color: #5F9EDD;
+  color: #d038af;
 }
 
 a:hover {
-  color: #82B0DD;
+  color: #de73c7;
 }
 
 input[type="email"], input[type="number"], input[type="search"], input[type="text"], input[type="tel"], input[type="url"], input[type="password"], textarea {
@@ -1008,7 +1008,7 @@ select {
   #footer {
     position: relative;
     text-align: center;
-    background-color: rgba(255, 216, 246,.7);
+    background-color: rgba(208, 56, 175,.2);
     margin-top: -175px; /* negative value of footer height */
     height: 175px;
     clear:both;
@@ -1316,7 +1316,7 @@ display: none;
     height: 91px;
     line-height: 25px;
     padding: 20px 0px;
-    background-color: rgba(255, 216, 246,.7);
+    background-color: rgba(208, 56, 175,.2);
 }
 
 .site-header, .site-footer { 

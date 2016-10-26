@@ -3,7 +3,7 @@ angular.module('SistersCtrls')
 
 
 .controller('NewBlogCtrl', ['$scope', '$state','$http','Auth','BlogPosts','AllTags','HelperService','SubmitImage','moment', function($scope, $state, $http, Auth, BlogPosts, AllTags, HelperService, SubmitImage, moment){
-   var main = document.getElementById("main");
+  var main = document.getElementById("main");
   main.style.backgroundColor = 'rgba(0,0,0,0)';
   $scope.$emit('loadMainContainer', 'loaded');
   $scope.BlogPosts = BlogPosts();
@@ -86,6 +86,9 @@ angular.module('SistersCtrls')
 
 
 .controller('EditBlogCtrl', ['$scope', '$state', '$timeout', '$stateParams','SendDataService','AllTags','thisPost','HelperService','SubmitImage', function($scope, $state, $timeout, $stateParams, SendDataService, AllTags, thisPost, HelperService, SubmitImage){
+  var main = document.getElementById("main");
+  main.style.backgroundColor = 'rgba(0,0,0,0)';
+  $scope.$emit('loadMainContainer', 'loaded');
   $scope.data = {};
   $scope.changeImage = false;
 

@@ -1,5 +1,5 @@
 <div class="row">
-<div class="twelve columns login-outer">
+<div class="eight columns offset-by-two blog-admin-outer">
 <form style="margin-bottom: 0;" class="new-blog-form">
   <label for="blogTitle">Post Title</label>
   <input type="text" class="u-full-width" placeholder="This is a post title..." ng-model="post.postTitle" id="blogTitle"/>
@@ -18,7 +18,7 @@
         <div style="display: inline-block" ng-if="post.img" ng-show="!changeImage" class="thumbnail"><img ng-src="{{post.img}}"></div>
         <input ng-show="!post.img && data.mediaSelect === 'image'" type="file" name="imageUpload" fileread="data.image"/>
       </div>
-      <button style="display: inline-block; margin-top:1px" class="button button-flat-blue button-rounded" ng-show="!changeImage && post.img && data.mediaSelect === 'image'" ng-click="post.img = null">Change image?</button>
+      <button style="display: inline-block; margin-top:1px" class="button button-flat-pink button-rounded" ng-show="!changeImage && post.img && data.mediaSelect === 'image'" ng-click="post.img = null">Change image?</button>
       <div ng-if="data.mediaSelect === 'youtube'" id="youtube-choice">
       <label for="youtube">YouTube Link</label>
         <input class="u-full-width" type="text" name="youtube" placeholder="Enter YouTube link..." ng-model="data.youtube"/>
@@ -28,7 +28,7 @@
    <text-angular ta-toolbar="[['h1','h2','h3'],['bold','italics','underline'],['insertLink', 'wordcount', 'charcount']]" ng-model="post.postBody"></text-angular>
   <div class="tag-input">
   <input type="text" placeholder="new tag name" ng-model="data.newTag"/>
-  <button class="button button-flat-blue button-tiny add-tag-btn" ng-click="addTag(data.newTag)">Add Tag</button>
+  <button class="button button-flat-pink button-tiny add-tag-btn" ng-click="addTag(data.newTag)">Add Tag</button>
   </div>
   <br>
   <div class="checkbox-group">
@@ -37,8 +37,8 @@
    </label>
    </div>
   <!-- <button class="tag-delete-btn" ng-click="deleteTag(tag)"><i class="fa fa-trash" aria-hidden="true"></i></button> -->
-  <div class="">
-  <input class="u-full-width no-margin button-flat-blue button-jumbo" ng-click="submit()" type='submit'>
+  <div class="text-center">
+  <input class="no-margin button-flat-pink button-jumbo" ng-click="submit()" type='submit'>
   </div>
 </form>
 </div>

@@ -642,14 +642,17 @@ select {
     overflow: auto;
   }
 
-  .insta-photo {
+.insta-photo {
     float: left;
     width: 30%;
     margin: 0 1.66666% 10px 1.66666%;
     padding: 3px;
     background-color: white;
-    border-radius: 2px;
-  }
+    border-radius: 0px;
+    -webkit-box-shadow: 0 1px 1px #bbb;
+    -moz-box-shadow: 0 1px 1px #bbb;
+    box-shadow: 0 1px 1px #bbb;
+}
 
   .insta-photo img {
    width: 100%;

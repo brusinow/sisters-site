@@ -355,13 +355,10 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
 
 .filter('tooOld', ['moment', function(moment) {
   return function(events) {
-    console.log("what is events? ",events);
     var currentDay = moment().unix()
-    console.log("current day is: ",currentDay);
     var filtered = [];
     angular.forEach(events, function(event) {
       var thisEvent = event.unix;
-      console.log("this event is: ",thisEvent);
       if (currentDay < thisEvent) {
         filtered.push(event);
       }

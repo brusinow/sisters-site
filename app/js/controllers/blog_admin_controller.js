@@ -67,13 +67,17 @@ angular.module('SistersCtrls')
       tags: newTags,
       timestamp: postDate   
     };
+    
     console.log("thisPost: ",thisPost);
     postArray.$add(thisPost).then(function(ref){
       var key = ref.key;
-      firebase.database().ref('archives/' + year + '/' + month + '/' + key).set(thisPost);
+      var archivePost = {
+        key: key
+      }
+      firebase.database().ref('archives/' + year + '/' + month + '/' + key).set(archivePost);
       for (prop in newTags){
         if (newTags[prop]){
-        firebase.database().ref('tags/' + prop + '/posts/' + key).set(thisPost); 
+        firebase.database().ref('tags/' + prop + '/posts/' + key).set(archivePost); 
         }
       }
       $state.go('blog.main');

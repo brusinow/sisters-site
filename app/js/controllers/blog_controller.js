@@ -53,6 +53,13 @@ angular.module('SistersCtrls')
   $scope.enable = true;
   // $scope.photos = Instagram.data;
   $scope.fullBlog = Blog;
+  console.log("All: ",Blog);
+  console.log("Archive: ",Archive);
+  for (var i = 0; i < Archive.length; i++){
+    var thisArchive = Archive[i];
+    var key = thisArchive.$id;
+    console.log(key);
+  }
   $scope.allPosts = Archive; 
   $scope.params = $stateParams;
 

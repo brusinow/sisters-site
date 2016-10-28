@@ -57,7 +57,6 @@ angular.module('SistersCtrls')
     for (var prop in $scope.checkedTags){
         newTags[prop] = $scope.checkedTags[prop];
     }
-    console.log("what are new tags? ",newTags)
     var thisPost = {
       postTitle: post.title,
       slug: slug,
@@ -75,11 +74,11 @@ angular.module('SistersCtrls')
         key: key
       }
       firebase.database().ref('archives/' + year + '/' + month + '/' + key).set(archivePost);
-      for (prop in newTags){
-        if (newTags[prop]){
-        firebase.database().ref('tags/' + prop + '/posts/' + key).set(archivePost); 
-        }
-      }
+      // for (prop in newTags){
+      //   if (newTags[prop]){
+      //   firebase.database().ref('tags/' + prop + '/posts/' + key).set(archivePost); 
+      //   }
+      // }
       $state.go('blog.main');
     });
   }

@@ -30,7 +30,7 @@
         <div ng-if="allTags.length > 0" class="tag-content">
           <h6 style="margin-bottom: 5px;">TAGS</h6>
           <ul class="tags">
-            <li ng-repeat="tag in allTags" ng-if="post.tags[tag.$id]">{{tag.name}}</li>   
+            <li class="tags-ovals" ng-repeat="tag in allTags" ng-if="post.tags[tag.$id]">{{tag.name}}</li>   
           </ul>
         </div>
       </div>

@@ -2,7 +2,6 @@ angular.module('SistersCtrls')
 
 
 .controller('NavCtrl', ['$scope','$timeout','$log','$uibModal','$http','Auth','$state','$sessionStorage', function($scope, $timeout,$log, $uibModal, $http, Auth, $state, $sessionStorage){
-  console.log("nav loaded")
   // $scope.sessionStorage = $sessionStorage;
   // if (!$scope.sessionStorage.hash){
   //   $scope.sessionStorage.hash = Math.random().toString(36).slice(2);
@@ -24,7 +23,7 @@ angular.module('SistersCtrls')
   var w = window.innerWidth || document.documentElement.clientWidth || document.body.clientWidth;
   var h = window.innerHeight || document.documentElement.clientHeight || document.body.clientHeight;
   $scope.height = h;
-  console.log("height: ",$scope.height)
+
   var mobileBG = document.getElementById("mobile-background-div");
   if (w < 900){
   mobileBG.style.height = h + "px";

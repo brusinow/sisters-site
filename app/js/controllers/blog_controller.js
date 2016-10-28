@@ -53,14 +53,17 @@ angular.module('SistersCtrls')
   $scope.enable = true;
   // $scope.photos = Instagram.data;
   $scope.fullBlog = Blog;
-  console.log("All: ",Blog);
-  console.log("Archive: ",Archive);
+  var result = [];
   for (var i = 0; i < Archive.length; i++){
-    var thisArchive = Archive[i];
-    var key = thisArchive.$id;
-    console.log(key);
-  }
-  $scope.allPosts = Archive; 
+    var key = Archive[i].$id;
+    for (var j = 0; j < Blog.length; j++){
+      var blogKey = Blog[j].$id;
+      if (key === blogKey){
+        result.push(Blog[j]);
+      }
+    }
+  };
+  $scope.allPosts = result; 
   $scope.params = $stateParams;
 
 
@@ -101,21 +104,32 @@ angular.module('SistersCtrls')
    $scope.location = $location.$$path;
   $scope.allTags = AllTagsService();
   $scope.enable = true;
-  // $scope.photos = Instagram.data;
   $scope.tagName = TagsShow[0].name;
-  var allPosts = TagsShow[0].posts;
+  var thisTag = TagsShow[0].$id;
   var selectPosts = [];
-  var length = 0;
-  var i;
-  for (i in allPosts) {
-    if (allPosts.hasOwnProperty(i)) {
-        length++;
-        selectPosts.push(allPosts[i]);
+  for (var i = 0; i < Blog.length; i++){
+    var thisPostTags = Blog[i].tags;
+    if (thisPostTags[thisTag]){
+      selectPosts.push(Blog[i]);
     }
-  }
-  console.log("what is selectPosts? ",selectPosts);
-  console.log("what is length? ",length)
-  $scope.parseTitle = HelperService.titleToURL;
+  };
+
+
+
+
+
+
+
+  
+  // var length = 0;
+  // var i;
+  // for (i in allPosts) {
+  //   if (allPosts.hasOwnProperty(i)) {
+  //       length++;
+  //       selectPosts.push(allPosts[i]);
+  //   }
+  // }
+  // $scope.parseTitle = HelperService.titleToURL;
 
 
 
@@ -171,7 +185,6 @@ angular.module('SistersCtrls')
   $scope.parseTitle = HelperService.titleToURL;
   $scope.years = ArchiveService.years();
   $scope.years.$loaded().then(function(){
-    console.log("YEARS!!!", $scope.years); 
   })
 
   $scope.allTags = AllTagsService();

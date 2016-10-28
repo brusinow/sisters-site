@@ -1,6 +1,5 @@
   <div class="blog-post" ng-class="{'fade-in': loaded}">
   <button ng-if="firebaseUser.email" style="width: 100%; margin-bottom: 20px" class="button button-border-pink button-rounded button-large" ng-click="newBlogPost()">New Blog Post</button>
-   <button ng-if="firebaseUser.email" style="width: 100%; margin-bottom: 20px" class="button button-border-pink button-rounded button-large" ng-click="editTags()">Edit Tags</button>
   <div class="fancy"><span><i class="fa fa-instagram" aria-hidden="true"></i> RECENT INSTAGRAM</span></div>
 
   <div class="insta-gallery">
@@ -30,7 +29,8 @@
   <div class="fancy"><span>TAGS</span></div>
   <div class="tags">
     <ul>
-      <a ng-repeat="tag in allTags" ng-href="/blog/tags/{{tag.name}}"><li style="float: left;">{{tag.name}}</li></a>
+      <li style="float: left;" ng-repeat="tag in allTags"><a ng-href="/blog/tags/{{tag.name}}"><div class="tags-ovals">{{tag.name}}</div></a><span class="edit-tag-btn"><i class="fa fa-pencil-square-o" aria-hidden="true"></i></span></li>
+      <!--<a ng-repeat="tag in allTags" ng-href="/blog/tags/{{tag.name}}"><li style="float: left;">{{tag.name}} </li></a>-->
     </ul>
   </div>
   </div>

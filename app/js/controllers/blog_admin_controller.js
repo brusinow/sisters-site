@@ -129,7 +129,7 @@ angular.module('SistersCtrls')
   main.style.backgroundColor = 'rgba(0,0,0,0)';
   $scope.$emit('loadMainContainer', 'loaded');
   $scope.data = {};
-  $scope.changeImage = false;
+  // $scope.changeImage = false;
 
   
   $scope.postArray = thisPost;
@@ -144,6 +144,11 @@ angular.module('SistersCtrls')
     console.log($scope.post.youtube);
     var youtubeId = $scope.post.youtube
     $scope.data.youtube = "https://www.youtube.com/watch?v="+ youtubeId;
+  }
+
+
+  $scope.changeImg = function(){
+    $scope.post.img = null;
   }
 
 
@@ -163,9 +168,9 @@ angular.module('SistersCtrls')
 });
   }
 
-  $scope.toggleImage = function(){
-    $scope.changeImage = !$scope.changeImage;
-  }
+  // $scope.toggleImage = function(){
+  //   $scope.changeImage = !$scope.changeImage;
+  // }
 
   $scope.resetMedia = function(){
     $scope.data.youtube = "";

@@ -5,15 +5,15 @@
   <label for="blogTitle">Post Title</label>
   <input type="text" class="u-full-width" placeholder="This is a post title..." ng-model="post.title" id="blogTitle"/>
   <div class="row">
-    <div class="two columns">
+    <div style="float:left;">
         <label for="singleSelect"> Media Type: </label>
-      <select name="singleSelect" ng-model="data.mediaSelect" ng-init="data.mediaSelect='image'" ng-change="resetMedia()">
+          <select name="singleSelect" ng-model="data.mediaSelect" ng-init="data.mediaSelect='image'" ng-change="resetMedia()">
         <option value="image">Image</option>
         <option value="youtube">YouTube URL</option>
         <!-- <option value="soundcloud">Soundcloud URL</option> -->
       </select>
     </div>
-    <div class="ten columns">
+    <div style="float: left;">
        <div ng-if="data.mediaSelect === 'image'" id="image-choice">
         <label for="imageUpload"> Image: </label>
         <input type="file" name="imageUpload" fileread="data.image"/>
@@ -22,16 +22,18 @@
       <label for="youtube">YouTube Link</label>
         <input class="u-full-width" type="text" name="youtube" placeholder="Enter YouTube link..." ng-model="data.youtube"/>
       </div>
-      <div ng-if="data.image" id="photo-preview">
+    </div> 
+    <div ng-if="data.image" id="photo-preview">
         <img ng-src="{{data.image}}"/>
       </div>
-    </div> <br>
+    
+    <br>
     </div>
      <label for="blogBody">Post Body</label>
      <text-angular ta-toolbar="[['h1','h2','h3'],['bold','italics','underline'],['insertLink', 'wordcount', 'charcount']]" ng-model="post.postBody"></text-angular>
   <div class="tag-input">
   <input type="text" placeholder="new tag name" ng-model="data.newTag"/>
-  <button class="button button-flat-blue button-tiny add-tag-btn" ng-click="addTag(data.newTag)">Add Tag</button>
+  <button class="button button-flat-pink button-tiny add-tag-btn" ng-click="addTag(data.newTag)"><i class="fa fa-plus" aria-hidden="true"></i></button>
   </div>
   <br>
      <div class="checkbox-group">
@@ -41,7 +43,7 @@
    </div>
   <!-- <button class="tag-delete-btn" ng-click="deleteTag(tag)"><i class="fa fa-trash" aria-hidden="true"></i></button> -->
   <div class="text-center">
-  <input class="no-margin button-flat-blue button-jumbo" ng-click="submit()" type='submit'>
+  <input class="no-margin button-flat-pink button-large" ng-click="submit()" type='submit'>
   </div>
 </form>
 </div>

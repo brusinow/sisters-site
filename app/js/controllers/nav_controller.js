@@ -60,7 +60,7 @@ angular.module('SistersCtrls')
     }
    
     };
-  },11000)
+  },6000)
     
 
   $scope.closePopup = function(){

@@ -1,5 +1,5 @@
 <div class="row">
-<div class="eight columns offset-by-two blog-admin-outer">
+<div style="position: relative;" class="eight columns offset-by-two blog-admin-outer">
 <form style="margin-bottom: 0;" class="new-blog-form">
   <label for="blogTitle">Post Title</label>
   <input type="text" class="u-full-width" placeholder="This is a post title..." ng-model="post.postTitle" id="blogTitle"/>
@@ -41,6 +41,7 @@
   <input class="no-margin button-flat-pink button-jumbo" ng-click="submit()" type='submit'>
   </div>
 </form>
+<button class="delete-post-btn"><i class="fa fa-trash" aria-hidden="true"></i></button>
 </div>
 </div>
 <!-- <label ng-repeat="role in roles">

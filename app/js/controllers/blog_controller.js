@@ -173,4 +173,8 @@ angular.module('SistersCtrls')
     $state.go("blog-new");
   }
 
+  $scope.editTags = function(){
+    $state.go("blog-tags-edit");
+  }
+
 }]);

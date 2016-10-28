@@ -81,8 +81,13 @@ angular.module('SistersCtrls')
   }
 }])
 
+.controller('EditBlogTagsCtrl', ['$scope', '$state', '$timeout', '$stateParams','AllTags','HelperService', function($scope, $state, $timeout, $stateParams, AllTags, HelperService){
+  var main = document.getElementById("main");
+  main.style.backgroundColor = '';
+  $scope.$emit('loadMainContainer', 'loaded');
+  $scope.tags = AllTags;
 
-
+}])
 
 
 .controller('EditBlogCtrl', ['$scope', '$state', '$timeout', '$stateParams','SendDataService','AllTags','thisPost','HelperService','SubmitImage', function($scope, $state, $timeout, $stateParams, SendDataService, AllTags, thisPost, HelperService, SubmitImage){

@@ -103,6 +103,17 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
       }
     }
   })
+  .state('blog-tags-edit', {
+    url: '/blog/editTags/',
+    templateUrl: '/views/blog/editTags.html',
+    controller: 'EditBlogTagsCtrl',
+    resolve: {
+      "currentAuth": authRequire,
+      "AllTags": function(AllTagsService){
+        return AllTagsService().$loaded();
+      }
+    }
+  })
 
   .state('blog.main', {
     url: '/blog',

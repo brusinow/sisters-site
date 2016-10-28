@@ -1,5 +1,6 @@
   <div class="blog-post" ng-class="{'fade-in': loaded}">
   <button ng-if="firebaseUser.email" style="width: 100%; margin-bottom: 20px" class="button button-border-pink button-rounded button-large" ng-click="newBlogPost()">New Blog Post</button>
+   <button ng-if="firebaseUser.email" style="width: 100%; margin-bottom: 20px" class="button button-border-pink button-rounded button-large" ng-click="editTags()">Edit Tags</button>
   <div class="fancy"><span><i class="fa fa-instagram" aria-hidden="true"></i> RECENT INSTAGRAM</span></div>
 
   <div class="insta-gallery">

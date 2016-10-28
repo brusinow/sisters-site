@@ -4,14 +4,14 @@
   .exp-cvc-line.cvc-right { margin: 0 0 0 2%; }
 
 @media (min-width: 400px) {
-  .container {
+  /*.container {
     width: 85%;
-    padding: 0; }
+    padding: 0; }*/
 }
 
 @media (min-width: 550px) {
-  .container {
-    width: 80%; }
+  /*.container {
+    width: 80%; }*/
 /*  .column,
   .columns {
     margin-left: 4%; }

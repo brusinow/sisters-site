@@ -12,7 +12,7 @@ angular.module('SistersCtrls')
     if (firebaseUser) {
       $scope.logged = true;
       $state.go('home');
-      console.log("Signed in as:", firebaseUser.uid);
+
     } else {
       console.log("Not logged in.");
     }
@@ -27,8 +27,6 @@ angular.module('SistersCtrls')
     $scope.submitted = true;
     $scope.firebaseUser = null;
     Auth.$signInWithEmailAndPassword($scope.user.email, $scope.user.password).then(function(firebaseUser) {
-      
-      console.log("Signed in as:", firebaseUser.uid);
       $scope.firebaseUser = firebaseUser;
     }).catch(function(error) {
       console.error("Authentication failed:", error);

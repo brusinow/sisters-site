@@ -1,7 +1,7 @@
 angular.module('SistersCtrls')
 
 
-.controller('NavCtrl', ['$scope','$timeout','$log','$uibModal','$http','Auth','$state','$sessionStorage', function($scope, $timeout,$log, $uibModal, $http, Auth, $state, $sessionStorage){
+.controller('NavCtrl', ['$scope','$timeout','$log','$uibModal','$http','Auth','$state','$sessionStorage','$location', function($scope, $timeout,$log, $uibModal, $http, Auth, $state, $sessionStorage,$location){
   // $scope.sessionStorage = $sessionStorage;
   // if (!$scope.sessionStorage.hash){
   //   $scope.sessionStorage.hash = Math.random().toString(36).slice(2);
@@ -9,8 +9,6 @@ angular.module('SistersCtrls')
   //   console.log("already a session hash");
   // }
   // console.log("What is session storage? ",$scope.sessionStorage);
-
-
   $scope.auth = Auth;
   $scope.auth.$onAuthStateChanged(function(firebaseUser) {
     $scope.firebaseUser = firebaseUser;
@@ -44,20 +42,21 @@ angular.module('SistersCtrls')
 
   $timeout(function(){
     // OVERLAY CREATION
-    if (w >= 678){
-    $scope.isPopup = true;
-    if (!document.getElementById("overlayMail")){
-    var div = document.createElement("div");
-    div.id = "overlayMail";
-    div.className = "overlay-start";
-    var body = document.body;
-    var popUp = document.querySelector("#pop-up");
-    div.style.height = body.scrollHeight + "px";
-    popUp.appendChild(div);
-    var overlay = document.querySelector("#overlayMail");
-    overlay.classList.add("active");
-    }
-   
+    if ($scope.firebaseUser === null && $location.$$path !== "/login"){
+      if (w >= 678){
+      $scope.isPopup = true;
+        if (!document.getElementById("overlayMail")){
+          var div = document.createElement("div");
+          div.id = "overlayMail";
+          div.className = "overlay-start";
+          var body = document.body;
+          var popUp = document.querySelector("#pop-up");
+          div.style.height = body.scrollHeight + "px";
+          popUp.appendChild(div);
+          var overlay = document.querySelector("#overlayMail");
+          overlay.classList.add("active");
+        }
+      }
     };
   },6000)
     

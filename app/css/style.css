@@ -15,6 +15,10 @@
     src: url('/fonts/kredit-back.ttf');
 }
 
+.btn:focus, .btn:active {
+  outline: none;
+}
+
 #spinnerLoad {
   z-index: 9999;
 }
@@ -820,13 +824,18 @@ button.delete-post-btn:hover {
 }
 
 .edit-tag-btn {
-    font-size: 2em;
-    line-height: 10px;
-    /* margin-top: 4px; */
-    position: relative;
-    top: 9px;
-    padding-right: 12px;
-    color: #d038af;
+  cursor: pointer;
+  font-size: 2em;
+  line-height: 10px;
+  /* margin-top: 4px; */
+  position: relative;
+  top: 8px;
+  padding-right: 12px;
+  color: #d038af;
+}
+
+#edit-tag-modal-container {
+  padding: 30px;
 }
 
 
@@ -942,7 +951,18 @@ button.delete-post-btn:hover {
 
 }
 
-.recent-posts-list li, .archive-list-links a {
+.recent-posts-list li {
+  font-family: 'Oswald', sans-serif;
+  font-weight: 300;
+  font-size: 1.3em;
+  overflow-wrap: normal;
+  line-height: 1.3;
+  list-style: none;
+  margin-bottom: 4px;
+}
+
+.archive-list-links a {
+  text-align: left;
   font-family: 'Oswald', sans-serif;
   font-weight: 300;
   font-size: 1.1em;
@@ -955,22 +975,25 @@ button.delete-post-btn:hover {
 
 
 .archive-container {
-  width: 60%;
+  width: 100%;
   margin: 0 auto;
 }
 
 .archive-year {
+    display: inline-block;
     color: #5e504f;
     font-weight: 600;
-    position: absolute;
-    top: 14px;
-    left: 0;
-    font-size: 1.1em;
+    font-size: 1.2em;
+    margin-top: 5px;
+    width: 50%;
+    text-align: right;
 }
 
 .month-list {
-  position:relative;
-  left: 15px;
+    text-align: left;
+    margin-left: 10px;
+    margin-top: 0;
+    display: inline-block;
 }
 
 
@@ -1722,6 +1745,19 @@ display: none;
 
 
 @media (min-width: 766px){
+.recent-posts-list li {
+  font-size: 1em;
+}
+
+
+#main-nav #logo {
+  margin-top: 8px;
+}
+
+.right-nav-social-width {
+    width: 23.6666666667% !important;
+}
+
   .cart-summary {
     top: 0px;
 }
@@ -1919,7 +1955,13 @@ display: none;
 
 
 @media (min-width: 1134px){
-  
+  .recent-posts-list li {
+  font-size: 1.3em;
+}
+
+  .right-nav-social-width {
+    width: 30.6666666667% !important;
+}
 
   .container {
     width: 92%;

@@ -179,7 +179,7 @@ angular.module('SistersCtrls')
 }])  
 
 
-.controller('BlogSidebarCtrl', ['$scope', '$state','$stateParams','$timeout','ArchiveService','AllTagsService','BlogPosts','HelperService', function($scope, $state, $stateParams,$timeout, ArchiveService, AllTagsService, BlogPosts, HelperService){
+.controller('BlogSidebarCtrl', ['$scope', '$state','$stateParams','$timeout','ArchiveService','AllTagsService','BlogPosts','HelperService','$uibModal','$log', function($scope, $state, $stateParams,$timeout, ArchiveService, AllTagsService, BlogPosts, HelperService, $uibModal, $log){
  
   $scope.recentPosts = BlogPosts();
   $scope.parseTitle = HelperService.titleToURL;
@@ -193,8 +193,33 @@ angular.module('SistersCtrls')
     $state.go("blog-new");
   }
 
-  $scope.editTags = function(){
-    $state.go("blog-tags-edit");
+  $scope.editTag = function(tag){
+    console.log("current tag is ",tag);
+    // $state.go("blog-tags-edit");
   }
+
+    $scope.editTag = function(tag) {
+    // console.log(whichPage);
+    // console.log(index);
+    var modalInstance = $uibModal.open({
+      animation: true,
+      backdrop: true,
+      templateUrl: '/views/blog/editTagsModal.html',
+      controller: 'EditBlogTagsCtrl',
+      size: 'lg',
+      resolve: {
+        "Blog": function(BlogPosts){
+        return BlogPosts().$loaded();
+        },   
+        tag: tag
+      }
+    });
+
+    modalInstance.result.then(function () {
+     console.log("submitted modal");
+    }, function () {
+      $log.info('Modal dismissed at: ' + new Date());
+    });
+  }; 
 
 }]);

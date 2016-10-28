@@ -78,7 +78,7 @@ angular.module('SistersServices', ['ngResource'])
     var currentDay = moment().unix();
     // console.log("current day: ",currentDay);
     return function(){
-    var showsRef = firebase.database().ref('shows').orderByChild("unix").startAt(currentDay);
+    var showsRef = firebase.database().ref('shows').orderByChild("unix");
     // console.log("I'm in GetShows");
     return $firebaseArray(showsRef);
   }
@@ -182,6 +182,8 @@ angular.module('SistersServices', ['ngResource'])
 
 
 
+
+
 .factory('HelperService', ["moment","$q", function(moment, $q) {
   return {
     parseYouTube: function(url){
@@ -239,6 +241,10 @@ angular.module('SistersServices', ['ngResource'])
       } else {
         return 0;
       }
+    },
+    getToday: function(){
+      var currentDay = moment().unix();
+      return currentDay;
     },
     titleToURL: function(title){
 

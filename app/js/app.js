@@ -357,19 +357,24 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
   }
 }])
 
-.filter('tooOld', function() {
+.filter('tooOld', ['moment', function(moment) {
   return function(events) {
+    console.log("what is events? ",events);
     var currentDay = moment().unix()
+    console.log("current day is: ",currentDay);
     var filtered = [];
     angular.forEach(events, function(event) {
-      var thisEvent = event.unixDate/1000;
-      if ((currentDay - thisEvent) <= 86400) {
+      var thisEvent = event.unix;
+      console.log("this event is: ",thisEvent);
+      if (currentDay < thisEvent) {
         filtered.push(event);
       }
     });
+    console.log("what is filtered? ",filtered);
     return filtered;
   };
-})
+}])
+
 
 .filter('DeliveryEstDate', ['moment', function(moment){
   return function(val){

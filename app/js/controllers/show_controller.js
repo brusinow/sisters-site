@@ -1,8 +1,12 @@
 angular.module('SistersCtrls')
 
-.controller('ShowsCtrl', ['$scope', '$state','currentAuth','$uibModal','$log','$firebaseArray','moment','Auth','getShows', function($scope, $state, currentAuth, $uibModal,$log, $firebaseArray, moment, Auth, getShows){
-  $scope.shows = getShows;
-  console.log(getShows);
+.controller('ShowsCtrl', ['$scope', '$state','currentAuth','$uibModal','$log','$firebaseArray','moment','Auth','GetShows', function($scope, $state, currentAuth, $uibModal,$log, $firebaseArray, moment, Auth, GetShows){
+  $scope.shows = GetShows();
+  $scope.shows.$loaded().then(function(){
+    $scope.loaded = true;
+    console.log($scope.shows);
+  })
+  
 
   $scope.auth = Auth;
   $scope.auth.$onAuthStateChanged(function(firebaseUser) {

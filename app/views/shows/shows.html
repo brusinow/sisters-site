@@ -1,4 +1,5 @@
-<div id="shows-container">
+<div ng-hide="loaded" class='uil-spin-css' style='-webkit-transform:scale(0.81)'><div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div></div>
+<div ng-show="loaded" id="shows-container">
 <!--   <h2 style="letter-spacing: .02em;" class="text-center">SHOW DATES</h2> -->
   <div id="video-box" class="u-max-full-width">
     <video id="show-vid-large" class="show-video" autoplay loop>
@@ -35,7 +36,7 @@
     </tr>
   </tbody>
 </table>
-<div ng-if="shows.length === 0">
+<div ng-if="shows.length === 0 && loaded">
   <h2 class="text-center">There are currently no shows scheduled.</h2>
 </div>
 </div>

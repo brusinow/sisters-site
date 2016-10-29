@@ -42,9 +42,12 @@ angular.module('SistersCtrls')
 
   $timeout(function(){
     // OVERLAY CREATION
-    if ($scope.firebaseUser === null && $location.$$path !== "/login"){
+   
       if (w >= 678){
-      $scope.isPopup = true;
+        console.log("width is greater than 678");
+      if ($scope.firebaseUser === null && $location.$$path !== "/login"){
+        console.log("entering popup");
+        $scope.isPopup = true;
         if (!document.getElementById("overlayMail")){
           var div = document.createElement("div");
           div.id = "overlayMail";

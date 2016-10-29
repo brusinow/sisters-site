@@ -193,11 +193,6 @@ angular.module('SistersCtrls')
     $state.go("blog-new");
   }
 
-  $scope.editTag = function(tag){
-    console.log("current tag is ",tag);
-    // $state.go("blog-tags-edit");
-  }
-
     $scope.editTag = function(tag) {
     // console.log(whichPage);
     // console.log(index);

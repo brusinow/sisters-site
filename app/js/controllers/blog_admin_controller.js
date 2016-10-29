@@ -84,72 +84,42 @@ angular.module('SistersCtrls')
   }
 }])
 
-.controller('EditBlogTagsCtrl', function ($scope, $uibModalInstance, tag, Blog) {
-  console.log("what is Blog?? ",Blog);
-  $scope.prompted = false;
-  $scope.tag = angular.copy(tag);
-  console.log(tag);
-  $scope.ok = function (tag) {
-    var newName = {
-      name: $scope.tag.name
-    };
-    firebase.database().ref('/tags/'+$scope.tag.$id).update(newName);
-    $uibModalInstance.close();
-  };
-
-  $scope.cancel = function () {
-    $uibModalInstance.dismiss('cancel');
-  };
-
-  $scope.deletePrompt = function(){
-    $scope.prompted = true;
-  }
-
-  $scope.delete = function(response){
-    if (response === "no"){
-      $scope.prompted = false;
-    } else if (response === "yes"){
-      firebase.database().ref('/tags/'+$scope.tag.$id).remove();
-      for (var i = 0; i < Blog.length; i++){
-        var thisPostTags = Blog[i].tags;
-        if (thisPostTags[$scope.tag.$id] === true){
-          thisPostTags[$scope.tag.$id] = null;
-          firebase.database().ref('/blog_posts/'+Blog[i].$id+"/tags").update(thisPostTags);
-        }
-      };
-      $uibModalInstance.close();
-    } 
-  }
-
-})
-
-
-.controller('EditBlogCtrl', ['$scope', '$state', '$timeout', '$stateParams','SendDataService','AllTags','thisPost','HelperService','SubmitImage', function($scope, $state, $timeout, $stateParams, SendDataService, AllTags, thisPost, HelperService, SubmitImage){
+.controller('EditBlogCtrl', ['$scope', '$state', '$timeout', '$stateParams','SendDataService','AllTags','thisPost','HelperService','SubmitImage','$uibModal','$log','BlogPosts', function($scope, $state, $timeout, $stateParams, SendDataService, AllTags, thisPost, HelperService, SubmitImage, $uibModal, $log, BlogPosts){
   var main = document.getElementById("main");
   main.style.backgroundColor = 'rgba(0,0,0,0)';
   $scope.$emit('loadMainContainer', 'loaded');
   $scope.data = {};
-  // $scope.changeImage = false;
-
-  
   $scope.postArray = thisPost;
   $scope.post = thisPost[0];
   $scope.originalTags = angular.copy($scope.post.tags);
-  console.log($scope.post);
-  console.log("what are original tags? ",$scope.originalTags);
   $scope.tags = AllTags;
 
-  console.log("what are all tags? ",$scope.tags)
   if ($scope.post.youtube){
     console.log($scope.post.youtube);
     var youtubeId = $scope.post.youtube
     $scope.data.youtube = "https://www.youtube.com/watch?v="+ youtubeId;
   }
 
+  
 
-  $scope.changeImg = function(){
-    $scope.post.img = null;
-  }
+  $scope.confirmBlogDelete = function(post) {
+    var modalInstance = $uibModal.open({
+      animation: true,
+      backdrop: true,
+      templateUrl: '/views/blog/deleteBlogConfirmModal.html',
+      controller: 'DeleteBlogConfirmCtrl',
+      size: 'sm',
+      resolve: {
+        "Post": post
+      }
+    });
+
+    modalInstance.result.then(function () {
+     console.log("submitted modal");
+    }, function () {
+      $log.info('Modal dismissed at: ' + new Date());
+    });
+  }; 
 
 
   $scope.addTag = function(){
@@ -168,9 +138,6 @@ angular.module('SistersCtrls')
 });
   }
 
-  // $scope.toggleImage = function(){
-  //   $scope.changeImage = !$scope.changeImage;
-  // }
 
   $scope.resetMedia = function(){
     $scope.data.youtube = "";
@@ -210,22 +177,14 @@ angular.module('SistersCtrls')
       tags: newTags,
       timestamp: post.timestamp   
     };
-    console.log("what is thisPost? ",thisPost);
-
     $scope.postArray.$save(post).then(function(ref) {
       var key = ref.key;
       firebase.database().ref('archives/' + year + '/' + month + '/' + key).remove();
       firebase.database().ref('archives/' + year + '/' + month + '/' + key).set(thisPost);
-      console.log("TAGS BEFORE CHANGES: ",$scope.originalTags);
-      console.log("TAGS AFTER CHANGES: ",thisPost.tags);
       for (prop in $scope.originalTags){
         if ($scope.originalTags[prop] === true){
-          console.log("at ",prop);
-          console.log("key is ",key);
           var url = 'tags/' + prop + '/posts/' + key;
-          console.log("what is url? ",url)
           firebase.database().ref(url).remove().then(function(message) {
-            console.log("Remove succeeded.",message);
           })
           .catch(function(error) {
             console.log("Remove failed: " + error.message)
@@ -238,7 +197,6 @@ angular.module('SistersCtrls')
        for (prop in thisPost.tags){
         if (thisPost.tags[prop] === true){
           firebase.database().ref('tags/' + prop + '/posts/' + key).set(thisPost);
-          console.log("should be added");
         } else {
           console.log(prop + " not a tag for new edit!");
         }
@@ -247,68 +205,64 @@ angular.module('SistersCtrls')
 
       $state.go('blog.main');
     });
-  }
-  
-
-  // $scope.updatePost = function(post){
-  //   var year = moment(post.timestamp).format("YYYY");
-  //   var month = moment(post.timestamp).format("MMMM");
-  //   if ($scope.data.mediaSelect === "youtube"){
-  //     $scope.post.youtube = HelperService.parseYouTube($scope.data.youtube);
-  //   } else if ($scope.data.mediaSelect === "image"){
-
-  //   }
-  //   var newTags = {};
-  //   for (var prop in post.tags){
-  //     newTags[prop] = post.tags[prop];
-  //   }
-  //   post.tags = newTags;
-  //   console.log(post);
-  //   var thisPost = {
-  //     postTitle: post.postTitle,
-  //     postBody: post.postBody,
-  //     youtube: post.youtube ? post.youtube : null,
-  //     img: post.img ? post.img : null,
-  //     tags: newTags,
-  //     timestamp: post.timestamp   
-  //   };
-    
-  //   $scope.postArray.$save(post).then(function(ref) {
-  //     var key = ref.key;
-  //     firebase.database().ref('archives/' + year + '/' + month + '/' + key).remove();
-  //     firebase.database().ref('archives/' + year + '/' + month + '/' + key).set(thisPost);
-  //     console.log("TAGS BEFORE CHANGES: ",$scope.originalTags);
-  //     console.log("TAGS AFTER CHANGES: ",thisPost.tags);
-  //     for (prop in $scope.originalTags){
-  //       if ($scope.originalTags[prop] === true){
-  //         console.log("at ",prop);
-  //         console.log("key is ",key);
-  //         var url = 'tags/' + prop + '/posts/' + key;
-  //         console.log("what is url? ",url)
-  //         firebase.database().ref(url).remove().then(function(message) {
-  //           console.log("Remove succeeded.",message);
-  //         })
-  //           .catch(function(error) {
-  //           console.log("Remove failed: " + error.message)
-  //         }); 
-  //       } else {
-  //         console.log(prop + " not a tag for old edit!")
-  //       }
-  //     }
-  //     $timeout(function(){
-  //      for (prop in thisPost.tags){
-  //       if (thisPost.tags[prop] === true){
-  //         firebase.database().ref('tags/' + prop + '/posts/' + key).set(thisPost);
-  //         console.log("should be added");
-  //         } else {
-  //           console.log(prop + " not a tag for new edit!");
-  //         }
-  //     }
-  //     },100)
-     
-  //     $state.go('blog');
-  //   });
-  // }
-
-
+  } 
 }])  
+
+
+.controller('EditBlogTagsCtrl', function ($scope, $uibModalInstance, tag, Blog) {
+  $scope.prompted = false;
+  $scope.tag = angular.copy(tag);
+  console.log(tag);
+  $scope.ok = function (tag) {
+    var newName = {
+      name: $scope.tag.name
+    };
+    firebase.database().ref('/tags/'+$scope.tag.$id).update(newName);
+    $uibModalInstance.close();
+  };
+
+  $scope.cancel = function () {
+    $uibModalInstance.dismiss('cancel');
+  };
+
+  $scope.deletePrompt = function(){
+    $scope.prompted = true;
+  }
+
+  $scope.delete = function(response){
+    if (response === "no"){
+      $scope.prompted = false;
+    } else if (response === "yes"){
+      firebase.database().ref('/tags/'+$scope.tag.$id).remove();
+      for (var i = 0; i < Blog.length; i++){
+        var thisPostTags = Blog[i].tags;
+        if (thisPostTags[$scope.tag.$id] === true){
+          thisPostTags[$scope.tag.$id] = null;
+          firebase.database().ref('/blog_posts/'+Blog[i].$id+"/tags").update(thisPostTags);
+        }
+      };
+      $uibModalInstance.close();
+    } 
+  }
+
+})
+
+
+.controller('DeleteBlogConfirmCtrl', function ($scope, $uibModalInstance, Post, moment, $location) {
+console.log(Post);
+
+$scope.yes = function(){
+  var year = moment(Post.timestamp).format("YYYY");
+  var month = moment(Post.timestamp).format("MMMM");
+  console.log(month + " of "+year);
+  firebase.database().ref('blog_posts/'+Post.$id).remove();
+  firebase.database().ref('archives/' + year + '/' + month + '/' + Post.$id).remove();
+  $uibModalInstance.close();
+  $location.url('/blog');
+}
+
+$scope.no = function(){
+   $uibModalInstance.dismiss('cancel');
+}
+  
+})

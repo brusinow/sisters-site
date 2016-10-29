@@ -17,7 +17,7 @@
         <label for="imageUpload"> Image: </label>
         <div name="imageUpload">
           <input ng-show="!post.img && data.mediaSelect === 'image'" type="file" fileread="data.image"/>
-          <button style="display: inline-block; margin-top:1px" class="button button-flat-pink button-rounded" ng-hide="!post.img" ng-click="changeImg()">Change image?</button>
+          <button style="display: inline-block; margin-top:1px" class="button button-flat-pink button-rounded" ng-hide="!post.img" ng-click="post.img = null">Change image?</button>
         </div>
       </div>
       
@@ -48,7 +48,7 @@
   <div class="text-center">
   <a ng-href="/blog" class="button-large button-flat-blue cancel-blog-post">Cancel</a>
   <input class="no-margin button-flat-pink button-large" ng-click="submit()" type='submit'>
-  <a class="btn btn-danger btn-circle"><i class="fa fa-trash" aria-hidden="true"></i></a>
+  <button ng-click="confirmBlogDelete(post)" class="btn btn-danger btn-circle"><i class="fa fa-trash" aria-hidden="true"></i></button>
   </div>
 </form>
 

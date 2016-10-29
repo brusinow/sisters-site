@@ -1268,14 +1268,14 @@ display: none;
 }
 
 #mobile-nav ul {
-  position: absolute;
-  z-index: 999;
-  right: 0px;
-  list-style: none;
-  width: 120px;
-  padding: 5px 24px 5px 5px;
-  background-color: #e79bd7;
-  z-index: 899;
+    position: absolute;
+    z-index: 999;
+    right: 0px;
+    list-style: none;
+    width: 120px;
+    padding: 10px 24px 10px 5px;
+    background-color: #e79bd7;
+    z-index: 499;
 }
 
 #mobile-nav ul li {

@@ -55,8 +55,8 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 #main-video-container {
-  width: 90%;
-  margin: 0 auto;
+    width: 100%;
+    margin: 0 auto;
 }
 
 .main-page-header {
@@ -135,7 +135,7 @@ select {
   outline: none;
 }
 
-button.delete-post-btn {
+.delete-post-btn {
     position: absolute;
     bottom: 10px;
     right: 20px;
@@ -146,11 +146,13 @@ button.delete-post-btn {
     color: #FF1919;
     border: 2px solid #FF1919;
     border-radius: 4px;
+    outline: none;
 }
 
-button.delete-post-btn:hover {
+.delete-post-btn:hover {
     color: #ff7575;
     border: 2px solid #ff7575;
+    outline: none;
 }
 
 /*.spinner {
@@ -890,9 +892,10 @@ button.delete-post-btn:hover {
 }
 
 .checkbox-group {
-  display: block;
-  width: 100%;
-  min-height: 50px;
+    display: block;
+    width: 100%;
+    min-height: 50px;
+    margin-bottom: 15px;
 }
 
 .checkbox-group label {
@@ -904,6 +907,12 @@ button.delete-post-btn:hover {
 
 .checkbox-group input {
   margin-right: 3px;
+}
+
+.cancel-blog-post {
+    display: inline-block;
+    height: 40.4px;
+    line-height: 40.4px;
 }
 
 .image-panel img {
@@ -1272,7 +1281,7 @@ display: none;
     z-index: 999;
     right: 0px;
     list-style: none;
-    width: 120px;
+    width: 105px;
     padding: 10px 24px 10px 5px;
     background-color: #e79bd7;
     z-index: 499;
@@ -1291,7 +1300,8 @@ display: none;
     color: white;
     text-transform: uppercase;
     text-decoration: none;
-    letter-spacing: .03em;
+    letter-spacing: .02em;
+    font-weight: 300;
 }
 
 .shopping-cart {
@@ -1574,12 +1584,12 @@ display: none;
 
 
 
-  .nav-form{
+.nav-form {
     display: block;
     width: 100%;
-    height: 100px;
+    height: 85px;
     margin: 0 auto 10px auto;
-  }
+}
 
 .nav-form input {
     width: 90%;
@@ -1760,6 +1770,11 @@ display: none;
 
 
 @media (min-width: 766px){
+#main-video-container {
+  width: 90%;
+  margin: 0 auto;
+}
+
 .recent-posts-list li {
   font-size: 1em;
 }

@@ -3,15 +3,15 @@
   <div class="fancy"><span><i class="fa fa-twitter" aria-hidden="true"></i> RECENT TWITTER</span></div>
   
   <div class="twitter-container">
-    <div style="margin-bottom: 5px;">
-      <span class="twitter-user">{{twitterUser}}</span> <span class="twitter-header">@{{twitterHandle}} · {{tweetDate | timeAgo}}</span>
+    <div class="twitter-user-bar">
+      <a href="https://twitter.com/sisterstheband" target="_blank"><span class="twitter-user">{{twitterUser}}</span> <span class="twitter-header">@{{twitterHandle}} · {{tweetDate | timeAgo}}</span></a>
     </div>
     <div class="twitter-text" data-ng-bind-html="tweet"></div>
     <div class="twitter-interaction-bar">
       <ul>
-        <li><i class="fa fa-reply" aria-hidden="true"></i></li>
-        <li>{{retweets}} <i class="fa fa-retweet" aria-hidden="true"></i></li>
-        <li>{{favorites}} <i class="fa fa-heart" aria-hidden="true"></i></li>
+        <li><a ng-href="https://twitter.com/intent/retweet?tweet_id={{tweetId}}" target="_blank"><i class="fa fa-reply" aria-hidden="true"></i></a></li>
+        <li><a ng-href="https://twitter.com/intent/retweet?tweet_id={{tweetId}}" target="_blank">{{retweets}} <i class="fa fa-retweet" aria-hidden="true"></i></a></li>
+        <li><a ng-href="https://twitter.com/intent/like?tweet_id={{tweetId}}" target="_blank">{{favorites}} <i class="fa fa-heart" aria-hidden="true"></i></a></li>
       </ul>
     </div>
   </div>

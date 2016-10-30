@@ -936,7 +936,16 @@ select {
   color: #999;
 }
 
+.twitter-user-bar {
+   margin-bottom: 5px;
+}
+
+.twitter-user-bar a {
+  text-decoration: none; 
+}
+
 .twitter-user {
+  color: #1A0504;
   font-size: 1em !important;
   font-weight: 600 !important;
 }
@@ -957,6 +966,16 @@ select {
   margin: 0 7%;
   font-weight: 600;
   color: #5e504f;
+}
+
+.twitter-interaction-bar a, .twitter-interaction-bar a:visited, .twitter-interaction-bar a:focus, .twitter-interaction-bar a:active {
+  text-decoration: none;
+  color: #5e504f;
+}
+
+.twitter-interaction-bar a:hover {
+  text-decoration: none;
+  color: #ffa3eb;
 }
 
 .blog-panel {

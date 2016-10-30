@@ -32,9 +32,8 @@
   .exp-cvc-line.columns { width: 48%; }
 }
 
-@media (min-width: 769px) {
-  .container {
-    width: 80%; }
+@media (min-width: 980px) {
+  
 
   .columns.store-item:nth-child(odd){
     margin-left: 4%;

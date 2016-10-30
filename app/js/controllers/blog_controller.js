@@ -20,6 +20,7 @@ angular.module('SistersCtrls')
     $scope.tweetDate = data.allTweetData.created_at;
     $scope.twitterUser = data.allTweetData.user.name;
     $scope.twitterHandle = data.allTweetData.user.screen_name;
+    $scope.tweetId = data.allTweetData.id_str;
     $scope.tweet = data.tweetBody;
     $scope.favorites = data.favorites;
     $scope.retweets = data.retweets;

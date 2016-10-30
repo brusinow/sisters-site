@@ -39,6 +39,8 @@ angular.module('SistersCtrls')
 
 
 .controller('StoreShowCtrl', function($scope, $stateParams, $state, $http, $timeout, $location, $sessionStorage, oneProduct){
+  var main = document.getElementById("main");
+  main.style.backgroundColor = '';
   $scope.$emit('loadMainContainer', 'loaded');
 console.log("what is oneProduct? ",oneProduct);
 $scope.product = oneProduct;
@@ -109,6 +111,9 @@ $scope.changeActive = function(){
 
 
 .controller('StoreAddressCtrl', function($scope, $state, $window, $timeout, $http, $location, $localStorage, ngCart, $rootScope, CurrentOrderService){
+  var main = document.getElementById("main");
+  main.style.backgroundColor = 'rgba(247, 237, 245, 0)';
+
   $scope.$emit('loadMainContainer', 'loaded');
   $scope.$storage = $localStorage;
   console.log("what is shipping? ",ngCart.getShipping());
@@ -287,6 +292,8 @@ $scope.changeActive = function(){
 
 
 .controller('StorePaymentCtrl', function($scope, $state, $http, $timeout, $location, $localStorage, ngCart, $rootScope, currentOrder){
+  var main = document.getElementById("main");
+  main.style.backgroundColor = 'rgba(247, 237, 245, 0)';
   $scope.$emit('loadMainContainer', 'loaded');
   $rootScope.path = $location.$$path;
   $scope.$storage = $localStorage;
@@ -375,6 +382,8 @@ $scope.changeActive = function(){
 
 
 .controller('StoreConfirmCtrl', function($scope, $state, $http, $timeout, $location, $localStorage, ngCart, $rootScope){
+var main = document.getElementById("main");
+  main.style.backgroundColor = 'rgba(247, 237, 245, 0)';
 $scope.$emit('loadMainContainer', 'loaded');
 $scope.$storage = $localStorage;
 $scope.pathCount = parseInt($scope.$storage.pathCount); 

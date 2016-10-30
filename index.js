@@ -5,6 +5,11 @@ var bodyParser = require('body-parser');
 var path = require('path');
 var request = require('request');
 var stripe = require("stripe")(process.env.STRIPE_SECRET);
+var Twitter = require('twitter');
+var twitterText = require('twitter-text')
+var Entities = require('html-entities').AllHtmlEntities;
+ 
+
 // var shippo = require('shippo')('<PRIVATE_TOKEN>');
 
 var app = express();
@@ -14,6 +19,15 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(express.static(path.join(__dirname, 'app')));
 
 
+entities = new Entities();
+
+
+var client = new Twitter({
+  consumer_key: process.env.TWITTER_CONSUMER_KEY,
+  consumer_secret: process.env.TWITTER_CONSUMER_SECRET,
+  access_token_key: process.env.TWITTER_TOKEN,
+  access_token_secret: process.env.TWITTER_TOKEN_SECRET
+});
 
 
 app.use(session({
@@ -27,6 +41,22 @@ app.use(session({
 
 
 
+app.get('/twitter', function(req, res) {
+  client.get('statuses/user_timeline',{count: 1}, function(error, tweets, response) {
+  if(error) throw error;
+    var thisTweetText = entities.decode(tweets[0].text);
+    var retweetCount = tweets[0].retweet_count;
+    var favoriteCount = tweets[0].favorite_count;
+    var tweetHTML = twitterText.autoLink(twitterText.htmlEscape(thisTweetText),{"targetBlank": true});
+    var fullData = {
+      retweets: retweetCount,
+      favorites: favoriteCount,
+      tweetBody: tweetHTML,
+      allTweetData: tweets[0]
+    }
+    res.send(fullData);
+  });
+});
 
 
 app.get('/instagram', function(req, res) {
@@ -41,7 +71,6 @@ app.get('/instagram', function(req, res) {
 app.get("/taxRate", function(req, res) {
   console.log("What is req? ",req.query);
   var url = 'https://taxrates.api.avalara.com:443/postal?country='+req.query.country+'&postal='+req.query.postal+'&apikey='+process.env.TAX_KEY;
-  console.log("What is url? ",url);
    request(url, function (error, response, body) {
     if (!error && response.statusCode == 200) {
       res.send(body);
@@ -68,17 +97,13 @@ app.get("/stripe/allProducts", function(req, res){
 })
 
 app.post("/stripe/createOrder", function(req, res){
-  console.log("what is the order? ",req.query.order);
   var thisOrder = req.query.order;
   var parsedOrder = JSON.parse(thisOrder);
   stripe.orders.create(parsedOrder, function(err, order) {
     if (order){
-      console.log("session storage at order create? ",req.session);
-      console.log("order succeeded!! ",order);
       res.send(order);
     }
     if (err){
-      console.log("ERROR!! ",err);
       res.send(err);
     }
   });
@@ -104,12 +129,10 @@ app.get('/stripe/testtest', function(req, res) {
 
 
 app.post("/stripe/orderComplete", function(req, res){
-  console.log("ENTERING ROUTE!!!!!")
   stripe.orders.pay(req.query.orderId, {
   source: req.query.token 
   }, function(err, order) {
     if (order){
-      console.log("success!")
       res.send(order);
     }
     if (err){

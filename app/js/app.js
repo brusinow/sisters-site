@@ -66,12 +66,9 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
 
   .state('blog', {
     templateUrl: '/views/blog/blog.html',
-    controller: 'BlogCtrl',
+    controller: 'BlogMasterCtrl',
     resolve: {
       "currentAuth": authWait,
-      // "Instagram": ['InstagramFactory', function(InstagramFactory){
-      //   return InstagramFactory;
-      // }],
       "Blog": function(BlogPosts){
         return BlogPosts().$loaded();
       }      
@@ -392,6 +389,11 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
   }
 }])
 
+.filter('timeAgo', ['moment', function(){
+  return function(val){
+    return moment(val).fromNow();
+  }
+}])
 
 
 

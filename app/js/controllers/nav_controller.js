@@ -44,7 +44,6 @@ angular.module('SistersCtrls')
     // OVERLAY CREATION
    
       if (w >= 678){
-        console.log("width is greater than 678");
       if ($scope.firebaseUser === null && $location.$$path !== "/login"){
         console.log("entering popup");
         $scope.isPopup = true;

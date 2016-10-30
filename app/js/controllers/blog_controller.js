@@ -1,5 +1,44 @@
 angular.module('SistersCtrls')
 
+
+
+.controller('BlogMasterCtrl', ['$scope', '$state','$http','$timeout','$location','$stateParams','Auth','Blog','HelperService','InstagramFactory','AllTagsService','TwitterFactory', function($scope, $state, $http, $timeout, $location, $stateParams, Auth, Blog, HelperService, InstagramFactory, AllTagsService, TwitterFactory){
+  $scope.loadedInsta = false;
+  $scope.loadedTwitter = false;
+  $scope.$emit('loadMainContainer', 'loaded');
+ 
+  InstagramFactory.then(function(data){
+    $scope.photos = data.data;
+    $scope.loadedInsta = true;
+    if ($scope.loadedTwitter){
+      $scope.loaded = true;
+    }
+  })
+  TwitterFactory.then(function(data){
+   
+    console.log(data);
+    $scope.tweetDate = data.allTweetData.created_at;
+    $scope.twitterUser = data.allTweetData.user.name;
+    $scope.twitterHandle = data.allTweetData.user.screen_name;
+    $scope.tweet = data.tweetBody;
+    $scope.favorites = data.favorites;
+    $scope.retweets = data.retweets;
+    $scope.loadedTwitter = true;
+    if ($scope.loadedInsta){
+      $scope.loaded = true;
+    }
+  })
+  $scope.enable = true;
+  $scope.auth = Auth;
+  $scope.auth.$onAuthStateChanged(function(firebaseUser) {
+    $scope.firebaseUser = firebaseUser;
+
+  });
+}])
+
+
+
+
 .controller('BlogCtrl', ['$scope', '$state','$http','$timeout','$location','$stateParams','Auth','Blog','HelperService','InstagramFactory','AllTagsService', function($scope, $state, $http, $timeout, $location, $stateParams, Auth, Blog, HelperService, InstagramFactory, AllTagsService){
   var main = document.getElementById("main");
   main.style.backgroundColor = '';
@@ -19,11 +58,11 @@ angular.module('SistersCtrls')
   $scope.enable = true;
   $scope.parseTitle = HelperService.titleToURL;
 
-  $scope.auth = Auth;
-  $scope.auth.$onAuthStateChanged(function(firebaseUser) {
-    $scope.firebaseUser = firebaseUser;
+  // $scope.auth = Auth;
+  // $scope.auth.$onAuthStateChanged(function(firebaseUser) {
+  //   $scope.firebaseUser = firebaseUser;
 
-  });
+  // });
   $scope.allPosts = Blog;
   $scope.page = $stateParams.page || 0;
   $scope.pageUp = '/blog/' + (parseInt($scope.page) + 1);

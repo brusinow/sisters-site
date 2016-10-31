@@ -2,7 +2,6 @@ angular.module('SistersCtrls', ['SistersServices'])
 
 
 .controller('MainCtrl', ['$scope', '$state','$timeout','$http', function($scope, $state, $timeout,$http) {
-
 $scope.$on('loadMainContainer', function (event, data) {
     if (data === "loaded"){
       $scope.mainLoaded = true;
@@ -17,7 +16,8 @@ $scope.$on('loadMainContainer', function (event, data) {
 .controller('HomeCtrl', ['$scope', '$state','$timeout','$http','LoadedService', function($scope, $state, $timeout,$http,LoadedService) {
   var main = document.getElementById("main");
   main.style.backgroundColor = 'rgba(247, 237, 245, 0)';
-  
+  main.style.width = '';
+  main.style.padding = "";
   
   $scope.loaded = LoadedService.get();
   // console.log("what is loaded? ",$scope.loaded);
@@ -68,7 +68,9 @@ $scope.$on('loadMainContainer', function (event, data) {
 
 .controller('AboutCtrl', function($scope, $state){
  var main = document.getElementById("main");
-  main.style.backgroundColor = '';
+  main.style.backgroundColor = 'rgba(255, 255, 255, 1)';
+  main.style.padding = "0 0 40px 0";
+  main.style.width = '100%';
   $scope.$emit('loadMainContainer', 'loaded');
   $scope.parallaxBG = 'img/album.jpg';
 }); 

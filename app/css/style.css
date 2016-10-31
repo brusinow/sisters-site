@@ -135,8 +135,15 @@ select {
   outline: none;
 }
 
-.parallax-section {
+.bio-img {
+  width: 100%;
   height: 500px;
+}
+
+#bio-img-1 {
+  background: url("/img/bio/sisters-bubblegum.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
 }
 
 .delete-post-btn {
@@ -159,19 +166,19 @@ select {
     outline: none;
 }
 
-/*.spinner {
-  position: fixed;
-  z-index: 999;
-  height: 152px;
-  width: 152px;
-  background: url('/img/spin.svg') no-repeat;
-  overflow: show;
-  margin: auto;
-  top: 0;
-  left: 0;
-  bottom: 0;
-  right: 0;
-}*/
+.bio-image-right {
+    float: right;
+    width: 30%;
+    height: auto;
+    margin: 3rem 1rem 1rem 2.5rem;
+}
+
+.bio-image-right img {
+  height: 100%;
+  width: 100%;
+}
+
+
 @keyframes overlay-fadein {
     from {background-color: rgba(0,0,0,0);}
     to {background-color: rgba(0,0,0,.5)}
@@ -1227,7 +1234,7 @@ select {
 
 #main.show {
   opacity: 1;
-  transition: all 500ms ease-in-out;
+  transition: all 200ms ease-in-out;
 }
 
 

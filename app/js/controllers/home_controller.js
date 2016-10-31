@@ -67,5 +67,8 @@ $scope.$on('loadMainContainer', function (event, data) {
 }])
 
 .controller('AboutCtrl', function($scope, $state){
-
+ var main = document.getElementById("main");
+  main.style.backgroundColor = '';
+  $scope.$emit('loadMainContainer', 'loaded');
+  $scope.parallaxBG = 'img/album.jpg';
 }); 

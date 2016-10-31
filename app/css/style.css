@@ -135,6 +135,10 @@ select {
   outline: none;
 }
 
+.parallax-section {
+  height: 500px;
+}
+
 .delete-post-btn {
     position: absolute;
     bottom: 10px;

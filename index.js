@@ -42,7 +42,7 @@ app.use(session({
 
 
 app.get('/twitter', function(req, res) {
-  client.get('statuses/user_timeline',{count: 1}, function(error, tweets, response) {
+  client.get('statuses/user_timeline',{include_rts: false}, function(error, tweets, response) {
   if(error) throw error;
     var thisTweetText = entities.decode(tweets[0].text);
     var retweetCount = tweets[0].retweet_count;

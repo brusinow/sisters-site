@@ -34,11 +34,16 @@ angular.module('angular-parallax', [
     scope: {
       parallaxRatio: '@',
       parallaxVerticalOffset: '@',
+      parallaxStartPoint: '@'
     },
     link: function($scope, elem, attrs) {
       var setPosition = function () {
-        var calcValY = (elem.prop('offsetTop') - $window.pageYOffset) * ($scope.parallaxRatio ? $scope.parallaxRatio : 1.1) - ($scope.parallaxVerticalOffset || 0);
+        var offset = ($scope.parallaxVerticalOffset/100) * elem[0].offsetHeight; 
+        var calcValY = (elem.prop('offsetTop') - $window.pageYOffset) * ($scope.parallaxRatio ? $scope.parallaxRatio : 1.1) - (offset || 0);
         // horizontal positioning
+        if (calcValY >= $scope.parallaxStartPoint){
+          calcValY = $scope.parallaxStartPoint;
+        }
         elem.css('background-position', "50% " + calcValY + "px");
       };
 

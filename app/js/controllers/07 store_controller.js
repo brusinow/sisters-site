@@ -2,9 +2,10 @@ angular.module('SistersCtrls')
 
 
 .controller('StoreCtrl', function($scope, $state, $http, $timeout, $location, $sessionStorage, allProducts, ProductsService){
-     var main = document.getElementById("main");
-  main.style.backgroundColor = '';
-    
+    var main = document.getElementById("main");
+    main.style.backgroundColor = '';
+    main.style.width = '';
+    main.style.padding = '';
     $scope.loaded = false;
     $scope.products = allProducts;
     console.log("what are products? ",$scope.products);
@@ -116,7 +117,6 @@ $scope.changeActive = function(){
 
   $scope.$emit('loadMainContainer', 'loaded');
   $scope.$storage = $localStorage;
-  console.log("what is shipping? ",ngCart.getShipping());
   console.log("show me items: ",ngCart.getItems());
   $scope.cartItems = ngCart.getItems();
   $rootScope.path = $location.$$path;
@@ -126,9 +126,6 @@ $scope.changeActive = function(){
   } 
   
   $scope.loaded = [];
-
-
-  console.log("what is rootScope? ",$rootScope);
 
 
   $scope.data = {
@@ -190,6 +187,13 @@ $scope.changeActive = function(){
     $scope.loaded = [];
     var ship = $scope.data.shipping;
     var bill = $scope.data.billing; 
+    $scope.copyItems = angular.copy($scope.cartItems);
+    for (var i = 0; i < $scope.copyItems.length; i++){
+      delete $scope.copyItems[i]._data;
+      delete $scope.copyItems[i].attr;
+    }
+    console.log("before: ",$scope.cartItems);
+    console.log("after: ",$scope.copyItems);
     $scope.$storage.billingAddress = $scope.data.billing;
     var req = {
       url: '/stripe/createOrder',
@@ -197,7 +201,7 @@ $scope.changeActive = function(){
       params: {
         order: {
           currency: 'usd',
-          items: $scope.cartItems,
+          items: $scope.copyItems,
           shipping: {
             name: ship.name,
             address: {

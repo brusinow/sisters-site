@@ -1,7 +1,7 @@
 var authWait = ["Auth", function(Auth) { return Auth.$waitForSignIn(); }]
 var authRequire = ["Auth", function(Auth) { return Auth.$requireSignIn(); }]
 
-angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui.bootstrap','firebase','angularMoment','ngCart','ngStorage','angularPayments','ngAnimate','picardy.fontawesome','textAngular','ui.router.metatags','ngParallax'])
+angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui.bootstrap','firebase','angularMoment','ngCart','ngStorage','angularPayments','ngAnimate','picardy.fontawesome','textAngular','ui.router.metatags','angular-parallax'])
 
 
 
@@ -350,7 +350,6 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
           value = value.substr(0, lastspace);
         }
       }
-
       return value + (tail || '…');
     }
   };

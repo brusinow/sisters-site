@@ -244,18 +244,20 @@ select {
   background-color: rgba(0,0,0,.5);
 }
 
-.overlay-content {
-    position: absolute;
-    margin: auto;
+#overlay-content {
+    /*position: absolute;*/
+    margin:0 auto;
     padding: 20px;
-    top: 0;
-    left: 0;
-    right: 0;
-    bottom: 0;
+    /*top: 0;*/
+    position:fixed;
+    left:50%;
+    top:50%;
     width: 500px;
     height: 600px;
     z-index: 502;
     border-radius: 2px;
+    margin-left:-250px;
+    margin-top:-300px;
     animation-name: overlay-content-fadein;
     animation-duration: .3s;
     background-color: rgba(242,242,242,1);
@@ -1278,7 +1280,7 @@ select {
 
 #main.show {
   opacity: 1;
-  transition: all 500ms ease-in-out;
+  transition: opacity 500ms ease-in-out;
 }
 
 
@@ -1315,9 +1317,7 @@ select {
 
   #footer ul {
     height: 100%;
-    line-height: 24px;
-    margin-bottom: 19px;
-    margin-top: 8px;
+    margin: 0;
   }
 
   .footer-icon {
@@ -1330,10 +1330,24 @@ select {
     display: inline;
     padding: 5px 20px;
     color: #5e504f;
-    font-family: 'Fjalla One', sans-serif;
-    font-size: 1em;
+    font-family: 'Oswald', sans-serif;
+    font-size: 1.8em;
     font-weight: 700;
     text-transform: uppercase;
+    line-height: 175px;
+  }
+
+  #footer li:not(:first-child){
+    border-left: 3px solid #5e504f;
+  }
+
+  #footer li a {
+    color: #5e504f; 
+    text-decoration: none;
+  }
+
+  #footer li a:hover {
+    color: #ffa3eb;
   }
 
   .footer-social {

@@ -66,11 +66,15 @@ $scope.$on('loadMainContainer', function (event, data) {
 
 }])
 
-.controller('AboutCtrl', function($scope, $state){
- var main = document.getElementById("main");
+.controller('AboutCtrl', function($scope, $state, $timeout){
+  var main = document.getElementById("main");
   main.style.backgroundColor = 'rgba(255, 255, 255, 1)';
   main.style.padding = "0";
   main.style.width = '100%';
   $scope.$emit('loadMainContainer', 'loaded');
   $scope.parallaxBG = 'img/album.jpg';
+
+  $timeout(function(){
+    $scope.loaded = true;
+  })
 }); 

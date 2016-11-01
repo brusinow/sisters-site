@@ -1042,9 +1042,10 @@ select {
 }
 
 .blog-panel p {
-  margin-bottom: 0px;
-  padding: 15px 25px 0 25px;
-  font-family: "Cormorant Garamond", serif;
+    margin-bottom: 0px;
+    padding: 15px 25px 0 25px;
+    font-family: "PT Serif", serif;
+    font-size: 1.1em;
 }
 
 .blog-panel h6 {
@@ -1331,14 +1332,14 @@ select {
     padding: 5px 20px;
     color: #5e504f;
     font-family: 'Oswald', sans-serif;
-    font-size: 1.8em;
-    font-weight: 700;
+    font-size: 1.4em;
+    font-weight: 400;
     text-transform: uppercase;
     line-height: 175px;
   }
 
   #footer li:not(:first-child){
-    border-left: 3px solid #5e504f;
+    border-left: 2px solid #5e504f;
   }
 
   #footer li a {
@@ -2329,5 +2330,11 @@ display: none;
     width: 20%;
     max-width: 32px;
   }
+
+  .blog-header a {
+    color: #1A0504;
+    text-decoration: none;
+    font-size: 2.8rem;
+}
 }
 

@@ -350,7 +350,6 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
           value = value.substr(0, lastspace);
         }
       }
-
       return value + (tail || '…');
     }
   };

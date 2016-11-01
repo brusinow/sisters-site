@@ -25,8 +25,10 @@
         <span class="blog-date">{{post.timestamp | MomentFilter}}</span>
       </div>
       <div ng-bind-html="post.postBody | cut:enable:true:275:'...'" class="white-space-pre"></div>
-      <a ng-if="enable && post.postBody.length >= 275" ng-href="/blog/show/{{post.slug}}">Read More!</a>
-      <div class="tag-div">
+      <div style="display: inline-block; float:right; padding: 0px 25px; text-align: right;">
+        <a ng-if="enable && post.postBody.length >= 275" ng-href="/blog/show/{{post.slug}}">Read More!</a>
+      </div>
+      <div style="margin-top: 25px;" class="tag-div">
         <div ng-if="allTags.length > 0" class="tag-content">
           <h6 style="margin-bottom: 5px;">TAGS</h6>
           <ul class="tags">

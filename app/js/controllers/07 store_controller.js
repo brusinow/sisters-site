@@ -8,7 +8,6 @@ angular.module('SistersCtrls')
     main.style.padding = '';
     $scope.loaded = false;
     $scope.products = allProducts;
-    console.log("what are products? ",$scope.products);
 
 
     
@@ -43,16 +42,15 @@ angular.module('SistersCtrls')
   var main = document.getElementById("main");
   main.style.backgroundColor = '';
   $scope.$emit('loadMainContainer', 'loaded');
-console.log("what is oneProduct? ",oneProduct);
 $scope.product = oneProduct;
 $scope.images = oneProduct.images;
 var currentActiveSrc = $scope.images[0];
 
 $scope.skus = $scope.product.skus.data;
-console.log("skus: ",$scope.skus);
+
 $scope.data = {};
 $scope.data.selected = $scope.product.skus.data[0];
-console.log("selected: ",$scope.data.selected);
+
 
 var mainImg = document.querySelector(".main-product-photo img");
 mainImg.src = $scope.images[0];
@@ -66,9 +64,7 @@ $scope.isActiveImg = function(){
   }
 }
 
-$scope.whatSelected = function(){
-  console.log($scope.data.selected);
-}
+
 
 $scope.changeActive = function(){
   currentActiveSrc = this.img;
@@ -93,14 +89,10 @@ $scope.changeActive = function(){
   $scope.$storage = $localStorage;
 
   $scope.$on('cartChange', function(event, data) { 
-    console.log("CART CHANGE UPDATED!!!!!!!!!!!!! ",data);
     $scope.showPath = data; 
   });
-
-  console.log("what is showPath? ",$scope.showPath);
   if (!$scope.showPath){
     $scope.showPath = $scope.$storage.pathCount;
-    console.log("showPath is now ",$scope.showPath);
   }
 
 
@@ -117,7 +109,6 @@ $scope.changeActive = function(){
 
   $scope.$emit('loadMainContainer', 'loaded');
   $scope.$storage = $localStorage;
-  console.log("show me items: ",ngCart.getItems());
   $scope.cartItems = ngCart.getItems();
   $rootScope.path = $location.$$path;
   if (!$scope.$storage.pathCount || $scope.$storage.pathCount < 1){
@@ -144,7 +135,6 @@ $scope.changeActive = function(){
 
   $http.get('/js/JSON/countries.json').success (function(data){
         $scope.countries = data;
-        console.log("what is first country? ",$scope.countries[0]);
         $scope.data.shipping.country = $scope.countries[0];
         $scope.data.billing.country = $scope.countries[0];
         $scope.loaded.push("go");
@@ -192,8 +182,6 @@ $scope.changeActive = function(){
       delete $scope.copyItems[i]._data;
       delete $scope.copyItems[i].attr;
     }
-    console.log("before: ",$scope.cartItems);
-    console.log("after: ",$scope.copyItems);
     $scope.$storage.billingAddress = $scope.data.billing;
     var req = {
       url: '/stripe/createOrder',
@@ -221,9 +209,8 @@ $scope.changeActive = function(){
       }
     } 
     $http(req).then(function success(res) {
-          // console.log("what is res? ",res);
+
           if (res.data.status === 'created'){
-            console.log("SUCCESS! ", res);
             $scope.$storage.mailingList = $scope.mailingListAdd;
             if (!$scope.$storage.addressSubmit){
              $scope.$storage.pathCount++;
@@ -238,7 +225,6 @@ $scope.changeActive = function(){
            
           } else {
             $scope.loaded = [1, 2, 3];
-            console.log("ERROR!!!! ",res.data);
             $scope.errorMessage = res.data.message;
           } 
         }, function error(res) {
@@ -258,8 +244,6 @@ $scope.changeActive = function(){
         var parsedTax = parseFloat($window.localStorage.currentWaRate)
         ngCart.setTaxRate(parsedTax);    
       } else {
-
-        console.log("in WA State!!!!!");
         var req = {
           url: '/taxRate',
           method: 'GET',
@@ -270,8 +254,6 @@ $scope.changeActive = function(){
         } 
 
         $http(req).then(function success(res) {
-          console.log("what is response? ",res.data);
-          console.log("type of total rate ", typeof res.data.totalRate);
           ngCart.setTaxRate(res.data.totalRate); 
           $window.localStorage.currentWaRate = res.data.totalRate;   
         }, function error(res) {
@@ -279,10 +261,8 @@ $scope.changeActive = function(){
         });
       }
     } else if (country.code === 'US' && stateProvince.short !== 'WA'){
-      console.log("not in WA state");
       ngCart.setTaxRate(0);
     } else if (country.code !== 'US'){
-      console.log("Outside US!!!!!!!");
       ngCart.setTaxRate(0);
     }
   }
@@ -317,7 +297,6 @@ $scope.changeActive = function(){
   }
   
    $scope.$watch('selectedShip', function (newValue, oldValue, scope) {
-    console.log("what is shipChoice? ",$scope.selectedShip);
     ngCart.setShipping($scope.selectedShip.amount);  
   }, false);
 
@@ -365,7 +344,6 @@ $scope.changeActive = function(){
     }
 
     $http(req).then(function success(res) {
-          console.log("Success! ",res);
            if (!$scope.$storage.paymentSubmit){
              $scope.$storage.pathCount++;
              $scope.$emit('cartChange', $scope.$storage.pathCount);  
@@ -393,7 +371,6 @@ $scope.$storage = $localStorage;
 $scope.pathCount = parseInt($scope.$storage.pathCount); 
 $scope.orderComplete = false;
 $rootScope.path = $location.$$path;
-console.log("what is rootScope? ",$rootScope);
 $scope.ngCart = ngCart;
 $scope.token = $scope.$storage.tokenData;
 $scope.order = $scope.$storage.orderData.data;
@@ -421,7 +398,6 @@ $scope.createCharge = function(){
       } 
 
       $http(req).then(function success(res) {
-        console.log("Success! ",res);
         $scope.orderComplete = true;
         if ($scope.$storage.mailingList){
           mailchimpSubmit();
@@ -442,10 +418,8 @@ $scope.createCharge = function(){
 
 
 var mailchimpSubmit = function(){
-    console.log("submit clicked!")
     var url = "//sisterstheband.us14.list-manage.com/subscribe/post-json?u=bc38720b0bcc7a32641bb572c&amp;id=242f4adc89&EMAIL="+$scope.$storage.orderData.data.email+"&c=JSON_CALLBACK"
     $http.jsonp(url).then(function success(res){
-      console.log("success!!! ",res);
     }, function error(res){
       console.log(res);
     });

@@ -20,19 +20,15 @@ $scope.$on('loadMainContainer', function (event, data) {
   main.style.padding = "";
   
   $scope.loaded = LoadedService.get();
-  // console.log("what is loaded? ",$scope.loaded);
   var width = window.innerWidth;
-  // console.log("inner width: ",width);
   if (!$scope.loaded && width > 806){ 
     $timeout(function () {
-      // console.log("fade in home!!!!");
       $scope.$emit('loadMainContainer', 'loaded');
       $scope.fadeHome = true;
       LoadedService.set(true);
     }, 2500);
   } else {
      $timeout(function () {
-      // console.log("fade in home!!!!");
       $scope.$emit('loadMainContainer', 'loaded');
       $scope.fadeHome = true;
       LoadedService.set(true);
@@ -42,12 +38,9 @@ $scope.$on('loadMainContainer', function (event, data) {
 
     $scope.mailchimpSubmit = function(form, email, isNav){
     if(form.$valid){
-    // console.log("what is email? ",email);
-    // console.log("submit clicked!")
      $scope.isPopup = false;
     var url = "//sisterstheband.us14.list-manage.com/subscribe/post-json?u=bc38720b0bcc7a32641bb572c&amp;id=242f4adc89&EMAIL="+email+"&c=JSON_CALLBACK"
     $http.jsonp(url).then(function success(res){
-      // console.log(res);
       $scope.user = {};
         if(isNav){
         $scope.mailConfirm = true;
@@ -57,7 +50,7 @@ $scope.$on('loadMainContainer', function (event, data) {
           },7000);
         }
     }, function error(res){
-      // console.log(res);
+      console.log(res);
     });
 
     }
@@ -72,9 +65,4 @@ $scope.$on('loadMainContainer', function (event, data) {
   main.style.padding = "0";
   main.style.width = '100%';
   $scope.$emit('loadMainContainer', 'loaded');
-  $scope.parallaxBG = 'img/album.jpg';
-
-  $timeout(function(){
-    $scope.loaded = true;
-  })
 }); 

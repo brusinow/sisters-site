@@ -140,6 +140,22 @@ select {
   outline: none;
 }
 
+.footer-nav {
+    padding: 24px;
+}
+
+.cassette-div {
+    width: 100px;
+    margin: 0 auto 18px auto;
+    position: relative;
+    right: 8px;
+}
+
+.cassette-div img {
+  width: 100%;
+  height: 100%;
+}
+
 .about-header-section {
   position: absolute;
   top: 60px;
@@ -1332,11 +1348,10 @@ select {
     padding: 5px 20px;
     color: #5e504f;
     font-family: 'Oswald', sans-serif;
-    font-size: 1.4em;
+    font-size: 1.3em;
     font-weight: 400;
     text-transform: uppercase;
-    line-height: 175px;
-  }
+}
 
   #footer li:not(:first-child){
     border-left: 2px solid #5e504f;
@@ -1906,6 +1921,8 @@ display: none;
 
 @media (min-width: 766px){
 
+
+
 .small-cart-card td {
     font-size: 1em;
 }
@@ -2309,8 +2326,8 @@ display: none;
 }
 
 
-  .social i {
-    font-size: 1.6em;
+.social i {
+    font-size: 1.3em;
     padding: 0 6px 5px 6px;
 }
 

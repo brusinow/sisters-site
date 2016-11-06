@@ -86,6 +86,27 @@ angular.module('SistersServices', ['ngResource'])
 }])
 
 
+.factory("DownloadKeyService", function(){
+    return function(hash){
+      console.log("hash is "+hash);
+      // firebase.database().ref('downloadKeys/' + hash).set("test value");
+      firebase.database().ref('downloadKeys/'+hash).once('value').then(function(snapshot) {
+        var snap = snapshot.val();
+        console.log(snap);
+      });
+     
+      // if (thisKey !== null){
+      //   console.log("KEY EXISTS!!!!!!!")
+      //   return true;
+      // } else {
+      //   console.log("Key doesn't exist.")
+      //   return false;
+      // }
+    }
+  }
+)
+
+
 
 
 .factory("GetShows", ["$firebaseArray","moment", 

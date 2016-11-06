@@ -8,7 +8,10 @@ var stripe = require("stripe")(process.env.STRIPE_SECRET);
 var Twitter = require('twitter');
 var twitterText = require('twitter-text')
 var Entities = require('html-entities').AllHtmlEntities;
- 
+var http = require('http');
+var fs = require('fs');
+var firebase = require("firebase");
+
 
 // var shippo = require('shippo')('<PRIVATE_TOKEN>');
 
@@ -17,6 +20,12 @@ var app = express();
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(express.static(path.join(__dirname, 'app')));
+
+
+firebase.initializeApp({
+  serviceAccount: "app/firebaseCredentials.json",
+  databaseURL: "https://sisters-site.firebaseio.com"
+});
 
 
 entities = new Entities();
@@ -66,6 +75,21 @@ app.get('/instagram', function(req, res) {
       res.send(body);
     }
   });
+});
+
+app.get('/buckDownload', function(req, res){
+  console.log(req.body)
+
+//   var url = process.env.BUCK_URL;
+//   var download = function(url, cb) {
+//   var file = fs.createWriteStream("Buck.mp3");
+//   request(url, function(err, response, body) {
+//     response.pipe(file);
+//     file.on('finish', function() {
+//       file.close(cb);
+//     });
+//   });
+// }
 });
 
 app.get("/taxRate", function(req, res) {
@@ -132,6 +156,7 @@ app.post("/stripe/orderComplete", function(req, res){
   source: req.query.token 
   }, function(err, order) {
     if (order){
+      console.log("order: ",order);
       res.send(order);
     }
     if (err){

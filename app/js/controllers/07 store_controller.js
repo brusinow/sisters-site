@@ -225,6 +225,7 @@ $scope.changeActive = function(){
            
           } else {
             $scope.loaded = [1, 2, 3];
+            console.log(res.data);
             $scope.errorMessage = res.data.message;
           } 
         }, function error(res) {

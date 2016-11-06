@@ -1072,7 +1072,7 @@ select {
 
 .blog-panel p {
     margin-bottom: 0px;
-    padding: 15px 25px 0 25px;
+    padding: 15px 0px 0 0px;
     font-family: "PT Serif", serif;
     font-size: 1em;
 }
@@ -2199,6 +2199,10 @@ display: none;
 
 
 @media (min-width: 1134px){
+.blog-panel p {
+    padding: 15px 25px 0 25px;
+}
+
 .twitter-text {
     white-space: pre-wrap;
     font-size: .9em;

@@ -63,6 +63,28 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
     controller: 'AboutCtrl'
   })
 
+  .state('download', {
+    url: '/download/:id',
+    resolve: {
+      "downloadKey": function(DownloadKeyService, $stateParams){
+        return DownloadKeyService($stateParams.id).$loaded();
+      }
+    },
+    onEnter: function($state, $stateParams, $timeout, downloadKey) {
+      if (downloadKey === true) {
+          $timeout(function() {
+                  console.log("success!");
+                  // $state.go('downloadConfirm');
+              }, 0);
+      } else {
+          $timeout(function() {
+                  console.log("failed!");
+                  // $state.go('downloadFailed');
+              }, 0);
+      }
+    }
+  })
+
 
   .state('blog', {
     templateUrl: '/views/blog/blog.html',

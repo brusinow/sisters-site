@@ -60,8 +60,8 @@ angular.module('ngCart', ['ngCart.directives'])
         this.addItemBtn = function (id, name, price, quantity, data) {
             console.log("id is ",id);
             console.log("data: ",data);
-            var skus = data.skus.data;
-            if (skus.length === 1){
+            var skus = data.skus;
+            if (!skus){
             var inCart = this.getItemById(id);
 
             if (typeof inCart === 'object'){
@@ -443,6 +443,9 @@ angular.module('ngCart.directives', ['ngCart.fulfilment'])
                 }
             },
             link:function(scope, element, attrs){
+                $(element).click(function (event) {
+                    event.stopPropagation();
+                });
                 scope.attrs = attrs;
                 scope.inCart = function(){
                     return  ngCart.getItemById(attrs.id);

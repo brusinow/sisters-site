@@ -122,14 +122,17 @@ app.get("/stripe/allProducts", function(req, res){
 app.post("/stripe/createOrder", function(req, res){
   var thisOrder = req.query.order;
   var parsedOrder = JSON.parse(thisOrder);
-  stripe.orders.create(parsedOrder, function(err, order) {
-    if (order){
-      res.send(order);
-    }
-    if (err){
-      res.send(err);
-    }
-  });
+  var db = firebase.database();
+  var ref = db.ref("orders");
+  ref.push(parsedOrder);
+  // stripe.orders.create(parsedOrder, function(err, order) {
+  //   if (order){
+  //     res.send(order);
+  //   }
+  //   if (err){
+  //     res.send(err);
+  //   }
+  // });
 })
 
 app.post("/stripe/updateShipping", function(req, res){
@@ -146,9 +149,6 @@ app.post("/stripe/updateShipping", function(req, res){
   });
 })
 
-app.get('/stripe/testtest', function(req, res) {
-    res.json({ message: 'hooray! welcome to our api!' });   
-});
 
 
 app.post("/stripe/orderComplete", function(req, res){

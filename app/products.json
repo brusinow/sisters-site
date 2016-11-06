@@ -1,0 +1,31 @@
+{
+  "prod_0001": {
+    "active": true,
+    "images": [
+      "https://firebasestorage.googleapis.com/v0/b/sisters-site.appspot.com/o/product-images%2Fsisters_drink_champagne_title_sq.jpg?alt=media&token=3e39ef8f-8062-4929-8589-eaeac43e5025"
+    ],
+    "price": 1199,
+    "title": "Drink Champagne - 1997 Edition Compact Disc",
+    "description": "Remember Tower Records? Get your nostalgia on with SISTERS' debut album, Drink Champagne, on compact disc. Packaged in a 4 panel cardboard wallet featuring artwork by Tom DesLongchamp.",
+    "product_type": "shippable",
+    "ship_details": null,
+    "skus": null
+  },
+  "prod_0002": {
+    "active": true,
+    "images": [
+      "https://firebasestorage.googleapis.com/v0/b/sisters-site.appspot.com/o/product-images%2Fsisters_drink_champagne_title_sq.jpg?alt=media&token=3e39ef8f-8062-4929-8589-eaeac43e5025"
+    ],
+    "price": 1199,
+    "title": "Drink Champagne - Digital Download",
+    "description": "Digital download stuff.",
+    "product_type": "digital",
+    "ship_details": {
+      "height": 1,
+      "length": 6,
+      "width": 6,
+      "weight": 6
+      },
+    "skus": null
+  }
+}

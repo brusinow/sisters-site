@@ -8,6 +8,39 @@ angular.module('SistersCtrls')
     main.style.padding = '';
     $scope.loaded = false;
     $scope.products = allProducts;
+    console.log(allProducts);
+    
+//     firebase.database().ref('products').set({
+//   "prod_0001": {
+//     "active": true,
+//     "images": [
+//       "https://firebasestorage.googleapis.com/v0/b/sisters-site.appspot.com/o/product-images%2Fsisters_drink_champagne_title_sq.jpg?alt=media&token=3e39ef8f-8062-4929-8589-eaeac43e5025"
+//     ],
+//     "price": 1199,
+//     "title": "Drink Champagne - 1997 Edition Compact Disc",
+//     "description": "Remember Tower Records? Get your nostalgia on with SISTERS' debut album, Drink Champagne, on compact disc. Packaged in a 4 panel cardboard wallet featuring artwork by Tom DesLongchamp.",
+//     "product_type": "shippable",
+//     "ship_details": null,
+//     "skus": null
+//   },
+//   "prod_0002": {
+//     "active": true,
+//     "images": [
+//       "https://firebasestorage.googleapis.com/v0/b/sisters-site.appspot.com/o/product-images%2Fsisters_drink_champagne_title_sq.jpg?alt=media&token=3e39ef8f-8062-4929-8589-eaeac43e5025"
+//     ],
+//     "price": 1199,
+//     "title": "Drink Champagne - Digital Download",
+//     "description": "Digital download stuff.",
+//     "product_type": "digital",
+//     "ship_details": {
+//       "height": 1,
+//       "length": 6,
+//       "width": 6,
+//       "weight": 6
+//       },
+//     "skus": null
+//   }
+// });
 
 
     
@@ -177,11 +210,6 @@ $scope.changeActive = function(){
     $scope.loaded = [];
     var ship = $scope.data.shipping;
     var bill = $scope.data.billing; 
-    $scope.copyItems = angular.copy($scope.cartItems);
-    for (var i = 0; i < $scope.copyItems.length; i++){
-      delete $scope.copyItems[i]._data;
-      delete $scope.copyItems[i].attr;
-    }
     $scope.$storage.billingAddress = $scope.data.billing;
     var req = {
       url: '/stripe/createOrder',
@@ -189,7 +217,7 @@ $scope.changeActive = function(){
       params: {
         order: {
           currency: 'usd',
-          items: $scope.copyItems,
+          items: $scope.cartItems,
           shipping: {
             name: ship.name,
             address: {
@@ -332,8 +360,6 @@ $scope.changeActive = function(){
     // there was an error. Fix it.
   } else {
     token = response;
-    
-
     var req = {
       url: '/stripe/updateShipping',
       method: 'POST',

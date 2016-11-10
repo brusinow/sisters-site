@@ -1,10 +1,11 @@
 angular.module('SistersCtrls')
 
 
-.controller('editModalCtrl', function ($scope, $uibModalInstance, thisShow, index, $firebaseArray) {
+.controller('editModalCtrl', function ($scope, $uibModalInstance, thisShow, $firebaseArray) {
   // $scope.shows = editShow;
   
   $scope.show = thisShow;
+  console.log("this show! ",thisShow);
 
   // console.log("index is ",index);
   $scope.dateObj = new Date($scope.show.unix * 1000);

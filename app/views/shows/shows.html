@@ -25,7 +25,7 @@
   </thead>
   <tbody>
     <tr ng-repeat="show in shows | tooOld track by $index">
-      <td ng-if="firebaseUser.email"><button type="button" class="button button-border-pink edit-button" ng-click="open('edit',$index)"><i class="fa fa-pencil" aria-hidden="true"></i></button></td>
+      <td ng-if="firebaseUser.email"><button type="button" class="button button-border-pink edit-button" ng-click="open('edit',show.$id)"><i class="fa fa-pencil" aria-hidden="true"></i></button></td>
       <td>{{show.date}}</td>
       <td>{{show.location}}</td>
       <td>{{show.venue}}</td>

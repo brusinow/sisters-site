@@ -15,7 +15,8 @@ angular.module('SistersCtrls')
   });
 
 
-  $scope.open = function(whichPage, index) {
+  $scope.open = function(whichPage, id) {
+    console.log(id);
     // console.log(whichPage);
     // console.log(index);
     var modalInstance = $uibModal.open({
@@ -25,10 +26,12 @@ angular.module('SistersCtrls')
       controller: whichPage+'ModalCtrl',
       size: 'lg',
       resolve: {
-        editShow: function () {
-          return $scope.shows;
-        },
-        index: index
+        // editShow: function () {
+        //   return $scope.shows;
+        // },
+        thisShow: function(GetSingleShow){
+          return GetSingleShow(id).$loaded;
+        }
       }
     });
 

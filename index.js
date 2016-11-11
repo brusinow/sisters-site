@@ -122,6 +122,7 @@ app.get("/stripe/allProducts", function(req, res){
 app.post("/stripe/createOrder", function(req, res){
   var thisOrder = req.query.order;
   var parsedOrder = JSON.parse(thisOrder);
+  console.log(parsedOrder);
   stripe.orders.create(parsedOrder, function(err, order) {
     if (order){
       res.send(order);
@@ -169,7 +170,6 @@ app.post("/stripe/orderComplete", function(req, res){
 app.post("/stripe/taxCallback", function(req, res){
   var order = req.body.order;
   var orderId = req.body.order.id;
-  console.log(order);
   var shipping = order.shipping.address;
   var taxRate = order.metadata.taxRate;
   if (taxRate !== 0){

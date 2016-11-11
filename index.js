@@ -168,6 +168,7 @@ app.post("/stripe/orderComplete", function(req, res){
 
 app.post("/stripe/taxCallback", function(req, res){
   var order = req.body.order;
+  var orderId = req.body.order.id;
   console.log(order);
   var shipping = order.shipping.address;
   var taxRate = order.metadata.taxRate;
@@ -184,6 +185,7 @@ app.post("/stripe/taxCallback", function(req, res){
 
   var myJSON = {
       "order_update": {
+        "order_id": orderId,
         "items": [
           {
           "parent": null,

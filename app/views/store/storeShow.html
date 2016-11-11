@@ -13,7 +13,7 @@
         </div>
     </div>
     <div class="five columns">
-        <h3 class="single-product-name text-center">{{product.name}}</h3>
+        <h3 class="single-product-name text-center">{{product.title}}</h3>
         <p style="padding: 0 5%">{{product.description}}</p>
         <div class="text-center" ng-if="product.skus.data.length > 1" id="sku-radio-div">
             <div ng-if="data.selected.attributes.size">
@@ -26,6 +26,6 @@
             </div>
         </div>
         <h5 class="text-center">{{ data.selected.price | centsToDollars | currency}}</h5>
-        <ngcart-addtocart class="text-center" id="{{ data.selected.id }}" name="{{ product.name }}" price="{{ data.selected.price }}" quantity="1" quantity-max="30" data="data.selected">Add to Cart</ngcart-addtocart>
+        <ngcart-addtocart class="text-center" id="{{ data.selected.$id }}" name="{{ data.selected.title }}" price="{{ data.selected.price }}" quantity="1" quantity-max="30" data="data.selected">Add to Cart</ngcart-addtocart>
     </div>
 </div>

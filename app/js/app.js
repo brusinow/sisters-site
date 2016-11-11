@@ -295,7 +295,7 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
     resolve: {
       "currentAuth": authWait,
       "oneProduct": function(ProductsService, $stateParams){
-        return ProductsService.oneProduct($stateParams.id);
+        return ProductsService.oneProduct($stateParams.id).$loaded();
       }
     }
   })

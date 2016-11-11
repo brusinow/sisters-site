@@ -11,9 +11,7 @@ var Entities = require('html-entities').AllHtmlEntities;
 var http = require('http');
 var fs = require('fs');
 var firebase = require("firebase");
-
-
-// var shippo = require('shippo')('<PRIVATE_TOKEN>');
+var shippo = require('shippo')(process.env.SHIPPO_TOKEN);
 
 var app = express();
 
@@ -102,29 +100,54 @@ app.get("/taxRate", function(req, res) {
   });
 });
 
-app.get("/stripe/oneProduct", function(req, res){
-  stripe.products.retrieve(
-  req.query.productId,
-  function(err, product) {
-    res.send(product);
-  });
-});
-
-app.get("/stripe/allProducts", function(req, res){
-  stripe.products.list(
-  { limit: 10 },
-  function(err, products) {
-    res.send(products);
-  }
-  );
+app.post("/shippoAddressCreate", function(req, res){
+  console.log(req.body);
+  // shippo.address.create({
+  //         'object_purpose' : 'PURCHASE',
+  //         'name' : 'Mr Hippo',
+  //         'company' : 'SF Zoo',
+  //         'street1' : '2945 Sloat Blvd',
+  //         'city' : 'San Francisco',
+  //         'state' : 'CA',
+  //         'zip' : '94132',
+  //         'country' : 'US',
+  //         'phone' : '+1 555 341 9393',
+  //         'email' : 'mrhippo@goshippo.com'
+  //   }).then(function(address){
+  //     console.log("shipment : %s", JSON.stringify(address));
+  //   });
 })
 
-app.post("/stripe/createOrder", function(req, res){
+// app.get("/stripe/oneProduct", function(req, res){
+//   stripe.products.retrieve(
+//   req.query.productId,
+//   function(err, product) {
+//     res.send(product);
+//   });
+// });
+
+// app.get("/stripe/allProducts", function(req, res){
+//   stripe.products.list(
+//   { limit: 10 },
+//   function(err, products) {
+//     res.send(products);
+//   }
+//   );
+// })
+
+app.post("/createOrder", function(req, res){
   var thisOrder = req.query.order;
   var parsedOrder = JSON.parse(thisOrder);
   var db = firebase.database();
   var ref = db.ref("orders");
-  ref.push(parsedOrder);
+  ref.push(parsedOrder, function(error){
+    if (error){
+      res.send(error);
+    } else {
+      res.send(parsedOrder);
+    }
+  });
+
   // stripe.orders.create(parsedOrder, function(err, order) {
   //   if (order){
   //     res.send(order);
@@ -135,7 +158,7 @@ app.post("/stripe/createOrder", function(req, res){
   // });
 })
 
-app.post("/stripe/updateShipping", function(req, res){
+app.post("/updateShipping", function(req, res){
   stripe.orders.update(req.query.orderId, {
     selected_shipping_method: req.query.selectedShip
   }, function(err, order){
@@ -168,6 +191,7 @@ app.post("/stripe/orderComplete", function(req, res){
 
 app.post("/stripe/taxCallback", function(req, res){
   var order = req.body.order;
+  console.log(order);
   var shipping = order.shipping.address;
   var taxRate = order.metadata.taxRate;
   if (taxRate !== 0){

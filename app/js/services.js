@@ -35,27 +35,15 @@ angular.module('SistersServices', ['ngResource'])
 }])
 
 
-.factory("ProductsService", ["$http","$q","$firebaseArray", function($http, $q, $firebaseArray){
+.factory("ProductsService", ["$http","$q","$firebaseArray","$firebaseObject", function($http, $q, $firebaseArray, $firebaseObject){
   return {
     allProducts: function(){
       var allProductsRef = firebase.database().ref('products');
       return $firebaseArray(allProductsRef);
     },
     oneProduct: function(productId){
-      // console.log("what's id? ",productId);
-      var deferred = $q.defer();
-      var req = {
-        method: 'GET',
-        url: '/stripe/oneProduct',
-        params: {
-          productId: productId
-        }
-      }
-      $http(req).success(function(data){
-        // console.log("success!!!")
-        deferred.resolve(data);
-      })
-      return deferred.promise;
+      var thisProductRef = firebase.database().ref('products/'+productId);
+      return $firebaseObject(thisProductRef);
     }
   }
 }])

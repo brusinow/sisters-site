@@ -72,17 +72,18 @@ angular.module('SistersCtrls')
 
 
 .controller('StoreShowCtrl', function($scope, $stateParams, $state, $http, $timeout, $location, $sessionStorage, oneProduct){
+  console.log(oneProduct);
   var main = document.getElementById("main");
   main.style.backgroundColor = '';
   $scope.$emit('loadMainContainer', 'loaded');
-$scope.product = oneProduct;
-$scope.images = oneProduct.images;
-var currentActiveSrc = $scope.images[0];
+  $scope.product = oneProduct;
+  $scope.images = oneProduct.images;
+  var currentActiveSrc = $scope.images[0];
 
-$scope.skus = $scope.product.skus.data;
+  $scope.skus = $scope.product.skus;
 
 $scope.data = {};
-$scope.data.selected = $scope.product.skus.data[0];
+$scope.data.selected = $scope.product;
 
 
 var mainImg = document.querySelector(".main-product-photo img");
@@ -139,6 +140,7 @@ $scope.changeActive = function(){
 .controller('StoreAddressCtrl', function($scope, $state, $window, $timeout, $http, $location, $localStorage, ngCart, $rootScope, CurrentOrderService){
   var main = document.getElementById("main");
   main.style.backgroundColor = 'rgba(247, 237, 245, 0)';
+  ngCart.setTaxRate(0);
 
   $scope.$emit('loadMainContainer', 'loaded');
   $scope.$storage = $localStorage;
@@ -212,7 +214,7 @@ $scope.changeActive = function(){
     var bill = $scope.data.billing; 
     $scope.$storage.billingAddress = $scope.data.billing;
     var req = {
-      url: '/stripe/createOrder',
+      url: '/createOrder',
       method: 'POST',
       params: {
         order: {
@@ -237,25 +239,8 @@ $scope.changeActive = function(){
       }
     } 
     $http(req).then(function success(res) {
-
-          if (res.data.status === 'created'){
-            $scope.$storage.mailingList = $scope.mailingListAdd;
-            if (!$scope.$storage.addressSubmit){
-             $scope.$storage.pathCount++;
-             $scope.$emit('cartChange', $scope.$storage.pathCount);  
-            }
-            $scope.$storage.addressSubmit = true;            
-            $scope.$storage.orderData = res;
-            $scope.$evalAsync(function(){
-              $location.url('/store/checkout/payment');
-            });
-              
-           
-          } else {
-            $scope.loaded = [1, 2, 3];
-            console.log(res.data);
-            $scope.errorMessage = res.data.message;
-          } 
+          console.log("success!!!");
+          $location.url('/store/checkout/payment');
         }, function error(res) {
           console.log("error ",res);             
         });
@@ -361,7 +346,7 @@ $scope.changeActive = function(){
   } else {
     token = response;
     var req = {
-      url: '/stripe/updateShipping',
+      url: '/updateShipping',
       method: 'POST',
       params: {
         token: token,

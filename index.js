@@ -93,7 +93,6 @@ app.get('/buckDownload', function(req, res){
 });
 
 app.get("/taxRate", function(req, res) {
-  console.log("What is req? ",req.query);
   var url = 'https://taxrates.api.avalara.com:443/postal?country='+req.query.country+'&postal='+req.query.postal+'&apikey='+process.env.TAX_KEY;
    request(url, function (error, response, body) {
     if (!error && response.statusCode == 200) {
@@ -122,7 +121,6 @@ app.get("/stripe/allProducts", function(req, res){
 app.post("/stripe/createOrder", function(req, res){
   var thisOrder = req.query.order;
   var parsedOrder = JSON.parse(thisOrder);
-  console.log(parsedOrder);
   stripe.orders.create(parsedOrder, function(err, order) {
     if (order){
       res.send(order);
@@ -157,7 +155,6 @@ app.post("/stripe/orderComplete", function(req, res){
   source: req.query.token 
   }, function(err, order) {
     if (order){
-      console.log("order: ",order);
       res.send(order);
     }
     if (err){
@@ -168,6 +165,7 @@ app.post("/stripe/orderComplete", function(req, res){
 
 
 app.post("/stripe/taxCallback", function(req, res){
+  console.log("ENTERING STRIPE CALLBACK!!!!!!!")
   var order = req.body.order;
   var orderId = req.body.order.id;
   var shipping = order.shipping.address;

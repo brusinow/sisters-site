@@ -196,7 +196,8 @@ app.post("/stripe/taxCallback", function(req, res){
           }
         ]
       }
-  }    
+  }   
+  console.log(myJSON); 
   res.json(myJSON); 
 });
 

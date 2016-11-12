@@ -77,20 +77,20 @@ app.get('/instagram', function(req, res) {
   });
 });
 
-app.get('/buckDownload', function(req, res){
-  console.log(req.body)
+// app.get('/buckDownload', function(req, res){
+//   console.log(req.body)
 
-//   var url = process.env.BUCK_URL;
-//   var download = function(url, cb) {
-//   var file = fs.createWriteStream("Buck.mp3");
-//   request(url, function(err, response, body) {
-//     response.pipe(file);
-//     file.on('finish', function() {
-//       file.close(cb);
-//     });
-//   });
-// }
-});
+// //   var url = process.env.BUCK_URL;
+// //   var download = function(url, cb) {
+// //   var file = fs.createWriteStream("Buck.mp3");
+// //   request(url, function(err, response, body) {
+// //     response.pipe(file);
+// //     file.on('finish', function() {
+// //       file.close(cb);
+// //     });
+// //   });
+// // }
+// });
 
 app.get("/taxRate", function(req, res) {
   var url = 'https://taxrates.api.avalara.com:443/postal?country='+req.query.country+'&postal='+req.query.postal+'&apikey='+process.env.TAX_KEY;

@@ -167,6 +167,7 @@ app.post("/stripe/orderComplete", function(req, res){
 app.post("/stripe/taxCallback", function(req, res){
   console.log("ENTERING STRIPE CALLBACK!!!!!!!")
   var order = req.body.order;
+  console.log(order);
   var orderId = req.body.order.id;
   var shipping = order.shipping.address;
   var taxRate = order.metadata.taxRate;

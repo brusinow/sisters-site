@@ -45,7 +45,7 @@ angular.module('SistersCtrls')
   $scope.showsArray = $firebaseArray(showsRef);
 
   $scope.ok = function () {
-    var thisDate = moment($scope.show.showDate).format('dd, MMMM Do');
+    var thisDate = moment($scope.show.showDate).format('ddd, MMMM Do');
     var thisUnix = $scope.show.showDate.getTime() / 1000;
     console.log(thisDate);
     var object = {

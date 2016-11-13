@@ -63,6 +63,18 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
     controller: 'AboutCtrl'
   })
 
+   .state('press', {
+    url: '/press',
+    templateUrl: '/views/press.html',
+    controller: 'PressCtrl'
+  })
+
+    .state('contact', {
+    url: '/contact',
+    templateUrl: '/views/contact.html',
+    controller: 'ContactCtrl'
+  })
+
   .state('download', {
     url: '/download/:id',
     resolve: {

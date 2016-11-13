@@ -76,8 +76,10 @@ angular.module('SistersCtrls')
    
   
   $scope.toStore = function(){
-    $scope.isPopup = false;
-    $state.go("store");
+      $scope.isPopup = false;
+      $timeout(function(){
+        $window.open('https://iheartsisters.bandcamp.com/');
+      },300);
   }
 
 

@@ -309,12 +309,13 @@ select {
     line-height: 1.3em;
 }
 
-.circle .info a {
+.circle .info a, .circle .info a:active, .circle .info a:hover {
   display: block;
   font-size: 1.1em;
   color: #f9eaef;
   transition: .2s linear all;
   line-height: 1.3em;
+  text-decoration: none;
 }
 
 .circle.display .info a {
@@ -2057,7 +2058,7 @@ display: none;
     font-size: 2.3vw;
     line-height: 3vw;
 }
-.circle .info a {
+.circle .info a, .circle .info a:active, .circle .info a:hover {
   font-size: 1.5vw;
   line-height: 1.6vw;
 }

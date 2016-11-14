@@ -119,6 +119,14 @@ angular.module('SistersServices', ['ngResource'])
   }
 }])
 
+.factory("GetSingleShow", ["$firebaseArray", 
+  function($firebaseArray) {
+  return function(id){
+     var showsRef = firebase.database().ref('shows/'+ id);
+      return $firebaseArray(showsRef);
+  }
+}])
+
 
 
 

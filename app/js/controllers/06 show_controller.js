@@ -1,14 +1,6 @@
 angular.module('SistersCtrls')
 
-<<<<<<< HEAD:app/js/controllers/show_controller.js
-.controller('ShowsCtrl', ['$scope', '$state','currentAuth','$uibModal','$log','$firebaseArray','moment','Auth','GetShows', function($scope, $state, currentAuth, $uibModal,$log, $firebaseArray, moment, Auth, GetShows){
-  $scope.shows = GetShows();
-  $scope.shows.$loaded().then(function(){
-    $scope.loaded = true;
-    console.log($scope.shows);
-  })
-  
-=======
+
 .controller('ShowsCtrl', ['$scope', '$state','currentAuth','$uibModal','$log','$firebaseArray','moment','Auth','getShows', function($scope, $state, currentAuth, $uibModal,$log, $firebaseArray, moment, Auth, getShows){
 var main = document.getElementById("main");
   main.style.backgroundColor = 'rgba(255, 255, 255, .9)';
@@ -16,7 +8,6 @@ var main = document.getElementById("main");
   main.style.padding = '';
 $scope.$emit('loadMainContainer', 'loaded');
   $scope.shows = getShows;
->>>>>>> develop:app/js/controllers/06 show_controller.js
 
   $scope.auth = Auth;
   $scope.auth.$onAuthStateChanged(function(firebaseUser) {

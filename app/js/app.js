@@ -150,7 +150,7 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
     url: '/blog',
     metaTags: {
             title: 'SISTERS - Blog',
-            description: 'Updates, news, and commentary from Seattle duo SISTERS.'
+            description: 'Updates, news, and commentary from Seattle band SISTERS.'
         },
     templateUrl: '/views/blog/blog-content.html',
     controller: 'BlogCtrl',
@@ -162,7 +162,7 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
     url: '/blog/:page',
     metaTags: {
             title: 'SISTERS - Blog',
-            description: 'Updates, news, and commentary from Seattle duo SISTERS.'
+            description: 'Updates, news, and commentary from Seattle band SISTERS.'
         },
     templateUrl: '/views/blog/blog-content.html',
     controller: 'BlogCtrl',
@@ -173,9 +173,9 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
 
      .state('blog.archive', {
     url: '/blog/archives/:year/:month',
-     metaTags: {
+    metaTags: {
             title: 'SISTERS - Blog',
-            description: 'Updates, news, and commentary from Seattle duo SISTERS.'
+            description: 'Updates, news, and commentary from Seattle band SISTERS.'
         },
     templateUrl: '/views/blog/blog-content.html',
     controller: 'BlogArchiveCtrl',
@@ -192,9 +192,9 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
 
     .state('blog.archivePage', {
       url: '/blog/archives/:year/:month/:page',
-       metaTags: {
+      metaTags: {
             title: 'SISTERS - Blog',
-            description: 'Updates, news, and commentary from Seattle duo SISTERS.'
+            description: 'Updates, news, and commentary from Seattle band SISTERS.'
         },
       templateUrl: '/views/blog/blog-content.html',
       controller: 'BlogArchiveCtrl',
@@ -212,9 +212,9 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
 
     .state('blog.tags', {
     url: '/blog/tags/:tagName',
-     metaTags: {
+    metaTags: {
             title: 'SISTERS - Blog',
-            description: 'Updates, news, and commentary from Seattle duo SISTERS.'
+            description: 'Updates, news, and commentary from Seattle band SISTERS.'
         },
     templateUrl: '/views/blog/blog-content.html',
     controller: 'BlogTagsCtrl',
@@ -260,14 +260,18 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
 
   .state('shows', {
     url: '/shows',
-     metaTags: {
+    metaTags: {
             title: 'SISTERS - Shows',
-            description: 'Upcoming shows from Seattle duo SISTERS.'
+            description: 'Upcoming shows for Seattle duo SISTERS.'
         },
     templateUrl: '/views/shows/shows.html',
     controller: 'ShowsCtrl',
     resolve: {
-      "currentAuth": authWait
+      "currentAuth": authWait,
+      getShows: function(GetShows){
+        console.log("app resolve entered");
+        return GetShows().$loaded();
+      }
     }
   })
 
@@ -403,21 +407,19 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
   }
 }])
 
-.filter('tooOld', ['moment', function(moment) {
+.filter('tooOld', function() {
   return function(events) {
     var currentDay = moment().unix()
     var filtered = [];
     angular.forEach(events, function(event) {
-      var thisEvent = event.unix;
-      if (currentDay < thisEvent) {
+      var thisEvent = event.unixDate/1000;
+      if ((currentDay - thisEvent) <= 86400) {
         filtered.push(event);
       }
     });
-    console.log("what is filtered? ",filtered);
     return filtered;
   };
-}])
-
+})
 
 .filter('DeliveryEstDate', ['moment', function(moment){
   return function(val){
@@ -439,8 +441,3 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
     return  val/100;
   }
 });
-
-
-
-
-

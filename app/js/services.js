@@ -60,7 +60,7 @@ angular.module('SistersServices', ['ngResource'])
     var deferred = $q.defer();
     $http({
         method: 'GET',
-        url: '/api/instagram',
+        url: '/instagram',
         cache: true
     }).success(function (data) {
         deferred.resolve(data);
@@ -77,7 +77,7 @@ angular.module('SistersServices', ['ngResource'])
     var deferred = $q.defer();
     $http({
         method: 'GET',
-        url: '/api/twitter',
+        url: '/twitter',
         cache: true
     }).success(function (data) {
         deferred.resolve(data);

@@ -72,10 +72,15 @@ button.button-tiny-circle {
 }
 
 .main-page-header {
+    display: inline-block;
     font-family: 'Oswald', sans-serif;
+    font-weight: 400;
+    letter-spacing: .04em;
+    text-transform: lowercase;
     margin: 0;
-    font-size: 2.2rem;
+    font-size: 2rem;
 }
+
 
 #footer-rule {
     display: block;
@@ -112,7 +117,7 @@ td:last-child {
 }
 
 a {
-  color: #d038af;
+  color: #f7799e;
 }
 
 a:hover {
@@ -185,8 +190,15 @@ select {
   padding: 0 8%;
 }
 
+#press-section {
+  background-color: white;
+  width: 100%;
+  height: 100%;
+  margin: 20px 0px;
+}
+
 #press-section p {
-  font-size: 1.3em;
+  font-size: 1.1em;
   font-family: "Cormorant Garamond", serif;
   font-weight: 300;
   white-space: pre-wrap; 
@@ -245,8 +257,8 @@ select {
   width: 100%;
   height: 0;
   border-radius: 50%;
-  background-color: #f79eb8;
-  border: 4px solid #f79eb8;
+  background-color: #fc9fba;
+  border: 4px solid #fc9fba;
   content: "";
   transition:.2s linear all;
 }
@@ -403,9 +415,22 @@ select {
 }
 
 .popup-header {
-  font-family: 'Oswald', sans-serif;
-  font-weight: 300;
+    color: #1A0504;
+    font-family: 'Oswald', sans-serif;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 1.9em;
+    letter-spacing: .04em;
+}
+
+#overlay-content p {
+  color: #1A0504;
+  font-family: 'Muli', sans-serif;
+  font-weight: 200;
   text-transform: uppercase;
+  font-size: 1.2em;
+  line-height: 1;
+  letter-spacing: .04em;
 }
 
 #popup-img-div {
@@ -1076,11 +1101,11 @@ select {
   border: none;
   border-radius: 24px;
   margin: 2px 3px 2px 3px;
-  background-color: #d038af;
+  background-color: #f497b3;
 }
 
 .tags-ovals:hover {
-  background-color: #de73c7;
+  background-color: #f8becf;
 }
 
 .tag-delete-btn {
@@ -1400,16 +1425,17 @@ select {
 }
 
 #main-signup-div {
-  background-color: rgba(247, 237, 245,.9);
+  background-color: rgba(247, 237, 245,0);
   /*border: 3px solid #d038af;*/
   display: inline-block;
-  padding: 15px 30px 0 30px;
-  margin: 0 auto 25px auto;
+  padding: 15px 30px 15px 30px;
+  margin: 0 auto 0px auto;
   border-radius: 2px;
 }
 
 #wrap {
   min-height: 100%;
+  margin-bottom: -176px;
 }
 
 #main {
@@ -1418,7 +1444,7 @@ select {
   overflow: auto;
   padding-left: 10px;
   padding-right: 10px;
-  padding-bottom: 170px;
+  padding-bottom: 176px;
   padding-top: 10px;
   opacity: 0;
   }  /* must be same height as the footer */
@@ -1436,7 +1462,7 @@ select {
     text-align: center;
     height: 176px;
     clear: both;
-    top: -1px;
+    top: 1px;
 }
 
   #footer h5 {
@@ -1518,7 +1544,7 @@ select {
 
  .footer-right {
     height: 100%;
-    padding: 75px 0 0 0;
+    padding: 75px 0 28px 0;
     background-color: white;
 }
 
@@ -1553,7 +1579,7 @@ display: none;
     list-style: none;
     width: 105px;
     padding: 10px 24px 10px 5px;
-    background-color: #e79bd7;
+    background-color: #f7799e;
     z-index: 499;
 }
 
@@ -1842,7 +1868,7 @@ display: none;
 }
 
 .social i {
-  font-size: 1em;
+  font-size: 1.2em;
   display: inline-block;
   vertical-align: bottom;
   padding: 0 2px 6px 2px;
@@ -1868,9 +1894,9 @@ display: none;
     float: left;
     font-size: 1em;
     padding: 8px;
-    margin: 20px 0 0 0;
+    margin: 10px 0 0 0;
     height: 30px;
-    border-color: #d038af;
+    border-color: #f7799e;
     border-radius: 2px 0 0 2px;
     vertical-align: bottom;
 }
@@ -1881,13 +1907,13 @@ display: none;
     float: left;
     font-size: 1em;
     vertical-align: middle;
-    background-color: #d038af;
+    background-color: #f7799e;
     color: white;
-    border-color: #d038af;
+    border-color: #f7799e;
     border: 1px 1px 1px 0;
     border-radius: 0 2px 2px 0;
     padding: 4px;
-    margin: 20px 0 0 0;
+    margin: 10px 0 0 0;
     height: 30px;
     line-height: 30px;
     vertical-align: bottom;
@@ -2049,10 +2075,6 @@ display: none;
 @media (min-width: 766px){
 #press-section p {
   font-size: 1.3em;
-  font-family: "Cormorant Garamond", serif;
-  font-weight: 300;
-  white-space: pre-wrap;
-  text-align: justify;
   padding: 0 4%;
 }
 .circle {
@@ -2102,6 +2124,7 @@ display: none;
 
 #main-signup-div {
   display: inline-block;
+  margin: 20px auto 30px auto;
 }
 #main-video-container {
   width: 90%;
@@ -2134,7 +2157,7 @@ display: none;
   overflow: auto;
   padding-left: 30px;
   padding-right: 30px;
-  padding-bottom: 40px;
+  padding-bottom: 176px;
   padding-top: 30px;
   opacity: 0;
   }  /* must be same height as the footer */
@@ -2143,21 +2166,21 @@ display: none;
   display: inline-block !important;
   }
 
-    .nav-form{
+  .nav-form {
     display: block;
     width: 306px;
-    height: 100px;
+    height: 50px;
     margin: 0 auto 0px auto;
-  }
+}
 
 
 .nav-form input {
     width: 270px;
     float: left;
-    font-size: 1.2em;
+    font-size: 1em;
     padding: 8px;
-    margin: 20px 0 0 0;
-    height: 36px;
+    margin: 10px 0 0 0;
+    height: 30px;
     border-color: #d038af;
     border-radius: 2px 0 0 2px;
     vertical-align: bottom;
@@ -2165,7 +2188,7 @@ display: none;
 
 
 .nav-form button, .nav-form button:hover, .nav-form button:visited, .nav-form button:focus  {
-  width: 36px;
+  width: 30px;
   float: left;
   font-size: 1em;
   vertical-align: middle;
@@ -2175,9 +2198,9 @@ display: none;
   border: 1px 1px 1px 0;
   border-radius: 0 2px 2px 0;
   padding: 4px;
-  margin: 20px 0 0 0;
-  height: 36px;
-  line-height: 36px;
+  margin: 10px 0 0 0;
+  height: 30px;
+  line-height: 30px;
   vertical-align: bottom;
 }
 
@@ -2337,6 +2360,11 @@ display: none;
 
 
 @media (min-width: 1134px){
+#press-section p {
+    font-size: 1.4em;
+    padding: 0 4%;
+}
+
 .blog-panel p {
     padding: 15px 25px 0 25px;
 }
@@ -2429,10 +2457,6 @@ display: none;
   }
 
 .main-page-header {
-    display:inline-block;
-    font-family: 'Oswald', sans-serif;
-    font-weight: 300;
-    letter-spacing: .01em;
     margin-top: 0;
     margin-bottom: 0;
     font-size: 1.6em;
@@ -2481,7 +2505,7 @@ display: none;
 
 
 .social i {
-    font-size: 1.3em;
+    font-size: 1.6em;
     padding: 0 6px 5px 6px;
 }
 

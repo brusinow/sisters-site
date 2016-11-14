@@ -42,7 +42,7 @@ angular.module('SistersCtrls')
 
 .controller('BlogCtrl', ['$scope', '$state','$http','$timeout','$location','$stateParams','Auth','Blog','HelperService','InstagramFactory','AllTagsService', function($scope, $state, $http, $timeout, $location, $stateParams, Auth, Blog, HelperService, InstagramFactory, AllTagsService){
   var main = document.getElementById("main");
-  main.style.backgroundColor = '';
+  main.style.backgroundColor = 'rgba(252, 234, 240, .9)';
   main.style.width = '';
   main.style.padding = '';
   $scope.$emit('loadMainContainer', 'loaded');

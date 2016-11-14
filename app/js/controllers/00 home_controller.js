@@ -18,6 +18,7 @@ $scope.$on('loadMainContainer', function (event, data) {
   main.style.backgroundColor = 'rgba(247, 237, 245, 0)';
   main.style.width = '';
   main.style.padding = "";
+  main.style.paddingBottom = "400px";
   
   $scope.loaded = LoadedService.get();
   var width = window.innerWidth;
@@ -62,7 +63,7 @@ $scope.$on('loadMainContainer', function (event, data) {
 .controller('AboutCtrl', function($scope, $state, $timeout){
   var main = document.getElementById("main");
   main.style.backgroundColor = 'rgba(255, 255, 255, 1)';
-  main.style.padding = "0";
+  main.style.padding = "0 0 176px 0";
   main.style.width = '100%';
   $scope.$emit('loadMainContainer', 'loaded');
 }) 
@@ -77,8 +78,8 @@ $scope.$on('loadMainContainer', function (event, data) {
 
 .controller('PressCtrl', function($scope, $state, $timeout){
   var main = document.getElementById("main");
-  main.style.backgroundColor = 'rgba(255, 255, 255, 1)';
-  main.style.padding = "0";
+  main.style.backgroundColor = 'rgba(255, 255, 255, 0)';
+  main.style.padding = "0 0 176px 0";
   main.style.width = '90%';
   $scope.$emit('loadMainContainer', 'loaded');
 });

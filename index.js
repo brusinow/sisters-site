@@ -50,7 +50,7 @@ app.use(session({
 
 
 
-app.get('/twitter', function(req, res) {
+app.get('/api/twitter', function(req, res) {
   client.get('statuses/user_timeline',{include_rts: false}, function(error, tweets, response) {
   if(error) throw error;
     var thisTweetText = entities.decode(tweets[0].text);
@@ -68,7 +68,7 @@ app.get('/twitter', function(req, res) {
 });
 
 
-app.get('/instagram', function(req, res) {
+app.get('/api/instagram', function(req, res) {
   var instaURL = 'https://api.instagram.com/v1/users/'+process.env.INSTA_USER+'/media/recent/?access_token='+process.env.INSTA_TOKEN;
   request(instaURL, function (error, response, body) {
     if (!error && response.statusCode == 200) {

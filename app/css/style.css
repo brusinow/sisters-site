@@ -124,6 +124,8 @@ a:hover {
   color: #ffa3eb;
 }
 
+
+
 input[type="email"], input[type="number"], input[type="search"], input[type="text"], input[type="tel"], input[type="url"], input[type="password"], textarea {
   height: 28px;
   padding: 6px 10px;
@@ -1200,7 +1202,7 @@ select {
 
 .twitter-interaction-bar a:hover {
   text-decoration: none;
-  color: #ffa3eb;
+  color: #f7799e;
 }
 
 .blog-panel {
@@ -1522,6 +1524,10 @@ select {
 
   .footer-social {
     padding: 0 5px 0 5px;
+  }
+
+  .footer-social a:hover {
+    color: #f7799e;
   }
 
   .copyright {

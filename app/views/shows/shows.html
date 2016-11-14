@@ -1,5 +1,4 @@
-<div ng-hide="loaded" class='uil-spin-css' style='-webkit-transform:scale(0.81)'><div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div></div>
-<div ng-show="loaded" id="shows-container">
+<div id="shows-container">
 <!--   <h2 style="letter-spacing: .02em;" class="text-center">SHOW DATES</h2> -->
   <div id="video-box" class="u-max-full-width">
     <video id="show-vid-large" class="show-video" autoplay loop>
@@ -26,8 +25,8 @@
     </tr>
   </thead>
   <tbody>
-    <tr ng-repeat="show in shows | tooOld track by $index">
-      <td ng-if="firebaseUser.email"><button type="button" class="button button-border-pink edit-button" ng-click="open('edit',show.$id)"><i class="fa fa-pencil" aria-hidden="true"></i></button></td>
+    <tr ng-repeat="show in shows track by $index">
+      <td ng-if="firebaseUser.email"><button type="button" class="button button-border-pink edit-button" ng-click="open('edit',$index)"><i class="fa fa-pencil" aria-hidden="true"></i></button></td>
       <td>{{show.date}}</td>
       <td>{{show.location}}</td>
       <td>{{show.venue}}</td>
@@ -38,16 +37,7 @@
     </tr>
   </tbody>
 </table>
-<div ng-if="shows.length === 0 && loaded">
+<div ng-if="shows.length === 0">
   <h2 class="text-center">There are currently no shows scheduled.</h2>
 </div>
 </div>
-
-
-
-
-<!-- <div ng-if="!loaded" id="spinner-div">
-  <fa name="spinner" spin></fa>
-
-  <i class="fa fa-circle-o-notch fa-spin"></i>
-</div> -->

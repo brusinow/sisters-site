@@ -5,7 +5,8 @@ var main = document.getElementById("main");
   main.style.backgroundColor = '';
   main.style.width = '';
   main.style.padding = '';
-$scope.$emit('loadMainContainer', 'loaded');
+  $scope.$emit('loadMainContainer', 'loaded');
+  console.log(getShows);
   $scope.shows = getShows;
 
   $scope.auth = Auth;

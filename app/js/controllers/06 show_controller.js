@@ -1,6 +1,5 @@
 angular.module('SistersCtrls')
 
-
 .controller('ShowsCtrl', ['$scope', '$state','currentAuth','$uibModal','$log','$firebaseArray','moment','Auth','getShows', function($scope, $state, currentAuth, $uibModal,$log, $firebaseArray, moment, Auth, getShows){
 var main = document.getElementById("main");
   main.style.backgroundColor = 'rgba(255, 255, 255, .9)';
@@ -16,8 +15,7 @@ $scope.$emit('loadMainContainer', 'loaded');
   });
 
 
-  $scope.open = function(whichPage, id) {
-    console.log(id);
+  $scope.open = function(whichPage, index) {
     // console.log(whichPage);
     // console.log(index);
     var modalInstance = $uibModal.open({
@@ -27,12 +25,10 @@ $scope.$emit('loadMainContainer', 'loaded');
       controller: whichPage+'ModalCtrl',
       size: 'lg',
       resolve: {
-        // editShow: function () {
-        //   return $scope.shows;
-        // },
-        thisShow: function(GetSingleShow){
-          return GetSingleShow(id).$loaded;
-        }
+        editShow: function () {
+          return $scope.shows;
+        },
+        index: index
       }
     });
 

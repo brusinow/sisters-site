@@ -1,0 +1,20 @@
+<div id="edit-tag-modal-container">
+  <h4 class="text-center">Edit Your Tag</h4>
+  <div class="row">
+    <div class="eight columns offset-by-two text-center">
+      <input type="text" ng-model="tag.name" placeholder="tag name">
+    </div>
+  </div>
+  <div class="row">
+    <div style="text-align: center;" class="eight columns offset-by-two">
+          <button class="btn btn-primary" type="button" ng-click="ok(tag.name)">Submit</button>
+          <button class="btn btn-default" type="button" ng-click="cancel()">Cancel</button>
+          <button class="btn btn-danger btn-circle" type="button" ng-click="deletePrompt()"><i class="fa fa-trash" aria-hidden="true"></i></button>
+          <div style="margin-top: 10px;" ng-show="prompted">
+          <span>Are you sure?</span>
+          <button style="background-color: #c9302c; border:1px solid #ac2925; color: white" class="button-small button-flat" ng-click='delete("yes")'>Yes</button>
+          <button class="button-small button-flat" ng-click='delete("no")'>No</button>
+          </div>
+    </div>
+  </div>
+</div>

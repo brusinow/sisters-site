@@ -20,7 +20,6 @@ angular.module('ngCart', ['ngCart.directives'])
         });
 
         if (angular.isObject(store.get('cart'))) {
-            console.log("cart being restored");
             ngCart.$restore(store.get('cart'));
 
         } else {
@@ -230,7 +229,6 @@ angular.module('ngCart', ['ngCart.directives'])
             _self.$cart.tax = storedCart.tax;
 
             angular.forEach(storedCart.items, function (item) {
-                console.log(item);
                 _self.$cart.items.push(new ngCartItem(item.parent,  item.description, item.amount, item.quantity, item._data, item.attr));
             });
             this.$save();
@@ -338,7 +336,7 @@ angular.module('ngCart', ['ngCart.directives'])
                     return this.attr["size"]
                 };
             } 
-            else $log.info('This item has no attributes');
+            else {};
         };
         
 
@@ -396,6 +394,8 @@ angular.module('ngCart', ['ngCart.directives'])
         $timeout(function(){
             $scope.loaded = true;
         })
+
+        
 
     }])
 

@@ -70,6 +70,42 @@ angular.module('SistersServices', ['ngResource'])
     return deferred.promise;
 }])
 
+.service('TwitterFactory', ['$http', '$q', 
+  function ($http, $q) {
+    var deferred = $q.defer();
+    $http({
+        method: 'GET',
+        url: '/twitter',
+        cache: true
+    }).success(function (data) {
+        deferred.resolve(data);
+    }).error(function (msg) {
+        deferred.reject(msg);
+    });
+    return deferred.promise;
+}])
+
+
+.factory("DownloadKeyService", function(){
+    return function(hash){
+      console.log("hash is "+hash);
+      // firebase.database().ref('downloadKeys/' + hash).set("test value");
+      firebase.database().ref('downloadKeys/'+hash).once('value').then(function(snapshot) {
+        var snap = snapshot.val();
+        console.log(snap);
+      });
+     
+      // if (thisKey !== null){
+      //   console.log("KEY EXISTS!!!!!!!")
+      //   return true;
+      // } else {
+      //   console.log("Key doesn't exist.")
+      //   return false;
+      // }
+    }
+  }
+)
+
 
 
 

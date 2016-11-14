@@ -4,14 +4,14 @@
   .exp-cvc-line.cvc-right { margin: 0 0 0 2%; }
 
 @media (min-width: 400px) {
-  .container {
+  /*.container {
     width: 85%;
-    padding: 0; }
+    padding: 0; }*/
 }
 
 @media (min-width: 550px) {
-  .container {
-    width: 80%; }
+  /*.container {
+    width: 80%; }*/
 /*  .column,
   .columns {
     margin-left: 4%; }
@@ -19,14 +19,34 @@
   .columns:first-child {
     margin-left: 0; }*/
 
+  .columns.store-item:nth-child(odd){
+    margin-left: 0;
+  }
 
-  .storefront.columns { width: 48%; }
+  .columns.store-item:nth-child(even){
+    margin-left: 2%;
+  }
+
+
+  .storefront.columns { width: 49%; }
   .exp-cvc-line.columns { width: 48%; }
 }
 
-@media (min-width: 769px) {
-  .container {
-    width: 80%; }
+@media (min-width: 980px) {
+  
+
+  .columns.store-item:nth-child(odd){
+    margin-left: 4%;
+  }
+  .columns.store-item:nth-child(even){
+    margin-left: 4%;
+  }
+
+  .columns.store-item:nth-child(4n + 1){
+    margin-left: 0;
+  }
+
+
 /*  .column,
   .columns {
     margin-left: 4%; }
@@ -34,7 +54,7 @@
   .columns:first-child {
     margin-left: 0; }*/
 
-  .storefront.columns { width: 30.6666666667%;}
+  .storefront.columns { width: 22%;}
 /*  .credit-card-num.columns { width: 80%; margin-left: 10%; margin-right: 10%; margin-bottom: 2%;}
   .exp-cvc-line.columns { width: 38%; }
   .exp-cvc-line.exp-left { margin: 0 2% 0 10%; }

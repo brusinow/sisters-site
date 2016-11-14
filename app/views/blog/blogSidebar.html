@@ -1,5 +1,21 @@
   <div class="blog-post" ng-class="{'fade-in': loaded}">
   <button ng-if="firebaseUser.email" style="width: 100%; margin-bottom: 20px" class="button button-border-pink button-rounded button-large" ng-click="newBlogPost()">New Blog Post</button>
+  <div class="fancy"><span><i class="fa fa-twitter" aria-hidden="true"></i> RECENT TWITTER</span></div>
+  
+  <div class="twitter-container">
+    <div class="twitter-user-bar">
+      <a href="https://twitter.com/sisterstheband" target="_blank"><span class="twitter-user">{{twitterUser}}</span> <span class="twitter-header">@{{twitterHandle}} · {{tweetDate | timeAgo}}</span></a>
+    </div>
+    <div class="twitter-text" data-ng-bind-html="tweet"></div>
+    <div class="twitter-interaction-bar">
+      <ul>
+        <li><a ng-href="https://twitter.com/intent/retweet?tweet_id={{tweetId}}" target="_blank"><i class="fa fa-reply" aria-hidden="true"></i></a></li>
+        <li><a ng-href="https://twitter.com/intent/retweet?tweet_id={{tweetId}}" target="_blank">{{retweets}} <i class="fa fa-retweet" aria-hidden="true"></i></a></li>
+        <li><a ng-href="https://twitter.com/intent/like?tweet_id={{tweetId}}" target="_blank">{{favorites}} <i class="fa fa-heart" aria-hidden="true"></i></a></li>
+      </ul>
+    </div>
+  </div>
+
   <div class="fancy"><span><i class="fa fa-instagram" aria-hidden="true"></i> RECENT INSTAGRAM</span></div>
 
   <div class="insta-gallery">
@@ -14,22 +30,20 @@
   <div class="fancy"><span>ARCHIVES</span></div>
 
   <div class="archives archive-container">
-    <ul>
       <div class="each-year" ng-repeat="year in years">
-        <li><span class="archive-year">{{year.$id}}:</span>
-          <div class="month-list">
-            <ul>
+        <div class="archive-year">{{year.$id}}:</div>
+        <div class="month-list">
+          <ul>
             <li class="archive-list-links" ng-repeat="(key,val) in year"><a ng-href="/blog/archives/{{year.$id}}/{{key}}">{{key}}</a></li>
-            </ul>
-          </div>
-        </li>
+          </ul> 
+        </div>      
       </div>
-    </ul>
   </div>
   <div class="fancy"><span>TAGS</span></div>
   <div class="tags">
     <ul>
-      <a ng-repeat="tag in allTags" ng-href="/blog/tags/{{tag.name}}"><li style="float: left;">{{tag.name}}</li></a>
+      <li style="float: left;" ng-repeat="tag in allTags"><a ng-href="/blog/tags/{{tag.name}}"><div class="tags-ovals">{{tag.name}}</div></a><a class="edit-tag-btn" ng-if="firebaseUser.email" ng-click="editTag(tag)"><span><i class="fa fa-pencil-square-o" aria-hidden="true"></i></span></a></li>
+      <!--<a ng-repeat="tag in allTags" ng-href="/blog/tags/{{tag.name}}"><li style="float: left;">{{tag.name}} </li></a>-->
     </ul>
   </div>
   </div>

@@ -1,7 +1,7 @@
 var authWait = ["Auth", function(Auth) { return Auth.$waitForSignIn(); }]
 var authRequire = ["Auth", function(Auth) { return Auth.$requireSignIn(); }]
 
-angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui.bootstrap','firebase','angularMoment','ngCart','ngStorage','angularPayments','ngAnimate','picardy.fontawesome','textAngular','ui.router.metatags'])
+angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui.bootstrap','firebase','angularMoment','ngCart','ngStorage','angularPayments','ngAnimate','picardy.fontawesome','textAngular','ui.router.metatags','angular-parallax'])
 
 
 
@@ -33,7 +33,11 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
 .config(['$stateProvider', '$urlRouterProvider','$locationProvider','UIRouterMetatagsProvider','$provide', function($stateProvider, $urlRouterProvider,$locationProvider, UIRouterMetatagsProvider, $provide){
   UIRouterMetatagsProvider
         .setDefaultTitle('SISTERS')
+<<<<<<< HEAD
         .setDefaultDescription('Seattle duo. Drink Champagne, the debut album, coming soon!')
+=======
+        .setDefaultDescription('Seattle duo. "Drink Champagne", the debut album, coming soon!')
+>>>>>>> develop
         .setStaticProperties({
                 'og:site_name': 'SISTERS'
             })
@@ -52,7 +56,7 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
     url: '/',
     metaTags: {
                 title: 'SISTERS',
-                description: 'Seattle duo. Drink Champagne, the debut album, coming soon!'
+                description: 'Seattle duo. "Drink Champagne", the debut album, coming soon!'
             },
     templateUrl: '/views/home.html',
     controller: 'HomeCtrl'
@@ -63,15 +67,46 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
     controller: 'AboutCtrl'
   })
 
+   .state('press', {
+    url: '/press',
+    templateUrl: '/views/press.html',
+    controller: 'PressCtrl'
+  })
+
+    .state('contact', {
+    url: '/contact',
+    templateUrl: '/views/contact.html',
+    controller: 'ContactCtrl'
+  })
+
+  .state('download', {
+    url: '/download/:id',
+    resolve: {
+      "downloadKey": function(DownloadKeyService, $stateParams){
+        return DownloadKeyService($stateParams.id).$loaded();
+      }
+    },
+    onEnter: function($state, $stateParams, $timeout, downloadKey) {
+      if (downloadKey === true) {
+          $timeout(function() {
+                  console.log("success!");
+                  // $state.go('downloadConfirm');
+              }, 0);
+      } else {
+          $timeout(function() {
+                  console.log("failed!");
+                  // $state.go('downloadFailed');
+              }, 0);
+      }
+    }
+  })
+
 
   .state('blog', {
     templateUrl: '/views/blog/blog.html',
-    controller: 'BlogCtrl',
+    controller: 'BlogMasterCtrl',
     resolve: {
       "currentAuth": authWait,
-      // "Instagram": ['InstagramFactory', function(InstagramFactory){
-      //   return InstagramFactory;
-      // }],
       "Blog": function(BlogPosts){
         return BlogPosts().$loaded();
       }      
@@ -100,6 +135,17 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
       },
       "thisPost": function($stateParams, ThisPostService){
         return ThisPostService($stateParams.slug).$loaded();
+      }
+    }
+  })
+  .state('blog-tags-edit', {
+    url: '/blog/editTags/',
+    templateUrl: '/views/blog/editTags.html',
+    controller: 'EditBlogTagsCtrl',
+    resolve: {
+      "currentAuth": authRequire,
+      "AllTags": function(AllTagsService){
+        return AllTagsService().$loaded();
       }
     }
   })
@@ -231,6 +277,10 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
 
   .state('store', {
     url: '/store',
+    metaTags: {
+            title: 'SISTERS - Store',
+            description: 'The official store for Seattle duo SISTERS.'
+        },
     templateUrl: '/views/store/store.html',
     controller: 'StoreCtrl',
     resolve: {
@@ -311,32 +361,36 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
 
 .filter('cut', function () {
   return function (value, enable, wordwise, max, tail) {
-    if (!value) return '';
-    if (value && !enable) {
-      return value;
-    } else if (value && enable){
-      max = parseInt(max, 10);
-      if (!max) {
-        return value;
-      }
-      if (value.length <= max){
-        return value;
-      } 
-
-      value = value.substr(0, max);
-      if (wordwise) {
-        var lastspace = value.lastIndexOf(' ');
-        if (lastspace != -1) {
-          //Also remove . and , so its gives a cleaner result.
-          if (value.charAt(lastspace-1) == '.' || value.charAt(lastspace-1) == ',') {
-            lastspace = lastspace - 1;
-          }
-          value = value.substr(0, lastspace);
-        }
-      }
-
-      return value + (tail || '…');
-    }
+    var source = angular.element('<div/>').html(value);
+    console.log("source: ",source);
+    var length = source.text().length;
+    console.log("length: ",length);
+    // if (!plainText) return '';
+    // if (plainText && !enable) {
+    //   return value;
+    // } else if (plainText && enable){
+    //   max = parseInt(max, 10);
+    //   if (!max) {
+    //     return value;
+    //   }
+    //   if (plainText.length <= max){
+    //     return value;
+    //   } 
+    //   element[0].innerText = plainText.substr(0, max);
+    //   if (wordwise) {
+    //     var lastspace = plainText.lastIndexOf(' ');
+    //     if (lastspace != -1) {
+    //       //Also remove . and , so its gives a cleaner result.
+    //       if (plainText.charAt(lastspace-1) == '.' || value.charAt(lastspace-1) == ',') {
+    //         lastspace = lastspace - 1;
+    //       }
+    //       element[0].innerText = value.substr(0, lastspace);
+    //   }
+    // }
+      
+    // //   console.log("value: ",value);
+    // //   return element[0].outerHTML + (tail || '…');
+    // }
   };
 })
 
@@ -349,7 +403,7 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
 
 .filter('MomentFilter', ['moment', function(moment){
   return function(val){
-    return  moment(val).format('MMMM Do, YYYY');
+    return  moment(val).format('dddd, MMMM Do, YYYY');
   }
 }])
 
@@ -375,6 +429,11 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
   }
 }])
 
+.filter('timeAgo', ['moment', function(){
+  return function(val){
+    return moment(val).fromNow();
+  }
+}])
 
 
 

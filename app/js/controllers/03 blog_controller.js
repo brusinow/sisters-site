@@ -1,6 +1,51 @@
 angular.module('SistersCtrls')
 
+
+
+.controller('BlogMasterCtrl', ['$scope', '$state','$http','$timeout','$location','$stateParams','Auth','Blog','HelperService','InstagramFactory','AllTagsService','TwitterFactory', function($scope, $state, $http, $timeout, $location, $stateParams, Auth, Blog, HelperService, InstagramFactory, AllTagsService, TwitterFactory){
+  $scope.loadedInsta = false;
+  $scope.loadedTwitter = false;
+  $scope.$emit('loadMainContainer', 'loaded');
+ 
+  InstagramFactory.then(function(data){
+    $scope.photos = data.data;
+    $scope.loadedInsta = true;
+    if ($scope.loadedTwitter){
+      $scope.loaded = true;
+    }
+  })
+  TwitterFactory.then(function(data){
+   
+    console.log(data);
+    $scope.tweetDate = data.allTweetData.created_at;
+    $scope.twitterUser = data.allTweetData.user.name;
+    $scope.twitterHandle = data.allTweetData.user.screen_name;
+    $scope.tweetId = data.allTweetData.id_str;
+    $scope.tweet = data.tweetBody;
+    $scope.favorites = data.favorites;
+    $scope.retweets = data.retweets;
+    $scope.loadedTwitter = true;
+    if ($scope.loadedInsta){
+      $scope.loaded = true;
+    }
+  })
+  $scope.enable = true;
+  $scope.auth = Auth;
+  $scope.auth.$onAuthStateChanged(function(firebaseUser) {
+    $scope.firebaseUser = firebaseUser;
+
+  });
+}])
+
+
+
+
 .controller('BlogCtrl', ['$scope', '$state','$http','$timeout','$location','$stateParams','Auth','Blog','HelperService','InstagramFactory','AllTagsService', function($scope, $state, $http, $timeout, $location, $stateParams, Auth, Blog, HelperService, InstagramFactory, AllTagsService){
+  var main = document.getElementById("main");
+  main.style.backgroundColor = 'rgba(252, 234, 240, .9)';
+  main.style.width = '';
+  main.style.padding = '';
+  $scope.$emit('loadMainContainer', 'loaded');
   $scope.allTags = AllTagsService();
 
   $scope.location = $location.$$path;
@@ -15,11 +60,11 @@ angular.module('SistersCtrls')
   $scope.enable = true;
   $scope.parseTitle = HelperService.titleToURL;
 
-  $scope.auth = Auth;
-  $scope.auth.$onAuthStateChanged(function(firebaseUser) {
-    $scope.firebaseUser = firebaseUser;
+  // $scope.auth = Auth;
+  // $scope.auth.$onAuthStateChanged(function(firebaseUser) {
+  //   $scope.firebaseUser = firebaseUser;
 
-  });
+  // });
   $scope.allPosts = Blog;
   $scope.page = $stateParams.page || 0;
   $scope.pageUp = '/blog/' + (parseInt($scope.page) + 1);
@@ -43,12 +88,23 @@ angular.module('SistersCtrls')
 
 
 .controller('BlogArchiveCtrl', ['$scope', '$state','$timeout','$stateParams','$location', 'Blog','Archive','Auth','HelperService','AllTagsService', function($scope, $state, $timeout, $stateParams, $location, Blog, Archive, Auth, HelperService, AllTagsService){
+   $scope.$emit('loadMainContainer', 'notLoaded');
    $scope.location = $location.$$path;
   $scope.allTags = AllTagsService();
   $scope.enable = true;
   // $scope.photos = Instagram.data;
   $scope.fullBlog = Blog;
-  $scope.allPosts = Archive; 
+  var result = [];
+  for (var i = 0; i < Archive.length; i++){
+    var key = Archive[i].$id;
+    for (var j = 0; j < Blog.length; j++){
+      var blogKey = Blog[j].$id;
+      if (key === blogKey){
+        result.push(Blog[j]);
+      }
+    }
+  };
+  $scope.allPosts = result; 
   $scope.params = $stateParams;
 
 
@@ -73,6 +129,7 @@ angular.module('SistersCtrls')
   // console.log($scope.posts);
 
   $timeout(function(){
+    $scope.$emit('loadMainContainer', 'loaded');    
     $scope.loaded = true;
   })
 
@@ -84,24 +141,36 @@ angular.module('SistersCtrls')
 
 
 .controller('BlogTagsCtrl', ['$scope', '$state','$stateParams','$location', '$timeout','Blog','TagsShow','Auth','HelperService','AllTagsService', function($scope, $state, $stateParams, $location, $timeout, Blog, TagsShow, Auth, HelperService, AllTagsService){
+   $scope.$emit('loadMainContainer', 'notLoaded');
    $scope.location = $location.$$path;
   $scope.allTags = AllTagsService();
   $scope.enable = true;
-  // $scope.photos = Instagram.data;
   $scope.tagName = TagsShow[0].name;
-  var allPosts = TagsShow[0].posts;
+  var thisTag = TagsShow[0].$id;
   var selectPosts = [];
-  var length = 0;
-  var i;
-  for (i in allPosts) {
-    if (allPosts.hasOwnProperty(i)) {
-        length++;
-        selectPosts.push(allPosts[i]);
+  for (var i = 0; i < Blog.length; i++){
+    var thisPostTags = Blog[i].tags;
+    if (thisPostTags[thisTag]){
+      selectPosts.push(Blog[i]);
     }
-  }
-  console.log("what is selectPosts? ",selectPosts);
-  console.log("what is length? ",length)
-  $scope.parseTitle = HelperService.titleToURL;
+  };
+
+
+
+
+
+
+
+  
+  // var length = 0;
+  // var i;
+  // for (i in allPosts) {
+  //   if (allPosts.hasOwnProperty(i)) {
+  //       length++;
+  //       selectPosts.push(allPosts[i]);
+  //   }
+  // }
+  // $scope.parseTitle = HelperService.titleToURL;
 
 
 
@@ -122,7 +191,8 @@ angular.module('SistersCtrls')
   console.log($scope.posts);
 
   $timeout(function(){
-    $scope.loaded = true;
+    $scope.$emit('loadMainContainer', 'loaded');
+    $scope.loaded = true;   
   })
 
   $scope.editPost = function(post){
@@ -133,6 +203,7 @@ angular.module('SistersCtrls')
 
 
 .controller('BlogShowCtrl', ['$scope', '$state','$stateParams','$location','$timeout','thisPost','Blog','AllTagsService', function($scope, $state, $stateParams, $location, $timeout, thisPost, Blog, AllTagsService){
+ $scope.$emit('loadMainContainer', 'notLoaded');
  $scope.location = $location.$$path;
  $scope.allTags = AllTagsService();
  $scope.enable = false;
@@ -143,18 +214,18 @@ angular.module('SistersCtrls')
  $scope.allPosts = thisPost;
 
   $timeout(function(){
+    $scope.$emit('loadMainContainer', 'loaded');  
     $scope.loaded = true;
   })
 }])  
 
 
-.controller('BlogSidebarCtrl', ['$scope', '$state','$stateParams','$timeout','ArchiveService','AllTagsService','BlogPosts','HelperService', function($scope, $state, $stateParams,$timeout, ArchiveService, AllTagsService, BlogPosts, HelperService){
+.controller('BlogSidebarCtrl', ['$scope', '$state','$stateParams','$timeout','ArchiveService','AllTagsService','BlogPosts','HelperService','$uibModal','$log', function($scope, $state, $stateParams,$timeout, ArchiveService, AllTagsService, BlogPosts, HelperService, $uibModal, $log){
  
   $scope.recentPosts = BlogPosts();
   $scope.parseTitle = HelperService.titleToURL;
   $scope.years = ArchiveService.years();
   $scope.years.$loaded().then(function(){
-    console.log("YEARS!!!", $scope.years); 
   })
 
   $scope.allTags = AllTagsService();
@@ -162,5 +233,29 @@ angular.module('SistersCtrls')
   $scope.newBlogPost = function(){
     $state.go("blog-new");
   }
+
+    $scope.editTag = function(tag) {
+    // console.log(whichPage);
+    // console.log(index);
+    var modalInstance = $uibModal.open({
+      animation: true,
+      backdrop: true,
+      templateUrl: '/views/blog/editTagsModal.html',
+      controller: 'EditBlogTagsCtrl',
+      size: 'lg',
+      resolve: {
+        "Blog": function(BlogPosts){
+        return BlogPosts().$loaded();
+        },   
+        tag: tag
+      }
+    });
+
+    modalInstance.result.then(function () {
+     console.log("submitted modal");
+    }, function () {
+      $log.info('Modal dismissed at: ' + new Date());
+    });
+  }; 
 
 }]);

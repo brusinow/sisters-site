@@ -9,7 +9,7 @@
     <ul ng-class="{'drop-hidden' : toggle}">
       <li><a ng-click="toggle = !toggle" ng-href="/">home</a></li>
       <li><a ng-click="toggle = !toggle" ng-href="/shows">shows</a></li>
-      <li><a ng-click="toggle = !toggle" href="https://soundcloud.com/sisterstheband" target="_blank">listen</a></li>
+      <li><a ng-click="toggle = !toggle" href="https://iheartsisters.bandcamp.com/" target="_blank">music</a></li>
       <li><a ng-click="toggle = !toggle" ng-href="/blog">blog</a></li>
        <!--<li><a ng-click="toggle = !toggle" ng-href="/store">store</a></li>-->
     </ul>
@@ -17,20 +17,22 @@
 </div>
 
 
-<div style="padding-left: 10%; padding-right: 10%;" id="main-nav" class="navbar row">
+<div style="padding-left: 4%; padding-right: 4%;" id="main-nav" class="navbar row">
   <div style="vertical-align: middle;" class="eight columns">
     <a ng-href="/"><img id="logo" src="/img/logo.png"/></a>
     <ul style="margin-top: 1.5rem; margin-bottom: 0;" class="nav-left">
       <li><a ng-href="/shows">shows</a></li>
-      <li><a href="https://soundcloud.com/sisterstheband" target="_blank">listen</a></li>
+      <li><a href="https://iheartsisters.bandcamp.com/" target="_blank">music</a></li>
       <li><a ng-href="/blog">blog</a></li>
       <!--<li><a ng-href="/store">store</a></li>-->
     </ul>
 
   </div>
   <div class="clear-float"></div>
-  <div class="four columns">
+  <div class="four columns right-nav-social-width">
+    
     <div class="nav-right">
+     
       <div style="margin-top: 1.5rem; margin-bottom: 0;" class="social header-social float-right">
         <a href="https://soundcloud.com/sisterstheband" target="_blank"><i class="fa fa-soundcloud fa-lg" aria-hidden="true"></i></a>
         <a href="https://open.spotify.com/artist/2Hb8mc3CoUktri3i4Q4ACR" target="_blank"><i class="fa fa-spotify fa-lg" aria-hidden="true"></i></a>
@@ -42,22 +44,23 @@
     </div>
   </div> 
 </div>
-<!--<a ng-href="/store/cart"><ngcart-summary></ngcart-summary></a> -->
+ <!--<a ng-href="/store/cart"><ngcart-summary></ngcart-summary></a> -->
 <div ng-show="isPopup">
   <div id="pop-up"></div>
-  <div class="overlay-content">
+  <div id="overlay-content">
     <button id="exit-popup" class="button-border" ng-click="closePopup()"><i class="fa fa-times" aria-hidden="true"></i></button>
-    <h3 class="text-center popup-header">Join our Mailing List!</h3>
-    <p>
-      Our first full-length album "Drink Champagne" out soon! Sign up below for our mailing list for updates.
+    <h3 class="text-center popup-header">Pre-order the Debut Album!</h3>
+    <div id="popup-img-div">
+      <img src="/img/drinkChampagne.jpg"/>
+    </div>
+    <p style="font-size: 1.8em; margin-top: 10px; margin-bottom: 3px;" class="text-center">
+      Drink Champagne
+    </p>
+     <p style="margin-bottom: 12px;" class="text-center">
+      Valentine's Day 2017
     </p>
     <div class="text-center">
-    <form name="popupForm" class="popup-form" ng-submit="popupForm.$valid && mailchimpSubmit(popupForm, user.popEmail, false)" novalidate>
-      <button id="popup-submit" type="submit" class="button-flat-pink float-right">
-        <i style="position: relative; bottom: 8px;"class="fa fa-paper-plane-o fa-lg" aria-hidden="true"></i>
-      </button>
-      <input class="float-right" name="uEmail" type="email" placeholder="Pop Bottles With Us!" ng-model="user.popEmail" required/>
-      </form>
+   <button ng-click="toStore()" class="button popup-button button-flat-pink">Pre-order here</button>
     </div>
   </div>
 </div>

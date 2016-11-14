@@ -1,6 +1,17 @@
 <div class="footer">
+
   <div class="row">
-    <div class="six columns">
+    <div class="six columns footer-nav">
+      <div class="cassette-div">
+        <img src="/img/main/cassette.png"/>
+      </div>
+      <ul class="footer-nav-links">
+        <li><a ng-href="/about">About</a></li>
+        <li><a ng-href="/press">Press</a></li>
+        <li><a ng-href="/contact">Contact</a></li>
+      </ul>
+    </div>
+    <!--<div class="six columns">
       <div class="contact">
         <h5>CONTACT</h5>
         <p><strong>Management:</strong> Ryan Crowther</p>
@@ -9,23 +20,25 @@
         <p><strong>Press Contact:</strong> Beth Martinez</p>
         <a class="footer-link" href="mailto:beth@dangervillage.com?Subject=SISTERS%20Press" target="_top">beth@dangervillage.com</a>
       </div>
-    </div>
+    </div>-->
 
 
      
-    <div class="six columns footer-right">
-      <div class="footer-social footer-link social">
-        <a class="footer-icon" href="https://soundcloud.com/sisterstheband" target="_blank"><i class="fa fa-soundcloud fa-lg" aria-hidden="true"></i></a>
-         <a class="footer-icon" href="https://open.spotify.com/artist/2Hb8mc3CoUktri3i4Q4ACR" target="_blank"><i class="fa fa-spotify fa-lg" aria-hidden="true"></i></a>
-        <a class="footer-icon" href="https://www.snapchat.com/add/iheartsisters" target="_blank"><i class="fa fa-snapchat-ghost fa-lg" aria-hidden="true"></i></a>
-        <a class="footer-icon" href="https://www.facebook.com/sisterstheband" target="_blank"><i class="fa fa-facebook fa-lg" aria-hidden="true"></i></a>
-        <a class="footer-icon" href="https://www.instagram.com/sisterstheband/" target="_blank"><i class="fa fa-instagram fa-lg" aria-hidden="true"></i></a>
-        <a class="footer-icon" href="https://twitter.com/sisterstheband" target="_blank"><i class="fa fa-twitter fa-lg" aria-hidden="true"></i></a>
-      </div><br>
-      <span class="copyright">All Content ©2016 Sylvia Morris LLC.</span>
-      <button ng-show="firebaseUser.email" style="margin-bottom: 4px;" class="button button-circle button-flat-royal button-tiny-circle" ng-click="logout()"><i class="fa fa-sign-out"></i></button>
-      <div class="website-design text-center">Website by <a href="http://www.brentrusinowdev.com" target="_blank">Brent Rusinow</a></div
-    </div>
+      <div class="six columns footer-right">
+        <div class="footer-social footer-link social">
+          <a class="footer-icon" href="https://soundcloud.com/sisterstheband" target="_blank"><i class="fa fa-soundcloud fa-lg" aria-hidden="true"></i></a>
+          <a class="footer-icon" href="https://open.spotify.com/artist/2Hb8mc3CoUktri3i4Q4ACR" target="_blank"><i class="fa fa-spotify fa-lg" aria-hidden="true"></i></a>
+          <a class="footer-icon" href="https://www.snapchat.com/add/iheartsisters" target="_blank"><i class="fa fa-snapchat-ghost fa-lg" aria-hidden="true"></i></a>
+          <a class="footer-icon" href="https://www.facebook.com/sisterstheband" target="_blank"><i class="fa fa-facebook fa-lg" aria-hidden="true"></i></a>
+          <a class="footer-icon" href="https://www.instagram.com/sisterstheband/" target="_blank"><i class="fa fa-instagram fa-lg" aria-hidden="true"></i></a>
+          <a class="footer-icon" href="https://twitter.com/sisterstheband" target="_blank"><i class="fa fa-twitter fa-lg" aria-hidden="true"></i></a>
+        </div><br>
+        <span class="copyright">All Content © 2016 Sylvia Morris LLC.</span>
+        <button ng-show="firebaseUser.email" style="margin-bottom: 4px;" class="button button-circle button-flat-royal button-tiny-circle"
+          ng-click="logout()"><i class="fa fa-sign-out"></i></button>
+        <div class="website-design text-center">Website by <a style="font-weight: 400;" href="http://www.brentrusinowdev.com" target="_blank">Brent Rusinow</a></div </div>
+      </div>
+      </div>
   </div>
 </div>
 

@@ -6,3 +6,4 @@ node_modules
 !.elasticbeanstalk/*.global.yml
 /app/components
 app/components
+.DS_Store

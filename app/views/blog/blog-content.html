@@ -34,11 +34,7 @@
         <div ng-if="allTags.length > 0" class="tag-content">
           <h6 style="margin-bottom: 5px;">TAGS</h6>
           <ul class="tags">
-<<<<<<< HEAD
-            <a ng-repeat="tag in allTags" ng-if="post.tags[tag.$id]" ng-href="/blog/tags/{{tag.name}}"><li>{{tag.name}}</li></a>       
-=======
             <li class="tags-ovals" ng-repeat="tag in allTags" ng-if="post.tags[tag.$id]">{{tag.name}}</li>   
->>>>>>> develop
           </ul>
         </div>
       </div>

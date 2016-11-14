@@ -1427,12 +1427,23 @@ select {
 }
 
 #main-signup-div {
-  background-color: rgba(247, 237, 245,0);
-  /*border: 3px solid #d038af;*/
-  display: inline-block;
-  padding: 15px 30px 15px 30px;
-  margin: 0 auto 0px auto;
-  border-radius: 2px;
+    background-color: rgba(255, 255, 255,.9);
+    /* border: 3px solid #d038af; */
+    display: inline-block;
+    padding: 15px 15px 15px 15px;
+    margin: 0 auto 10px auto;
+    border-radius: 2px;
+    width: 100%;
+}
+
+#main-signup-div p {
+  text-align: justify;
+  font-family: "Cormorant Garamond", serif;
+  font-size: 1em;
+  line-height: 1.2em;
+  margin-top: 2px;
+  margin-bottom: 2px;
+  white-space: pre-wrap;
 }
 
 #wrap {
@@ -1892,8 +1903,8 @@ display: none;
 .nav-form {
     display: block;
     width: 100%;
-    height: 85px;
-    margin: 0 auto 10px auto;
+    height: 30px;
+    margin: 0 auto 0px auto;
 }
 
 .nav-form input {
@@ -1928,11 +1939,12 @@ display: none;
 
 
 .mail-alerts {
-  font-size: .8em;
-  width: 100%;
-  min-height: 40px;
-  display: inline-block;
-  text-align: center;
+    width: 100%;
+    margin-top: 10px;
+    margin-bottom: 0;
+    height: 30px;
+    display: inline-block;
+    text-align: center;
 }
 
 .mail-alerts span {
@@ -1943,8 +1955,8 @@ display: none;
 .mailchimp-alert-confirm {
     font-family: 'Oswald', sans-serif;
     font-weight: 300;
-    color: #d038af;
-    font-size: 2em;
+    color: #f7799e;
+    font-size: 1.3em;
     opacity: 0;
     letter-spacing: .03em;
 }
@@ -1954,10 +1966,15 @@ display: none;
 }
 
 .mailchimp-alert-confirm.confirmAnimate {
-  opacity: 0;
-  animation: fade 3s linear;
+  opacity: 1;
+  animation: kf-fade-in 1s linear;
 }
 
+@keyframes kf-fade-in {
+  0% {opacity: 0}
+  50% {opacity: .5}
+  100% {opacity: 1}
+}
 
 @keyframes fade {
   0%,100% { opacity: 0 }
@@ -2131,6 +2148,7 @@ display: none;
 
 #main-signup-div {
   display: inline-block;
+  width: 90%;
   margin: 20px auto 30px auto;
 }
 #main-video-container {
@@ -2188,7 +2206,6 @@ display: none;
     padding: 8px;
     margin: 10px 0 0 0;
     height: 30px;
-    border-color: #d038af;
     border-radius: 2px 0 0 2px;
     vertical-align: bottom;
 }
@@ -2199,9 +2216,6 @@ display: none;
   float: left;
   font-size: 1em;
   vertical-align: middle;
-  background-color: #d038af;
-  color: white;
-  border-color: #d038af;
   border: 1px 1px 1px 0;
   border-radius: 0 2px 2px 0;
   padding: 4px;
@@ -2348,6 +2362,11 @@ display: none;
     font-size: .8em;
   }
 
+  .mail-alerts {
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
 }
 
 
@@ -2450,7 +2469,19 @@ display: none;
 
   #main-signup-div {
   display:inline-block;
+  width: 50%;
+  padding: 15px 25px;
 }
+
+#main-signup-div p {
+    font-family: "Cormorant Garamond", serif;
+    font-size: 1.2em;
+    line-height: 1.2em;
+    margin-top: 10px;
+    margin-bottom: 10px;
+}
+
+
   .recent-posts-list li {
   font-size: 1.3em;
 }
@@ -2466,8 +2497,10 @@ display: none;
 .main-page-header {
     margin-top: 0;
     margin-bottom: 0;
-    font-size: 1.6em;
+    font-size: 1.9em;
 }
+
+
 
 #main-video-container {
   width: 60%;

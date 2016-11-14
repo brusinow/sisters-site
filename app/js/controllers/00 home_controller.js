@@ -42,13 +42,14 @@ $scope.$on('loadMainContainer', function (event, data) {
      $scope.isPopup = false;
     var url = "//sisterstheband.us14.list-manage.com/subscribe/post-json?u=bc38720b0bcc7a32641bb572c&amp;id=242f4adc89&EMAIL="+email+"&c=JSON_CALLBACK"
     $http.jsonp(url).then(function success(res){
+      console.log(res);
       $scope.user = {};
         if(isNav){
         $scope.mailConfirm = true;
-          $timeout(function(){
-            $scope.mailConfirm = false;
-            console.log("mail confirm reset");
-          },7000);
+          // $timeout(function(){
+          //   $scope.mailConfirm = false;
+          //   console.log("mail confirm reset");
+          // },7000);
         }
     }, function error(res){
       console.log(res);

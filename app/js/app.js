@@ -33,11 +33,7 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
 .config(['$stateProvider', '$urlRouterProvider','$locationProvider','UIRouterMetatagsProvider','$provide', function($stateProvider, $urlRouterProvider,$locationProvider, UIRouterMetatagsProvider, $provide){
   UIRouterMetatagsProvider
         .setDefaultTitle('SISTERS')
-<<<<<<< HEAD
-        .setDefaultDescription('Seattle duo. Drink Champagne, the debut album, coming soon!')
-=======
         .setDefaultDescription('Seattle duo. "Drink Champagne", the debut album, coming soon!')
->>>>>>> develop
         .setStaticProperties({
                 'og:site_name': 'SISTERS'
             })

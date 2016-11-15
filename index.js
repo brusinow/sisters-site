@@ -207,7 +207,6 @@ app.post("/stripe/taxCallback", function(req, res){
 
 
 app.get('/*', function(req, res) {
-  console.log("GETTING SOMETHING FROM NODE SERVER!!!!!!!!!!!!!!");
   res.sendFile(path.join(__dirname, 'app/index.html'));
 });
 

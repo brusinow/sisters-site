@@ -1,13 +1,11 @@
 angular.module('SistersCtrls')
 
 
-.controller('editModalCtrl', function ($scope, $uibModalInstance, thisShow, $firebaseArray) {
-  // $scope.shows = editShow;
-  
-  $scope.show = thisShow;
-  console.log("this show! ",thisShow);
+.controller('editModalCtrl', function ($scope, $uibModalInstance, editShow, index, $firebaseArray) {
+  $scope.shows = editShow;
+  $scope.show = editShow[index];
 
-  // console.log("index is ",index);
+  console.log("index is ",index);
   $scope.dateObj = new Date($scope.show.unix * 1000);
   console.log($scope.dateObj);
 
@@ -67,6 +65,3 @@ angular.module('SistersCtrls')
     $uibModalInstance.dismiss('cancel');
   };
 })
-
-
-

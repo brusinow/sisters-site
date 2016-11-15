@@ -110,24 +110,24 @@ angular.module('SistersServices', ['ngResource'])
 
 
 
-
 .factory("GetShows", ["$firebaseArray","moment", 
   function($firebaseArray, moment){
+    var currentDay = moment().unix();
     // console.log("current day: ",currentDay);
     return function(){
-    var showsRef = firebase.database().ref('shows').orderByChild("unix");
+    var showsRef = firebase.database().ref('shows').orderByChild("unix").startAt(currentDay);
     // console.log("I'm in GetShows");
     return $firebaseArray(showsRef);
   }
 }])
 
-.factory("GetSingleShow", ["$firebaseArray", 
-  function($firebaseArray) {
-  return function(id){
-     var showsRef = firebase.database().ref('shows/'+ id);
-      return $firebaseArray(showsRef);
-  }
-}])
+// .factory("GetSingleShow", ["$firebaseArray", 
+//   function($firebaseArray) {
+//   return function(id){
+//      var showsRef = firebase.database().ref('shows/'+ id);
+//       return $firebaseArray(showsRef);
+//   }
+// }])
 
 
 

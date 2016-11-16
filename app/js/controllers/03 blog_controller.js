@@ -226,6 +226,7 @@ angular.module('SistersCtrls')
   $scope.parseTitle = HelperService.titleToURL;
   $scope.years = ArchiveService.years();
   $scope.years.$loaded().then(function(){
+    console.log($scope.years);
   })
 
   $scope.allTags = AllTagsService();

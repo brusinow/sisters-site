@@ -433,6 +433,11 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
   }
 }])
 
+.filter('reverse', function() {
+    return function(items) {
+      return items.slice().reverse();
+    };
+  })
 
 
 

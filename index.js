@@ -184,6 +184,8 @@ app.post("/stripe/taxCallback", function(req, res){
   }
 
 
+
+
   var myJSON = {
       "order_update": {
         "order_id": orderId,
@@ -198,7 +200,7 @@ app.post("/stripe/taxCallback", function(req, res){
         ]
       }
   }   
-  console.log(myJSON); 
+  console.log(JSON.stringify(myJSON, null, 4));
   res.json(myJSON); 
 });
 

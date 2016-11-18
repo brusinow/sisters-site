@@ -218,6 +218,7 @@ $scope.changeActive = function(){
       method: 'POST',
       params: {
         order: {
+          dateCreated: new Date(),
           currency: 'usd',
           items: $scope.cartItems,
           shipping: {

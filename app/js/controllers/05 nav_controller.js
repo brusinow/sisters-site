@@ -45,7 +45,7 @@ angular.module('SistersCtrls')
    
       // if (w >= 678){
       if ($scope.firebaseUser === null && $location.$$path !== "/login"){
-        console.log("entering popup");
+   
         
         if (!document.getElementById("overlayMail")){
           
@@ -54,7 +54,7 @@ angular.module('SistersCtrls')
           div.className = "overlay-start";
           var body = document.body;
           var popUp = document.querySelector("#pop-up");
-          console.log(body.scrollHeight);
+      
           div.style.height = body.scrollHeight + "px";
           popUp.appendChild(div);
           var overlay = document.querySelector("#overlayMail");

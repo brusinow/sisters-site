@@ -16,7 +16,7 @@ angular.module('SistersCtrls')
   })
   TwitterFactory.then(function(data){
    
-    console.log(data);
+    // console.log(data);
     $scope.tweetDate = data.allTweetData.created_at;
     $scope.twitterUser = data.allTweetData.user.name;
     $scope.twitterHandle = data.allTweetData.user.screen_name;
@@ -186,9 +186,9 @@ angular.module('SistersCtrls')
   $scope.first = HelperService.findFirst($scope.length, $scope.page);
 
   $scope.last = $scope.length - (4 * $scope.page);
-  console.log("Last: ",$scope.last);
+  // console.log("Last: ",$scope.last);
   $scope.posts = selectPosts.slice($scope.first, $scope.last);
-  console.log($scope.posts);
+  // console.log($scope.posts);
 
   $timeout(function(){
     $scope.$emit('loadMainContainer', 'loaded');
@@ -208,7 +208,7 @@ angular.module('SistersCtrls')
  $scope.allTags = AllTagsService();
  $scope.enable = false;
  $scope.recentPosts = Blog;
- console.log($scope.recentPosts);
+//  console.log($scope.recentPosts);
  // $scope.photos = Instagram.data; 
  $scope.posts = thisPost;
  $scope.allPosts = thisPost;
@@ -226,7 +226,7 @@ angular.module('SistersCtrls')
   $scope.parseTitle = HelperService.titleToURL;
   $scope.years = ArchiveService.years();
   $scope.years.$loaded().then(function(){
-    console.log($scope.years);
+    // console.log($scope.years);
   })
 
   $scope.allTags = AllTagsService();
@@ -253,7 +253,7 @@ angular.module('SistersCtrls')
     });
 
     modalInstance.result.then(function () {
-     console.log("submitted modal");
+    //  console.log("submitted modal");
     }, function () {
       $log.info('Modal dismissed at: ' + new Date());
     });

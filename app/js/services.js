@@ -114,7 +114,7 @@ angular.module('SistersServices', ['ngResource'])
   function($firebaseArray, moment){
     var currentDay = moment().unix();
     var calcDay = currentDay - 86400;
-    console.log("current day: ",currentDay);
+    // console.log("current day: ",currentDay);
     return function(){
     var showsRef = firebase.database().ref('shows').orderByChild("unix").startAt(calcDay);
     // console.log("I'm in GetShows");

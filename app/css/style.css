@@ -405,12 +405,12 @@ select {
     position:fixed;
     left:50%;
     top:50%;
-    width: 500px;
-    height: 600px;
+    width: 300px;
+    height: 500px;
     z-index: 502;
     border-radius: 2px;
-    margin-left:-250px;
-    margin-top:-300px;
+    margin-left:-150px;
+    margin-top:-250px;
     animation-name: overlay-content-fadein;
     animation-duration: .3s;
     background-color: rgba(242,242,242,1);
@@ -436,9 +436,11 @@ select {
 }
 
 #popup-img-div {
-  width: 400px;
-  margin: 0 auto;
+    width: 225px;
+    margin: 0 auto;
 }
+
+
 
 #popup-img-div img {
   width: 100%;
@@ -1585,6 +1587,10 @@ display: none;
   padding: 20px 30px;
 }
 
+#mobile-background-div {
+  top: 0;
+}
+
 .drop-hidden {
   display: none;
 }
@@ -2094,6 +2100,10 @@ display: none;
   padding: 30px;
 }
 
+#mobile-background-div {
+  background-position: 50% 50%;
+}
+
 @media (min-width: 550px){
   .main-product-photo {
     margin: 0 0 0 5%;
@@ -2102,6 +2112,10 @@ display: none;
 
 
 @media (min-width: 766px){
+#mobile-background-div {
+  background-position: 50% 100%;
+}
+
 #press-section p {
   font-size: 1.3em;
   padding: 0 4%;
@@ -2370,6 +2384,30 @@ display: none;
   .mail-alerts {
     margin-top: 10px;
     margin-bottom: 10px;
+}
+
+#overlay-content {
+    /* position: absolute; */
+    margin: 0 auto;
+    padding: 20px;
+    /* top: 0; */
+    position: fixed;
+    left: 50%;
+    top: 50%;
+    width: 500px;
+    height: 600px;
+    z-index: 502;
+    border-radius: 2px;
+    margin-left: -250px;
+    margin-top: -300px;
+    animation-name: overlay-content-fadein;
+    animation-duration: .3s;
+    background-color: rgba(242,242,242,1);
+}
+
+#popup-img-div {
+  width: 400px;
+  margin: 0 auto;
 }
 
 }

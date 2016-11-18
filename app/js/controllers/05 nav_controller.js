@@ -43,7 +43,7 @@ angular.module('SistersCtrls')
   $timeout(function(){
     // OVERLAY CREATION
    
-      if (w >= 678){
+      // if (w >= 678){
       if ($scope.firebaseUser === null && $location.$$path !== "/login"){
         console.log("entering popup");
         
@@ -65,7 +65,7 @@ angular.module('SistersCtrls')
         // content.style.top = scrollTop + "px";
         $scope.isPopup = true;
       }
-    };
+    // };
   },6000)
     
 

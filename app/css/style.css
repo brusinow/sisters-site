@@ -76,7 +76,6 @@ button.button-tiny-circle {
     font-family: 'Oswald', sans-serif;
     font-weight: 400;
     letter-spacing: .04em;
-    text-transform: lowercase;
     margin: 0;
     font-size: 2rem;
 }

@@ -103,7 +103,7 @@ $scope.changeActive = function(){
 
 
 
-.controller('StoreAddressCtrl', function($scope, $state, $window, $timeout, $http, $location, $localStorage, ngCart, $rootScope, CurrentOrderService){
+.controller('StoreAddressCtrl', function($scope, $state, $window, $timeout, $http, $location, $localStorage, ngCart, $rootScope, CurrentOrderService, moment){
   var main = document.getElementById("main");
   main.style.backgroundColor = 'rgba(247, 237, 245, 0)';
 
@@ -171,25 +171,26 @@ $scope.changeActive = function(){
     }
   }
 
-  $scope.submitForm = function(form){
+$scope.submitForm = function(form){
      if(form.$valid){
       
     $scope.loaded = [];
+    var taxObj = {
+      amount: ngCart.getTax(),
+      description: "tax: ("+ ngCart.getTaxRate() + "%)",
+    }
     var ship = $scope.data.shipping;
     var bill = $scope.data.billing; 
-    $scope.copyItems = angular.copy($scope.cartItems);
-    for (var i = 0; i < $scope.copyItems.length; i++){
-      delete $scope.copyItems[i]._data;
-      delete $scope.copyItems[i].attr;
-    }
     $scope.$storage.billingAddress = $scope.data.billing;
     var req = {
-      url: '/stripe/createOrder',
+      url: '/createOrder',
       method: 'POST',
       params: {
         order: {
+          dateCreated: moment(),
           currency: 'usd',
-          items: $scope.copyItems,
+          items: $scope.cartItems,
+          tax: taxObj,
           shipping: {
             name: ship.name,
             address: {
@@ -209,25 +210,8 @@ $scope.changeActive = function(){
       }
     } 
     $http(req).then(function success(res) {
-
-          if (res.data.status === 'created'){
-            $scope.$storage.mailingList = $scope.mailingListAdd;
-            if (!$scope.$storage.addressSubmit){
-             $scope.$storage.pathCount++;
-             $scope.$emit('cartChange', $scope.$storage.pathCount);  
-            }
-            $scope.$storage.addressSubmit = true;            
-            $scope.$storage.orderData = res;
-            $scope.$evalAsync(function(){
-              $location.url('/store/checkout/payment');
-            });
-              
-           
-          } else {
-            $scope.loaded = [1, 2, 3];
-            console.log(res.data);
-            $scope.errorMessage = res.data.message;
-          } 
+          console.log("success!!!");
+          // $location.url('/store/checkout/payment');
         }, function error(res) {
           console.log("error ",res);             
         });
@@ -237,6 +221,7 @@ $scope.changeActive = function(){
       }
 
   }
+
 
 
     $scope.getTaxRate = function(country, stateProvince, postalCode){

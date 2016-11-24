@@ -66,10 +66,10 @@ button.button-tiny-circle {
     width: 15px;
 }
 
-#main-video-container {
+/*#main-video-container {
     width: 100%;
     margin: 0 auto;
-}
+}*/
 
 .main-page-header {
     display: inline-block;
@@ -828,7 +828,12 @@ select {
   }
 
 
-
+.general-email-div {
+  font-family: "Cormorant Garamond", serif;
+  display: inline-block;
+  background-color: rgba(255,255,255,.7);
+  padding: 10px;
+}
 
 
 
@@ -839,6 +844,7 @@ select {
     padding-top: 25px;
     height: 0;
     margin-top: 0;
+    margin-bottom: 10px;
   }
   .videoWrapper iframe {
     position: absolute;
@@ -2169,10 +2175,10 @@ display: none;
   width: 90%;
   margin: 20px auto 30px auto;
 }
-#main-video-container {
+/*#main-video-container {
   width: 90%;
   margin: 0 auto;
-}
+}*/
 
 .recent-posts-list li {
     font-size: .9em;
@@ -2544,10 +2550,10 @@ display: none;
 
 
 
-#main-video-container {
-  width: 60%;
+/*#main-video-container {
+  width: 90%;
   margin: 0 auto;
-}
+}*/
 
 
   .header-social {

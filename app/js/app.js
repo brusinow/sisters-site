@@ -294,6 +294,15 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
     }
   })
 
+  .state('addProduct', {
+    url: '/store/add',
+    templateUrl: '/views/store/addProduct.html',
+    controller: 'StoreProductAddCtrl',
+    resolve: {
+      "currentAuth": authRequire
+    }
+  })
+
   .state('storeCart', {
     url: '/store/cart',
     templateUrl: '/views/store/cart.html',
@@ -314,6 +323,22 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
       }
     }
   })
+
+
+   .state('editProduct', {
+    url: '/store/edit/:id',
+    templateUrl: '/views/store/editProduct.html',
+    controller: 'StoreProductEditCtrl',
+    resolve: {
+      "currentAuth": authRequire,
+      "oneProduct": function(ProductsService, $stateParams){
+        return ProductsService.oneProduct($stateParams.id);
+      }
+    }
+  })
+
+
+
   .state('checkout', {
     templateUrl: '/views/store/checkoutTemplate.html',
     controller: 'CheckoutTemplateCtrl',

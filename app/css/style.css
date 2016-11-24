@@ -579,6 +579,14 @@ select {
   border: 1px solid #D1D1D1;
 }
 
+.edit-product {
+  position: absolute;
+  top: 15px;
+  right: 15px;
+  padding: 0px 10.48px;
+  outline: none;
+}
+
 
 
 .store-path-div {
@@ -1732,6 +1740,7 @@ display: none;
 }
 
 .store-item {
+  position: relative;
   font-size: .9em;
   line-height: 1.4;
   padding: 16px 8px;
@@ -2080,6 +2089,13 @@ display: none;
 
 #shows-container {
   width: 100%;
+  margin: 20px auto 0 auto;
+}
+
+#product-add-container {
+  background-color: white;
+  width: 75%;
+  padding: 20px;
   margin: 20px auto 0 auto;
 }
 

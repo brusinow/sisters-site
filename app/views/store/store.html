@@ -1,7 +1,11 @@
 <div ng-hide="loaded" class='uil-spin-css' style='-webkit-transform:scale(.81)'><div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div></div>
 <div class="store-container">
 <div class="store-front" ng-if="loaded">
-<div ng-repeat="product in products" ng-if="$index % 3 === 0" class="store-row row">
+    <div ng-if="firebaseUser.email" style="text-align: center; margin-bottom: 20px;" id="store-admin">
+        <button ng-click="addProduct()" class="button-jumbo button-flat-pink">Add a Product</button>
+        <!--<button class="button-jumbo button-flat-pink">Add a SKU</button>-->
+    </div>
+<div ng-repeat="product in products" ng-if="$index % 4 === 0" class="store-row row">
   
     <div ng-click="showProduct(products[$index].id)" class="storefront columns store-item">
         <div class="item-image-div">
@@ -10,7 +14,10 @@
         <h6 class="store-item-title">{{products[$index].name}}</h6>
         <!-- <p>{{products[$index].description}}</p> -->
         <h6 class="store-item-price text-center no-margin">{{products[$index].skus.data[0].price | centsToDollars | currency}}</h6>
+         <button ng-if="firebaseUser.email" ng-click="editProduct(products[$index]); $event.stopPropagation();" class="edit-product button-small button-flat-blue"><i class="fa fa-pencil" aria-hidden="true"></i></button>
         <ngcart-add-btn id="{{ products[$index].skus.data[0].id }}" name="{{ products[$index].name }}" price="{{ products[$index].skus.data[0].price }}" quantity="1" quantity-max="30" data="products[$index]">Add to Cart</ngcart-addtocart>
+           
+    
     </div>
     <div ng-click="showProduct(products[$index + 1].id)" class="storefront columns store-item" ng-if="products.length > ($index + 1)">
       
@@ -20,6 +27,7 @@
          <h6 class="store-item-title">{{products[$index + 1].name}}</h6>
        <!--  <p>{{products[$index + 1].description}}</p> -->
         <h6 class="store-item-price text-center no-margin">{{products[$index + 1].skus.data[0].price | centsToDollars | currency}}</h6>
+        <button ng-if="firebaseUser.email" ng-click="editProduct(products[$index + 1]); $event.stopPropagation();" class="edit-product button-small button-flat-blue"><i class="fa fa-pencil" aria-hidden="true"></i></button>
         <ngcart-add-btn id="{{ products[$index + 1].skus.data[0].id }}" name="{{ products[$index + 1].name }}" price="{{ products[$index + 1].skus.data[0].price }}" quantity="1" quantity-max="30" data="products[$index + 1]">Add to Cart</ngcart-addtocart>
 
     </div>
@@ -31,6 +39,7 @@
         <h6 class="store-item-title">{{products[$index + 2].name}}</h6>
        <!--  <p>{{products[$index + 2].description}}</p> -->
         <h6 class="store-item-price text-center no-margin">{{products[$index + 2].skus.data[0].price | centsToDollars | currency}}</h6>
+        <button ng-if="firebaseUser.email" ng-click="editProduct(products[$index + 2]); $event.stopPropagation();" class="edit-product button-small button-flat-blue"><i class="fa fa-pencil" aria-hidden="true"></i></button>
         <ngcart-add-btn id="{{ products[$index + 2].skus.data[0].id }}" name="{{ products[$index + 2].name }}" price="{{ products[$index + 2].skus.data[0].price }}" quantity="1" quantity-max="30" data="products[$index + 2]">Add to Cart</ngcart-addtocart>
     </div>
      <div ng-click="showProduct(products[$index + 3].id)" class="storefront columns store-item" ng-if="products.length > ($index + 3)">
@@ -41,6 +50,7 @@
         <h6 class="store-item-title">{{products[$index + 3].name}}</h6>
        <!--  <p>{{products[$index + 2].description}}</p> -->
         <h6 class="store-item-price text-center no-margin">{{products[$index + 3].skus.data[0].price | centsToDollars | currency}}</h6>
+        <button ng-if="firebaseUser.email" ng-click="editProduct(products[$index + 3]); $event.stopPropagation();" class="edit-product button-small button-flat-blue"><i class="fa fa-pencil" aria-hidden="true"></i></button>
         <ngcart-add-btn id="{{ products[$index + 3].skus.data[0].id }}" name="{{ products[$index + 3].name }}" price="{{ products[$index + 3].skus.data[0].price }}" quantity="1" quantity-max="30" data="products[$index + 3]">Add to Cart</ngcart-addtocart>
     </div>
 </div>

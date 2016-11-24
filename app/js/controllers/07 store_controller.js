@@ -1,18 +1,30 @@
 angular.module('SistersCtrls')
 
 
-.controller('StoreCtrl', function($scope, $state, $http, $timeout, $location, $sessionStorage, allProducts, ProductsService){
+.controller('StoreCtrl', function($scope, $state, $http, $timeout, $location, $sessionStorage, allProducts, ProductsService, Auth){
     var main = document.getElementById("main");
-    main.style.backgroundColor = '';
+    main.style.backgroundColor = 'rgba(255,255,255,0)';
     main.style.width = '';
     main.style.padding = '';
     $scope.loaded = false;
     $scope.products = allProducts;
 
-
+      $scope.auth = Auth;
+    $scope.auth.$onAuthStateChanged(function(firebaseUser) {
+    $scope.firebaseUser = firebaseUser;
+    // console.log("firebase user is ",$scope.firebaseUser);
+  });
     
     $scope.showProduct = function(id){
       $state.go('storeShow', {id:id});
+    }
+
+    $scope.addProduct = function(){
+      $state.go('addProduct');
+    }
+
+    $scope.editProduct = function(product){
+      console.log("this product! ",product);
     }
 
     $timeout(function(){
@@ -42,18 +54,23 @@ angular.module('SistersCtrls')
   var main = document.getElementById("main");
   main.style.backgroundColor = '';
   $scope.$emit('loadMainContainer', 'loaded');
-$scope.product = oneProduct;
-$scope.images = oneProduct.images;
-var currentActiveSrc = $scope.images[0];
+  if (oneProduct.description){
+    $scope.product = oneProduct;
+    $scope.images = oneProduct.images;
+    var currentActiveSrc = $scope.images[0];
 
-$scope.skus = $scope.product.skus.data;
+    $scope.skus = $scope.product.skus.data;
 
-$scope.data = {};
-$scope.data.selected = $scope.product.skus.data[0];
+    $scope.data = {};
+    $scope.data.selected = $scope.product.skus.data[0];
 
 
-var mainImg = document.querySelector(".main-product-photo img");
-mainImg.src = $scope.images[0];
+    var mainImg = document.querySelector(".main-product-photo img");
+    mainImg.src = $scope.images[0];
+  } else {
+    console.log("RELOCATING!!");
+    $location.url('/store');
+  }
 
 
 $scope.isActiveImg = function(){
@@ -183,7 +200,7 @@ $scope.submitForm = function(form){
     var bill = $scope.data.billing; 
     $scope.$storage.billingAddress = $scope.data.billing;
     var req = {
-      url: '/createOrder',
+      url: '/store/newOrder',
       method: 'POST',
       params: {
         order: {
@@ -191,6 +208,17 @@ $scope.submitForm = function(form){
           currency: 'usd',
           items: $scope.cartItems,
           tax: taxObj,
+          billing : {
+            name: bill.name,
+            address: {
+              line1: bill.address1,
+              line2: bill.address2 || null,
+              city: bill.city,
+              state: bill.stateProvince.short || null,
+              country: bill.country.code,
+              postal_code: bill.postalCode
+            }
+          },
           shipping: {
             name: ship.name,
             address: {
@@ -200,9 +228,9 @@ $scope.submitForm = function(form){
               state: ship.stateProvince.short || null,
               country: ship.country.code,
               postal_code: ship.postalCode
-            }
+            },
+            email: ship.email
           },
-          email: ship.email,
           metadata: {
             taxRate: ngCart.getTaxRate()
           }

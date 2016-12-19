@@ -6,12 +6,9 @@
         <tr ng-repeat="item in ngCart.getCart().items track by $index">
             <td>{{item.getQuantity() | number}}x {{item.getName()}} <span ng-show="item.getAttr()">({{item.getAttr()}})</span></td>
             <td class="text-right">{{ item.getTotal() | centsToDollars | currency }}</td>
+   
         </tr>
 
-        <tr>
-            <td>Subtotal: </td>
-            <td class="text-right">{{ngCart.getSubTotal() | centsToDollars | currency}}</td> 
-        </tr>
         <tr >
             <td>Tax ({{ngCart.getTaxRate() || 0}}%):</td>
             <td class="text-right">{{ ngCart.getTax() || 0 | centsToDollars | currency }}</td>

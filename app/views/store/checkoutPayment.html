@@ -14,8 +14,8 @@
           <li ng-repeat="ship in shipOptions">
           <label>
             <input type="radio" ng-model="$parent.selectedShip" ng-value="ship">
-            <span class="ship-info-main">{{ship.amount | centsToDollars | currency}} ({{ship.description}})</span><br>
-            <span class="ship-info-sub">Delivery Estimate: {{ship.delivery_estimate.date | DeliveryEstDate}}</span>
+            <span class="ship-info-main">{{ship.amount | currency}} (<img ng-src="{{ship.provider_image_75}}"/>{{ship.servicelevel_name}})</span><br>
+            <span class="ship-info-sub">{{ship.duration_terms}}</span>
           </label>
           </li>
           </ul>

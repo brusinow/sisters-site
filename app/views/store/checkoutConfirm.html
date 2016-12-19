@@ -18,11 +18,11 @@
                   <h6 class="text-center">Shipping Address</h6>
               </div>
               <div class="white-confirm">
-                {{order.shipping.name}}<br>
-                {{order.shipping.address.line1}}<br>
-                <span ng-if="order.shipping.address.line2">{{order.shipping.address.line2}}<br></span>
-                {{order.shipping.address.city}}, <span ng-if="order.shipping.address.state">{{order.shipping.address.state}}</span> {{order.shipping.address.postal_code}}<br>
-                <span country-name country-code="order.shipping.address.country"></span>
+                {{shipping.name}}<br>
+                {{shipping.address1}}<br>
+                <span ng-if="shipping.address2">{{shipping.address2}}<br></span>
+                {{shipping.city}}, <span ng-if="shipping.state">{{shipping.state}}</span> {{shipping.postalCode}}<br>
+                <span country-name country-code="shipping.country.code"></span>
             </div>
             <div style="margin-top: 15px;" class="store-header-div">
               <h6 class="text-center">Billing Address</h6>
@@ -76,7 +76,7 @@
                         <td></td>
                         <td></td>
                         <td></td>
-                        <td>Shipping ({{shipService}}) :</td>
+                        <td>Shipping ({{thisShip.servicelevel_name}}) :</td>
                         <td>{{ ngCart.getShipping() | centsToDollars | currency }}</td>
                     </tr>
                     <tr class="main-cart-row">

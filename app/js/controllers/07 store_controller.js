@@ -199,6 +199,7 @@ $scope.submitForm = function(form){
     var ship = $scope.data.shipping;
     var bill = $scope.data.billing; 
     $scope.$storage.billingAddress = $scope.data.billing;
+    $scope.$storage.shippingAddress = $scope.data.shipping;
     var req = {
       url: '/store/newOrder',
       method: 'POST',
@@ -238,8 +239,9 @@ $scope.submitForm = function(form){
       }
     } 
     $http(req).then(function success(res) {
-          console.log("success!!!");
-          // $location.url('/store/checkout/payment');
+          console.log("success!!!", res);
+          $scope.$storage.shippingData = res.data;
+          $location.url('/store/checkout/payment');
         }, function error(res) {
           console.log("error ",res);             
         });
@@ -289,29 +291,33 @@ $scope.submitForm = function(form){
 
 
 
-.controller('StorePaymentCtrl', function($scope, $state, $http, $timeout, $location, $localStorage, ngCart, $rootScope, currentOrder){
+.controller('StorePaymentCtrl', 
+  function($scope, $state, $http, $timeout, $location, $localStorage, 
+  ngCart, $rootScope, currentOrder){
+
   var main = document.getElementById("main");
   main.style.backgroundColor = 'rgba(247, 237, 245, 0)';
   $scope.$emit('loadMainContainer', 'loaded');
   $rootScope.path = $location.$$path;
   $scope.$storage = $localStorage;
   $scope.pathCount = parseInt($scope.$storage.pathCount); 
-  $scope.shipOptions = $scope.$storage.orderData.data.shipping_methods;
-  $scope.savedSelectedShip = $scope.$storage.orderData.data.selected_shipping_method;
+  $scope.shipOptions = $scope.$storage.shippingData.rates_list;
+  $scope.$storage.savedSelectedShip = $scope.$storage.shippingData.rates_list[0];
 
   
 
 
 
   for (var i = 0; i < $scope.shipOptions.length; i++){
-    if ($scope.shipOptions[i].id === $scope.savedSelectedShip){
+    if ($scope.shipOptions[i].object_id === $scope.$storage.savedSelectedShip.object_id){
       $scope.selectedShip = $scope.shipOptions[i];
       break;
     }
   }
   
    $scope.$watch('selectedShip', function (newValue, oldValue, scope) {
-    ngCart.setShipping($scope.selectedShip.amount);  
+     $scope.$storage.savedSelectedShip = $scope.selectedShip;
+    ngCart.setShipping(($scope.selectedShip.amount * 100));  
   }, false);
 
   $timeout(function(){
@@ -334,46 +340,24 @@ $scope.submitForm = function(form){
         address_state: $scope.$storage.billingAddress.stateProvince.short || null,
         address_zip: $scope.$storage.billingAddress.postalCode,
         address_country: $scope.$storage.billingAddress.country.code
-      }, handleStripe);
+      }, function(err, token){
+        if (err != 200){
+          console.log("we have an error: ",err);
+        }
+
+        if (token){
+          console.log("we have a token: ",token);
+          $timeout(function(){ 
+            $scope.$storage.tokenData = token;
+            $location.url('/store/checkout/confirm'); 
+          },1);
+          
+        }
+      });
     // } else {
       // console.log("form invalid!!");
     // }
   }
-
-  var handleStripe = function(status, response){
-    if(response.error) {
-    // there was an error. Fix it.
-  } else {
-    token = response;
-    
-
-    var req = {
-      url: '/stripe/updateShipping',
-      method: 'POST',
-      params: {
-        token: token,
-        orderId: $scope.$storage.orderData.data.id,
-        selectedShip: $scope.selectedShip.id
-      }
-    }
-
-    $http(req).then(function success(res) {
-           if (!$scope.$storage.paymentSubmit){
-             $scope.$storage.pathCount++;
-             $scope.$emit('cartChange', $scope.$storage.pathCount);  
-            }
-            $scope.$storage.paymentSubmit = true;  
-          $scope.$storage.orderData = res;
-          $scope.$storage.tokenData = token;
-          $location.url('/store/checkout/confirm');   
-        }, function error(res) {
-          $scope.loaded = true; 
-          console.log("error ",res);             
-        });
-  }
-  }
-
-
 })
 
 
@@ -382,18 +366,16 @@ var main = document.getElementById("main");
   main.style.backgroundColor = 'rgba(247, 237, 245, 0)';
 $scope.$emit('loadMainContainer', 'loaded');
 $scope.$storage = $localStorage;
+console.log($localStorage.cart);
 $scope.pathCount = parseInt($scope.$storage.pathCount); 
 $scope.orderComplete = false;
 $rootScope.path = $location.$$path;
 $scope.ngCart = ngCart;
+$scope.currentShipping = $scope.$storage.savedSelectedShip;
 $scope.token = $scope.$storage.tokenData;
-$scope.order = $scope.$storage.orderData.data;
-var items = $scope.order.items;
-for (var i = 0; i < items.length; i++){
-  if (items[i].type === 'shipping'){
-    $scope.shipService = items[i].description;
-  }
-}
+$scope.shipping = $scope.$storage.shippingAddress;
+$scope.thisShip = $scope.$storage.savedSelectedShip;
+console.log($scope.shipping);
 $timeout(function(){
   $scope.loaded = true;
 })
@@ -432,7 +414,7 @@ $scope.createCharge = function(){
 
 
 var mailchimpSubmit = function(){
-    var url = "//sisterstheband.us14.list-manage.com/subscribe/post-json?u=bc38720b0bcc7a32641bb572c&amp;id=242f4adc89&EMAIL="+$scope.$storage.orderData.data.email+"&c=JSON_CALLBACK"
+    var url = "//sisterstheband.us14.list-manage.com/subscribe/post-json?u=bc38720b0bcc7a32641bb572c&amp;id=242f4adc89&EMAIL="+$scope.$storage.shippingData.email+"&c=JSON_CALLBACK"
     $http.jsonp(url).then(function success(res){
     }, function error(res){
       console.log(res);

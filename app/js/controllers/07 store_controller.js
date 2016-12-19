@@ -317,6 +317,7 @@ $scope.submitForm = function(form){
   
    $scope.$watch('selectedShip', function (newValue, oldValue, scope) {
      $scope.$storage.savedSelectedShip = $scope.selectedShip;
+     console.log("shipping should now be ",($scope.selectedShip.amount * 100));
     ngCart.setShipping(($scope.selectedShip.amount * 100));  
   }, false);
 
@@ -362,17 +363,19 @@ $scope.submitForm = function(form){
 
 
 .controller('StoreConfirmCtrl', function($scope, $state, $http, $timeout, $location, $localStorage, ngCart, $rootScope){
+
 var main = document.getElementById("main");
-  main.style.backgroundColor = 'rgba(247, 237, 245, 0)';
+main.style.backgroundColor = 'rgba(247, 237, 245, 0)';
 $scope.$emit('loadMainContainer', 'loaded');
 $scope.$storage = $localStorage;
-console.log($localStorage.cart);
 $scope.pathCount = parseInt($scope.$storage.pathCount); 
 $scope.orderComplete = false;
 $rootScope.path = $location.$$path;
 $scope.ngCart = ngCart;
+console.log($scope.ngCart.getTax());
 $scope.currentShipping = $scope.$storage.savedSelectedShip;
 $scope.token = $scope.$storage.tokenData;
+console.log($scope.token.card.name);
 $scope.shipping = $scope.$storage.shippingAddress;
 $scope.thisShip = $scope.$storage.savedSelectedShip;
 console.log($scope.shipping);
@@ -385,15 +388,18 @@ $timeout(function(){
 $scope.createCharge = function(){
   $scope.loaded = false; 
   var req = {
-        url: '/stripe/orderComplete',
+        url: '/store/orderComplete',
         method: 'POST',
         params: {
-          orderId: $scope.order.id,
-          token: $scope.token.id
+          totalAmount: ngCart.totalCost(),
+          token: $scope.token.id,
+          name: $scope.token.card.name,
+          shipChoice: $scope.thisShip
         }
       } 
 
       $http(req).then(function success(res) {
+        console.log("what is res? ",res);
         $scope.orderComplete = true;
         if ($scope.$storage.mailingList){
           mailchimpSubmit();
@@ -402,6 +408,7 @@ $scope.createCharge = function(){
         ngCart.setShipping();   
         ngCart.empty();
         $localStorage.$reset();
+        localStorage.clear();
       }, function error(res) {
         $scope.loaded = true; 
     //do something if the response has an error

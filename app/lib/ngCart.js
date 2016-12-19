@@ -127,7 +127,7 @@ angular.module('ngCart', ['ngCart.directives'])
         };
 
         this.getTax = function(){
-            return +parseFloat(((this.getSubTotal()/100) * this.getCart().taxRate )).toFixed(2);
+            return +parseInt(((this.getSubTotal()/100) * this.getCart().taxRate ));
         };
 
         this.setCart = function (cart) {

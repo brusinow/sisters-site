@@ -1,6 +1,7 @@
 var express = require('express');
 var firebase = require("firebase");
 var shippo = require('shippo')(process.env.SHIPPO_TOKEN);
+var stripe = require("stripe")(process.env.STRIPE_SECRET);
 var router = express.Router();
 
 router.post("/newOrder", function(req, res){
@@ -57,7 +58,6 @@ router.post("/newOrder", function(req, res){
             console.log("error: ",err);
           }
           if (shipment){
-            console.log("shipment: ",shipment);
             res.send(shipment);
           }
         });
@@ -65,5 +65,29 @@ router.post("/newOrder", function(req, res){
     }
   });
 })
+
+
+router.post("/orderComplete", function(req, res){
+  var data = req.query;
+  console.log("total amount: ",data.totalAmount);
+  console.log("token id: ",data.token);
+  stripe.charges.create({
+  amount: data.totalAmount,
+  currency: "usd",
+  source: data.token, // obtained with Stripe.js
+  description: "Charge for " + data.name
+}, function(err, charge) {
+  if (err){
+    console.log("we have an error: ",err);
+  }
+  if (charge){
+   console.log(charge);
+  res.send(charge); 
+  }
+});
+})
+
+
+
 
 module.exports = router;

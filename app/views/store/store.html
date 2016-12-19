@@ -5,38 +5,40 @@
         <button ng-click="addProduct()" class="button-jumbo button-flat-pink">Add a Product</button>
         <!--<button class="button-jumbo button-flat-pink">Add a SKU</button>-->
     </div>
+
+
+
+<!--Products start HERE!-->
+
 <div ng-repeat="product in products" ng-if="$index % 4 === 0" class="store-row row">
-  
-    <div ng-click="showProduct(products[$index].id)" class="storefront columns store-item">
+    <div ng-click="showProduct(products[$index].$id)" class="storefront columns store-item">
         <div class="item-image-div">
           <img ng-src="{{products[$index].images[0]}}"/>
         </div>
-        <h6 class="store-item-title">{{products[$index].name}}</h6>
-        <!-- <p>{{products[$index].description}}</p> -->
-        <h6 class="store-item-price text-center no-margin">{{products[$index].skus.data[0].price | centsToDollars | currency}}</h6>
+        <h6 class="store-item-title">{{products[$index].title}}</h6>
+        <h6 class="store-item-price text-center no-margin">{{products[$index].skus[0].price | centsToDollars | currency}}</h6>
          <button ng-if="firebaseUser.email" ng-click="editProduct(products[$index]); $event.stopPropagation();" class="edit-product button-small button-flat-blue"><i class="fa fa-pencil" aria-hidden="true"></i></button>
-        <ngcart-add-btn id="{{ products[$index].skus.data[0].id }}" name="{{ products[$index].name }}" price="{{ products[$index].skus.data[0].price }}" quantity="1" quantity-max="30" data="products[$index]">Add to Cart</ngcart-addtocart>
+        <ngcart-add-btn id="{{ products[$index].skus[0].id}}" name="{{ products[$index].title }}" price="{{ products[$index].skus[0].price }}" quantity="1" quantity-max="30" data="products[$index]">Add to Cart</ngcart-addtocart>
            
     
     </div>
-    <div ng-click="showProduct(products[$index + 1].id)" class="storefront columns store-item" ng-if="products.length > ($index + 1)">
+    <div ng-click="showProduct(products[$index + 1].$id)" class="storefront columns store-item" ng-if="products.length > ($index + 1)">
       
         <div class="item-image-div">
            <img ng-src="{{products[$index + 1].images[0]}}"/>
         </div>
-         <h6 class="store-item-title">{{products[$index + 1].name}}</h6>
-       <!--  <p>{{products[$index + 1].description}}</p> -->
-        <h6 class="store-item-price text-center no-margin">{{products[$index + 1].skus.data[0].price | centsToDollars | currency}}</h6>
+        <h6 class="store-item-title">{{products[$index + 1].title}}</h6>
+        <h6 class="store-item-price text-center no-margin">{{products[$index + 1].skus[0].price | centsToDollars | currency}}</h6>
         <button ng-if="firebaseUser.email" ng-click="editProduct(products[$index + 1]); $event.stopPropagation();" class="edit-product button-small button-flat-blue"><i class="fa fa-pencil" aria-hidden="true"></i></button>
-        <ngcart-add-btn id="{{ products[$index + 1].skus.data[0].id }}" name="{{ products[$index + 1].name }}" price="{{ products[$index + 1].skus.data[0].price }}" quantity="1" quantity-max="30" data="products[$index + 1]">Add to Cart</ngcart-addtocart>
+        <ngcart-add-btn id="{{ products[$index + 1].skus[0].id }}" name="{{ products[$index + 1].title }}" price="{{ products[$index + 1].skus[0].price }}" quantity="1" quantity-max="30" data="products[$index + 1]">Add to Cart</ngcart-addtocart>
 
     </div>
-    <div ng-click="showProduct(products[$index + 2].id)" class="storefront columns store-item" ng-if="products.length > ($index + 2)">
+    <div ng-click="showProduct(products[$index + 2].$id)" class="storefront columns store-item" ng-if="products.length > ($index + 2)">
        
         <div class="item-image-div">
            <img ng-src="{{products[$index + 2].images[0]}}"/>
         </div>
-        <h6 class="store-item-title">{{products[$index + 2].name}}</h6>
+        <h6 class="store-item-title">{{products[$index + 2].title}}</h6>
        <!--  <p>{{products[$index + 2].description}}</p> -->
         <h6 class="store-item-price text-center no-margin">{{products[$index + 2].skus.data[0].price | centsToDollars | currency}}</h6>
         <button ng-if="firebaseUser.email" ng-click="editProduct(products[$index + 2]); $event.stopPropagation();" class="edit-product button-small button-flat-blue"><i class="fa fa-pencil" aria-hidden="true"></i></button>

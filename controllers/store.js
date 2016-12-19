@@ -75,7 +75,7 @@ router.post("/orderComplete", function(req, res){
   amount: data.totalAmount,
   currency: "usd",
   source: data.token, // obtained with Stripe.js
-  description: "Charge for " + data.name
+  description: "Charge for " + data.name 
 }, function(err, charge) {
   if (err){
     console.log("we have an error: ",err);

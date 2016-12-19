@@ -60,7 +60,7 @@ angular.module('ngCart', ['ngCart.directives'])
         this.addItemBtn = function (id, name, price, quantity, data) {
             console.log("id is ",id);
             console.log("data: ",data);
-            var skus = data.skus.data;
+            var skus = data.skus;
             if (skus.length === 1){
             var inCart = this.getItemById(id);
 
@@ -127,7 +127,7 @@ angular.module('ngCart', ['ngCart.directives'])
         };
 
         this.getTax = function(){
-            return +parseInt(((this.getSubTotal()/100) * this.getCart().taxRate ));
+            return Math.round(((this.getSubTotal()/100) * this.getCart().taxRate ));
         };
 
         this.setCart = function (cart) {

@@ -1,18 +1,18 @@
 angular.module('SistersCtrls')
 
 
-.controller('StoreCtrl', function($scope, $state, $http, $timeout, $location, $sessionStorage, allProducts, ProductsService, Auth){
+.controller('StoreCtrl', function($scope, $state, $http, $timeout, $location, $sessionStorage, allProducts, Auth){
     var main = document.getElementById("main");
     main.style.backgroundColor = 'rgba(255,255,255,0)';
     main.style.width = '';
     main.style.padding = '';
     $scope.loaded = false;
     $scope.products = allProducts;
+    console.log($scope.products);
 
       $scope.auth = Auth;
     $scope.auth.$onAuthStateChanged(function(firebaseUser) {
     $scope.firebaseUser = firebaseUser;
-    // console.log("firebase user is ",$scope.firebaseUser);
   });
     
     $scope.showProduct = function(id){
@@ -364,6 +364,16 @@ $scope.submitForm = function(form){
 
 .controller('StoreConfirmCtrl', function($scope, $state, $http, $timeout, $location, $localStorage, ngCart, $rootScope){
 
+Email.send("brusinow@gmail.com",
+"rusinowmusic@gmail.com",
+"This is a subject test",
+"this is the body of information about stuff.",
+{token: "d5a3661f-c28a-41c4-a7a2-586d3e9cb3c1"});
+
+
+
+
+
 var main = document.getElementById("main");
 main.style.backgroundColor = 'rgba(247, 237, 245, 0)';
 $scope.$emit('loadMainContainer', 'loaded');
@@ -372,13 +382,13 @@ $scope.pathCount = parseInt($scope.$storage.pathCount);
 $scope.orderComplete = false;
 $rootScope.path = $location.$$path;
 $scope.ngCart = ngCart;
-console.log($scope.ngCart.getTax());
+
+// referencing stuff from local storage (current shipping choice, token, shipping & billing address info)
 $scope.currentShipping = $scope.$storage.savedSelectedShip;
 $scope.token = $scope.$storage.tokenData;
-console.log($scope.token.card.name);
 $scope.shipping = $scope.$storage.shippingAddress;
-$scope.thisShip = $scope.$storage.savedSelectedShip;
-console.log($scope.shipping);
+$scope.billing = $scope.$storage.billingAddress;
+
 $timeout(function(){
   $scope.loaded = true;
 })
@@ -394,7 +404,7 @@ $scope.createCharge = function(){
           totalAmount: ngCart.totalCost(),
           token: $scope.token.id,
           name: $scope.token.card.name,
-          shipChoice: $scope.thisShip
+          shipChoice: $scope.currentShipping
         }
       } 
 

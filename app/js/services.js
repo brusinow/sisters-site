@@ -23,18 +23,26 @@ angular.module('SistersServices', ['ngResource'])
   }
 ])
 
+.factory("GetShows", ["$firebaseArray","moment", 
+  function($firebaseArray, moment){
+    var currentDay = moment().unix();
+    var calcDay = currentDay - 86400;
+    // console.log("current day: ",currentDay);
+    return function(){
+    var showsRef = firebase.database().ref('shows').orderByChild("unix").startAt(calcDay);
+    // console.log("I'm in GetShows");
+    return $firebaseArray(showsRef);
+  }
+}])
 
-.factory("ProductsService", ["$http","$q", function($http, $q){
+
+// Service that returns Firebase Arrays of all items and single items. Most often referenced in app.js resolve objects.
+
+.factory("ProductsService", ["$firebaseArray","$firebaseObject", function($firebaseArray, $firebaseObject){
   return {
     allProducts: function(){
-      var deferred = $q.defer();
-      // console.log("inside all products service")
-      $http.get('/stripe/allProducts').success(function(data){
-        // products = data.data;
-        deferred.resolve(data.data);
-        // console.log("products in service: ",products);   
-      }); 
-      return deferred.promise;   
+      var allProductsRef = firebase.database().ref('products');
+      return $firebaseArray(allProductsRef);
     },
     oneProduct: function(productId){
       // console.log("what's id? ",productId);
@@ -96,39 +104,15 @@ angular.module('SistersServices', ['ngResource'])
         var snap = snapshot.val();
         console.log(snap);
       });
-     
-      // if (thisKey !== null){
-      //   console.log("KEY EXISTS!!!!!!!")
-      //   return true;
-      // } else {
-      //   console.log("Key doesn't exist.")
-      //   return false;
-      // }
     }
   }
 )
 
 
 
-.factory("GetShows", ["$firebaseArray","moment", 
-  function($firebaseArray, moment){
-    var currentDay = moment().unix();
-    var calcDay = currentDay - 86400;
-    // console.log("current day: ",currentDay);
-    return function(){
-    var showsRef = firebase.database().ref('shows').orderByChild("unix").startAt(calcDay);
-    // console.log("I'm in GetShows");
-    return $firebaseArray(showsRef);
-  }
-}])
 
-// .factory("GetSingleShow", ["$firebaseArray", 
-//   function($firebaseArray) {
-//   return function(id){
-//      var showsRef = firebase.database().ref('shows/'+ id);
-//       return $firebaseArray(showsRef);
-//   }
-// }])
+
+
 
 
 

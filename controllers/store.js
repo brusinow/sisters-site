@@ -6,6 +6,7 @@ var router = express.Router();
 
 router.post("/newOrder", function(req, res){
   var thisOrder = req.query.order;
+  console.log("THIS ORDER!!!!!!! ",thisOrder);
   var parsedOrder = JSON.parse(thisOrder);
   
   var addressFrom = {
@@ -38,8 +39,8 @@ router.post("/newOrder", function(req, res){
     "width": "5",
     "height": "5",
     "distance_unit": "in",
-    "weight": "2",
-    "mass_unit": "lb"
+    "weight": "32",
+    "mass_unit": "oz"
   }
   var db = firebase.database();
   var ref = db.ref("orders");

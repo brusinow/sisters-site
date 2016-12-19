@@ -18,7 +18,7 @@
         <h6 class="store-item-title">{{products[$index].title}}</h6>
         <h6 class="store-item-price text-center no-margin">{{products[$index].skus[0].price | centsToDollars | currency}}</h6>
          <button ng-if="firebaseUser.email" ng-click="editProduct(products[$index]); $event.stopPropagation();" class="edit-product button-small button-flat-blue"><i class="fa fa-pencil" aria-hidden="true"></i></button>
-        <ngcart-add-btn id="{{ products[$index].skus[0].id}}" name="{{ products[$index].title }}" price="{{ products[$index].skus[0].price }}" quantity="1" quantity-max="30" data="products[$index]">Add to Cart</ngcart-addtocart>
+        <ngcart-add-btn id="{{ products[$index].$id}}" sku="{{ products[$index].skus[0].id }}" name="{{ products[$index].title }}" price="{{ products[$index].skus[0].price }}" quantity="1" quantity-max="30" data="products[$index]">Add to Cart</ngcart-addtocart>
            
     
     </div>
@@ -30,7 +30,7 @@
         <h6 class="store-item-title">{{products[$index + 1].title}}</h6>
         <h6 class="store-item-price text-center no-margin">{{products[$index + 1].skus[0].price | centsToDollars | currency}}</h6>
         <button ng-if="firebaseUser.email" ng-click="editProduct(products[$index + 1]); $event.stopPropagation();" class="edit-product button-small button-flat-blue"><i class="fa fa-pencil" aria-hidden="true"></i></button>
-        <ngcart-add-btn id="{{ products[$index + 1].skus[0].id }}" name="{{ products[$index + 1].title }}" price="{{ products[$index + 1].skus[0].price }}" quantity="1" quantity-max="30" data="products[$index + 1]">Add to Cart</ngcart-addtocart>
+        <ngcart-add-btn id="{{ products[$index + 1].$id}}" sku="{{ products[$index + 1].skus[0].id }}" name="{{ products[$index + 1].title }}" price="{{ products[$index + 1].skus[0].price }}" quantity="1" quantity-max="30" data="products[$index + 1]">Add to Cart</ngcart-addtocart>
 
     </div>
     <div ng-click="showProduct(products[$index + 2].$id)" class="storefront columns store-item" ng-if="products.length > ($index + 2)">

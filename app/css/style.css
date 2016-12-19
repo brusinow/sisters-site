@@ -2089,7 +2089,9 @@ display: none;
 
 #shows-container {
   width: 100%;
-  margin: 20px auto 0 auto;
+  background-color: rgba(255, 255, 255, .9);
+  padding: 20px;
+  margin: 20px auto 20px auto;
 }
 
 #product-add-container {

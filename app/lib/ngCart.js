@@ -48,7 +48,7 @@ angular.module('ngCart', ['ngCart.directives'])
                 inCart.setQuantity(quantity, false);
                 $rootScope.$broadcast('ngCart:itemUpdated', inCart);
             } else {
-                var newItem = new ngCartItem(id, name, price, quantity, data, attr);
+                var newItem = new ngCartItem(id, sku, name, price, quantity, data, attr);
                 console.log("new item: ",newItem);
                 this.$cart.items.push(newItem);
                 $rootScope.$broadcast('ngCart:itemAdded', newItem);
@@ -57,8 +57,7 @@ angular.module('ngCart', ['ngCart.directives'])
             $rootScope.$broadcast('ngCart:change', {});
         };
 
-        this.addItemBtn = function (id, name, price, quantity, data) {
-            console.log("id is ",id);
+        this.addItemBtn = function (id, sku, name, price, quantity, data) {
             console.log("data: ",data);
             var skus = data.skus;
             if (skus.length === 1){
@@ -69,7 +68,7 @@ angular.module('ngCart', ['ngCart.directives'])
                 inCart.setQuantity(quantity, false);
                 $rootScope.$broadcast('ngCart:itemUpdated', inCart);
             } else {
-                var newItem = new ngCartItem(id, name, price, quantity, data);
+                var newItem = new ngCartItem(id, sku, name, price, quantity, data);
                 this.$cart.items.push(newItem);
                 $rootScope.$broadcast('ngCart:itemAdded', newItem);
             }
@@ -229,7 +228,7 @@ angular.module('ngCart', ['ngCart.directives'])
             _self.$cart.tax = storedCart.tax;
 
             angular.forEach(storedCart.items, function (item) {
-                _self.$cart.items.push(new ngCartItem(item.parent,  item.description, item.amount, item.quantity, item._data, item.attr));
+                _self.$cart.items.push(new ngCartItem(item.parent, item.sku, item.description, item.amount, item.quantity, item._data, item.attr));
             });
             this.$save();
         };
@@ -242,8 +241,11 @@ angular.module('ngCart', ['ngCart.directives'])
 
     .factory('ngCartItem', ['$rootScope', '$log', function ($rootScope, $log) {
 
-        var item = function (id, name, price, quantity, data, attr) {
+        var item = function (id, sku, name, price, quantity, data, attr) {
+            console.log("id is ",id);
+            console.log("sku is ",sku);
             this.setId(id);
+            this.setSku(sku);
             this.setName(name);
             this.setPrice(price);
             this.setQuantity(quantity);
@@ -259,8 +261,19 @@ angular.module('ngCart', ['ngCart.directives'])
             }
         };
 
+        item.prototype.setSku = function(sku){
+            if (sku)  this.sku = sku;
+            else {
+                $log.error('A sku must be provided');
+            }
+        };
+
         item.prototype.getId = function(){
             return this.parent;
+        };
+
+        item.prototype.getSku = function(){
+            return this.sku;
         };
 
 
@@ -428,6 +441,7 @@ angular.module('ngCart.directives', ['ngCart.fulfilment'])
             controller : 'CartBtnController',
             scope: {
                 id:'@',
+                sku: '@',
                 name:'@',
                 quantity:'@',
                 quantityMax:'@',
@@ -470,6 +484,7 @@ angular.module('ngCart.directives', ['ngCart.fulfilment'])
             controller : 'CartController',
             scope: {
                 id:'@',
+                sku: '@',
                 name:'@',
                 quantity:'@',
                 quantityMax:'@',

@@ -88,12 +88,6 @@ $scope.changeActive = function(){
   mainImg.src = this.img;
 }
 
-
-
-
-
-
-
 })
 
 
@@ -239,7 +233,7 @@ $scope.submitForm = function(form){
       }
     } 
 
-    console.log("what is order? ",req.params.order);
+    console.log("what is order? ",req.params.order.items);
     $http(req).then(function success(res) {
           console.log("success!!!", res);
           $scope.$storage.shippingData = res.data;

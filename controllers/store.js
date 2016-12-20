@@ -42,12 +42,6 @@ router.post("/newOrder", function(req, res){
     "weight": "32",
     "mass_unit": "oz"
   }
-  var db = firebase.database();
-  var ref = db.ref("orders");
-  ref.push(parsedOrder, function(error){
-    if (error){
-      res.send(error);
-    } else {
         shippo.shipment.create({
           'object_purpose' : 'PURCHASE',
           'address_from': addressFrom,
@@ -59,12 +53,12 @@ router.post("/newOrder", function(req, res){
             console.log("error: ",err);
           }
           if (shipment){
-            res.send(shipment);
+            res.send({
+              shipment: shipment, 
+              order: parsedOrder
+            });
           }
         });
-         
-    }
-  });
 })
 
 

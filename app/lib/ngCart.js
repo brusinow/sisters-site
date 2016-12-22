@@ -39,8 +39,13 @@ angular.module('ngCart', ['ngCart.directives'])
             };
         };
 
-        this.addItem = function (id, name, price, quantity, data, attr) {
-            console.log("what is data? ",data);
+        this.addItem = function (id, sku, name, price, quantity, data, attr) {
+            console.log("what is id ",id);
+            console.log("what is sku ",sku);
+            console.log("what is name ",name);
+            console.log("what is amount ",price);
+            console.log("what is quantity ",quantity);
+            console.log("what is data ",data);
             var inCart = this.getItemById(id);
 
             if (typeof inCart === 'object'){
@@ -228,12 +233,16 @@ angular.module('ngCart', ['ngCart.directives'])
             _self.$cart.tax = storedCart.tax;
 
             angular.forEach(storedCart.items, function (item) {
+                console.log("here's an item!!!", item);
                 _self.$cart.items.push(new ngCartItem(item.parent, item.sku, item.description, item.amount, item.quantity, item._data, item.attr));
             });
             this.$save();
         };
 
+
+
         this.$save = function () {
+            console.log(this.getCart());
             return store.set('cart', JSON.stringify(this.getCart()));
         }
 
@@ -329,6 +338,7 @@ angular.module('ngCart', ['ngCart.directives'])
         };
 
         item.prototype.setData = function(data){
+            console.log("data trying to be set: ",data);
             if (data) this._data = data;
         };
 
@@ -400,7 +410,7 @@ angular.module('ngCart', ['ngCart.directives'])
         }
     }])
 
-    .controller('CartController',['$scope', 'ngCart','$timeout', function($scope, ngCart, $timeout) {
+    .controller('CartController',['$scope','$rootScope', 'ngCart','$timeout', function($scope, $rootScope, ngCart, $timeout) {
         $scope.loaded = false;
         $scope.toggleCart = false;
         $scope.ngCart = ngCart;
@@ -408,12 +418,32 @@ angular.module('ngCart', ['ngCart.directives'])
             $scope.loaded = true;
         })
 
+          var items = ngCart.getItems();
+          console.log(items);
+            // loop to determine if any items are shippable
+  
+            var filtered = [];
+            angular.forEach(items, function(item) {
+                if (item._data.product_type === "shippable") {
+                    console.log("PRODUCT SHIPPABLE!!!!")
+                    filtered.push(item);
+                }
+            });
+            console.log("filtered is now ",filtered);
+            if (filtered.length > 0){
+                $scope.shipBool = true;
+                $scope.$emit('setShippable', true);
+            } else {
+                $scope.shipBool = false;
+                $scope.$emit('setShippable', false);
+            }
+
         
 
     }])
 
     .controller('CartBtnController',['$scope', 'ngCart','$timeout', function($scope, ngCart, $timeout) {
-        console.log("cart button controller!!!!");
+        
         $scope.loaded = false;
         $scope.toggleCart = false;
         $scope.ngCart = ngCart;
@@ -432,6 +462,8 @@ angular.module('ngCart.directives', ['ngCart.fulfilment'])
     .controller('CartController',['$scope', 'ngCart', function($scope, ngCart) {
         
         $scope.ngCart = ngCart;
+
+        
         
     }])
 

@@ -16,6 +16,7 @@ angular.module('SistersCtrls')
   });
     
     $scope.showProduct = function(id){
+      console.log("click", id);
       $state.go('storeShow', {id:id});
     }
 
@@ -62,7 +63,7 @@ angular.module('SistersCtrls')
     $scope.skus = $scope.product.skus.data;
 
     $scope.data = {};
-    $scope.data.selected = $scope.product.skus.data[0];
+    $scope.data.selected = $scope.product.skus[0];
 
 
     var mainImg = document.querySelector(".main-product-photo img");
@@ -121,6 +122,18 @@ $scope.changeActive = function(){
   $scope.$emit('loadMainContainer', 'loaded');
   $scope.$storage = $localStorage;
   $scope.cartItems = ngCart.getItems();
+
+  $scope.$on('setShippable', function (event, data) {
+    $scope.shipBool = data;
+    
+     console.log("what is shipBool? ",$scope.shipBool);
+  });
+
+ 
+
+  
+
+
   $rootScope.path = $location.$$path;
   if (!$scope.$storage.pathCount || $scope.$storage.pathCount < 1){
     $scope.$storage.pathCount = 0;
@@ -194,63 +207,94 @@ $scope.submitForm = function(form){
     var bill = $scope.data.billing; 
     $scope.$storage.billingAddress = $scope.data.billing;
     $scope.$storage.shippingAddress = $scope.data.shipping;
-    var req = {
-      url: '/store/newOrder',
-      method: 'POST',
-      params: {
-        order: {
-          dateCreated: moment(),
-          currency: 'usd',
-          items: $scope.cartItems,
-          tax: taxObj,
-          billing : {
-            name: bill.name,
-            address: {
-              line1: bill.address1,
-              line2: bill.address2 || null,
-              city: bill.city,
-              state: bill.stateProvince.short || null,
-              country: bill.country.code,
-              postal_code: bill.postalCode
-            }
-          },
-          shipping: {
-            name: ship.name,
-            address: {
-              line1: ship.address1,
-              line2: ship.address2 || null,
-              city: ship.city,
-              state: ship.stateProvince.short || null,
-              country: ship.country.code,
-              postal_code: ship.postalCode
+    if ($scope.shipBool){
+      var req = {
+        url: '/store/newOrder',
+        method: 'POST',
+        params: {
+          order: {
+            dateCreated: moment(),
+            currency: 'usd',
+            items: $scope.cartItems,
+            tax: taxObj,
+            billing : {
+              name: bill.name,
+              email: ship.email,
+              phone: bill.phone,
+              address: {
+                line1: bill.address1,
+                line2: bill.address2 || null,
+                city: bill.city,
+                state: bill.stateProvince.short || null,
+                country: bill.country.code,
+                postal_code: bill.postalCode
+              }
             },
-            email: ship.email
-          },
-          metadata: {
-            taxRate: ngCart.getTaxRate()
+            shipping: {
+              name: ship.name,
+              address: {
+                line1: ship.address1,
+                line2: ship.address2 || null,
+                city: ship.city,
+                state: ship.stateProvince.short || null,
+                country: ship.country.code,
+                postal_code: ship.postalCode
+              }
+            },
+            metadata: {
+              taxRate: ngCart.getTaxRate()
+            }
           }
         }
-      }
-    } 
+      } 
 
-    console.log("what is order? ",req.params.order.items);
-    $http(req).then(function success(res) {
+
+      $http(req).then(function success(res) {
           console.log("success!!!", res);
           $scope.$storage.shippingData = res.data;
           $location.url('/store/checkout/payment');
         }, function error(res) {
           console.log("error ",res);             
-        });
+      });
+
+
 
     } else {
-      console.log("form invalid!!");
-      }
 
+          var order= {
+            dateCreated: moment(),
+            currency: 'usd',
+            items: $scope.cartItems,
+            tax: taxObj,
+            billing : {
+              name: bill.name,
+              email: ship.email,
+              phone: bill.phone,
+              address: {
+                line1: bill.address1,
+                line2: bill.address2 || null,
+                city: bill.city,
+                state: bill.stateProvince.short || null,
+                country: bill.country.code,
+                postal_code: bill.postalCode
+              }
+            }
+          }
+            $location.url('/store/checkout/payment');
+
+        }
+
+     } else {
+       console.log("form invalid!");
+     }
+      
   }
 
 
 
     $scope.getTaxRate = function(country, stateProvince, postalCode){
+      console.log($scope.data);
+      console.log(country, stateProvince, postalCode);
     if (country.code === 'US' && stateProvince.short === 'WA' && postalCode){
       if ($window.localStorage.currentWaRate){
         var parsedTax = parseFloat($window.localStorage.currentWaRate)

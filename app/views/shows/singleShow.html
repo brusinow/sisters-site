@@ -1,0 +1,24 @@
+<div style="margin-left: 5px; margin-bottom: 15px;">
+    <a class="store-back-link" href="/shows"><i class="fa fa-long-arrow-left" aria-hidden="true"></i> Back to Shows</a>
+</div>
+<div class="row">
+    <div class="seven columns">
+
+
+        <div ng-if="images.length > 1" class="product-thumb-container">
+        <div id="attr-select" ng-click="changeActive()" ng-repeat="img in images" class="product-thumb-div"><img ng-class="{'activeThumb': isActiveImg()}" ng-src="{{img}}"/></div>
+        </div>
+        <div class="main-product-img-wrap">
+            <div class="main-product-photo"><img /></div>
+        </div>
+    </div>
+    <div class="five columns">
+        <h3 class="single-product-name text-center">{{show.date}}</h3>
+        <h4 class="single-product-name text-center">{{show.location}}</h4>
+        <h3 class="single-product-name text-center">{{show.venue}}</h3>
+        <p style="padding: 0 5%">{{ticket.description}}</p>
+     
+        <h5 class="text-center">{{ ticket.skus[0].price | centsToDollars | currency}}</h5>
+        <ngcart-addtocart class="text-center" id="{{ ticket.$id }}" sku="{{ticket.skus[0].id}}" name="{{ show.venue }}" price="{{ ticket.skus[0].price }}" quantity="1" quantity-max="30" data="{'product_type': ticket.product_type, 'date': show.unix }">Add to Cart</ngcart-addtocart>
+    </div>
+</div>

@@ -35,6 +35,22 @@ angular.module('SistersServices', ['ngResource'])
   }
 }])
 
+.factory("GetSingleShow", ["$firebaseObject", 
+  function($firebaseObject){
+    return function(key){
+    var showRef = firebase.database().ref('shows/'+key);
+    return $firebaseObject(showRef);
+  }
+}])
+
+.factory("GetTicket", ["$firebaseObject", 
+  function($firebaseObject){
+    return function(key){
+    var ticketRef = firebase.database().ref('tickets/'+key);
+    return $firebaseObject(ticketRef);
+  }
+}])
+
 
 // Service that returns Firebase Arrays of all items and single items. Most often referenced in app.js resolve objects.
 
@@ -45,20 +61,8 @@ angular.module('SistersServices', ['ngResource'])
       return $firebaseArray(allProductsRef);
     },
     oneProduct: function(productId){
-      // console.log("what's id? ",productId);
-      var deferred = $q.defer();
-      var req = {
-        method: 'GET',
-        url: '/stripe/oneProduct',
-        params: {
-          productId: productId
-        }
-      }
-      $http(req).success(function(data){
-        // console.log("success!!!")
-        deferred.resolve(data);
-      })
-      return deferred.promise;
+      var oneProductRef = firebase.database().ref('products/'+ productId);
+      return $firebaseObject(oneProductRef);
     }
   }
 }])

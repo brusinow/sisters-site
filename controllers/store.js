@@ -62,6 +62,13 @@ router.post("/newOrder", function(req, res){
 })
 
 
+router.post("/newOrderNoShip", function(req, res){
+  var thisOrder = req.query.order;
+  var parsedOrder = JSON.parse(thisOrder);
+  res.send({ order: parsedOrder });
+})
+
+
 router.post("/orderComplete", function(req, res){
   var data = req.query;
   console.log("total amount: ",data.totalAmount);

@@ -9,7 +9,7 @@
                     ng-options=" v for v in qtyOpt"></select>
         </span>
         <a style="cursor: pointer;" class="button button-flat-pink"
-           ng-click="ngCart.addItem(id, name, price, q, data, data.attributes); $event.stopPropagation();"
+           ng-click="ngCart.addItem(id, sku, name, price, q, data, data.attributes); $event.stopPropagation();"
            ng-transclude></a>
     </div>
     <div style="height: 20px">

@@ -24,7 +24,6 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
 
 
   });
-
 }])
 
 
@@ -278,6 +277,23 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
     }
   })
 
+  .state('showTickets', {
+    url: '/shows/:showId',
+    templateUrl: '/views/shows/singleShow.html',
+    controller: 'SingleShowCtrl',
+      resolve: {
+      "currentAuth": authWait,
+      "GetShow": function(GetSingleShow, $stateParams){
+        return GetSingleShow($stateParams.showId).$loaded();
+      },
+      "GetTicket": function(GetTicket, $stateParams){
+        return GetTicket($stateParams.showId).$loaded();
+      }
+    }
+  })
+
+
+
   .state('store', {
     url: '/store',
     metaTags: {
@@ -393,32 +409,6 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
     console.log("source: ",source);
     var length = source.text().length;
     console.log("length: ",length);
-    // if (!plainText) return '';
-    // if (plainText && !enable) {
-    //   return value;
-    // } else if (plainText && enable){
-    //   max = parseInt(max, 10);
-    //   if (!max) {
-    //     return value;
-    //   }
-    //   if (plainText.length <= max){
-    //     return value;
-    //   } 
-    //   element[0].innerText = plainText.substr(0, max);
-    //   if (wordwise) {
-    //     var lastspace = plainText.lastIndexOf(' ');
-    //     if (lastspace != -1) {
-    //       //Also remove . and , so its gives a cleaner result.
-    //       if (plainText.charAt(lastspace-1) == '.' || value.charAt(lastspace-1) == ',') {
-    //         lastspace = lastspace - 1;
-    //       }
-    //       element[0].innerText = value.substr(0, lastspace);
-    //   }
-    // }
-      
-    // //   console.log("value: ",value);
-    // //   return element[0].outerHTML + (tail || '…');
-    // }
   };
 })
 
@@ -452,6 +442,12 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
 .filter('DeliveryEstDate', ['moment', function(moment){
   return function(val){
     return  moment(val).format('dddd, MMMM Do');
+  }
+}])
+
+.filter('slashDate', ['moment', function(moment){
+  return function(val){
+    return  moment(val * 1000).format('MM/DD/YYYY');
   }
 }])
 

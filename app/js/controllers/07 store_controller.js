@@ -125,8 +125,6 @@ $scope.changeActive = function(){
 
   $scope.$on('setShippable', function (event, data) {
     $scope.shipBool = data;
-    
-     console.log("what is shipBool? ",$scope.shipBool);
   });
 
  
@@ -341,25 +339,36 @@ $scope.submitForm = function(form){
   $rootScope.path = $location.$$path;
   $scope.$storage = $localStorage;
   $scope.pathCount = parseInt($scope.$storage.pathCount); 
-  $scope.shipOptions = $scope.$storage.shippingData.rates_list;
-  $scope.$storage.savedSelectedShip = $scope.$storage.shippingData.rates_list[0];
 
-  
+  $scope.$on('setShippable', function (event, data) {
+    $scope.shipBool = data;
+  });
 
+  if ($scope.$storage.shippingData){
+     $scope.shipOptions = $scope.$storage.shippingData.rates_list;
+    $scope.$storage.savedSelectedShip = $scope.$storage.shippingData.rates_list[0];
 
-
-  for (var i = 0; i < $scope.shipOptions.length; i++){
+     for (var i = 0; i < $scope.shipOptions.length; i++){
     if ($scope.shipOptions[i].object_id === $scope.$storage.savedSelectedShip.object_id){
       $scope.selectedShip = $scope.shipOptions[i];
       break;
     }
   }
-  
+
    $scope.$watch('selectedShip', function (newValue, oldValue, scope) {
      $scope.$storage.savedSelectedShip = $scope.selectedShip;
-     console.log("shipping should now be ",($scope.selectedShip.amount * 100));
     ngCart.setShipping(($scope.selectedShip.amount * 100));  
   }, false);
+  }
+ 
+
+  
+
+
+
+ 
+  
+  
 
   $timeout(function(){
    $scope.loaded = true; 
@@ -410,7 +419,9 @@ Email.send("brusinow@gmail.com",
 "this is the body of information about stuff.",
 {token: "d5a3661f-c28a-41c4-a7a2-586d3e9cb3c1"});
 
-
+  $scope.$on('setShippable', function (event, data) {
+    $scope.shipBool = data;
+  });
 
 
 
@@ -437,16 +448,19 @@ $timeout(function(){
 
 $scope.createCharge = function(){
   $scope.loaded = false; 
-  var req = {
+      var req = {
         url: '/store/orderComplete',
         method: 'POST',
         params: {
           totalAmount: ngCart.totalCost(),
           token: $scope.token.id,
           name: $scope.token.card.name,
+          cart: ngCart.getItems(),
           shipChoice: $scope.currentShipping
         }
       } 
+
+      console.log(req.params.cart);
 
       $http(req).then(function success(res) {
         console.log("what is res? ",res);

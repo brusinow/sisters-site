@@ -437,6 +437,7 @@ angular.module('ngCart', ['ngCart.directives'])
                 $scope.shipBool = false;
                 $scope.$emit('setShippable', false);
             }
+            console.log("what is shipBool? ",$scope.shipBool);
 
         
 

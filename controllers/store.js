@@ -71,8 +71,6 @@ router.post("/newOrderNoShip", function(req, res){
 
 router.post("/orderComplete", function(req, res){
   var data = req.query;
-  console.log("total amount: ",data.totalAmount);
-  console.log("token id: ",data.token);
   stripe.charges.create({
   amount: data.totalAmount,
   currency: "usd",

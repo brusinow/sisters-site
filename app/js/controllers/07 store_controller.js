@@ -417,7 +417,7 @@ Email.send("brusinow@gmail.com",
 "rusinowmusic@gmail.com",
 "This is a subject test",
 "this is the body of information about stuff.",
-{token: "d5a3661f-c28a-41c4-a7a2-586d3e9cb3c1"});
+{token: "f26edcd0-e245-4b89-a5d0-3bbaf9539d1d"});
 
   $scope.$on('setShippable', function (event, data) {
     $scope.shipBool = data;

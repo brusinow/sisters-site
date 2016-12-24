@@ -1,0 +1,14 @@
+
+body {
+  background-color: #f3d3d3;
+}
+
+h1 {
+  text-align: center;
+}
+
+#header-block img {
+  display: block;
+  width: 80%;
+  margin: auto;
+}

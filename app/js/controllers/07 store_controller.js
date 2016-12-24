@@ -24,9 +24,6 @@ angular.module('SistersCtrls')
       $state.go('addProduct');
     }
 
-    $scope.editProduct = function(product){
-      console.log("this product! ",product);
-    }
 
     $timeout(function(){
         $scope.loaded = true;
@@ -205,7 +202,7 @@ $scope.submitForm = function(form){
     var bill = $scope.data.billing; 
     $scope.$storage.billingAddress = $scope.data.billing;
     $scope.$storage.shippingAddress = $scope.data.shipping;
-    if ($scope.shipBool){
+    
       var req = {
         url: '/store/newOrder',
         method: 'POST',
@@ -228,7 +225,16 @@ $scope.submitForm = function(form){
                 postal_code: bill.postalCode
               }
             },
-            shipping: {
+            metadata: {
+              taxRate: ngCart.getTaxRate()
+            }
+          }
+        }
+      } 
+
+      if ($scope.shipBool){
+        req.params.shippable = true;
+        req.params.shipping = {
               name: ship.name,
               address: {
                 line1: ship.address1,
@@ -238,15 +244,14 @@ $scope.submitForm = function(form){
                 country: ship.country.code,
                 postal_code: ship.postalCode
               }
-            },
-            metadata: {
-              taxRate: ngCart.getTaxRate()
-            }
-          }
         }
-      } 
+      } else {
+        req.params.shippable = false;
+      }
 
+      $scope.$storage.orderData = req.params.order;
 
+      firebase.database().ref('orders/order_' + orderNumber).set(parsedOrder);
       $http(req).then(function success(res) {
           console.log("success!!!", res);
           $scope.$storage.shippingData = res.data;
@@ -254,33 +259,6 @@ $scope.submitForm = function(form){
         }, function error(res) {
           console.log("error ",res);             
       });
-
-
-
-    } else {
-
-          var order= {
-            dateCreated: moment(),
-            currency: 'usd',
-            items: $scope.cartItems,
-            tax: taxObj,
-            billing : {
-              name: bill.name,
-              email: ship.email,
-              phone: bill.phone,
-              address: {
-                line1: bill.address1,
-                line2: bill.address2 || null,
-                city: bill.city,
-                state: bill.stateProvince.short || null,
-                country: bill.country.code,
-                postal_code: bill.postalCode
-              }
-            }
-          }
-            $location.url('/store/checkout/payment');
-
-        }
 
      } else {
        console.log("form invalid!");
@@ -309,7 +287,7 @@ $scope.submitForm = function(form){
 
         $http(req).then(function success(res) {
           ngCart.setTaxRate(res.data.totalRate); 
-          $window.localStorage.currentWaRate = res.data.totalRate;   
+          $window.localStorage.currentWaRate = res.data.totalRate; 
         }, function error(res) {
           console.log("error ",res);             
         });
@@ -344,7 +322,7 @@ $scope.submitForm = function(form){
     $scope.shipBool = data;
   });
 
-  if ($scope.$storage.shippingData){
+  if ($scope.$storage.shippingData.rates_list){
      $scope.shipOptions = $scope.$storage.shippingData.rates_list;
     $scope.$storage.savedSelectedShip = $scope.$storage.shippingData.rates_list[0];
 
@@ -413,11 +391,11 @@ $scope.submitForm = function(form){
 
 .controller('StoreConfirmCtrl', function($scope, $state, $http, $timeout, $location, $localStorage, ngCart, $rootScope){
 
-Email.send("brusinow@gmail.com",
-"rusinowmusic@gmail.com",
-"This is a subject test",
-"this is the body of information about stuff.",
-{token: "f26edcd0-e245-4b89-a5d0-3bbaf9539d1d"});
+// Email.send("brusinow@gmail.com",
+// "rusinowmusic@gmail.com",
+// "This is a subject test",
+// "this is the body of information about stuff.",
+// {token: "f26edcd0-e245-4b89-a5d0-3bbaf9539d1d"});
 
   $scope.$on('setShippable', function (event, data) {
     $scope.shipBool = data;

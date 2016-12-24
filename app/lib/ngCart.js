@@ -63,8 +63,8 @@ angular.module('ngCart', ['ngCart.directives'])
         };
 
         this.addItemBtn = function (id, sku, name, price, quantity, data) {
-            console.log("data: ",data);
             var skus = data.skus;
+          
             if (skus.length === 1){
             var inCart = this.getItemById(id);
 

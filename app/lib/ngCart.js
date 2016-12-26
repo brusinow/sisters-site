@@ -15,7 +15,6 @@ angular.module('ngCart', ['ngCart.directives'])
     .run(['$rootScope', 'ngCart','ngCartItem', 'store', function ($rootScope, ngCart, ngCartItem, store) {
 
         $rootScope.$on('ngCart:change', function(){
-            console.log("cart being saved");
             ngCart.$save();
         });
 
@@ -40,12 +39,6 @@ angular.module('ngCart', ['ngCart.directives'])
         };
 
         this.addItem = function (id, sku, name, price, quantity, data, attr) {
-            console.log("what is id ",id);
-            console.log("what is sku ",sku);
-            console.log("what is name ",name);
-            console.log("what is amount ",price);
-            console.log("what is quantity ",quantity);
-            console.log("what is data ",data);
             var inCart = this.getItemById(id);
 
             if (typeof inCart === 'object'){
@@ -54,7 +47,6 @@ angular.module('ngCart', ['ngCart.directives'])
                 $rootScope.$broadcast('ngCart:itemUpdated', inCart);
             } else {
                 var newItem = new ngCartItem(id, sku, name, price, quantity, data, attr);
-                console.log("new item: ",newItem);
                 this.$cart.items.push(newItem);
                 $rootScope.$broadcast('ngCart:itemAdded', newItem);
             }
@@ -233,7 +225,6 @@ angular.module('ngCart', ['ngCart.directives'])
             _self.$cart.tax = storedCart.tax;
 
             angular.forEach(storedCart.items, function (item) {
-                console.log("here's an item!!!", item);
                 _self.$cart.items.push(new ngCartItem(item.parent, item.sku, item.description, item.amount, item.quantity, item._data, item.attr));
             });
             this.$save();
@@ -242,7 +233,6 @@ angular.module('ngCart', ['ngCart.directives'])
 
 
         this.$save = function () {
-            console.log(this.getCart());
             return store.set('cart', JSON.stringify(this.getCart()));
         }
 
@@ -251,8 +241,6 @@ angular.module('ngCart', ['ngCart.directives'])
     .factory('ngCartItem', ['$rootScope', '$log', function ($rootScope, $log) {
 
         var item = function (id, sku, name, price, quantity, data, attr) {
-            console.log("id is ",id);
-            console.log("sku is ",sku);
             this.setId(id);
             this.setSku(sku);
             this.setName(name);
@@ -338,7 +326,6 @@ angular.module('ngCart', ['ngCart.directives'])
         };
 
         item.prototype.setData = function(data){
-            console.log("data trying to be set: ",data);
             if (data) this._data = data;
         };
 
@@ -419,17 +406,14 @@ angular.module('ngCart', ['ngCart.directives'])
         })
 
           var items = ngCart.getItems();
-          console.log(items);
             // loop to determine if any items are shippable
   
             var filtered = [];
             angular.forEach(items, function(item) {
                 if (item._data.product_type === "shippable") {
-                    console.log("PRODUCT SHIPPABLE!!!!")
                     filtered.push(item);
                 }
             });
-            console.log("filtered is now ",filtered);
             if (filtered.length > 0){
                 $scope.shipBool = true;
                 $scope.$emit('setShippable', true);
@@ -437,7 +421,6 @@ angular.module('ngCart', ['ngCart.directives'])
                 $scope.shipBool = false;
                 $scope.$emit('setShippable', false);
             }
-            console.log("what is shipBool? ",$scope.shipBool);
 
         
 

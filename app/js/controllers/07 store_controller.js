@@ -202,19 +202,21 @@ $scope.submitForm = function(form){
     var bill = $scope.data.billing; 
     $scope.$storage.billingAddress = $scope.data.billing;
     $scope.$storage.shippingAddress = $scope.data.shipping;
+    var d = new Date();
     
       var req = {
         url: '/store/newOrder',
         method: 'POST',
         params: {
           order: {
-            dateCreated: moment(),
+            status: "pending",
+            dateCreated: d.getTime(),
             currency: 'usd',
             items: $scope.cartItems,
             tax: taxObj,
             billing : {
               name: bill.name,
-              email: ship.email,
+              email: bill.email,
               phone: bill.phone,
               address: {
                 line1: bill.address1,
@@ -249,9 +251,12 @@ $scope.submitForm = function(form){
         req.params.shippable = false;
       }
 
+      console.log("order to save: ",req.params.order);
+      var orderNumber = Math.floor(100000 + Math.random() * 900000);
       $scope.$storage.orderData = req.params.order;
+      $scope.$storage.orderData.orderNumber = orderNumber;
 
-      firebase.database().ref('orders/order_' + orderNumber).set(parsedOrder);
+      firebase.database().ref('orders/order_' + orderNumber).set(req.params.order);
       $http(req).then(function success(res) {
           console.log("success!!!", res);
           $scope.$storage.shippingData = res.data;
@@ -318,9 +323,19 @@ $scope.submitForm = function(form){
   $scope.$storage = $localStorage;
   $scope.pathCount = parseInt($scope.$storage.pathCount); 
 
+
+
   $scope.$on('setShippable', function (event, data) {
     $scope.shipBool = data;
   });
+
+  var orderNumber = $scope.$storage.orderData.orderNumber;
+  var items = $scope.$storage.orderData.items;
+  for (var i = 0; i < items.length; i++){
+    if (items[i]._data.product_type === "ticket"){
+      $scope.showWillCall = true;
+    }
+  }
 
   if ($scope.$storage.shippingData.rates_list){
      $scope.shipOptions = $scope.$storage.shippingData.rates_list;
@@ -338,15 +353,6 @@ $scope.submitForm = function(form){
     ngCart.setShipping(($scope.selectedShip.amount * 100));  
   }, false);
   }
- 
-
-  
-
-
-
- 
-  
-  
 
   $timeout(function(){
    $scope.loaded = true; 
@@ -356,6 +362,9 @@ $scope.submitForm = function(form){
   
   $scope.submitForm = function(form){
     // if(form.$valid){
+     
+
+
       $scope.loaded = false; 
       Stripe.card.createToken({
         number: $scope.number,
@@ -389,13 +398,7 @@ $scope.submitForm = function(form){
 })
 
 
-.controller('StoreConfirmCtrl', function($scope, $state, $http, $timeout, $location, $localStorage, ngCart, $rootScope){
-
-// Email.send("brusinow@gmail.com",
-// "rusinowmusic@gmail.com",
-// "This is a subject test",
-// "this is the body of information about stuff.",
-// {token: "f26edcd0-e245-4b89-a5d0-3bbaf9539d1d"});
+.controller('StoreConfirmCtrl', function($scope, $state, $http, $timeout, $location, $localStorage, ngCart, $rootScope, AllTickets, WillCallListService){
 
   $scope.$on('setShippable', function (event, data) {
     $scope.shipBool = data;
@@ -411,6 +414,24 @@ $scope.pathCount = parseInt($scope.$storage.pathCount);
 $scope.orderComplete = false;
 $rootScope.path = $location.$$path;
 $scope.ngCart = ngCart;
+
+var items = $scope.$storage.orderData.items;
+var tickets = AllTickets;
+console.log(items[0].parent);
+console.log(tickets);
+
+for (var i = 0; i < items.length; i++){
+  for (var j = 0; j < tickets.length; j++){
+    if (tickets[j].$id === items[i].parent){
+      console.log("WE HAVE A HIT!");
+      var willCallArr = WillCallListService(items[i].parent);
+      console.log("WillCall Array: ",willCallArr);
+       
+    }
+  }
+}
+
+
 
 // referencing stuff from local storage (current shipping choice, token, shipping & billing address info)
 $scope.currentShipping = $scope.$storage.savedSelectedShip;

@@ -376,7 +376,7 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
     controller: 'StorePaymentCtrl',
     resolve: {
       "currentAuth": authWait,
-      currentOrder: function(CurrentOrderService){
+      "currentOrder": function(CurrentOrderService){
         return CurrentOrderService.get();
       }
     }
@@ -387,7 +387,10 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
     templateUrl: '/views/store/checkoutConfirm.html',
     controller: 'StoreConfirmCtrl',
     resolve: {
-      "currentAuth": authWait
+      "currentAuth": authWait,
+      "AllTickets": function(GetAllTickets){
+        return GetAllTickets().$loaded();
+      }
     }
   })
   

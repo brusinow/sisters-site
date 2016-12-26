@@ -23,163 +23,18 @@ angular.module('SistersServices', ['ngResource'])
   }
 ])
 
-.factory("GetShows", ["$firebaseArray","moment", 
-  function($firebaseArray, moment){
-    var currentDay = moment().unix();
-    var calcDay = currentDay - 86400;
-    // console.log("current day: ",currentDay);
-    return function(){
-    var showsRef = firebase.database().ref('shows').orderByChild("unix").startAt(calcDay);
-    // console.log("I'm in GetShows");
-    return $firebaseArray(showsRef);
-  }
-}])
+// .factory("DownloadKeyService", function(){
+//     return function(hash){
+//       console.log("hash is "+hash);
+//       // firebase.database().ref('downloadKeys/' + hash).set("test value");
+//       firebase.database().ref('downloadKeys/'+hash).once('value').then(function(snapshot) {
+//         var snap = snapshot.val();
+//         console.log(snap);
+//       });
+//     }
+//   }
+// )
 
-.factory("GetSingleShow", ["$firebaseObject", 
-  function($firebaseObject){
-    return function(key){
-    var showRef = firebase.database().ref('shows/'+key);
-    return $firebaseObject(showRef);
-  }
-}])
-
-.factory("GetTicket", ["$firebaseObject", 
-  function($firebaseObject){
-    return function(key){
-    var ticketRef = firebase.database().ref('tickets/'+key);
-    return $firebaseObject(ticketRef);
-  }
-}])
-
-
-// Service that returns Firebase Arrays of all items and single items. Most often referenced in app.js resolve objects.
-
-.factory("ProductsService", ["$firebaseArray","$firebaseObject", function($firebaseArray, $firebaseObject){
-  return {
-    allProducts: function(){
-      var allProductsRef = firebase.database().ref('products');
-      return $firebaseArray(allProductsRef);
-    },
-    oneProduct: function(productId){
-      var oneProductRef = firebase.database().ref('products/'+ productId);
-      return $firebaseObject(oneProductRef);
-    }
-  }
-}])
-
-.service('InstagramFactory', ['$http', '$q', 
-  function ($http, $q) {
-    var deferred = $q.defer();
-    $http({
-        method: 'GET',
-        url: '/instagram',
-        cache: true
-    }).success(function (data) {
-        deferred.resolve(data);
-    }).error(function (msg) {
-        deferred.reject(msg);
-    });
-    return deferred.promise;
-}])
-
-
-
-.service('TwitterFactory', ['$http', '$q', 
-  function ($http, $q) {
-    var deferred = $q.defer();
-    $http({
-        method: 'GET',
-        url: '/twitter',
-        cache: true
-    }).success(function (data) {
-        deferred.resolve(data);
-    }).error(function (msg) {
-        deferred.reject(msg);
-    });
-    return deferred.promise;
-}])
-
-
-.factory("DownloadKeyService", function(){
-    return function(hash){
-      console.log("hash is "+hash);
-      // firebase.database().ref('downloadKeys/' + hash).set("test value");
-      firebase.database().ref('downloadKeys/'+hash).once('value').then(function(snapshot) {
-        var snap = snapshot.val();
-        console.log(snap);
-      });
-    }
-  }
-)
-
-
-
-
-
-
-
-
-
-
-
-.factory("BlogPosts", ["$firebaseArray", 
-  function($firebaseArray) {
-  return function(){
-    var blogRef = firebase.database().ref('blog_posts').orderByChild("timestamp");
-    return $firebaseArray(blogRef);
-  }
-}])
-
-
-.factory("ThisPostService", ["$firebaseArray",
-  function($firebaseArray){
-    return function(slug){
-      var postRef = firebase.database().ref('blog_posts');
-      var thisPostRef = postRef.orderByChild('slug').equalTo(slug);
-      return $firebaseArray(thisPostRef);
-    }
-  }
-  ])
-
-.factory("AllTagsService", ["$firebaseArray", 
-  function($firebaseArray) {
-  return function(){
-      var tagRef = firebase.database().ref('tags');
-      return $firebaseArray(tagRef);
-  }
-}])
-
-.factory("TagsShowService", ["$firebaseArray", 
-  function($firebaseObject) {
-  return function(tagName){
-      var tagRef = firebase.database().ref('tags');
-      var tagShowRef = tagRef.orderByChild('name').equalTo(tagName);
-      return $firebaseObject(tagShowRef);
-  }
-}])
-
-
-.factory("ArchiveService", ["$firebaseArray", 
-  function($firebaseArray){
-    return {
-      years: function(){
-      var yearRef = firebase.database().ref('archives');
-      return $firebaseArray(yearRef)
-      },
-      months: function(year){
-      var monthRef = firebase.database().ref('archives/'+year);
-      return $firebaseArray(monthRef)
-      }
-    }
-}])
-
-.factory("ArchiveShowService", ["$firebaseArray", 
-  function($firebaseArray) {
-  return function(year, month){
-      var archiveRef = firebase.database().ref('archives/' + year + '/' + month);
-      return $firebaseArray(archiveRef);
-  }
-}])
 
 .factory('SendDataService', function() {
  var savedData = {}
@@ -194,28 +49,7 @@ angular.module('SistersServices', ['ngResource'])
   set: set,
   get: get
  }
-
 })
-
-.factory('CurrentOrderService', function($window) {
- function set(data) {
-   $window.localStorage.setItem( 'orderData', angular.toJson(data) );
-  //  console.log("order saved!");
- }
- function get() {
-  var order = angular.fromJson( $window.localStorage.getItem('orderData') ) ;
-    return JSON.parse(order);
- }
-
- return {
-  set: set,
-  get: get
- }
-})
-
-
-
-
 
 
 .factory('HelperService', ["moment","$q", function(moment, $q) {
@@ -375,9 +209,6 @@ angular.module('SistersServices', ['ngResource'])
   });
     })
     
-
-
-
   }
 
 }])

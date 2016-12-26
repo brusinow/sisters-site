@@ -2,9 +2,6 @@ var express = require('express');
 var firebase = require("firebase");
 var shippo = require('shippo')(process.env.SHIPPO_TOKEN);
 var stripe = require("stripe")(process.env.STRIPE_SECRET);
-var admin = require("firebase-admin");
-
-
 
 var path = require('path')
 var EmailTemplate = require('email-templates').EmailTemplate
@@ -19,12 +16,7 @@ var template = new EmailTemplate(path.join(templatesDir, 'receipt'))
 // var xoauth2 = require('xoauth2');
 var router = express.Router();
 
-var serviceAccount = require("../sisters-site-test-firebase-adminsdk-nubtt-e74572e185.json");
 
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-  databaseURL: "https://sisters-site-test.firebaseio.com"
-});
 
 
 var transport = nodemailer.createTransport({

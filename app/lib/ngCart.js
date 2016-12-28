@@ -528,9 +528,23 @@ angular.module('ngCart.directives', ['ngCart.fulfilment'])
                 }
 
                 scope.qtyOpt =  [];
-                for (var i = 1; i <= scope.quantityMax; i++) {
-                    scope.qtyOpt.push(i);
-                }
+                var thisMax;
+                console.log("what is id? ",scope.id);
+                var showCountRef = firebase.database().ref('tickets/'+ scope.id + '/totalTickets');
+                showCountRef.once('value').then(function(snapshot) {
+                    var totalTix = snapshot.val();
+                    console.log("what is totalTix? ",totalTix);
+                    if (scope.quantityMax < totalTix){
+                    thisMax = scope.quantityMax;
+                    } else {
+                    thisMax = totalTix;
+                    }
+                    for (var i = 1; i <= thisMax; i++) {
+                        scope.qtyOpt.push(i);
+                    }
+                });
+                
+              
 
             }
 

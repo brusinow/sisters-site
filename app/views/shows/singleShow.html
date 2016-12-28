@@ -19,6 +19,6 @@
         <p style="padding: 0 5%">{{ticket.description}}</p>
      
         <h5 class="text-center">{{ ticket.skus[0].price | centsToDollars | currency}}</h5>
-        <ngcart-addtocart class="text-center" id="{{ ticket.$id }}" sku="{{ticket.skus[0].id}}" name="{{ show.venue }}" price="{{ ticket.skus[0].price }}" quantity="1" quantity-max="30" data="{'product_type': ticket.product_type, 'date': show.unix }">Add to Cart</ngcart-addtocart>
+        <ngcart-addtocart class="text-center" id="{{ ticket.$id }}" sku="{{ticket.skus[0].id}}" name="{{ show.venue }}" price="{{ ticket.skus[0].price }}" quantity="1" quantity-max="8" data="{'product_type': ticket.product_type, 'date': show.unix }">Add to Cart</ngcart-addtocart>
     </div>
 </div>

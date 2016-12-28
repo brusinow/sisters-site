@@ -322,7 +322,7 @@ $scope.submitForm = function(form){
   $rootScope.path = $location.$$path;
   $scope.$storage = $localStorage;
   $scope.pathCount = parseInt($scope.$storage.pathCount); 
-
+  $scope.data = {};
 
 
   $scope.$on('setShippable', function (event, data) {
@@ -362,8 +362,10 @@ $scope.submitForm = function(form){
   
   $scope.submitForm = function(form){
     // if(form.$valid){
-     
 
+
+      // THIS IS NOT WORKING!!!
+      $scope.$storage.orderData.willCallName = $scope.data.willCallName;
 
       $scope.loaded = false; 
       Stripe.card.createToken({
@@ -417,19 +419,13 @@ $scope.ngCart = ngCart;
 
 var items = $scope.$storage.orderData.items;
 var tickets = AllTickets;
+var thisItemIndex;
 console.log(items[0].parent);
 console.log(tickets);
 
-for (var i = 0; i < items.length; i++){
-  for (var j = 0; j < tickets.length; j++){
-    if (tickets[j].$id === items[i].parent){
-      console.log("WE HAVE A HIT!");
-      var willCallArr = WillCallListService(items[i].parent);
-      console.log("WillCall Array: ",willCallArr);
-       
-    }
-  }
-}
+
+
+
 
 
 
@@ -445,6 +441,29 @@ $timeout(function(){
   
 
 
+var updateTicketCount = function(cartItems, itemIndex){
+  console.log("entering updateTicketCount");
+  var thisQuant = cartItems[itemIndex].quantity;
+  var willCallArr = WillCallListService(cartItems[itemIndex].parent);
+  willCallArr.$add({"name": $scope.$storage.orderData.willCallName, "quantity": thisQuant}).then(function(ref) {
+    var id = ref.key;
+    console.log("i where I want to do work should be " + itemIndex);
+    var showCountRef = firebase.database().ref('tickets/'+ cartItems[itemIndex].parent + '/totalTickets');
+    showCountRef.once('value').then(function(snapshot) {
+      showCountRef.set(snapshot.val() - thisQuant);
+    });
+  }, function(err){
+    console.log("what is err: ",err);
+  });
+}
+
+var orderStatusDone = function(orderNumber) {
+  firebase.database().ref('orders/order_' + orderNumber + '/status').set("complete");
+}
+
+
+
+
 $scope.createCharge = function(){
   $scope.loaded = false; 
       var req = {
@@ -454,7 +473,7 @@ $scope.createCharge = function(){
           totalAmount: ngCart.totalCost(),
           token: $scope.token.id,
           name: $scope.token.card.name,
-          cart: ngCart.getItems(),
+          cart: JSON.stringify(ngCart.getItems()),
           shipChoice: $scope.currentShipping
         }
       } 
@@ -463,6 +482,16 @@ $scope.createCharge = function(){
 
       $http(req).then(function success(res) {
         console.log("what is res? ",res);
+        console.log("items length is: ",items.length);
+        for (var i = 0; i < items.length; i++){
+          for (var j = 0; j < tickets.length; j++){
+            if (tickets[j].$id === items[i].parent){
+            console.log("WE HAVE A HIT! Where i is " + i + " and j is " + j + "." );
+            updateTicketCount(items, i); 
+            }
+          }
+        }
+        orderStatusDone($scope.$storage.orderData.orderNumber);
         $scope.orderComplete = true;
         if ($scope.$storage.mailingList){
           mailchimpSubmit();

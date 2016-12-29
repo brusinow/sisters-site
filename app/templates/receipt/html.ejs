@@ -1,4 +1,13 @@
 <div id="header-block">
 <img id="sisters-email-logo" src="cid:unique@kreata.ee"/>
 </div>
-<h2>Hi there <%= name %>!</h2>
+<div style="text-align: center;">
+<h3>Hi there <%= name %>!</h3>
+<h4>Thank you for your purchase.</h4>
+</div>
+
+<p>
+<% cart.forEach(function(item){ %>
+  <span> <%= item.description %> (<%= item.sku %>): <%= item.quantity%>x $<%= (item.amount / 100).toFixed(2) %></span><br>
+<% }) %>
+</p>

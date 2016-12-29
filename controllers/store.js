@@ -36,6 +36,8 @@ var transport = nodemailer.createTransport({
 
 
 
+
+
 router.post("/newOrder", function(req, res){
   var thisOrder = req.query.order;
   console.log("THIS ORDER!!!!!!! ",thisOrder);
@@ -118,8 +120,8 @@ router.post("/newOrder", function(req, res){
 
 router.post("/orderComplete", function(req, res){
   var data = req.query;
-  var cartItems = JSON.parse(data.cart);
-  console.log(cartItems);
+  var cart = JSON.parse(data.cart);
+  console.log(cart);
   // Initiate Stripe Charge Creation
   stripe.charges.create({
   amount: data.totalAmount,
@@ -139,12 +141,23 @@ router.post("/orderComplete", function(req, res){
       var order = {
         email: 'rusinowmusic@gmail.com',
         subject: 'Thank you for your order!',
-        name: data.name
+        name: data.name,
+        cart: cart,
+        tax: data.tax,
+        total: data.totalAmount
+
       }
+      generateEmailReceipt(order);
 
-      console.log("Making it past RES.SEND!!!!!!!!!!!!!!");
 
-  template.render(order, function (err, results) {
+
+    }
+  });
+});
+
+
+var generateEmailReceipt = function(order){
+    template.render(order, function (err, results) {
   if (err) {
     return console.error(err)
   }
@@ -157,7 +170,7 @@ router.post("/orderComplete", function(req, res){
     text: results.text,
     attachments: [{
         filename: 'logo.png',
-        path: 'https://sisterstheband.com/img/logo.png',
+        path: 'https://firebasestorage.googleapis.com/v0/b/sisters-site-test.appspot.com/o/images%2Fsisters-logo-header-bg.jpg?alt=media&token=3f43b8ee-37de-4dbf-9260-485e14ffc6c8',
         cid: 'unique@kreata.ee' //same cid value as in the html img src
     }]
   }, function (err, responseStatus) {
@@ -167,10 +180,7 @@ router.post("/orderComplete", function(req, res){
     console.log(responseStatus.message)
   })
 })
-
-    }
-  });
-});
+}
 
 
 

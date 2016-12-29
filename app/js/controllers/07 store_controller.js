@@ -471,6 +471,7 @@ $scope.createCharge = function(){
         method: 'POST',
         params: {
           totalAmount: ngCart.totalCost(),
+          tax: ngCart.getTax(),
           token: $scope.token.id,
           name: $scope.token.card.name,
           cart: JSON.stringify(ngCart.getItems()),

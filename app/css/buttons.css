@@ -312,30 +312,29 @@ button.button:disabled {
 
 /* line 235, ../scss/partials/_buttons.scss */
 .button-pink {
-  background: url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4gPHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSJncmFkIiBncmFkaWVudFVuaXRzPSJvYmplY3RCb3VuZGluZ0JveCIgeDE9IjAuNSIgeTE9IjAuMCIgeDI9IjAuNSIgeTI9IjEuMCI+PHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2Q1NGRiNyIvPjxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iI2MxMmVhMSIvPjwvbGluZWFyR3JhZGllbnQ+PC9kZWZzPjxyZWN0IHg9IjAiIHk9IjAiIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JhZCkiIC8+PC9zdmc+IA==');
-  background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #d54db7), color-stop(100%, #c12ea1));
-  background: -moz-linear-gradient(top, #d54db7, #c12ea1);
-  background: -webkit-linear-gradient(top, #d54db7, #c12ea1);
-  background: linear-gradient(to bottom, #d54db7, #c12ea1);
-  background-color: #d038af;
-  border-color: #ac2990;
+  background: url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4gPHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSJncmFkIiBncmFkaWVudFVuaXRzPSJvYmplY3RCb3VuZGluZ0JveCIgeDE9IjAuNSIgeTE9IjAuMCIgeDI9IjAuNSIgeTI9IjEuMCI+PHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2Y4OTFhZiIvPjxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iI2Y2NjE4ZCIvPjwvbGluZWFyR3JhZGllbnQ+PC9kZWZzPjxyZWN0IHg9IjAiIHk9IjAiIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JhZCkiIC8+PC9zdmc+IA==');
+  background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #f891af), color-stop(100%, #f6618d));
+  background: -moz-linear-gradient(top, #f891af, #f6618d);
+  background: -webkit-linear-gradient(top, #f891af, #f6618d);
+  background: linear-gradient(to bottom, #f891af, #f6618d);
+  background-color: #f7799e;
+  border-color: #f4497b;
   color: #ffffff;
-  text-shadow: 0 -1px 1px rgba(90, 21, 75, 0.35); }
+  text-shadow: 0 -1px 1px rgba(203, 12, 68, 0.35); }
   /* line 242, ../scss/partials/_buttons.scss */
   .button-pink:hover, .button-pink:focus {
-    background-color: #d038af;
+    background-color: #f7799e;
     color: #ffffff;
-    background: url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4gPHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSJncmFkIiBncmFkaWVudFVuaXRzPSJvYmplY3RCb3VuZGluZ0JveCIgeDE9IjAuNSIgeTE9IjAuMCIgeDI9IjAuNSIgeTI9IjEuMCI+PHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2RhNjFjMCIvPjxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iI2MxMmVhMSIvPjwvbGluZWFyR3JhZGllbnQ+PC9kZWZzPjxyZWN0IHg9IjAiIHk9IjAiIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JhZCkiIC8+PC9zdmc+IA==');
-    background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #da61c0), color-stop(100%, #c12ea1));
-    background: -moz-linear-gradient(top, #da61c0, #c12ea1);
-    background: -webkit-linear-gradient(top, #da61c0, #c12ea1);
-    background: linear-gradient(to bottom, #da61c0, #c12ea1); }
+    background: url('data:image/svg+xml;base64,PD94bWwgdmVyc2lvbj0iMS4wIiBlbmNvZGluZz0idXRmLTgiPz4gPHN2ZyB2ZXJzaW9uPSIxLjEiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGRlZnM+PGxpbmVhckdyYWRpZW50IGlkPSJncmFkIiBncmFkaWVudFVuaXRzPSJvYmplY3RCb3VuZGluZ0JveCIgeDE9IjAuNSIgeTE9IjAuMCIgeDI9IjAuNSIgeTI9IjEuMCI+PHN0b3Agb2Zmc2V0PSIwJSIgc3RvcC1jb2xvcj0iI2ZhYTljMSIvPjxzdG9wIG9mZnNldD0iMTAwJSIgc3RvcC1jb2xvcj0iI2Y2NjE4ZCIvPjwvbGluZWFyR3JhZGllbnQ+PC9kZWZzPjxyZWN0IHg9IjAiIHk9IjAiIHdpZHRoPSIxMDAlIiBoZWlnaHQ9IjEwMCUiIGZpbGw9InVybCgjZ3JhZCkiIC8+PC9zdmc+IA==');
+    background: -webkit-gradient(linear, 50% 0%, 50% 100%, color-stop(0%, #faa9c1), color-stop(100%, #f6618d));
+    background: -moz-linear-gradient(top, #faa9c1, #f6618d);
+    background: -webkit-linear-gradient(top, #faa9c1, #f6618d);
+    background: linear-gradient(to bottom, #faa9c1, #f6618d); }
   /* line 247, ../scss/partials/_buttons.scss */
   .button-pink:active, .button-pink.is-active, .button-pink.active {
-    background: #b751a1;
-    color: #831f6d; }
+    background: #e987a4;
+    color: #f11958; }
 
-/* line 300, ../scss/partials/_buttons.scss */
 .button-border-pink {
   -moz-box-shadow: none;
   -webkit-box-shadow: none;
@@ -348,15 +347,15 @@ button.button:disabled {
   -o-transition-duration: 0.3s;
   -webkit-transition-duration: 0.3s;
   transition-duration: 0.3s;
-  color: #d038af;
-  border: 2px solid #d038af;
+  color: #f7799e;
+  border: 2px solid #f7799e;
   background: none;
   text-shadow: none; }
   /* line 309, ../scss/partials/_buttons.scss */
   .button-border-pink:hover, .button-border-pink:focus {
     background: none;
-    color: #da61c0;
-    border: 2px solid #da61c0; }
+    color: #faa9c1;
+    border: 2px solid #faa9c1; }
   /* line 314, ../scss/partials/_buttons.scss */
   .button-border-pink:active, .button-border-pink.is-active, .button-border-pink.active {
     -moz-transition-duration: 0s;
@@ -364,8 +363,8 @@ button.button:disabled {
     -webkit-transition-duration: 0s;
     transition-duration: 0s;
     background: none;
-    color: #ac2990;
-    border: 2px solid #ac2990; }
+    color: #f4497b;
+    border: 2px solid #f4497b; }
   /* line 320, ../scss/partials/_buttons.scss */
   .button-border-pink.disabled {
     -moz-box-shadow: none;
@@ -386,22 +385,22 @@ button.button:disabled {
   -o-transition-duration: 0.3s;
   -webkit-transition-duration: 0.3s;
   transition-duration: 0.3s;
-  background: #d038af;
+  background: #f7799e;
   color: #ffffff;
   text-shadow: none;
   border: none; }
   /* line 341, ../scss/partials/_buttons.scss */
   .button-flat-pink:hover, .button-flat-pink:focus {
     color: #ffffff;
-    background: #d54db7; }
+    background: #f891af; }
   /* line 345, ../scss/partials/_buttons.scss */
   .button-flat-pink:active, .button-flat-pink.is-active, .button-flat-pink.active {
     -moz-transition-duration: 0s;
     -o-transition-duration: 0s;
     -webkit-transition-duration: 0s;
     transition-duration: 0s;
-    background: #b751a1;
-    color: #98247f; }
+    background: #e987a4;
+    color: #f3316a; }
   /* line 350, ../scss/partials/_buttons.scss */
   .button-flat-pink.disabled {
     -moz-box-shadow: none;

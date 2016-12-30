@@ -1,5 +1,7 @@
-<div style="margin-left: 5px; margin-bottom: 15px;">
-    <a class="store-back-link" href="/shows"><i class="fa fa-long-arrow-left" aria-hidden="true"></i> Back to Shows</a>
+
+<div id="shows-container" class="single-show-div">
+    <div style="margin-left: 5px; margin-bottom: 15px;">
+    <a style="color: #1A0504;" class="store-back-link" href="/shows"><i class="fa fa-long-arrow-left" aria-hidden="true"></i> Back to Shows</a>
 </div>
 <div class="row">
     <div class="seven columns">
@@ -13,12 +15,14 @@
         </div>
     </div>
     <div class="five columns">
-        <h3 class="single-product-name text-center">{{show.date}}</h3>
-        <h4 class="single-product-name text-center">{{show.location}}</h4>
-        <h3 class="single-product-name text-center">{{show.venue}}</h3>
-        <p style="padding: 0 5%">{{ticket.description}}</p>
+        <h4 class="single-product-name text-center" style="margin-bottom: 3px; font-weight: 500;">{{showUnix | MomentFilter}}</h4>
+        <h5 class="single-product-name text-center" style="font-weight: 500;">{{show.location}}</h5>
+        <h5 class="single-product-name text-center">{{show.venue}}</h5>
+        <p style="font-weight: 600; padding: 0 5%;">{{ticket.subheader}}</p>
+        <div style="padding: 0 5%;" ng-bind-html="ticket.description"></div>
      
-        <h5 class="text-center">{{ ticket.skus[0].price | centsToDollars | currency}}</h5>
+        <h5 class="text-center" style="margin-bottom: 5px;">{{ ticket.skus[0].price | centsToDollars | currency}}</h5>
         <ngcart-addtocart class="text-center" id="{{ ticket.$id }}" sku="{{ticket.skus[0].id}}" name="{{ show.venue }}" price="{{ ticket.skus[0].price }}" quantity="1" quantity-max="8" data="{'product_type': ticket.product_type, 'date': show.unix }">Add to Cart</ngcart-addtocart>
     </div>
+</div>
 </div>

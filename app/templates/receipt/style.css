@@ -9,6 +9,20 @@ h1 {
 
 #header-block img {
   display: block;
-  width: 80%;
+  width: 100%;
   margin: auto;
+}
+
+#receipt-table {
+  font-size: 10px;
+}
+
+#receipt-table table {
+  width: 100%;
+}
+
+#receipt-table td {
+  padding: 4px;
+  text-align: center;
+  border-bottom: 1px solid #222;
 }

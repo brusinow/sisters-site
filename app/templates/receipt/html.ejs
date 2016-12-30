@@ -2,12 +2,41 @@
 <img id="sisters-email-logo" src="cid:unique@kreata.ee"/>
 </div>
 <div style="text-align: center;">
-<h3>Hi there <%= name %>!</h3>
-<h4>Thank you for your purchase.</h4>
+<h4>Hi there <%= name %>!</h4>
+<h5>Thank you for your purchase.</h5>
+<h5>Order #<% orderData.orderNumber %></h5>
+<p style="font-weight: bold;">Tickets can be picked up at will call.</p>
 </div>
 
-<p>
-<% cart.forEach(function(item){ %>
-  <span> <%= item.description %> (<%= item.sku %>): <%= item.quantity%>x $<%= (item.amount / 100).toFixed(2) %></span><br>
-<% }) %>
-</p>
+<div id="receipt-table">
+<table>
+  <tr>
+  <th></th>
+  <th>Quantity</th>
+  <th>Amount</th>
+  <th>Total</th>
+  </tr>
+  <% cart.forEach(function(item){ %>
+  <tr>
+    <td><%= item.description %> (<%= item.sku %>)</td>
+    <td><%= item.quantity%>x </td>
+    <td>$<%= (item.amount / 100).toFixed(2) %></td>
+    <td>$<%= ((item.amount / 100) * item.quantity).toFixed(2) %></td>
+  </tr>
+  <% }) %>
+  <tr>
+    <td></td>
+    <td></td>
+    <td>Tax (<% orderData.metadata.taxRate %>%):</td>
+    <td>$<%= (tax.amount/100).toFixed(2)%></td>
+  </tr>
+  <tr>
+    <td></td>
+    <td></td>
+    <td>TOTAL:</td>
+    <td>$<%= (total/100).toFixed(2)%></td>
+  </tr>
+
+
+</table>
+</div>

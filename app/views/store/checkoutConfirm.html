@@ -93,7 +93,7 @@
                     <tr ng-repeat="item in ngCart.getCart().items track by $index">
                         <td></td>
 
-                        <td>{{ item.getName() }}</td>
+                        <td>{{ item.getName() }} <span ng-show="item._data.product_type === 'ticket'"> ({{item._data.date | slashDate}})</span></td>
                         <td>
                             {{ item.getQuantity() | number }}
                         </td>

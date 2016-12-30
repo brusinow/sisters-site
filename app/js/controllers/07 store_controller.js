@@ -34,7 +34,7 @@ angular.module('SistersCtrls')
 
 .controller('StoreCartCtrl', function($scope, $state, $http, $timeout, $location, $sessionStorage){
   var main = document.getElementById("main");
-  main.style.backgroundColor = '';
+  main.style.backgroundColor = 'rgba(255,255,255,0)';
   $scope.$emit('loadMainContainer', 'loaded');
 
   $scope.toCheckout = function(){
@@ -475,6 +475,7 @@ $scope.createCharge = function(){
           token: $scope.token.id,
           name: $scope.token.card.name,
           cart: JSON.stringify(ngCart.getItems()),
+          order: $scope.$storage.orderData,
           shipChoice: $scope.currentShipping
         }
       } 

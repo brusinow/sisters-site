@@ -2,7 +2,7 @@
 <div ng-hide="loaded" class='uil-spin-css' style='-webkit-transform:scale(0.81)'><div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div></div>
 <div class="checkout" ng-class="{'fade-in': loaded}">
 <ngcart-small-cart-collapse class="cart-summary-mobile"></ngcart-small-cart-collapse>
-  <form name="payment-form" novalidate ng-submit="submitForm(payment-form)">
+  <form name="form" class="checkout-form" novalidate ng-submit="submitForm(form)">
   <div class="row">
     <div ng-if="shipBool" style="margin-bottom: 10px;" class="four columns">
       <div class="store-card">
@@ -53,10 +53,13 @@
           </div>
         </div>
         <div class="payment-input">
-        <input class="credit-card-num columns" type="text" ng-model="number" placeholder="card" payments-format="card" payments-validate="card" payments-type-model="type"/>
+        <input name="card-number" class="credit-card-num columns" type="text" ng-model="number" placeholder="card" required payments-format="card" payments-validate="card" payments-type-model="type"/>
+          <span class="input-validate-text" ng-class="{'show': form.card-number.$error.required && form.$submitted}">*Required</span>
         <div class="row">
-          <input class="exp-cvc-line exp-left columns" type="text" ng-model="expiry" placeholder="exp" payments-validate="expiry" payments-format="expiry" />
-          <input class="exp-cvc-line columns cvc-right" type="text" ng-model="cvc" placeholder="cvc" payments-validate="cvc" payments-type-model="type" payments-format="cvc"/> 
+          <input name="card-exp" class="exp-cvc-line exp-left columns" type="text" ng-model="expiry" placeholder="exp" payments-validate="expiry" payments-format="expiry" required />
+           <span class="input-validate-text" ng-class="{'show': form.card-exp.$error.required && form.$submitted}">*Required</span>
+          <input name="card-cvc" class="exp-cvc-line columns cvc-right" type="text" ng-model="cvc" placeholder="cvc" payments-validate="cvc" payments-type-model="type" payments-format="cvc" required/> 
+          <span class="input-validate-text" ng-class="{'show': form.card-cvc.$error.required && form.$submitted}">*Required</span>
         </div>
         </div>
       </div>
@@ -65,7 +68,10 @@
           <h6 class="text-center">Ticket Will Call</h6>
         </div>
         <p style="font-size: 16px; margin-bottom: 8px;">Please enter the name to pick up Will Call tickets:</p>
-        <input id="willcall-input" type="text" ng-model="data.willCallName" placeholder="full name"/> 
+        <div class="input-container">
+          <input name="willcall" id="willcall-input" class="u-full-width" type="text" ng-model="data.willCallName" required placeholder="full name" />
+          <span class="input-validate-text" ng-class="{'show': form.willcall.$error.required && form.$submitted}">*Required</span>
+        </div>
       </div>
     </div>
     <div class="four columns text-center">

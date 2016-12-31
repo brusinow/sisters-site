@@ -373,7 +373,7 @@ $scope.submitForm = function(form){
   
   
   $scope.submitForm = function(form){
-    // if(form.$valid){
+    if(form.$valid){
 
 
       // THIS IS NOT WORKING!!!
@@ -405,9 +405,9 @@ $scope.submitForm = function(form){
           
         }
       });
-    // } else {
-      // console.log("form invalid!!");
-    // }
+    } else {
+      console.log("form invalid!!");
+    }
   }
 })
 

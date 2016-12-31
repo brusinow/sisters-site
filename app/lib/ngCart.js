@@ -529,11 +529,9 @@ angular.module('ngCart.directives', ['ngCart.fulfilment'])
 
                 scope.qtyOpt =  [];
                 var thisMax;
-                console.log("what is id? ",scope.id);
                 var showCountRef = firebase.database().ref('tickets/'+ scope.id + '/totalTickets');
                 showCountRef.once('value').then(function(snapshot) {
                     scope.totalTix = snapshot.val();
-                    console.log("what is totalTix? ",scope.totalTix);
                     if (scope.quantityMax < scope.totalTix){
                     thisMax = scope.quantityMax;
                     } else {

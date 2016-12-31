@@ -866,10 +866,6 @@ select {
     height: 100%;
   }
 
-  #main-video-container .videoWrapper {
-    margin-bottom: 10px;
-  }
-
   .white-space-pre {
     white-space: pre-line;
     text-align: justify;

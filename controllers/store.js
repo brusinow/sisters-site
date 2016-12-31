@@ -27,7 +27,7 @@ var router = express.Router();
 
 
 var transport = nodemailer.createTransport({
-     service: 'gmail', // no need to set host or port etc.
+     service: 'Gmail', // no need to set host or port etc.
      auth: {
        user: process.env.GMAIL_USER,
        pass: process.env.GMAIL_PASS

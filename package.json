@@ -6,7 +6,6 @@
     "angular": "^1.5.8",
     "angular-animate": "^1.5.8",
     "angular-resource": "^1.5.8",
-    "angular-stripe": "^4.2.12",
     "angular-ui-bootstrap": "^2.0.1",
     "angular-ui-router": "^0.3.1",
     "async": "^2.1.4",

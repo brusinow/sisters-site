@@ -565,7 +565,7 @@ select {
   transition: right 0.2s; 
 }
 
-.show {
+form .show {
   right: 15px;
 }
 

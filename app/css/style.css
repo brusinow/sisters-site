@@ -57,6 +57,7 @@ h4 {
   font-weight: 300;
   padding: 5px 15px;
   border: 1px solid #1A0504;
+  font-size: 2.4rem;
 }
 
 button.button-tiny-circle {
@@ -1113,17 +1114,17 @@ form .show {
 
 
 .tags-ovals {
-  font-family: 'Helvetica Neue', sans-serif;
-  min-width: 50px;
-  display: inline-block;
-  font-size: .8em;
-  color: white;
-  font-weight: 400;
-  padding: 6px 12px;
-  border: none;
-  border-radius: 24px;
-  margin: 2px 3px 2px 3px;
-  background-color: #f497b3;
+    font-family: 'Helvetica Neue', sans-serif;
+    min-width: 50px;
+    display: inline-block;
+    font-size: .7em;
+    color: white;
+    font-weight: 400;
+    padding: 3px 6px;
+    border: none;
+    border-radius: 24px;
+    margin: 2px 3px 2px 3px;
+    background-color: #f497b3;
 }
 
 .tags-ovals:hover {
@@ -2466,6 +2467,10 @@ display: none;
 
 
 @media (min-width: 1134px){
+
+.master-header {
+  font-size: 3.2rem;
+}
 
 .single-show-div h4 {
   font-size: 2.4rem;

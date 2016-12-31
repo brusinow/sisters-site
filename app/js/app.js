@@ -367,7 +367,7 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
 
 .filter('trustAsResourceUrl', ['$sce', function($sce) {
   return function(val) {
-    return $sce.trustAsResourceUrl('http://www.youtube.com/embed/'+val);
+    return $sce.trustAsResourceUrl('https://www.youtube.com/embed/'+val);
   };
 }])
 

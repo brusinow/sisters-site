@@ -841,7 +841,12 @@ select {
   }
 
 
-
+.general-email-div {
+  font-family: "Cormorant Garamond", serif;
+  display: inline-block;
+  background-color: rgba(255,255,255,.7);
+  padding: 10px;
+}
 
 
 
@@ -2207,7 +2212,6 @@ display: none;
   margin: 20px auto 30px auto;
 }
 
-
 .recent-posts-list li {
     font-size: .9em;
 }
@@ -2588,9 +2592,6 @@ display: none;
     margin-bottom: 0;
     font-size: 1.9em;
 }
-
-
-
 
 
 

@@ -120,7 +120,11 @@ router.post("/newOrder", function(req, res){
 
 router.post("/orderComplete", function(req, res){
   var data = req.query;
-  console.log("what is data? ",data);
+  console.log("what is order? ",data.order);
+  var myOrder = JSON.parse(data.order);
+  var myTax = JSON.parse(data.tax);
+  console.log("what is willcall name? ",myOrder.willCallName);
+  console.log("what is order number? ",myOrder.orderNumber);
   var cart = JSON.parse(data.cart);
   console.log(cart);
   // Initiate Stripe Charge Creation
@@ -140,14 +144,13 @@ router.post("/orderComplete", function(req, res){
     res.send(charge); 
 
       var order = {
-        email: 'rusinowmusic@gmail.com',
-        subject: 'Thank you for your order! Order #' + data.order.orderNumber,
+        email: myOrder.billing.email,
+        subject: 'Thank you for your order! Order #' + myOrder.orderNumber,
         name: data.name,
         cart: cart,
-        tax: data.tax,
         total: data.totalAmount,
-        orderData: data.order
-
+        orderData: myOrder,
+        charge: charge
       }
 
       generateEmailReceipt(order);
@@ -166,7 +169,7 @@ var generateEmailReceipt = function(order){
   }
 
   transport.sendMail({
-    from: 'SISTERS <brusinow@gmail.com>',
+    from: 'SISTERS <iheartsistersband@gmail.com>',
     to: order.email,
     subject: order.subject,
     html: results.html,

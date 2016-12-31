@@ -532,16 +532,19 @@ angular.module('ngCart.directives', ['ngCart.fulfilment'])
                 console.log("what is id? ",scope.id);
                 var showCountRef = firebase.database().ref('tickets/'+ scope.id + '/totalTickets');
                 showCountRef.once('value').then(function(snapshot) {
-                    var totalTix = snapshot.val();
-                    console.log("what is totalTix? ",totalTix);
-                    if (scope.quantityMax < totalTix){
+                    scope.totalTix = snapshot.val();
+                    console.log("what is totalTix? ",scope.totalTix);
+                    if (scope.quantityMax < scope.totalTix){
                     thisMax = scope.quantityMax;
                     } else {
-                    thisMax = totalTix;
+                    thisMax = scope.totalTix;
                     }
-                    for (var i = 1; i <= thisMax; i++) {
+                    if (thisMax > 0){
+                        for (var i = 1; i <= thisMax; i++) {
                         scope.qtyOpt.push(i);
+                        }
                     }
+                    
                 });
                 
               

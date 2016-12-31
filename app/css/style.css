@@ -668,7 +668,7 @@ select {
   background-color: #f7a0ba;
   border: 2px solid white;
   width: 100%;
-  padding: 10px 16px;
+  padding: 4px 16px 10px 16px;
 }
 
 .small-cart-card th {
@@ -750,7 +750,7 @@ select {
 }
 
   .store-card-confirm {
-    /*  min-height: 175px;*/
+    margin-bottom: 10px;
 
   }
 

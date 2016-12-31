@@ -4,7 +4,7 @@
         <h6 class="text-center">Review Your Order:</h6>
     <table class="table ngCart cart">
         <tr ng-repeat="item in ngCart.getCart().items track by $index">
-            <td>{{item.getQuantity() | number}}x {{item.getName()}} <span ng-show="item.getAttr()">({{item.getAttr()}})</span></td>
+            <td>{{item.getQuantity() | number}}x {{item.getName()}} <span ng-show="item._data.product_type === 'ticket'">({{item._data.date | slashDate}}) </span> <span ng-show="item.getAttr()">({{item.getAttr()}})</span></td>
             <td class="text-right">{{ item.getTotal() | centsToDollars | currency }}</td>
         </tr>
 
@@ -16,7 +16,7 @@
             <td>Tax ({{ngCart.getTaxRate() || 0}}%):</td>
             <td class="text-right">{{ ngCart.getTax() || 0 | centsToDollars | currency }}</td>
         </tr>
-        <tr>
+          <tr ng-if="shipBool">
             <td>Shipping:</td>
             <td class="text-right">{{ ngCart.getShipping()|| 0 | centsToDollars | currency }}</td>
         </tr>

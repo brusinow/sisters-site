@@ -35,7 +35,11 @@ angular.module('SistersCtrls')
 .controller('StoreCartCtrl', function($scope, $state, $http, $timeout, $location, $sessionStorage){
   var main = document.getElementById("main");
   main.style.backgroundColor = 'rgba(255,255,255,0)';
-  $scope.$emit('loadMainContainer', 'loaded');
+
+  $timeout(function(){
+      $scope.$emit('loadMainContainer', 'loaded');
+  },1);
+
 
   $scope.toCheckout = function(){
     $location.url('/store/checkout/address');
@@ -194,6 +198,7 @@ $scope.submitForm = function(form){
      if(form.$valid){
       
     $scope.loaded = [];
+    setMailingList();
     var taxObj = {
       amount: ngCart.getTax(),
       description: "tax: ("+ ngCart.getTaxRate() + "%)",
@@ -251,8 +256,7 @@ $scope.submitForm = function(form){
         req.params.shippable = false;
       }
 
-      console.log("order to save: ",req.params.order);
-      var orderNumber = Math.floor(100000 + Math.random() * 900000);
+      var orderNumber = Math.floor(100000 + Math.random() * 1000000000);
       $scope.$storage.orderData = req.params.order;
       $scope.$storage.orderData.orderNumber = orderNumber;
 
@@ -270,6 +274,14 @@ $scope.submitForm = function(form){
      }
       
   }
+
+    var setMailingList = function(){
+      if ($scope.mailingListAdd === true){
+        $scope.$storage.mailingList = true;
+      } else {
+        $scope.$storage.mailingList = false;
+      }
+    }
 
 
 
@@ -434,6 +446,7 @@ $scope.currentShipping = $scope.$storage.savedSelectedShip;
 $scope.token = $scope.$storage.tokenData;
 $scope.shipping = $scope.$storage.shippingAddress;
 $scope.billing = $scope.$storage.billingAddress;
+$scope.order = $scope.$storage.orderData;
 
 $timeout(function(){
   $scope.loaded = true;
@@ -466,6 +479,11 @@ var orderStatusDone = function(orderNumber) {
 
 $scope.createCharge = function(){
   $scope.loaded = false; 
+       if ($scope.$storage.mailingList === true){
+          console.log("should be adding to mailinglist!");
+          mailchimpSubmit($scope.$storage.billingAddress.email);
+      }
+
       var req = {
         url: '/store/orderComplete',
         method: 'POST',
@@ -495,9 +513,7 @@ $scope.createCharge = function(){
         }
         orderStatusDone($scope.$storage.orderData.orderNumber);
         $scope.orderComplete = true;
-        if ($scope.$storage.mailingList){
-          mailchimpSubmit();
-        }
+       
         ngCart.setTaxRate();
         ngCart.setShipping();   
         ngCart.empty();
@@ -514,8 +530,8 @@ $scope.createCharge = function(){
 
 
 
-var mailchimpSubmit = function(){
-    var url = "//sisterstheband.us14.list-manage.com/subscribe/post-json?u=bc38720b0bcc7a32641bb572c&amp;id=242f4adc89&EMAIL="+$scope.$storage.shippingData.email+"&c=JSON_CALLBACK"
+var mailchimpSubmit = function(email){
+    var url = "//sisterstheband.us14.list-manage.com/subscribe/post-json?u=bc38720b0bcc7a32641bb572c&amp;id=242f4adc89&EMAIL="+ email +"&c=JSON_CALLBACK"
     $http.jsonp(url).then(function success(res){
     }, function error(res){
       console.log(res);

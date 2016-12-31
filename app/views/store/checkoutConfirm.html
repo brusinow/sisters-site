@@ -49,6 +49,12 @@
         <br>
         <span class="credit-card">**** **** **** {{token.card.last4}}</span>
     </div>
+     <div style="margin-top: 15px;" class="store-header-div">
+          <h6 class="text-center">Will Call Name</h6>
+      </div>
+      <div style="font-size: 1.2em;">
+        {{order.willCallName}}
+    </div>
 </div>
 </div>
 
@@ -66,6 +72,18 @@
                         <th>Total</th>
                     </tr>
                 </thead>
+                  <tbody>
+                    <tr ng-repeat="item in ngCart.getCart().items track by $index">
+                        <td></td>
+
+                        <td>{{ item.getName() }} <span ng-show="item._data.product_type === 'ticket'"> ({{item._data.date | slashDate}})</span></td>
+                        <td>
+                            {{ item.getQuantity() | number }}
+                        </td>
+                        <td>{{ item.getPrice() | centsToDollars | currency }}</td>
+                        <td>{{ item.getTotal() | centsToDollars | currency }}</td>
+                    </tr>
+                </tbody>
                 <tfoot>
                     <tr class="main-cart-row">
                         <td></td>
@@ -89,24 +107,12 @@
                         <td>{{ ngCart.totalCost() | centsToDollars | currency }}</td>
                     </tr>
                 </tfoot>
-                <tbody>
-                    <tr ng-repeat="item in ngCart.getCart().items track by $index">
-                        <td></td>
-
-                        <td>{{ item.getName() }} <span ng-show="item._data.product_type === 'ticket'"> ({{item._data.date | slashDate}})</span></td>
-                        <td>
-                            {{ item.getQuantity() | number }}
-                        </td>
-                        <td>{{ item.getPrice() | centsToDollars | currency }}</td>
-                        <td>{{ item.getTotal() | centsToDollars | currency }}</td>
-                    </tr>
-                </tbody>
             </table>
         </div>
     </div>
 
     <div class="text-center">
-        <button ng-hide="orderComplete" class="button-flat-blue button-jumbo" ng-click="createCharge()">Submit Order</button>
+        <button ng-hide="orderComplete" class="button-flat-blue button-large" ng-click="createCharge()">Submit Order</button>
     </div>
 
 </div>

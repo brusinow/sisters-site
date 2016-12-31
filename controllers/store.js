@@ -17,7 +17,7 @@ var serviceAccount = require("../sisters-site-creds.json");
 
 admin.initializeApp({
   credential: admin.credential.cert(serviceAccount),
-  databaseURL: "https://sisters-site-test.firebaseio.com"
+  databaseURL: "https://sisters-site.firebaseio.com"
 });
 
 // var xoauth2 = require('xoauth2');

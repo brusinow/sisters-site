@@ -134,6 +134,7 @@ $scope.changeActive = function(){
 
 
   $rootScope.path = $location.$$path;
+  console.log($location.$$path);
   if (!$scope.$storage.pathCount || $scope.$storage.pathCount < 1){
     $scope.$storage.pathCount = 0;
     $scope.$emit('cartChange', $scope.$storage.pathCount); 
@@ -331,6 +332,7 @@ $scope.submitForm = function(form){
   var main = document.getElementById("main");
   main.style.backgroundColor = 'rgba(247, 237, 245, 0)';
   $scope.$emit('loadMainContainer', 'loaded');
+  console.log($location.$$path);
   $rootScope.path = $location.$$path;
   $scope.$storage = $localStorage;
   $scope.pathCount = parseInt($scope.$storage.pathCount); 
@@ -427,6 +429,7 @@ $scope.$storage = $localStorage;
 $scope.pathCount = parseInt($scope.$storage.pathCount); 
 $scope.orderComplete = false;
 $rootScope.path = $location.$$path;
+console.log($location.$$path);
 $scope.ngCart = ngCart;
 
 var items = $scope.$storage.orderData.items;
@@ -498,15 +501,11 @@ $scope.createCharge = function(){
         }
       } 
 
-      console.log(req.params.cart);
-
-      $http(req).then(function success(res) {
-        console.log("what is res? ",res);
-        console.log("items length is: ",items.length);
+      $http(req).then(function(res) {
+        $scope.isError = false;
         for (var i = 0; i < items.length; i++){
           for (var j = 0; j < tickets.length; j++){
             if (tickets[j].$id === items[i].parent){
-            console.log("WE HAVE A HIT! Where i is " + i + " and j is " + j + "." );
             updateTicketCount(items, i); 
             }
           }
@@ -519,8 +518,11 @@ $scope.createCharge = function(){
         ngCart.empty();
         $localStorage.$reset();
         localStorage.clear();
-      }, function error(res) {
-        $scope.loaded = true; 
+      }, function(res) {
+        console.log("in the error callback!");
+        $scope.errorMessage = res.data.message;
+        $scope.isError = true;
+        $scope.loaded = true;     
     //do something if the response has an error
     console.log("error ",res);
   });

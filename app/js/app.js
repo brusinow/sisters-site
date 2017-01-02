@@ -406,7 +406,10 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
 
 .filter('timeAgo', ['moment', function(){
   return function(val){
-    return moment(val).fromNow();
+    var date = new Date(val);
+    console.log(date);
+    console.log(typeof date);
+    return moment(date).fromNow();
   }
 }])
 

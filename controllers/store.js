@@ -137,6 +137,7 @@ router.post("/orderComplete", function(req, res){
     if (err){
       // there is an error with Stripe charge
       console.log("we have an error: ",err);
+      res.status(500).send(err);
     }
     if (charge){
       // Stripe charge was created successfully

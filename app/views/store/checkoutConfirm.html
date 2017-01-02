@@ -7,6 +7,9 @@
 <div ng-if="orderComplete" class="confirm-complete">
   <img src="/img/sisters-champ.jpg">
 </div>
+<div class="alert alert-danger" role="alert" ng-if="isError">
+    {{errorMessage}}
+</div>
 
 
 <div class="checkout" ng-class="{'fade-in': loaded}">

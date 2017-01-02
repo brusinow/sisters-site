@@ -7,7 +7,6 @@ var main = document.getElementById("main");
   main.style.padding = '';
 $scope.$emit('loadMainContainer', 'loaded');
   $scope.shows = getShows;
-  console.log(getShows);
 
   $scope.auth = Auth;
   $scope.auth.$onAuthStateChanged(function(firebaseUser) {
@@ -17,8 +16,6 @@ $scope.$emit('loadMainContainer', 'loaded');
 
 
   $scope.open = function(whichPage, index) {
-    // console.log(whichPage);
-    // console.log(index);
     var modalInstance = $uibModal.open({
       animation: true,
       backdrop: true,
@@ -51,24 +48,15 @@ $scope.$emit('loadMainContainer', 'loaded');
   
   if (GetTicket.description){
     $scope.show = GetShow;
-    console.log(GetShow);
     $scope.ticket = GetTicket;
-    console.log(GetTicket);
     $scope.showUnix = $scope.ticket.unix * 1000;
     $scope.images = $scope.ticket.images;
     var currentActiveSrc = $scope.images[0];
-
-    // $scope.skus = $scope.product.skus.data;
-
-    // $scope.data = {};
-    // $scope.data.selected = $scope.product.skus.data[0];
-
 
     var mainImg = document.querySelector(".main-product-photo img");
     mainImg.src = $scope.images[0];
     $scope.$emit('loadMainContainer', 'loaded');
   } else {
-    console.log("RELOCATING!!");
     $location.url('/store');
   }
 

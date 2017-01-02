@@ -17,7 +17,6 @@
         </div>
         
         <select class="u-full-width" ng-options="country.name for country in countries track by country.name" required data-ng-model="data.shipping.country" ng-change="countryChange(data.shipping.country)">
-          <!--   <option value="" disabled>Choose Your Country</option> -->
         </select>
 
         <div class="input-container">
@@ -128,7 +127,6 @@
 
       <ngcart-small-cart class="cart-summary-large"></ngcart-small-cart>
       <button class="button button-flat-pink" type="submit">Continue to Payment</button>
-      {{pathCount}}
     </div>
   </div>
 </form>

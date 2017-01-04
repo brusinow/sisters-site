@@ -1115,7 +1115,6 @@ form .show {
 
 .tags-ovals {
     font-family: 'Helvetica Neue', sans-serif;
-    min-width: 50px;
     display: inline-block;
     font-size: .7em;
     color: white;
@@ -1308,11 +1307,12 @@ form .show {
 
 .archive-container {
   width: 100%;
-  margin: 0 auto;
+  margin: 20px auto;
 }
 
 .archive-year {
-    display: inline-block;
+    display:inline;
+    vertical-align: top;
     color: #5e504f;
     font-weight: 600;
     font-size: 1.2em;
@@ -1332,20 +1332,23 @@ form .show {
 
 .archives ul {
     position: relative;
-    top: 20px;
+    top: 4px;
     list-style: none;
     display: inline-block;
     margin-top: 0px;
-    margin-bottom: 50px;
+    margin-bottom: 10px;
 }
 
 .archives li {
   margin: 0;
   line-height: 1.4;
+  display:block;
 }
 
 .each-year {
+  display: inline-block;
   position: relative;
+  margin-left: 33%;
 }
 
 
@@ -2108,6 +2111,13 @@ display: none;
   background-color: rgba(255, 255, 255, .9);
   padding: 20px;
   margin: 20px auto 20px auto;
+}
+
+#blog-container {
+  width: 100%;
+  background-color: rgba(252, 244, 247, .9);
+  padding: 20px;
+  margin: 20px auto 200px auto;
 }
 
 #cart-container {

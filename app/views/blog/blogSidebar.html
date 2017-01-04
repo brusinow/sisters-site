@@ -30,14 +30,26 @@
   <div class="fancy"><span>ARCHIVES</span></div>
 
   <div class="archives archive-container">
-      <div class="each-year" ng-repeat="year in years">
+      <div class="each-year" ng-repeat="year in years | reverse">
         <div class="archive-year">{{year.$id}}:</div>
         <div class="month-list">
           <ul>
-            <li class="archive-list-links" ng-repeat="(key,val) in year"><a ng-href="/blog/archives/{{year.$id}}/{{key}}">{{key}}</a></li>
+            <li class="archive-list-links" ng-repeat="(key,val) in monthObj[year.$id] | reverse "><a ng-href="/blog/archives/{{year.$id}}/{{val.$id}}">{{val.$id}}</a></li>
           </ul> 
         </div>      
       </div>
+<!--
+      <table>
+        <span ng-repeat="year in years">
+        <tr>
+          <td>{{year.$id}}</td>
+          <td></td>
+        </tr>
+        </span>
+      </table>-->
+
+
+
   </div>
   <div class="fancy"><span>TAGS</span></div>
   <div class="tags">

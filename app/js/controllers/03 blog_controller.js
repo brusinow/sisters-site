@@ -42,9 +42,9 @@ angular.module('SistersCtrls')
 
 .controller('BlogCtrl', ['$scope', '$state','$http','$timeout','$location','$stateParams','Auth','Blog','HelperService','InstagramFactory','AllTagsService', function($scope, $state, $http, $timeout, $location, $stateParams, Auth, Blog, HelperService, InstagramFactory, AllTagsService){
   var main = document.getElementById("main");
-  main.style.backgroundColor = 'rgba(252, 244, 247, .9)';
+  main.style.backgroundColor = 'rgba(255,255,255,0)';
   main.style.width = '';
-  main.style.padding = '';
+  main.style.padding = '0';
   $scope.$emit('loadMainContainer', 'loaded');
   $scope.allTags = AllTagsService();
 
@@ -226,7 +226,14 @@ angular.module('SistersCtrls')
   $scope.parseTitle = HelperService.titleToURL;
   $scope.years = ArchiveService.years();
   $scope.years.$loaded().then(function(){
-    // console.log($scope.years);
+    console.log($scope.years);
+    $scope.monthObj = {};
+    for (var i = 0; i < $scope.years.length; i++){
+      $scope.monthObj[$scope.years[i].$id] = ArchiveService.months($scope.years[i].$id);
+    }
+    $timeout(function(){
+      console.log($scope.monthObj);
+    },7000);
   })
 
   $scope.allTags = AllTagsService();

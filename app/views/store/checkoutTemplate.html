@@ -2,19 +2,24 @@
   <div class="store-path-div">
     <div class="store-path-container">
       <div class="number-circle" ng-class="{'active-circle': path === '/store/checkout/address'}">1</div>
-      <a style="text-decoration: none;" href="/store/checkout/address"><span class="store-path-text" ng-class="{'active-path': path === '/store/checkout/address'}">Address</span></a>
+       <span ng-if="pathCount < 1" class="store-path-text" ng-class="{'active-path': path === '/store/checkout/payment'}">Payment</span>
+      <a ng-if="pathCount >= 1" style="text-decoration: none;" href="/store/checkout/address"><span class="store-path-text" ng-class="{'active-path': path === '/store/checkout/address'}">Address</span></a>
     </div>
     <i class="fa fa-chevron-right chevron-path" aria-hidden="true"></i> 
+
+
     <div class="store-path-container">
       <div class="number-circle" ng-class="{'active-circle': path === '/store/checkout/payment'}">2</div>
-      <span ng-if="showPath < 1" class="store-path-text" ng-class="{'active-path': path === '/store/checkout/payment'}">Payment</span>
-      <a style="text-decoration: none;" ng-if="showPath >= 1" href="/store/checkout/payment"><span class="store-path-text" ng-class="{'active-path': path === '/store/checkout/payment'}">Payment & Shipping</span></a>
+      <span ng-if="pathCount < 2" class="store-path-text" ng-class="{'active-path': path === '/store/checkout/payment'}">Payment</span>
+      <a style="text-decoration: none;" ng-if="pathCount >= 2" href="/store/checkout/payment"><span class="store-path-text" ng-class="{'active-path': path === '/store/checkout/payment'}">Payment</span></a>
     </div> 
     <i class="fa fa-chevron-right chevron-path" aria-hidden="true"></i> 
+
+
     <div class="store-path-container">
       <div class="number-circle" ng-class="{'active-circle': path === '/store/checkout/confirm'}">3</div>
-      <span ng-show="showPath < 2" class="store-path-text" ng-class="{'active-path': path === '/store/checkout/confirm'}">Confirm</span>
-       <a style="text-decoration: none;" ng-show="showPath === 2" href="/store/checkout/confirm"><span class="store-path-text" ng-class="{'active-path': path === '/store/checkout/confirm'}">Address</span></a>
+      <span ng-show="pathCount < 3" class="store-path-text" ng-class="{'active-path': path === '/store/checkout/confirm'}">Confirm</span>
+       <a style="text-decoration: none;" ng-show="pathCount === 3" href="/store/checkout/confirm"><span class="store-path-text" ng-class="{'active-path': path === '/store/checkout/confirm'}">Address</span></a>
     </div> 
   </div>
 </div>

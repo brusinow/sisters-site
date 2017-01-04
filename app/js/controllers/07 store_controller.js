@@ -8,7 +8,6 @@ angular.module('SistersCtrls')
     main.style.padding = '';
     $scope.loaded = false;
     $scope.products = allProducts;
-    console.log($scope.products);
 
       $scope.auth = Auth;
     $scope.auth.$onAuthStateChanged(function(firebaseUser) {
@@ -16,7 +15,6 @@ angular.module('SistersCtrls')
   });
     
     $scope.showProduct = function(id){
-      console.log("click", id);
       $state.go('storeShow', {id:id});
     }
 
@@ -70,7 +68,6 @@ angular.module('SistersCtrls')
     var mainImg = document.querySelector(".main-product-photo img");
     mainImg.src = $scope.images[0];
   } else {
-    console.log("RELOCATING!!");
     $location.url('/store');
   }
 
@@ -101,12 +98,14 @@ $scope.changeActive = function(){
   $scope.$emit('loadMainContainer', 'loaded');
   $scope.$storage = $localStorage;
 
-  $scope.$on('cartChange', function(event, data) { 
-    $scope.showPath = data; 
+  $scope.$on('pathChange', function(event, data) { 
+    $scope.path = data; 
   });
-  if (!$scope.showPath){
-    $scope.showPath = $scope.$storage.pathCount;
-  }
+
+  $scope.$on('pathCountChange', function(event, data) { 
+    $scope.pathCount = data; 
+  });
+
 
 
 })
@@ -128,17 +127,13 @@ $scope.changeActive = function(){
     $scope.shipBool = data;
   });
 
+  if (!$scope.$storage.billingAddress){
+    $scope.$storage.pathCount = 1;
+  }
+
  
-
-  
-
-
-  $rootScope.path = $location.$$path;
-  console.log($location.$$path);
-  if (!$scope.$storage.pathCount || $scope.$storage.pathCount < 1){
-    $scope.$storage.pathCount = 0;
-    $scope.$emit('cartChange', $scope.$storage.pathCount); 
-  } 
+  $scope.$emit('pathChange', $location.$$path); 
+  $scope.$emit('pathCountChange', $scope.$storage.pathCount);
   
   $scope.loaded = [];
 
@@ -146,11 +141,16 @@ $scope.changeActive = function(){
   $scope.data = {
     "shipping": {
       "country": {}
-    },
-    "billing": {
-      "country": {}
     }
   };
+
+  if ($scope.$storage.billingAddress){
+    $scope.data.billing = $scope.$storage.billingAddress;
+  } else {
+    $scope.data.billing = {
+      "country": {}
+    }
+  }
   $scope.mailingListAdd = true;
   $scope.shippingSameBool = false;
 
@@ -263,8 +263,8 @@ $scope.submitForm = function(form){
 
       firebase.database().ref('orders/order_' + orderNumber).set(req.params.order);
       $http(req).then(function success(res) {
-          console.log("success!!!", res);
           $scope.$storage.shippingData = res.data;
+          $scope.$storage.pathCount = 2;
           $location.url('/store/checkout/payment');
         }, function error(res) {
           console.log("error ",res);             
@@ -287,8 +287,6 @@ $scope.submitForm = function(form){
 
 
     $scope.getTaxRate = function(country, stateProvince, postalCode){
-      console.log($scope.data);
-      console.log(country, stateProvince, postalCode);
     if (country.code === 'US' && stateProvince.short === 'WA' && postalCode){
       if ($window.localStorage.currentWaRate){
         var parsedTax = parseFloat($window.localStorage.currentWaRate)
@@ -332,10 +330,9 @@ $scope.submitForm = function(form){
   var main = document.getElementById("main");
   main.style.backgroundColor = 'rgba(247, 237, 245, 0)';
   $scope.$emit('loadMainContainer', 'loaded');
-  console.log($location.$$path);
-  $rootScope.path = $location.$$path;
   $scope.$storage = $localStorage;
-  $scope.pathCount = parseInt($scope.$storage.pathCount); 
+  $scope.$emit('pathChange', $location.$$path); 
+  $scope.$emit('pathCountChange', $scope.$storage.pathCount);
   $scope.data = {};
 
 
@@ -374,14 +371,12 @@ $scope.submitForm = function(form){
 
   
   
-  $scope.submitForm = function(form){
-    if(form.$valid){
+  $scope.submitForm = function (form) {
+    if (form.$valid) {
 
-
-      // THIS IS NOT WORKING!!!
       $scope.$storage.orderData.willCallName = $scope.data.willCallName;
 
-      $scope.loaded = false; 
+      $scope.loaded = false;
       Stripe.card.createToken({
         number: $scope.number,
         cvc: $scope.cvc,
@@ -393,24 +388,27 @@ $scope.submitForm = function(form){
         address_state: $scope.$storage.billingAddress.stateProvince.short || null,
         address_zip: $scope.$storage.billingAddress.postalCode,
         address_country: $scope.$storage.billingAddress.country.code
-      }, function(err, token){
-        if (err != 200){
-          console.log("we have an error: ",err);
+      }, function (err, token) {
+        if (err != 200) {
+          console.log("we have an error: ", err);
         }
 
-        if (token){
-          console.log("we have a token: ",token);
-          $timeout(function(){ 
+        if (token) {
+          $timeout(function () {
             $scope.$storage.tokenData = token;
-            $location.url('/store/checkout/confirm'); 
-          },1);
-          
+            $scope.$storage.pathCount = 3;
+            $scope.$emit('pathCountChange', $scope.$storage.pathCount);
+            $location.url('/store/checkout/confirm');
+          }, 1);
+
         }
       });
     } else {
       console.log("form invalid!!");
     }
   }
+
+
 })
 
 
@@ -426,23 +424,14 @@ var main = document.getElementById("main");
 main.style.backgroundColor = 'rgba(247, 237, 245, 0)';
 $scope.$emit('loadMainContainer', 'loaded');
 $scope.$storage = $localStorage;
-$scope.pathCount = parseInt($scope.$storage.pathCount); 
 $scope.orderComplete = false;
-$rootScope.path = $location.$$path;
-console.log($location.$$path);
+$scope.$emit('pathChange', $location.$$path); 
+$scope.$emit('pathCountChange', $scope.$storage.pathCount);
 $scope.ngCart = ngCart;
 
 var items = $scope.$storage.orderData.items;
 var tickets = AllTickets;
 var thisItemIndex;
-console.log(items[0].parent);
-console.log(tickets);
-
-
-
-
-
-
 
 // referencing stuff from local storage (current shipping choice, token, shipping & billing address info)
 $scope.currentShipping = $scope.$storage.savedSelectedShip;
@@ -457,19 +446,17 @@ $timeout(function(){
   
 
 
-var updateTicketCount = function(cartItems, itemIndex){
-  console.log("entering updateTicketCount");
+var updateTicketCount = function (cartItems, itemIndex) {
   var thisQuant = cartItems[itemIndex].quantity;
   var willCallArr = WillCallListService(cartItems[itemIndex].parent);
-  willCallArr.$add({"name": $scope.$storage.orderData.willCallName, "quantity": thisQuant}).then(function(ref) {
+  willCallArr.$add({ "name": $scope.$storage.orderData.willCallName, "quantity": thisQuant }).then(function (ref) {
     var id = ref.key;
-    console.log("i where I want to do work should be " + itemIndex);
-    var showCountRef = firebase.database().ref('tickets/'+ cartItems[itemIndex].parent + '/totalTickets');
-    showCountRef.once('value').then(function(snapshot) {
+    var showCountRef = firebase.database().ref('tickets/' + cartItems[itemIndex].parent + '/totalTickets');
+    showCountRef.once('value').then(function (snapshot) {
       showCountRef.set(snapshot.val() - thisQuant);
     });
-  }, function(err){
-    console.log("what is err: ",err);
+  }, function (err) {
+    console.log("what is err: ", err);
   });
 }
 
@@ -480,51 +467,50 @@ var orderStatusDone = function(orderNumber) {
 
 
 
-$scope.createCharge = function(){
-  $scope.loaded = false; 
-       if ($scope.$storage.mailingList === true){
-          console.log("should be adding to mailinglist!");
-          mailchimpSubmit($scope.$storage.billingAddress.email);
+$scope.createCharge = function () {
+  $scope.loaded = false;
+
+  var req = {
+    url: '/store/orderComplete',
+    method: 'POST',
+    params: {
+      totalAmount: ngCart.totalCost(),
+      tax: ngCart.getTax(),
+      token: $scope.token.id,
+      name: $scope.token.card.name,
+      cart: JSON.stringify(ngCart.getItems()),
+      order: $scope.$storage.orderData,
+      shipChoice: $scope.currentShipping
+    }
+  }
+
+  $http(req).then(function (res) {
+    $scope.isError = false;
+    for (var i = 0; i < items.length; i++) {
+      for (var j = 0; j < tickets.length; j++) {
+        if (tickets[j].$id === items[i].parent) {
+          updateTicketCount(items, i);
+        }
       }
-
-      var req = {
-        url: '/store/orderComplete',
-        method: 'POST',
-        params: {
-          totalAmount: ngCart.totalCost(),
-          tax: ngCart.getTax(),
-          token: $scope.token.id,
-          name: $scope.token.card.name,
-          cart: JSON.stringify(ngCart.getItems()),
-          order: $scope.$storage.orderData,
-          shipChoice: $scope.currentShipping
-        }
-      } 
-
-      $http(req).then(function(res) {
-        $scope.isError = false;
-        for (var i = 0; i < items.length; i++){
-          for (var j = 0; j < tickets.length; j++){
-            if (tickets[j].$id === items[i].parent){
-            updateTicketCount(items, i); 
-            }
-          }
-        }
-        orderStatusDone($scope.$storage.orderData.orderNumber);
-        $scope.orderComplete = true;
-       
-        ngCart.setTaxRate();
-        ngCart.setShipping();   
-        ngCart.empty();
-        $localStorage.$reset();
-        localStorage.clear();
-      }, function(res) {
-        console.log("in the error callback!");
-        $scope.errorMessage = res.data.message;
-        $scope.isError = true;
-        $scope.loaded = true;     
+    }
+    orderStatusDone($scope.$storage.orderData.orderNumber);
+    if ($scope.$storage.mailingList === true) {
+      mailchimpSubmit($scope.$storage.billingAddress.email);
+    }
+    $scope.orderComplete = true;
+    $scope.$storage.pathCount = 0;
+    $scope.$emit('pathCountChange', $scope.$storage.pathCount);
+    ngCart.setTaxRate(null);
+    ngCart.setShipping(null);
+    ngCart.empty();
+    $localStorage.$reset();
+    localStorage.clear();
+  }, function (res) {
+    $scope.errorMessage = res.data.message;
+    $scope.isError = true;
+    $scope.loaded = true;
     //do something if the response has an error
-    console.log("error ",res);
+    console.log("error ", res);
   });
 }
 
@@ -532,13 +518,13 @@ $scope.createCharge = function(){
 
 
 
-var mailchimpSubmit = function(email){
-    var url = "//sisterstheband.us14.list-manage.com/subscribe/post-json?u=bc38720b0bcc7a32641bb572c&amp;id=242f4adc89&EMAIL="+ email +"&c=JSON_CALLBACK"
-    $http.jsonp(url).then(function success(res){
-    }, function error(res){
+  var mailchimpSubmit = function (email) {
+    var url = "//sisterstheband.us14.list-manage.com/subscribe/post-json?u=bc38720b0bcc7a32641bb572c&amp;id=242f4adc89&EMAIL=" + email + "&c=JSON_CALLBACK"
+    $http.jsonp(url).then(function success(res) {
+    }, function error(res) {
       console.log(res);
     });
-}
+  }
 
 
 

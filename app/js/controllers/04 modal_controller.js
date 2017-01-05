@@ -12,7 +12,7 @@ angular.module('SistersCtrls')
 
 
   $scope.ok = function () {
-    $scope.show.date = moment($scope.dateObj).format('ddd, MMMM Do YYYY');
+    $scope.show.date = moment($scope.dateObj).format('ddd, MMMM Do');
     $scope.show.unix = $scope.dateObj.getTime() / 1000;
     $scope.shows.$save($scope.show).then(function(ref) {
       console.log("success");
@@ -45,7 +45,7 @@ angular.module('SistersCtrls')
   $scope.showsArray = $firebaseArray(showsRef);
 
   $scope.ok = function () {
-    var thisDate = moment($scope.show.showDate).format('ddd, MMMM Do YYYY');
+    var thisDate = moment($scope.show.showDate).format('ddd, MMMM Do');
     var thisUnix = $scope.show.showDate.getTime() / 1000;
     console.log(thisDate);
     var object = {

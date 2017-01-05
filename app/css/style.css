@@ -60,6 +60,22 @@ h4 {
   font-size: 2.4rem;
 }
 
+.admin-nav-btn {
+  background-color: #f7799e; 
+  padding: 5px; 
+  border-radius: 2px; 
+  color: #fff !important;
+}
+
+.admin-main-links {
+  font-size: 6rem;
+  cursor: pointer;
+}
+
+.admin-nav-btn:hover {
+  background-color: #f891af;
+}
+
 button.button-tiny-circle {
     font-size: .6em;
     line-height: 15px;
@@ -2113,12 +2129,22 @@ display: none;
   margin: 20px auto 20px auto;
 }
 
+#admin-container {
+  width: 100%;
+  background-color: rgba(255, 255, 255, 1);
+  padding: 20px;
+  margin: 20px auto 200px auto;
+}
+
 #blog-container {
   width: 100%;
   background-color: rgba(252, 244, 247, .9);
   padding: 20px;
   margin: 20px auto 200px auto;
 }
+
+
+
 
 #cart-container {
   width: 100%;

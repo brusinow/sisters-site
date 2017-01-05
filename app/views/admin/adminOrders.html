@@ -1,0 +1,19 @@
+<div id="admin-container">
+  <h2 style="text-align: center;">Orders</h2>
+  <table style="margin: 0 auto;"border="1" ts-wrapper>
+    <thead>
+      <tr>
+        <th ts-criteria="orderNumber">Order #</th>
+        <th ts-criteria="dateCreated" ts-default>Date Created</th>
+        <th ts-criteria="billing.name">Name</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="item in orders" ts-repeat ts-hide-no-data>
+        <td>{{item.orderNumber}}</td>
+        <td>{{item.dateCreated | TimeDate}}</td>
+        <td>{{item.billing.name}}</td>
+      </tr>
+    </tbody>
+  </table>
+</div>

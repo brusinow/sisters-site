@@ -13,12 +13,12 @@ var templatesDir = path.resolve(__dirname, '../app/templates')
 var template = new EmailTemplate(path.join(templatesDir, 'receipt'))
 
 
-var serviceAccount = require("../sisters-site-creds.json");
+// var serviceAccount = require("../sisters-site-creds.json");
 
-admin.initializeApp({
-  credential: admin.credential.cert(serviceAccount),
-  databaseURL: "https://sisters-site.firebaseio.com"
-});
+// admin.initializeApp({
+//   credential: admin.credential.cert(serviceAccount),
+//   databaseURL: "https://sisters-site.firebaseio.com"
+// });
 
 // var xoauth2 = require('xoauth2');
 var router = express.Router();

@@ -219,6 +219,7 @@ $scope.submitForm = function(form){
             dateCreated: d.getTime(),
             currency: 'usd',
             items: $scope.cartItems,
+            totalItemsPrice: ngCart.getSubTotal(),
             tax: taxObj,
             billing : {
               name: bill.name,
@@ -460,8 +461,10 @@ var updateTicketCount = function (cartItems, itemIndex) {
   });
 }
 
-var orderStatusDone = function(orderNumber) {
+var orderStatusDone = function(orderNumber, resData) {
   firebase.database().ref('orders/order_' + orderNumber + '/status').set("complete");
+  firebase.database().ref('orders/order_' + orderNumber + '/totalItemsPrice').set(resData.amount);
+  firebase.database().ref('orders/order_' + orderNumber + '/stripeChargeId').set(resData.id);
 }
 
 
@@ -485,6 +488,7 @@ $scope.createCharge = function () {
   }
 
   $http(req).then(function (res) {
+    console.log(res);
     $scope.isError = false;
     for (var i = 0; i < items.length; i++) {
       for (var j = 0; j < tickets.length; j++) {
@@ -493,7 +497,7 @@ $scope.createCharge = function () {
         }
       }
     }
-    orderStatusDone($scope.$storage.orderData.orderNumber);
+    orderStatusDone($scope.$storage.orderData.orderNumber, res.data);
     if ($scope.$storage.mailingList === true) {
       mailchimpSubmit($scope.$storage.billingAddress.email);
     }

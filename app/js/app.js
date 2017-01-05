@@ -1,7 +1,7 @@
 var authWait = ["Auth", function(Auth) { return Auth.$waitForSignIn(); }]
 var authRequire = ["Auth", function(Auth) { return Auth.$requireSignIn(); }]
 
-angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui.bootstrap','firebase','angularMoment','ngCart','ngStorage','angularPayments','ngAnimate','picardy.fontawesome','textAngular','ui.router.metatags','angular-parallax','angular-google-analytics'])
+angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui.bootstrap','firebase','angularMoment','ngCart','ngStorage','angularPayments','ngAnimate','picardy.fontawesome','textAngular','ui.router.metatags','angular-parallax','angular-google-analytics', 'tableSort'])
 
 
 
@@ -59,6 +59,34 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
     templateUrl: '/views/home.html',
     controller: 'HomeCtrl'
   })
+  .state('admin', {
+    url: '/admin',
+    templateUrl: '/views/admin/adminMain.html',
+    controller: 'AdminMainCtrl',
+    resolve: {
+      "currentAuth": authRequire
+    }
+  })
+  .state('admin-orders', {
+    url: '/admin/orders',
+    templateUrl: '/views/admin/adminOrders.html',
+    controller: 'AdminOrdersCtrl',
+    resolve: {
+      "currentAuth": authRequire,
+      "Orders": function(GetAllOrders){
+        return GetAllOrders().$loaded();
+      }    
+    }
+  })
+   .state('admin-tickets', {
+    url: '/admin/tickets',
+    templateUrl: '/views/admin/adminTickets.html',
+    controller: 'AdminTicketsCtrl',
+    resolve: {
+      "currentAuth": authRequire
+    }
+  })
+  
   .state('about', {
     url: '/about',
     templateUrl: '/views/about.html',
@@ -395,6 +423,12 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
 .filter('DeliveryEstDate', ['moment', function(moment){
   return function(val){
     return  moment(val).format('dddd, MMMM Do');
+  }
+}])
+
+.filter('TimeDate', ['moment', function(moment){
+  return function(val){
+    return  moment(val).format('MMMM Do YYYY, h:mm:ss a');
   }
 }])
 

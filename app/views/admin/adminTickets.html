@@ -1,1 +1,8 @@
-<h2>Tickets Page</h2>
+<div id="admin-container">
+  <div style="margin-left: 5px; margin-bottom: 15px;">
+  <a style="color: #1A0504;" class="store-back-link" href="/admin"><i class="fa fa-long-arrow-left" aria-hidden="true"></i> Back to Admin</a>
+</div>
+  <ul style="text-align: center; list-style: none; font-size: 2.4rem; font-weight: 500;">
+    <li ng-repeat="ticket in tickets"><a ng-href="/admin/tickets/{{ticket.$id}}">{{ticket.title}} ({{ticket.unix | slashDate}})</a></li>
+  </ul>
+</div>

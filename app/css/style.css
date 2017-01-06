@@ -311,7 +311,15 @@ select {
 
 /********************/
 
+#admin-table {
+  margin: 0 auto;
+  text-align: center;
+}
 
+#admin-table td, #admin-table th {
+  text-align: center;
+  padding: 4px 14px;
+}
 
 
 .circle .header {
@@ -2121,6 +2129,18 @@ display: none;
   display: inherit;
 }
 
+.ticket-stats {
+  display: inline-block;
+  padding: 20px;
+  border: 1px solid #1A0504;
+  margin: 10px;
+}
+
+.ticket-stats h5 {
+  margin: 0;
+  font-weight: 300;
+}
+
 
 #shows-container {
   width: 100%;
@@ -2133,7 +2153,13 @@ display: none;
   width: 100%;
   background-color: rgba(255, 255, 255, 1);
   padding: 20px;
-  margin: 20px auto 200px auto;
+  margin: 20px auto 300px auto;
+
+}
+
+#admin-container h3 {
+  font-family: "Oswald", sans-serif;
+  margin-bottom: 50px;
 }
 
 #blog-container {

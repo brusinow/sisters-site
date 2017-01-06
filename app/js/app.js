@@ -1,7 +1,7 @@
 var authWait = ["Auth", function(Auth) { return Auth.$waitForSignIn(); }]
 var authRequire = ["Auth", function(Auth) { return Auth.$requireSignIn(); }]
 
-angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui.bootstrap','firebase','angularMoment','ngCart','ngStorage','angularPayments','ngAnimate','picardy.fontawesome','textAngular','ui.router.metatags','angular-parallax','angular-google-analytics', 'tableSort'])
+angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui.bootstrap','firebase','angularMoment','ngCart','ngStorage','angularPayments','ngAnimate','picardy.fontawesome','textAngular','ui.router.metatags','angular-parallax','angular-google-analytics', 'tableSort','chart.js','ngFileSaver'])
 
 
 
@@ -26,6 +26,30 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
   });
 }])
 
+   .config(['tableSortConfigProvider', function(tableSortConfigProvider){
+        var filterString = "<div class='row'>";
+        filterString +=      "<div class='col-sm-4 col-md-3 col-sm-offset-8 col-md-offset-9'>";
+        filterString +=        "<div class='form-group has-feedback'>";
+        filterString +=          "<input type='search' class='form-control' placeholder='filter {{ITEM_NAME_PLURAL}}' ng-model='FILTER_STRING'/>";
+        filterString +=          "<span class='glyphicon glyphicon-search form-control-feedback' aria-hidden='true'></span>";
+        filterString +=        "</div>";
+        filterString +=      "</div>";
+        filterString +=    "</div>";
+        tableSortConfigProvider.filterTemplate = filterString;
+
+        var pagerString = "<div class='text-right'>";
+        pagerString +=      "<small class='text-muted'>Showing {{CURRENT_PAGE_RANGE}} {{FILTERED_COUNT === 0 ? '' : 'of'}} ";
+        pagerString +=        "<span ng-if='FILTERED_COUNT === TOTAL_COUNT'>{{TOTAL_COUNT | number}} {{TOTAL_COUNT === 1 ? ITEM_NAME_SINGULAR : ITEM_NAME_PLURAL}}</span>";
+        pagerString +=        "<span ng-if='FILTERED_COUNT !== TOTAL_COUNT'>{{FILTERED_COUNT | number}} {{FILTERED_COUNT === 1 ? ITEM_NAME_SINGULAR : ITEM_NAME_PLURAL}} (filtered from {{TOTAL_COUNT | number}})</span>";
+        pagerString +=      "</small>&nbsp;";
+        pagerString +=      "<uib-pagination style='vertical-align:middle;' ng-if='ITEMS_PER_PAGE < TOTAL_COUNT' ng-model='CURRENT_PAGE_NUMBER' ";
+        pagerString +=        "total-items='FILTERED_COUNT' items-per-page='ITEMS_PER_PAGE' max-size='5' force-ellipses='true'></uib-pagination>&nbsp;";
+        pagerString +=      "<div class='form-group' style='display:inline-block;'>";
+        pagerString +=        "<select class='form-control' ng-model='ITEMS_PER_PAGE' ng-options='opt as (opt + \" per page\") for opt in PER_PAGE_OPTIONS'></select>";
+        pagerString +=      "</div>";
+        pagerString +=    "</div>";
+        tableSortConfigProvider.paginationTemplate = pagerString;
+   }])
 
 
 
@@ -83,7 +107,25 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
     templateUrl: '/views/admin/adminTickets.html',
     controller: 'AdminTicketsCtrl',
     resolve: {
-      "currentAuth": authRequire
+      "currentAuth": authRequire,
+      "Tickets": function(GetAllTickets){
+        return GetAllTickets().$loaded();
+      }    
+    }
+  })
+
+   .state('admin-ticket-each', {
+    url: '/admin/tickets/:id',
+    templateUrl: '/views/admin/adminTicketEach.html',
+    controller: 'AdminTicketsEachCtrl',
+    resolve: {
+      "currentAuth": authRequire,
+      "ThisTicket": function(GetSingleTicket, $stateParams){
+        return GetSingleTicket($stateParams.id).$loaded();
+      },
+      "WillCall": function(ThisWillCall, $stateParams){
+        return ThisWillCall($stateParams.id).$loaded();
+      },    
     }
   })
   

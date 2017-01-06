@@ -38,7 +38,9 @@ tableSortModule.directive( 'tsWrapper', ['$parse', '$compile', function( $parse,
 
     function replaceTemplateTokens($scope, templateString) {
         //Replace some strings with the proper expressions to be compiled
-        return templateString
+        console.log("what is templateString? ",templateString);
+
+        var newString = templateString
             .replace(/FILTER_STRING/g, 'filtering.filterString')
             .replace(/CURRENT_PAGE_RANGE/g, 'pagination.getPageRangeString(TOTAL_COUNT)')
             .replace(/TOTAL_COUNT/g, $scope.itemsArrayExpression + '.length')
@@ -48,6 +50,8 @@ tableSortModule.directive( 'tsWrapper', ['$parse', '$compile', function( $parse,
             .replace(/ITEM_NAME_PLURAL/g, 'itemNamePlural')
             .replace(/FILTERED_COUNT/g, 'filtering.filteredCount')
             .replace(/CURRENT_PAGE_NUMBER/g, 'pagination.currentPage');
+            console.log("newString: ",newString);
+            return newString;
     }
 
     function createDefaultComparer() {
@@ -104,6 +108,7 @@ tableSortModule.directive( 'tsWrapper', ['$parse', '$compile', function( $parse,
                     return $scope.filtering.filteredCount === 0 ? '' : (endPage === maxOnPage && startPage === 1 ? '' : startPage + '-') + endPage;
                 }
             };
+            console.log("what is pagination: ",$scope.pagination);
 
             $scope.filtering = {
                 template: tableSortConfig.filterTemplate,
@@ -112,6 +117,8 @@ tableSortModule.directive( 'tsWrapper', ['$parse', '$compile', function( $parse,
                 filteredCount: 0,
                 filterFields: []
             };
+
+            console.log("what is filtering: ",$scope.filtering);
 
             $scope.itemsArrayExpression = ''; //this will contain the string expression for the array of items in the table
             $scope.itemNameSingular = tableSortConfig.itemNameSingular;

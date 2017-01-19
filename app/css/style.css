@@ -1165,7 +1165,7 @@ form .show {
 }
 
 .checkbox-group {
-    display: block;
+    display: inline-block;
     width: 100%;
     min-height: 50px;
     margin-bottom: 15px;
@@ -2139,6 +2139,12 @@ display: none;
 .ticket-stats h5 {
   margin: 0;
   font-weight: 300;
+}
+
+#blog-admin-container {
+  width: 100%;
+  padding: 20px;
+  margin: 20px auto 100px auto;
 }
 
 

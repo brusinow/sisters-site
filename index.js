@@ -10,7 +10,7 @@ var twitterText = require('twitter-text')
 var Entities = require('html-entities').AllHtmlEntities;
 var http = require('http');
 var fs = require('fs');
-var firebase = require("firebase");
+// var firebase = require("firebase");
 var shippo = require('shippo')(process.env.SHIPPO_TOKEN);
 
 
@@ -23,10 +23,10 @@ app.use(bodyParser.urlencoded({extended: false}));
 app.use(express.static(path.join(__dirname, 'app')));
 
 
-firebase.initializeApp({
-  serviceAccount: "app/firebaseCredentials.json",
-  databaseURL: "https://sisters-site.firebaseio.com"
-});
+// firebase.initializeApp({
+//   serviceAccount: "app/firebaseCredentials.json",
+//   databaseURL: "https://sisters-site.firebaseio.com"
+// });
 
 entities = new Entities();
 

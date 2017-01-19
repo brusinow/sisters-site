@@ -18,12 +18,13 @@ $scope.$emit('loadMainContainer', 'loaded');
   $scope.open = function(whichPage, index) {
     var modalInstance = $uibModal.open({
       animation: true,
-      backdrop: true,
-      templateUrl: '/views/shows/'+whichPage+'ShowModal.html',
+      backdrop: false,
+      templateUrl: '/app/views/shows/'+whichPage+'ShowModal.html',
       controller: whichPage+'ModalCtrl',
       size: 'lg',
       resolve: {
         editShow: function () {
+          console.log("in the resolve!");
           return $scope.shows;
         },
         index: index
@@ -31,6 +32,7 @@ $scope.$emit('loadMainContainer', 'loaded');
     });
 
     modalInstance.result.then(function (selectedItem) {
+      console.log("in modal promise");
       $scope.selected = selectedItem;
     }, function () {
       $log.info('Modal dismissed at: ' + new Date());

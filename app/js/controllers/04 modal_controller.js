@@ -65,11 +65,11 @@ $scope.$emit('loadMainContainer', 'loaded');
     }
     console.log(object);
     $scope.showsArray.$add(object);
-    $location.go("/shows");
+    $location.url("/shows");
   };
 
   $scope.cancel = function(){
-    $location.go("/shows");
+    $location.url("/shows");
   }
 
 })

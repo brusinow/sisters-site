@@ -347,6 +347,19 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
     }
   })
 
+  .state('shows-new', {
+    url: '/shows/new',
+    templateUrl: '/views/shows/newShow.html',
+    controller: 'NewShowCtrl',
+    resolve: {
+      "currentAuth": authWait,
+      getShows: function(GetShows){
+        console.log("app resolve entered");
+        return GetShows().$loaded();
+      }
+    }
+  })
+
   .state('showTickets', {
     url: '/shows/:showId',
     templateUrl: '/views/shows/singleShow.html',

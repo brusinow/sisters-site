@@ -38,11 +38,18 @@ angular.module('SistersCtrls')
 })
 
 
-.controller('newModalCtrl', function ($scope, $uibModalInstance, $firebaseArray) {
+.controller('NewShowCtrl', function ($scope, $firebaseArray, $location) {
+  var main = document.getElementById("main");
+  main.style.backgroundColor = 'rgba(255, 255, 255, 0)';
+  main.style.width = '';
+  main.style.padding = '';
+$scope.$emit('loadMainContainer', 'loaded');
 
   $scope.show = {};
   var showsRef = firebase.database().ref('shows');
   $scope.showsArray = $firebaseArray(showsRef);
+
+
 
   $scope.ok = function () {
     var thisDate = moment($scope.show.showDate).format('ddd, MMMM Do');
@@ -58,10 +65,11 @@ angular.module('SistersCtrls')
     }
     console.log(object);
     $scope.showsArray.$add(object);
-    $uibModalInstance.close();
+    $location.go("/shows");
   };
 
-  $scope.cancel = function () {
-    $uibModalInstance.dismiss('cancel');
-  };
+  $scope.cancel = function(){
+    $location.go("/shows");
+  }
+
 })

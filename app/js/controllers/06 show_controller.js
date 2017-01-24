@@ -1,6 +1,6 @@
 angular.module('SistersCtrls')
 
-.controller('ShowsCtrl', ['$scope', '$state','currentAuth','$uibModal','$log','$firebaseArray','moment','Auth','getShows', function($scope, $state, currentAuth, $uibModal,$log, $firebaseArray, moment, Auth, getShows){
+.controller('ShowsCtrl', ['$scope', '$state','currentAuth','$log','$firebaseArray','moment','Auth','getShows','$location', function($scope, $state, currentAuth,$log, $firebaseArray, moment, Auth, getShows, $location){
 var main = document.getElementById("main");
   main.style.backgroundColor = 'rgba(252, 244, 247, 0)';
   main.style.width = '';
@@ -15,29 +15,10 @@ $scope.$emit('loadMainContainer', 'loaded');
   });
 
 
-  $scope.open = function(whichPage, index) {
-    var modalInstance = $uibModal.open({
-      animation: true,
-      backdrop: false,
-      templateUrl: '/app/views/shows/'+whichPage+'ShowModal.html',
-      controller: whichPage+'ModalCtrl',
-      size: 'lg',
-      resolve: {
-        editShow: function () {
-          console.log("in the resolve!");
-          return $scope.shows;
-        },
-        index: index
-      }
-    });
 
-    modalInstance.result.then(function (selectedItem) {
-      console.log("in modal promise");
-      $scope.selected = selectedItem;
-    }, function () {
-      $log.info('Modal dismissed at: ' + new Date());
-    });
-  }; 
+  $scope.open = function(whichPage){
+    $location.url('/shows/'+whichPage);
+  }
 
 }]) 
 

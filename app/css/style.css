@@ -1125,7 +1125,7 @@ form .show {
 }
 
 #edit-tag-modal-container {
-  padding: 30px;
+  padding: 20px;
 }
 
 
@@ -1404,6 +1404,7 @@ form .show {
 
 .modal-container {
   padding: 20px;
+  background-color: white;
 }
 
 .modal-container h4 {

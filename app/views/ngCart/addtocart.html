@@ -1,5 +1,5 @@
 
-<div ng-hide="totalTix === 0">
+<div ng-hide="totalTix <= 0">
 <h5 class="text-center" style="margin-bottom: 5px;">{{ price | centsToDollars | currency}}</h5>    
 <div ng-hide="attrs.id">
     <a class="btn btn-lg btn-primary" ng-disabled="true" ng-transclude></a>
@@ -22,6 +22,6 @@
     </div>
 </div>
 </div>
-<div ng-show="totalTix === 0">
+<div ng-show="totalTix <= 0">
     <h3>SOLD OUT</h3>
 </div>

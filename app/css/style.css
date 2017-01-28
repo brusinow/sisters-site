@@ -1336,6 +1336,7 @@ form .show {
 
 .archive-year {
     display:inline;
+    line-height: 29px;
     vertical-align: top;
     color: #5e504f;
     font-weight: 600;

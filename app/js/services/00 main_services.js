@@ -115,7 +115,7 @@ angular.module('SistersServices', ['ngResource'])
       return currentDay;
     },
     titleToURL: function(title){
-
+      
     return title.split(' ').join('-');
     },
     slugify: function(text){

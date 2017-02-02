@@ -1,10 +1,10 @@
 angular.module('SistersCtrls')
 
 
-.controller('editModalCtrl', function ($scope, $uibModalInstance, editShow, index) {
+.controller('editModalCtrl', function ($scope, $uibModalInstance, editShow, index, $firebaseArray) {
   $scope.shows = editShow;
   $scope.show = editShow[index];
-  console.log(editShow);
+
   console.log("index is ",index);
   $scope.dateObj = new Date($scope.show.unix * 1000);
   console.log($scope.dateObj);
@@ -12,7 +12,7 @@ angular.module('SistersCtrls')
 
 
   $scope.ok = function () {
-    $scope.show.date = moment($scope.dateObj).format('ddd, MMMM Do');
+    $scope.show.date = moment($scope.dateObj).format('ddd, MMMM Do YYYY');
     $scope.show.unix = $scope.dateObj.getTime() / 1000;
     $scope.shows.$save($scope.show).then(function(ref) {
       console.log("success");
@@ -38,21 +38,15 @@ angular.module('SistersCtrls')
 })
 
 
-.controller('NewShowCtrl', function ($scope, $firebaseArray, $location) {
-  var main = document.getElementById("main");
-  main.style.backgroundColor = 'rgba(255, 255, 255, 0)';
-  main.style.width = '';
-  main.style.padding = '';
-$scope.$emit('loadMainContainer', 'loaded');
+
+.controller('newModalCtrl', function ($scope, $uibModalInstance, $firebaseArray) {
 
   $scope.show = {};
   var showsRef = firebase.database().ref('shows');
   $scope.showsArray = $firebaseArray(showsRef);
 
-
-
   $scope.ok = function () {
-    var thisDate = moment($scope.show.showDate).format('ddd, MMMM Do');
+    var thisDate = moment($scope.show.showDate).format('ddd, MMMM Do YYYY');
     var thisUnix = $scope.show.showDate.getTime() / 1000;
     console.log(thisDate);
     var object = {
@@ -65,11 +59,10 @@ $scope.$emit('loadMainContainer', 'loaded');
     }
     console.log(object);
     $scope.showsArray.$add(object);
-    $location.url("/shows");
+    $uibModalInstance.close();
   };
 
-  $scope.cancel = function(){
-    $location.url("/shows");
-  }
-
+  $scope.cancel = function () {
+    $uibModalInstance.dismiss('cancel');
+  };
 })

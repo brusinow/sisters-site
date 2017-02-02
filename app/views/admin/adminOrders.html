@@ -1,0 +1,41 @@
+<div id="admin-container">
+<div style="margin-left: 5px; margin-bottom: 15px;">
+  <a style="color: #1A0504;" class="store-back-link" href="/admin"><i class="fa fa-long-arrow-left" aria-hidden="true"></i> Back to Admin</a>
+</div>
+  <h2 style="text-align: center;">Orders</h2>
+  <div style="text-align: center;">
+  <div style="display: inline-block">
+   <label>
+    <input type="radio" ng-model="orders" ng-value="completeOrders">
+    Completed Orders
+  </label>
+  <label>
+    <input type="radio" ng-model="orders" ng-value="pendingOrders">
+    Pending Orders
+  </label>
+  </div>
+  </div>
+    <table id="admin-table" border="1" ts-wrapper ts-per-page-options="[25,50,100,200]" ts-per-page-default="25" ts-item-name="order">
+    <thead>
+      <tr>
+        <th ts-criteria="orderNumber">Order #</th>
+        <th ts-criteria="dateCreated" ts-default="descending">Date Created</th>
+        <th ts-criteria="billing.name">Name</th>
+        <th ts-criteria="status">Status</th>
+        <th ts-criteria="totalItemsPrice">Total Cost</th>
+        <th ts-criteria="stripeChargeId">Stripe Order #</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr ng-repeat="order in orders" ts-repeat ts-hide-no-data>
+        <td>{{order.orderNumber}}</td>
+        <td>{{order.dateCreated | TimeDate}}</td>
+        <td>{{order.billing.name}}</td>
+        <td>{{order.status}}</td>
+        <td>{{order.totalItemsPrice | centsToDollars | currency}}</td>
+        <td><a ng-href="https://dashboard.stripe.com/payments/{{order.stripeChargeId}}" target="_blank">{{order.stripeChargeId}}</a></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+

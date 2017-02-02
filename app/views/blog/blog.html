@@ -1,11 +1,14 @@
 <div id="spinnerLoad" ng-hide="loaded" class='uil-spin-css' style='-webkit-transform:scale(0.81)'><div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div><div><div></div></div></div>
+<div id="blog-container">
 <div class="row blog-row">
   <div class="eight columns blog-main">
   <ui-view></ui-view>
 
 </div>
+
 <div class="four columns sidebar-right">
   <div id="sidebar" ng-class="{'fade-in': loaded}" ng-include="'/views/blog/blogSidebar.html'" ng-controller="BlogSidebarCtrl"></div>
+</div>
 </div>
 </div>
 

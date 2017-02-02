@@ -12,9 +12,10 @@ var http = require('http');
 var fs = require('fs');
 
 // var firebase = require("firebase");
+var shippo = require('shippo')(process.env.SHIPPO_TOKEN);
 
 
-// var shippo = require('shippo')('<PRIVATE_TOKEN>');
+
 
 var app = express();
 
@@ -27,7 +28,6 @@ app.use(express.static(path.join(__dirname, 'app')));
 //   serviceAccount: "app/firebaseCredentials.json",
 //   databaseURL: "https://sisters-site.firebaseio.com"
 // });
-
 
 entities = new Entities();
 
@@ -121,18 +121,7 @@ app.get("/stripe/allProducts", function(req, res){
   );
 })
 
-app.post("/stripe/createOrder", function(req, res){
-  var thisOrder = req.query.order;
-  var parsedOrder = JSON.parse(thisOrder);
-  stripe.orders.create(parsedOrder, function(err, order) {
-    if (order){
-      res.send(order);
-    }
-    if (err){
-      res.send(err);
-    }
-  });
-})
+
 
 app.post("/stripe/updateShipping", function(req, res){
   stripe.orders.update(req.query.orderId, {
@@ -214,7 +203,7 @@ app.get('/*', function(req, res) {
 });
 
 
-
+app.use('/store', require('./controllers/store'));
 
 
 

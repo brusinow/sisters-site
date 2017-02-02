@@ -23,174 +23,18 @@ angular.module('SistersServices', ['ngResource'])
   }
 ])
 
-
-.factory("ProductsService", ["$http","$q", function($http, $q){
-  return {
-    allProducts: function(){
-      var deferred = $q.defer();
-      // console.log("inside all products service")
-      $http.get('/stripe/allProducts').success(function(data){
-        // products = data.data;
-        deferred.resolve(data.data);
-        // console.log("products in service: ",products);   
-      }); 
-      return deferred.promise;   
-    },
-    oneProduct: function(productId){
-      // console.log("what's id? ",productId);
-      var deferred = $q.defer();
-      var req = {
-        method: 'GET',
-        url: '/stripe/oneProduct',
-        params: {
-          productId: productId
-        }
-      }
-      $http(req).success(function(data){
-        // console.log("success!!!")
-        deferred.resolve(data);
-      })
-      return deferred.promise;
-    }
-  }
-}])
-
-.service('InstagramFactory', ['$http', '$q', 
-  function ($http, $q) {
-    var deferred = $q.defer();
-    $http({
-        method: 'GET',
-        url: '/instagram',
-        cache: true
-    }).success(function (data) {
-        deferred.resolve(data);
-    }).error(function (msg) {
-        deferred.reject(msg);
-    });
-    return deferred.promise;
-}])
-
-
-
-.service('TwitterFactory', ['$http', '$q', 
-  function ($http, $q) {
-    var deferred = $q.defer();
-    $http({
-        method: 'GET',
-        url: '/twitter',
-        cache: true
-    }).success(function (data) {
-        deferred.resolve(data);
-    }).error(function (msg) {
-        deferred.reject(msg);
-    });
-    return deferred.promise;
-}])
-
-
-.factory("DownloadKeyService", function(){
-    return function(hash){
-      console.log("hash is "+hash);
-      // firebase.database().ref('downloadKeys/' + hash).set("test value");
-      firebase.database().ref('downloadKeys/'+hash).once('value').then(function(snapshot) {
-        var snap = snapshot.val();
-        console.log(snap);
-      });
-     
-      // if (thisKey !== null){
-      //   console.log("KEY EXISTS!!!!!!!")
-      //   return true;
-      // } else {
-      //   console.log("Key doesn't exist.")
-      //   return false;
-      // }
-    }
-  }
-)
-
-
-
-.factory("GetShows", ["$firebaseArray","moment", 
-  function($firebaseArray, moment){
-    var currentDay = moment().unix();
-    // console.log("current day: ",currentDay);
-    return function(){
-    var showsRef = firebase.database().ref('shows').orderByChild("unix").startAt(currentDay);
-    // console.log("I'm in GetShows");
-    return $firebaseArray(showsRef);
-  }
-}])
-
-// .factory("GetSingleShow", ["$firebaseArray", 
-//   function($firebaseArray) {
-//   return function(id){
-//      var showsRef = firebase.database().ref('shows/'+ id);
-//       return $firebaseArray(showsRef);
+// .factory("DownloadKeyService", function(){
+//     return function(hash){
+//       console.log("hash is "+hash);
+//       // firebase.database().ref('downloadKeys/' + hash).set("test value");
+//       firebase.database().ref('downloadKeys/'+hash).once('value').then(function(snapshot) {
+//         var snap = snapshot.val();
+//         console.log(snap);
+//       });
+//     }
 //   }
-// }])
+// )
 
-
-
-
-
-.factory("BlogPosts", ["$firebaseArray", 
-  function($firebaseArray) {
-  return function(){
-    var blogRef = firebase.database().ref('blog_posts').orderByChild("timestamp");
-    return $firebaseArray(blogRef);
-  }
-}])
-
-
-.factory("ThisPostService", ["$firebaseArray",
-  function($firebaseArray){
-    return function(slug){
-      var postRef = firebase.database().ref('blog_posts');
-      var thisPostRef = postRef.orderByChild('slug').equalTo(slug);
-      return $firebaseArray(thisPostRef);
-    }
-  }
-  ])
-
-.factory("AllTagsService", ["$firebaseArray", 
-  function($firebaseArray) {
-  return function(){
-      var tagRef = firebase.database().ref('tags');
-      return $firebaseArray(tagRef);
-  }
-}])
-
-.factory("TagsShowService", ["$firebaseArray", 
-  function($firebaseObject) {
-  return function(tagName){
-      var tagRef = firebase.database().ref('tags');
-      var tagShowRef = tagRef.orderByChild('name').equalTo(tagName);
-      return $firebaseObject(tagShowRef);
-  }
-}])
-
-
-.factory("ArchiveService", ["$firebaseArray", 
-  function($firebaseArray){
-    return {
-      years: function(){
-      var yearRef = firebase.database().ref('archives');
-      return $firebaseArray(yearRef)
-      },
-      months: function(year){
-      var monthRef = firebase.database().ref('archives/'+year);
-      return $firebaseArray(monthRef)
-      }
-    }
-}])
-
-.factory("ArchiveShowService", ["$firebaseArray", 
-  function($firebaseArray) {
-  return function(year, month){
-      var archiveRef = firebase.database().ref('archives/' + year + '/' + month);
-      return $firebaseArray(archiveRef);
-  }
-}])
 
 .factory('SendDataService', function() {
  var savedData = {}
@@ -205,28 +49,7 @@ angular.module('SistersServices', ['ngResource'])
   set: set,
   get: get
  }
-
 })
-
-.factory('CurrentOrderService', function($window) {
- function set(data) {
-   $window.localStorage.setItem( 'orderData', angular.toJson(data) );
-  //  console.log("order saved!");
- }
- function get() {
-  var order = angular.fromJson( $window.localStorage.getItem('orderData') ) ;
-    return JSON.parse(order);
- }
-
- return {
-  set: set,
-  get: get
- }
-})
-
-
-
-
 
 
 .factory('HelperService', ["moment","$q", function(moment, $q) {
@@ -386,9 +209,6 @@ angular.module('SistersServices', ['ngResource'])
   });
     })
     
-
-
-
   }
 
 }])

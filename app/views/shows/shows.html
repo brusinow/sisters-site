@@ -31,9 +31,12 @@
       <td>{{show.location}}</td>
       <td>{{show.venue}}</td>
       <td>
-        <a ng-if="show.venueLink" ng-href="{{show.venueLink}}" target="_blank">venue</a>
+        <a ng-if="show.venueLink" ng-href="{{show.venueLink}}" target="_blank">info</a>
         <br ng-if="show.ticketLink && show.venueLink">
-        <a ng-if="show.ticketLink" ng-href="{{show.ticketLink}}" target="_blank">tickets</a></td>
+       
+        <a ng-if='show.ticketSale' ng-href="{{show.ticketLink}}">tickets</a>
+        <a ng-if='show.ticketLink && !show.ticketSale' ng-href="{{show.ticketLink}}" target="_blank">tickets</a>
+      </td>
     </tr>
   </tbody>
 </table>

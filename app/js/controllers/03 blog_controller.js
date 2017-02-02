@@ -16,7 +16,7 @@ angular.module('SistersCtrls')
   })
   TwitterFactory.then(function(data){
    
-    console.log(data);
+    // console.log(data);
     $scope.tweetDate = data.allTweetData.created_at;
     $scope.twitterUser = data.allTweetData.user.name;
     $scope.twitterHandle = data.allTweetData.user.screen_name;
@@ -42,9 +42,9 @@ angular.module('SistersCtrls')
 
 .controller('BlogCtrl', ['$scope', '$state','$http','$timeout','$location','$stateParams','Auth','Blog','HelperService','InstagramFactory','AllTagsService', function($scope, $state, $http, $timeout, $location, $stateParams, Auth, Blog, HelperService, InstagramFactory, AllTagsService){
   var main = document.getElementById("main");
-  main.style.backgroundColor = 'rgba(252, 234, 240, .9)';
+  main.style.backgroundColor = 'rgba(255,255,255,0)';
   main.style.width = '';
-  main.style.padding = '';
+  main.style.padding = '0';
   $scope.$emit('loadMainContainer', 'loaded');
   $scope.allTags = AllTagsService();
 
@@ -186,9 +186,9 @@ angular.module('SistersCtrls')
   $scope.first = HelperService.findFirst($scope.length, $scope.page);
 
   $scope.last = $scope.length - (4 * $scope.page);
-  console.log("Last: ",$scope.last);
+  // console.log("Last: ",$scope.last);
   $scope.posts = selectPosts.slice($scope.first, $scope.last);
-  console.log($scope.posts);
+  // console.log($scope.posts);
 
   $timeout(function(){
     $scope.$emit('loadMainContainer', 'loaded');
@@ -208,7 +208,7 @@ angular.module('SistersCtrls')
  $scope.allTags = AllTagsService();
  $scope.enable = false;
  $scope.recentPosts = Blog;
- console.log($scope.recentPosts);
+//  console.log($scope.recentPosts);
  // $scope.photos = Instagram.data; 
  $scope.posts = thisPost;
  $scope.allPosts = thisPost;
@@ -227,6 +227,13 @@ angular.module('SistersCtrls')
   $scope.years = ArchiveService.years();
   $scope.years.$loaded().then(function(){
     console.log($scope.years);
+    $scope.monthObj = {};
+    for (var i = 0; i < $scope.years.length; i++){
+      $scope.monthObj[$scope.years[i].$id] = ArchiveService.months($scope.years[i].$id);
+    }
+    $timeout(function(){
+      console.log($scope.monthObj);
+    },7000);
   })
 
   $scope.allTags = AllTagsService();
@@ -253,7 +260,7 @@ angular.module('SistersCtrls')
     });
 
     modalInstance.result.then(function () {
-     console.log("submitted modal");
+    //  console.log("submitted modal");
     }, function () {
       $log.info('Modal dismissed at: ' + new Date());
     });

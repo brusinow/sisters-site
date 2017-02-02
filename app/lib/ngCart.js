@@ -15,7 +15,6 @@ angular.module('ngCart', ['ngCart.directives'])
     .run(['$rootScope', 'ngCart','ngCartItem', 'store', function ($rootScope, ngCart, ngCartItem, store) {
 
         $rootScope.$on('ngCart:change', function(){
-            console.log("cart being saved");
             ngCart.$save();
         });
 
@@ -39,8 +38,7 @@ angular.module('ngCart', ['ngCart.directives'])
             };
         };
 
-        this.addItem = function (id, name, price, quantity, data, attr) {
-            console.log("what is data? ",data);
+        this.addItem = function (id, sku, name, price, quantity, data, attr) {
             var inCart = this.getItemById(id);
 
             if (typeof inCart === 'object'){
@@ -48,8 +46,7 @@ angular.module('ngCart', ['ngCart.directives'])
                 inCart.setQuantity(quantity, false);
                 $rootScope.$broadcast('ngCart:itemUpdated', inCart);
             } else {
-                var newItem = new ngCartItem(id, name, price, quantity, data, attr);
-                console.log("new item: ",newItem);
+                var newItem = new ngCartItem(id, sku, name, price, quantity, data, attr);
                 this.$cart.items.push(newItem);
                 $rootScope.$broadcast('ngCart:itemAdded', newItem);
             }
@@ -57,10 +54,9 @@ angular.module('ngCart', ['ngCart.directives'])
             $rootScope.$broadcast('ngCart:change', {});
         };
 
-        this.addItemBtn = function (id, name, price, quantity, data) {
-            console.log("id is ",id);
-            console.log("data: ",data);
-            var skus = data.skus.data;
+        this.addItemBtn = function (id, sku, name, price, quantity, data) {
+            var skus = data.skus;
+          
             if (skus.length === 1){
             var inCart = this.getItemById(id);
 
@@ -69,7 +65,7 @@ angular.module('ngCart', ['ngCart.directives'])
                 inCart.setQuantity(quantity, false);
                 $rootScope.$broadcast('ngCart:itemUpdated', inCart);
             } else {
-                var newItem = new ngCartItem(id, name, price, quantity, data);
+                var newItem = new ngCartItem(id, sku, name, price, quantity, data);
                 this.$cart.items.push(newItem);
                 $rootScope.$broadcast('ngCart:itemAdded', newItem);
             }
@@ -127,7 +123,7 @@ angular.module('ngCart', ['ngCart.directives'])
         };
 
         this.getTax = function(){
-            return +parseFloat(((this.getSubTotal()/100) * this.getCart().taxRate )).toFixed(2);
+            return Math.round(((this.getSubTotal()/100) * this.getCart().taxRate ));
         };
 
         this.setCart = function (cart) {
@@ -229,10 +225,12 @@ angular.module('ngCart', ['ngCart.directives'])
             _self.$cart.tax = storedCart.tax;
 
             angular.forEach(storedCart.items, function (item) {
-                _self.$cart.items.push(new ngCartItem(item.parent,  item.description, item.amount, item.quantity, item._data, item.attr));
+                _self.$cart.items.push(new ngCartItem(item.parent, item.sku, item.description, item.amount, item.quantity, item._data, item.attr));
             });
             this.$save();
         };
+
+
 
         this.$save = function () {
             return store.set('cart', JSON.stringify(this.getCart()));
@@ -242,8 +240,9 @@ angular.module('ngCart', ['ngCart.directives'])
 
     .factory('ngCartItem', ['$rootScope', '$log', function ($rootScope, $log) {
 
-        var item = function (id, name, price, quantity, data, attr) {
+        var item = function (id, sku, name, price, quantity, data, attr) {
             this.setId(id);
+            this.setSku(sku);
             this.setName(name);
             this.setPrice(price);
             this.setQuantity(quantity);
@@ -259,8 +258,19 @@ angular.module('ngCart', ['ngCart.directives'])
             }
         };
 
+        item.prototype.setSku = function(sku){
+            if (sku)  this.sku = sku;
+            else {
+                $log.error('A sku must be provided');
+            }
+        };
+
         item.prototype.getId = function(){
             return this.parent;
+        };
+
+        item.prototype.getSku = function(){
+            return this.sku;
         };
 
 
@@ -387,7 +397,7 @@ angular.module('ngCart', ['ngCart.directives'])
         }
     }])
 
-    .controller('CartController',['$scope', 'ngCart','$timeout', function($scope, ngCart, $timeout) {
+    .controller('CartController',['$scope','$rootScope', 'ngCart','$timeout', function($scope, $rootScope, ngCart, $timeout) {
         $scope.loaded = false;
         $scope.toggleCart = false;
         $scope.ngCart = ngCart;
@@ -395,12 +405,29 @@ angular.module('ngCart', ['ngCart.directives'])
             $scope.loaded = true;
         })
 
+          var items = ngCart.getItems();
+            // loop to determine if any items are shippable
+  
+            var filtered = [];
+            angular.forEach(items, function(item) {
+                if (item._data.product_type === "shippable") {
+                    filtered.push(item);
+                }
+            });
+            if (filtered.length > 0){
+                $scope.shipBool = true;
+                $scope.$emit('setShippable', true);
+            } else {
+                $scope.shipBool = false;
+                $scope.$emit('setShippable', false);
+            }
+
         
 
     }])
 
     .controller('CartBtnController',['$scope', 'ngCart','$timeout', function($scope, ngCart, $timeout) {
-        console.log("cart button controller!!!!");
+        
         $scope.loaded = false;
         $scope.toggleCart = false;
         $scope.ngCart = ngCart;
@@ -419,6 +446,8 @@ angular.module('ngCart.directives', ['ngCart.fulfilment'])
     .controller('CartController',['$scope', 'ngCart', function($scope, ngCart) {
         
         $scope.ngCart = ngCart;
+
+        
         
     }])
 
@@ -428,6 +457,7 @@ angular.module('ngCart.directives', ['ngCart.fulfilment'])
             controller : 'CartBtnController',
             scope: {
                 id:'@',
+                sku: '@',
                 name:'@',
                 quantity:'@',
                 quantityMax:'@',
@@ -470,6 +500,7 @@ angular.module('ngCart.directives', ['ngCart.fulfilment'])
             controller : 'CartController',
             scope: {
                 id:'@',
+                sku: '@',
                 name:'@',
                 quantity:'@',
                 quantityMax:'@',
@@ -497,9 +528,24 @@ angular.module('ngCart.directives', ['ngCart.fulfilment'])
                 }
 
                 scope.qtyOpt =  [];
-                for (var i = 1; i <= scope.quantityMax; i++) {
-                    scope.qtyOpt.push(i);
-                }
+                var thisMax;
+                var showCountRef = firebase.database().ref('tickets/'+ scope.id + '/totalTickets');
+                showCountRef.once('value').then(function(snapshot) {
+                    scope.totalTix = snapshot.val();
+                    if (scope.quantityMax < scope.totalTix){
+                    thisMax = scope.quantityMax;
+                    } else {
+                    thisMax = scope.totalTix;
+                    }
+                    if (thisMax > 0){
+                        for (var i = 1; i <= thisMax; i++) {
+                        scope.qtyOpt.push(i);
+                        }
+                    }
+                    
+                });
+                
+              
 
             }
 

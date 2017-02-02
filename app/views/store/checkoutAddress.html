@@ -5,7 +5,7 @@
 <ngcart-small-cart-collapse class="cart-summary-mobile"></ngcart-small-cart-collapse>
 <form name="form" class="checkout-form checkout" ng-class="{'fade-in': loaded.length === 3}" novalidate ng-submit="submitForm(form)">
   <div class="row">
-    <div class="four columns">
+    <div ng-if="shipBool" class="four columns">
       <div class="store-card">
         <div class="store-header-div">
           <h6 class="text-center">Shipping Address</h6>
@@ -15,21 +15,8 @@
           <input name="shippingName" class="u-full-width" type="text" ng-model="data.shipping.name" required placeholder="Customer Name" />
           <span class="input-validate-text" ng-class="{'show': form.shippingName.$error.required && form.$submitted}">*Required</span>
         </div>
-
-        <div class="input-container">
-          <input class="u-full-width" name="shippingEmail" type="email" ng-model="data.shipping.email" required placeholder="Email Address" />
-          <span class="input-validate-text" ng-class="{'show': form.shippingEmail.$error.required && form.$submitted}">*Required</span>
-          <span class="input-validate-text" ng-class="{'show': form.shippingEmail.$error.email && form.$submitted}">*Not a valid email</span>
-        </div>
-
-        <div class="input-container">
-          <input name="shippingPhone" class="u-full-width" type="text" ng-model="data.shipping.phone" required placeholder="Phone Number" />
-          <span class="input-validate-text" ng-class="{'show': form.shippingPhone.$error.required && form.$submitted}">*Required</span>
-        </div>
-
         
         <select class="u-full-width" ng-options="country.name for country in countries track by country.name" required data-ng-model="data.shipping.country" ng-change="countryChange(data.shipping.country)">
-          <!--   <option value="" disabled>Choose Your Country</option> -->
         </select>
 
         <div class="input-container">
@@ -60,7 +47,7 @@
         </div>
 
         <label class="text-center">Billing address same as shipping?  <input type="checkbox" ng-model="data.shippingSame" ng-change="isShippingSame()"></label>
-        <label class="text-center">Add me to the SISTERS mailing list!  <input type="checkbox" ng-model="mailingListAdd"></label>
+       
       </div>
       <br>
 
@@ -82,6 +69,17 @@
         </select>
 
         <div class="input-container">
+          <input class="u-full-width" name="billingEmail" type="email" ng-model="data.billing.email" required placeholder="Email Address" />
+          <span class="input-validate-text" ng-class="{'show': form.billingEmail.$error.required && form.$submitted}">*Required</span>
+          <span class="input-validate-text" ng-class="{'show': form.billingEmail.$error.email && form.$submitted}">*Not a valid email</span>
+        </div>
+
+        <div class="input-container">
+          <input name="billingPhone" class="u-full-width" type="text" ng-model="data.billing.phone" required placeholder="Phone Number" />
+          <span class="input-validate-text" ng-class="{'show': form.billingPhone.$error.required && form.$submitted}">*Required</span>
+        </div>
+
+        <div class="input-container">
           <input name="billAddress1" class="u-full-width" type="text" ng-model="data.billing.address1" required ng-disabled="shippingSameBool" placeholder="Address 1" />
           <span class="input-validate-text" ng-class="{'show': form.billAddress1.$error.required && form.$submitted}">*Required</span>
         </div>
@@ -90,15 +88,24 @@
         <input class="u-full-width" type="text" ng-model="data.billing.address2" ng-disabled="shippingSameBool" placeholder="Address 2" />
         <div class="row">
           <input class="six columns" type="text" ng-model="data.billing.city" required ng-disabled="shippingSameBool" placeholder="City" />
-          <input class="six columns" type="text" ng-model="data.billing.postalCode" ng-blur="getTaxRate(data.shipping.country, data.shipping.stateProvince, data.shipping.postalCode)" required ng-disabled="shippingSameBool" placeholder="ZIP/Postal Code" />
+          <input ng-if="shipBool" class="six columns" type="text" ng-model="data.billing.postalCode" ng-blur="getTaxRate(data.shipping.country, data.shipping.stateProvince, data.shipping.postalCode)" required ng-disabled="shippingSameBool" placeholder="ZIP/Postal Code" />
+           <input ng-if="!shipBool" class="six columns" type="text" ng-model="data.billing.postalCode" required  placeholder="ZIP/Postal Code" />
         </div>
 
-        <div class="input-container">
+        <div ng-if="shipBool" class="input-container">
           <select name="billState" ng-if="data.billing.country.code === 'US'" class="u-full-width" required data-ng-model="data.billing.stateProvince" ng-disabled="shippingSameBool" ng-options="state.name for state in states track by state.name">
             <option value="" disabled selected>Choose Your State</option>
           </select>
           <span class="input-validate-text" ng-class="{'show': form.billState.$error.required && form.$submitted}">*Required</span>
         </div>
+
+        <div ng-if="!shipBool" class="input-container">
+          <select name="billState" ng-if="data.billing.country.code === 'US'" class="u-full-width" required data-ng-model="data.billing.stateProvince" ng-disabled="shippingSameBool" ng-options="state.name for state in states track by state.name" ng-change="getTaxRate(data.billing.country, data.billing.stateProvince, data.billing.postalCode)">
+            <option value="" disabled selected>Choose Your State</option>
+          </select>
+          <span class="input-validate-text" ng-class="{'show': form.billState.$error.required && form.$submitted}">*Required</span>
+        </div>
+
 
         <div class="input-container">
           <select name="billProvince" ng-if="data.billing.country.code === 'CA'" class="u-full-width" data-ng-model="data.billing.stateProvince" ng-disabled="shippingSameBool" ng-options="province.name for province in provinces track by province.name">
@@ -106,7 +113,7 @@
           </select>
           <span class="input-validate-text" ng-class="{'show': form.billProvince.$error.required && form.$submitted}">*Required</span>
         </div>
-        
+         <label class="text-center">Add me to the SISTERS mailing list!  <input type="checkbox" ng-model="mailingListAdd"></label>
       </div>
       <br>
       
@@ -120,7 +127,6 @@
 
       <ngcart-small-cart class="cart-summary-large"></ngcart-small-cart>
       <button class="button button-flat-pink" type="submit">Continue to Payment</button>
-      {{pathCount}}
     </div>
   </div>
 </form>

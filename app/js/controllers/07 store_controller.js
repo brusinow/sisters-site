@@ -1,19 +1,27 @@
 angular.module('SistersCtrls')
 
 
-.controller('StoreCtrl', function($scope, $state, $http, $timeout, $location, $sessionStorage, allProducts, ProductsService){
+.controller('StoreCtrl', function($scope, $state, $http, $timeout, $location, $sessionStorage, allProducts, Auth){
     var main = document.getElementById("main");
-    main.style.backgroundColor = '';
+    main.style.backgroundColor = 'rgba(255,255,255,0)';
     main.style.width = '';
     main.style.padding = '';
     $scope.loaded = false;
     $scope.products = allProducts;
 
-
+      $scope.auth = Auth;
+    $scope.auth.$onAuthStateChanged(function(firebaseUser) {
+    $scope.firebaseUser = firebaseUser;
+  });
     
     $scope.showProduct = function(id){
       $state.go('storeShow', {id:id});
     }
+
+    $scope.addProduct = function(){
+      $state.go('addProduct');
+    }
+
 
     $timeout(function(){
         $scope.loaded = true;
@@ -24,8 +32,12 @@ angular.module('SistersCtrls')
 
 .controller('StoreCartCtrl', function($scope, $state, $http, $timeout, $location, $sessionStorage){
   var main = document.getElementById("main");
-  main.style.backgroundColor = '';
-  $scope.$emit('loadMainContainer', 'loaded');
+  main.style.backgroundColor = 'rgba(255,255,255,0)';
+
+  $timeout(function(){
+      $scope.$emit('loadMainContainer', 'loaded');
+  },1);
+
 
   $scope.toCheckout = function(){
     $location.url('/store/checkout/address');
@@ -42,18 +54,22 @@ angular.module('SistersCtrls')
   var main = document.getElementById("main");
   main.style.backgroundColor = '';
   $scope.$emit('loadMainContainer', 'loaded');
-$scope.product = oneProduct;
-$scope.images = oneProduct.images;
-var currentActiveSrc = $scope.images[0];
+  if (oneProduct.description){
+    $scope.product = oneProduct;
+    $scope.images = oneProduct.images;
+    var currentActiveSrc = $scope.images[0];
 
-$scope.skus = $scope.product.skus.data;
+    $scope.skus = $scope.product.skus.data;
 
-$scope.data = {};
-$scope.data.selected = $scope.product.skus.data[0];
+    $scope.data = {};
+    $scope.data.selected = $scope.product.skus[0];
 
 
-var mainImg = document.querySelector(".main-product-photo img");
-mainImg.src = $scope.images[0];
+    var mainImg = document.querySelector(".main-product-photo img");
+    mainImg.src = $scope.images[0];
+  } else {
+    $location.url('/store');
+  }
 
 
 $scope.isActiveImg = function(){
@@ -71,12 +87,6 @@ $scope.changeActive = function(){
   mainImg.src = this.img;
 }
 
-
-
-
-
-
-
 })
 
 
@@ -88,12 +98,14 @@ $scope.changeActive = function(){
   $scope.$emit('loadMainContainer', 'loaded');
   $scope.$storage = $localStorage;
 
-  $scope.$on('cartChange', function(event, data) { 
-    $scope.showPath = data; 
+  $scope.$on('pathChange', function(event, data) { 
+    $scope.path = data; 
   });
-  if (!$scope.showPath){
-    $scope.showPath = $scope.$storage.pathCount;
-  }
+
+  $scope.$on('pathCountChange', function(event, data) { 
+    $scope.pathCount = data; 
+  });
+
 
 
 })
@@ -103,18 +115,25 @@ $scope.changeActive = function(){
 
 
 
-.controller('StoreAddressCtrl', function($scope, $state, $window, $timeout, $http, $location, $localStorage, ngCart, $rootScope, CurrentOrderService){
+.controller('StoreAddressCtrl', function($scope, $state, $window, $timeout, $http, $location, $localStorage, ngCart, $rootScope, CurrentOrderService, moment){
   var main = document.getElementById("main");
   main.style.backgroundColor = 'rgba(247, 237, 245, 0)';
 
   $scope.$emit('loadMainContainer', 'loaded');
   $scope.$storage = $localStorage;
   $scope.cartItems = ngCart.getItems();
-  $rootScope.path = $location.$$path;
-  if (!$scope.$storage.pathCount || $scope.$storage.pathCount < 1){
-    $scope.$storage.pathCount = 0;
-    $scope.$emit('cartChange', $scope.$storage.pathCount); 
-  } 
+
+  $scope.$on('setShippable', function (event, data) {
+    $scope.shipBool = data;
+  });
+
+  if (!$scope.$storage.billingAddress){
+    $scope.$storage.pathCount = 1;
+  }
+
+ 
+  $scope.$emit('pathChange', $location.$$path); 
+  $scope.$emit('pathCountChange', $scope.$storage.pathCount);
   
   $scope.loaded = [];
 
@@ -122,11 +141,16 @@ $scope.changeActive = function(){
   $scope.data = {
     "shipping": {
       "country": {}
-    },
-    "billing": {
-      "country": {}
     }
   };
+
+  if ($scope.$storage.billingAddress){
+    $scope.data.billing = $scope.$storage.billingAddress;
+  } else {
+    $scope.data.billing = {
+      "country": {}
+    }
+  }
   $scope.mailingListAdd = true;
   $scope.shippingSameBool = false;
 
@@ -171,72 +195,96 @@ $scope.changeActive = function(){
     }
   }
 
-  $scope.submitForm = function(form){
+$scope.submitForm = function(form){
      if(form.$valid){
       
     $scope.loaded = [];
+    setMailingList();
+    var taxObj = {
+      amount: ngCart.getTax(),
+      description: "tax: ("+ ngCart.getTaxRate() + "%)",
+    }
     var ship = $scope.data.shipping;
     var bill = $scope.data.billing; 
-    $scope.copyItems = angular.copy($scope.cartItems);
-    for (var i = 0; i < $scope.copyItems.length; i++){
-      delete $scope.copyItems[i]._data;
-      delete $scope.copyItems[i].attr;
-    }
     $scope.$storage.billingAddress = $scope.data.billing;
-    var req = {
-      url: '/stripe/createOrder',
-      method: 'POST',
-      params: {
-        order: {
-          currency: 'usd',
-          items: $scope.copyItems,
-          shipping: {
-            name: ship.name,
-            address: {
-              line1: ship.address1,
-              line2: ship.address2 || null,
-              city: ship.city,
-              state: ship.stateProvince.short || null,
-              country: ship.country.code,
-              postal_code: ship.postalCode
+    $scope.$storage.shippingAddress = $scope.data.shipping;
+    var d = new Date();
+    
+      var req = {
+        url: '/store/newOrder',
+        method: 'POST',
+        params: {
+          order: {
+            status: "pending",
+            dateCreated: d.getTime(),
+            currency: 'usd',
+            items: $scope.cartItems,
+            totalItemsPrice: ngCart.getSubTotal(),
+            tax: taxObj,
+            billing : {
+              name: bill.name,
+              email: bill.email,
+              phone: bill.phone,
+              address: {
+                line1: bill.address1,
+                line2: bill.address2 || null,
+                city: bill.city,
+                state: bill.stateProvince.short || null,
+                country: bill.country.code,
+                postal_code: bill.postalCode
+              }
+            },
+            metadata: {
+              taxRate: ngCart.getTaxRate()
             }
-          },
-          email: ship.email,
-          metadata: {
-            taxRate: ngCart.getTaxRate()
           }
         }
-      }
-    } 
-    $http(req).then(function success(res) {
+      } 
 
-          if (res.data.status === 'created'){
-            $scope.$storage.mailingList = $scope.mailingListAdd;
-            if (!$scope.$storage.addressSubmit){
-             $scope.$storage.pathCount++;
-             $scope.$emit('cartChange', $scope.$storage.pathCount);  
-            }
-            $scope.$storage.addressSubmit = true;            
-            $scope.$storage.orderData = res;
-            $scope.$evalAsync(function(){
-              $location.url('/store/checkout/payment');
-            });
-              
-           
-          } else {
-            $scope.loaded = [1, 2, 3];
-            console.log(res.data);
-            $scope.errorMessage = res.data.message;
-          } 
+      if ($scope.shipBool){
+        req.params.shippable = true;
+        req.params.shipping = {
+              name: ship.name,
+              address: {
+                line1: ship.address1,
+                line2: ship.address2 || null,
+                city: ship.city,
+                state: ship.stateProvince.short || null,
+                country: ship.country.code,
+                postal_code: ship.postalCode
+              }
+        }
+      } else {
+        req.params.shippable = false;
+      }
+
+      var orderNumber = Math.floor(100000 + Math.random() * 1000000000);
+      $scope.$storage.orderData = req.params.order;
+      $scope.$storage.orderData.orderNumber = orderNumber;
+
+      firebase.database().ref('orders/order_' + orderNumber).set(req.params.order);
+      $http(req).then(function success(res) {
+          $scope.$storage.shippingData = res.data;
+          $scope.$storage.pathCount = 2;
+          $location.url('/store/checkout/payment');
         }, function error(res) {
           console.log("error ",res);             
-        });
+      });
 
-    } else {
-      console.log("form invalid!!");
-      }
-
+     } else {
+       console.log("form invalid!");
+     }
+      
   }
+
+    var setMailingList = function(){
+      if ($scope.mailingListAdd === true){
+        $scope.$storage.mailingList = true;
+      } else {
+        $scope.$storage.mailingList = false;
+      }
+    }
+
 
 
     $scope.getTaxRate = function(country, stateProvince, postalCode){
@@ -256,7 +304,7 @@ $scope.changeActive = function(){
 
         $http(req).then(function success(res) {
           ngCart.setTaxRate(res.data.totalRate); 
-          $window.localStorage.currentWaRate = res.data.totalRate;   
+          $window.localStorage.currentWaRate = res.data.totalRate; 
         }, function error(res) {
           console.log("error ",res);             
         });
@@ -276,30 +324,47 @@ $scope.changeActive = function(){
 
 
 
-.controller('StorePaymentCtrl', function($scope, $state, $http, $timeout, $location, $localStorage, ngCart, $rootScope, currentOrder){
+.controller('StorePaymentCtrl', 
+  function($scope, $state, $http, $timeout, $location, $localStorage, 
+  ngCart, $rootScope, currentOrder){
+
   var main = document.getElementById("main");
   main.style.backgroundColor = 'rgba(247, 237, 245, 0)';
   $scope.$emit('loadMainContainer', 'loaded');
-  $rootScope.path = $location.$$path;
   $scope.$storage = $localStorage;
-  $scope.pathCount = parseInt($scope.$storage.pathCount); 
-  $scope.shipOptions = $scope.$storage.orderData.data.shipping_methods;
-  $scope.savedSelectedShip = $scope.$storage.orderData.data.selected_shipping_method;
-
-  
+  $scope.$emit('pathChange', $location.$$path); 
+  $scope.$emit('pathCountChange', $scope.$storage.pathCount);
+  $scope.data = {};
 
 
+  $scope.$on('setShippable', function (event, data) {
+    $scope.shipBool = data;
+  });
 
-  for (var i = 0; i < $scope.shipOptions.length; i++){
-    if ($scope.shipOptions[i].id === $scope.savedSelectedShip){
+  var orderNumber = $scope.$storage.orderData.orderNumber;
+  var items = $scope.$storage.orderData.items;
+  for (var i = 0; i < items.length; i++){
+    if (items[i]._data.product_type === "ticket"){
+      $scope.showWillCall = true;
+    }
+  }
+
+  if ($scope.$storage.shippingData.rates_list){
+     $scope.shipOptions = $scope.$storage.shippingData.rates_list;
+    $scope.$storage.savedSelectedShip = $scope.$storage.shippingData.rates_list[0];
+
+     for (var i = 0; i < $scope.shipOptions.length; i++){
+    if ($scope.shipOptions[i].object_id === $scope.$storage.savedSelectedShip.object_id){
       $scope.selectedShip = $scope.shipOptions[i];
       break;
     }
   }
-  
+
    $scope.$watch('selectedShip', function (newValue, oldValue, scope) {
-    ngCart.setShipping($scope.selectedShip.amount);  
+     $scope.$storage.savedSelectedShip = $scope.selectedShip;
+    ngCart.setShipping(($scope.selectedShip.amount * 100));  
   }, false);
+  }
 
   $timeout(function(){
    $scope.loaded = true; 
@@ -307,9 +372,12 @@ $scope.changeActive = function(){
 
   
   
-  $scope.submitForm = function(form){
-    // if(form.$valid){
-      $scope.loaded = false; 
+  $scope.submitForm = function (form) {
+    if (form.$valid) {
+
+      $scope.$storage.orderData.willCallName = $scope.data.willCallName;
+
+      $scope.loaded = false;
       Stripe.card.createToken({
         number: $scope.number,
         cvc: $scope.cvc,
@@ -321,96 +389,132 @@ $scope.changeActive = function(){
         address_state: $scope.$storage.billingAddress.stateProvince.short || null,
         address_zip: $scope.$storage.billingAddress.postalCode,
         address_country: $scope.$storage.billingAddress.country.code
-      }, handleStripe);
-    // } else {
-      // console.log("form invalid!!");
-    // }
-  }
+      }, function (err, token) {
+        if (err != 200) {
+          console.log("we have an error: ", err);
+        }
 
-  var handleStripe = function(status, response){
-    if(response.error) {
-    // there was an error. Fix it.
-  } else {
-    token = response;
-    
+        if (token) {
+          $timeout(function () {
+            $scope.$storage.tokenData = token;
+            $scope.$storage.pathCount = 3;
+            $scope.$emit('pathCountChange', $scope.$storage.pathCount);
+            $location.url('/store/checkout/confirm');
+          }, 1);
 
-    var req = {
-      url: '/stripe/updateShipping',
-      method: 'POST',
-      params: {
-        token: token,
-        orderId: $scope.$storage.orderData.data.id,
-        selectedShip: $scope.selectedShip.id
-      }
+        }
+      });
+    } else {
+      console.log("form invalid!!");
     }
-
-    $http(req).then(function success(res) {
-           if (!$scope.$storage.paymentSubmit){
-             $scope.$storage.pathCount++;
-             $scope.$emit('cartChange', $scope.$storage.pathCount);  
-            }
-            $scope.$storage.paymentSubmit = true;  
-          $scope.$storage.orderData = res;
-          $scope.$storage.tokenData = token;
-          $location.url('/store/checkout/confirm');   
-        }, function error(res) {
-          $scope.loaded = true; 
-          console.log("error ",res);             
-        });
-  }
   }
 
 
 })
 
 
-.controller('StoreConfirmCtrl', function($scope, $state, $http, $timeout, $location, $localStorage, ngCart, $rootScope){
+.controller('StoreConfirmCtrl', function($scope, $state, $http, $timeout, $location, $localStorage, ngCart, $rootScope, AllTickets, WillCallListService){
+
+  $scope.$on('setShippable', function (event, data) {
+    $scope.shipBool = data;
+  });
+
+
+
 var main = document.getElementById("main");
-  main.style.backgroundColor = 'rgba(247, 237, 245, 0)';
+main.style.backgroundColor = 'rgba(247, 237, 245, 0)';
 $scope.$emit('loadMainContainer', 'loaded');
 $scope.$storage = $localStorage;
-$scope.pathCount = parseInt($scope.$storage.pathCount); 
 $scope.orderComplete = false;
-$rootScope.path = $location.$$path;
+$scope.$emit('pathChange', $location.$$path); 
+$scope.$emit('pathCountChange', $scope.$storage.pathCount);
 $scope.ngCart = ngCart;
+
+var items = $scope.$storage.orderData.items;
+var tickets = AllTickets;
+var thisItemIndex;
+
+// referencing stuff from local storage (current shipping choice, token, shipping & billing address info)
+$scope.currentShipping = $scope.$storage.savedSelectedShip;
 $scope.token = $scope.$storage.tokenData;
-$scope.order = $scope.$storage.orderData.data;
-var items = $scope.order.items;
-for (var i = 0; i < items.length; i++){
-  if (items[i].type === 'shipping'){
-    $scope.shipService = items[i].description;
-  }
-}
+$scope.shipping = $scope.$storage.shippingAddress;
+$scope.billing = $scope.$storage.billingAddress;
+$scope.order = $scope.$storage.orderData;
+
 $timeout(function(){
   $scope.loaded = true;
 })
   
 
 
-$scope.createCharge = function(){
-  $scope.loaded = false; 
-  var req = {
-        url: '/stripe/orderComplete',
-        method: 'POST',
-        params: {
-          orderId: $scope.order.id,
-          token: $scope.token.id
-        }
-      } 
+var updateTicketCount = function (cartItems, itemIndex) {
+  var thisQuant = cartItems[itemIndex].quantity;
+  var willCallArr = WillCallListService(cartItems[itemIndex].parent);
+  willCallArr.$add({ "name": $scope.$storage.orderData.willCallName, "quantity": thisQuant }).then(function (ref) {
+    var id = ref.key;
+    var showCountRef = firebase.database().ref('tickets/' + cartItems[itemIndex].parent + '/totalTickets');
+    showCountRef.once('value').then(function (snapshot) {
+      showCountRef.set(snapshot.val() - thisQuant);
+    });
+  }, function (err) {
+    console.log("what is err: ", err);
+  });
+}
 
-      $http(req).then(function success(res) {
-        $scope.orderComplete = true;
-        if ($scope.$storage.mailingList){
-          mailchimpSubmit();
+var orderStatusDone = function(orderNumber, resData) {
+  firebase.database().ref('orders/order_' + orderNumber + '/status').set("complete");
+  firebase.database().ref('orders/order_' + orderNumber + '/totalItemsPrice').set(resData.amount);
+  firebase.database().ref('orders/order_' + orderNumber + '/stripeChargeId').set(resData.id);
+}
+
+
+
+
+$scope.createCharge = function () {
+  $scope.loaded = false;
+
+  var req = {
+    url: '/store/orderComplete',
+    method: 'POST',
+    params: {
+      totalAmount: ngCart.totalCost(),
+      tax: ngCart.getTax(),
+      token: $scope.token.id,
+      name: $scope.token.card.name,
+      cart: JSON.stringify(ngCart.getItems()),
+      order: $scope.$storage.orderData,
+      shipChoice: $scope.currentShipping
+    }
+  }
+
+  $http(req).then(function (res) {
+    console.log(res);
+    $scope.isError = false;
+    for (var i = 0; i < items.length; i++) {
+      for (var j = 0; j < tickets.length; j++) {
+        if (tickets[j].$id === items[i].parent) {
+          updateTicketCount(items, i);
         }
-        ngCart.setTaxRate();
-        ngCart.setShipping();   
-        ngCart.empty();
-        $localStorage.$reset();
-      }, function error(res) {
-        $scope.loaded = true; 
+      }
+    }
+    orderStatusDone($scope.$storage.orderData.orderNumber, res.data);
+    if ($scope.$storage.mailingList === true) {
+      mailchimpSubmit($scope.$storage.billingAddress.email);
+    }
+    $scope.orderComplete = true;
+    $scope.$storage.pathCount = 0;
+    $scope.$emit('pathCountChange', $scope.$storage.pathCount);
+    ngCart.setTaxRate(null);
+    ngCart.setShipping(null);
+    ngCart.empty();
+    $localStorage.$reset();
+    localStorage.clear();
+  }, function (res) {
+    $scope.errorMessage = res.data.message;
+    $scope.isError = true;
+    $scope.loaded = true;
     //do something if the response has an error
-    console.log("error ",res);
+    console.log("error ", res);
   });
 }
 
@@ -418,13 +522,13 @@ $scope.createCharge = function(){
 
 
 
-var mailchimpSubmit = function(){
-    var url = "//sisterstheband.us14.list-manage.com/subscribe/post-json?u=bc38720b0bcc7a32641bb572c&amp;id=242f4adc89&EMAIL="+$scope.$storage.orderData.data.email+"&c=JSON_CALLBACK"
-    $http.jsonp(url).then(function success(res){
-    }, function error(res){
+  var mailchimpSubmit = function (email) {
+    var url = "//sisterstheband.us14.list-manage.com/subscribe/post-json?u=bc38720b0bcc7a32641bb572c&amp;id=242f4adc89&EMAIL=" + email + "&c=JSON_CALLBACK"
+    $http.jsonp(url).then(function success(res) {
+    }, function error(res) {
       console.log(res);
     });
-}
+  }
 
 
 

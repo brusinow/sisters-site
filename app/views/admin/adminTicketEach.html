@@ -1,0 +1,21 @@
+<div id="admin-container">
+<div style="margin-left: 5px; margin-bottom: 15px;">
+  <a style="color: #1A0504;" class="store-back-link" href="/admin/tickets"><i class="fa fa-long-arrow-left" aria-hidden="true"></i> Back to Tickets</a>
+</div>
+    <h3 style="text-align: center;">{{ticket.title}} ({{ticket.unix | slashDate}})</h3>
+  <div class="row">
+    <div class="four columns offset-by-two">
+  <canvas id="pie"  class="chart chart-pie"
+  chart-data="data" chart-labels="labels" chart-colors="chartColors" chart-options="options">
+  </canvas> 
+  </div>
+  <div style="text-align: center;" class="four columns">
+    <div class="ticket-stats">
+    <h5>Total Capacity: {{ticket.ticketCapacity}}</h5>
+    <h5>Tickets Sold: {{ticketsSold}}</h5>
+    <h5>Tickets Remaining: {{ticket.totalTickets}}</h5>
+    </div><br>
+     <button class="button button-flat-pink" ng-click="downloadList()">DOWNLOAD WILL CALL LIST</button>
+  </div>
+  </div>
+</div>

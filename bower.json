@@ -16,6 +16,9 @@
     "tests"
   ],
   "dependencies": {
-    "angulartics-google-analytics": "^0.3.0"
-  }
+    "angulartics-google-analytics": "^0.3.0",
+    "chart.js": "^2.4.0",
+    "angular-file-saver": "^1.1.2"
+  },
+  "directory": "app/lib"
 }

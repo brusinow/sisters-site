@@ -11,7 +11,7 @@
       <li><a ng-click="toggle = !toggle" ng-href="/shows">shows</a></li>
       <li><a ng-click="toggle = !toggle" href="https://iheartsisters.bandcamp.com/" target="_blank">music</a></li>
       <li><a ng-click="toggle = !toggle" ng-href="/blog">blog</a></li>
-       <li><a ng-click="toggle = !toggle" ng-href="/store">store</a></li>
+      <li ng-show="firebaseUser.email"><a ng-click="toggle = !toggle" ng-href="/admin">admin</a></li>
     </ul>
   </div> 
 </div>
@@ -24,7 +24,7 @@
       <li><a ng-href="/shows">shows</a></li>
       <li><a href="https://iheartsisters.bandcamp.com/" target="_blank">music</a></li>
       <li><a ng-href="/blog">blog</a></li>
-      <li><a ng-href="/store">store</a></li>
+      <li ng-show="firebaseUser.email" ><a class="admin-nav-btn" ng-href="/admin">admin</a></li>
     </ul>
 
   </div>
@@ -60,7 +60,7 @@
       Valentine's Day 2017
     </p>
     <div class="text-center">
-   <button ng-click="toStore()" class="button popup-button button-flat-pink">Pre-order here</button>
+   <a ng-href="https://iheartsisters.bandcamp.com/" target="_blank" class="button popup-button button-flat-pink">Pre-order here</a>
     </div>
   </div>
 </div>

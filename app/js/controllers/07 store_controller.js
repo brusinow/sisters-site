@@ -59,10 +59,11 @@ angular.module('SistersCtrls')
     $scope.images = oneProduct.images;
     var currentActiveSrc = $scope.images[0];
 
-    $scope.skus = $scope.product.skus.data;
+    $scope.skus = $scope.product.skus;
 
     $scope.data = {};
     $scope.data.selected = $scope.product.skus[0];
+    console.log($scope.data.selected);
 
 
     var mainImg = document.querySelector(".main-product-photo img");
@@ -80,7 +81,9 @@ $scope.isActiveImg = function(){
   }
 }
 
-
+$scope.whatSelected = function(){
+  console.log($scope.data.selected);
+}
 
 $scope.changeActive = function(){
   currentActiveSrc = this.img;
@@ -178,8 +181,9 @@ $scope.changeActive = function(){
 
   $scope.isShippingSame = function(){
     if ($scope.data.shippingSame){
-      $scope.data.billing = $scope.data.shipping;
+      $scope.data.shipping = $scope.data.billing;
       $scope.shippingSameBool = true;
+      $scope.getTaxRate($scope.data.billing.country, $scope.data.billing.stateProvince, $scope.data.billing.postalCode)
     } else {
       $scope.data.billing = {};
       $scope.shippingSameBool = false;
@@ -264,6 +268,7 @@ $scope.submitForm = function(form){
 
       firebase.database().ref('orders/order_' + orderNumber).set(req.params.order);
       $http(req).then(function success(res) {
+        console.log(res);
           $scope.$storage.shippingData = res.data;
           $scope.$storage.pathCount = 2;
           $location.url('/store/checkout/payment');
@@ -288,11 +293,8 @@ $scope.submitForm = function(form){
 
 
     $scope.getTaxRate = function(country, stateProvince, postalCode){
+      console.log(country, stateProvince, postalCode);
     if (country.code === 'US' && stateProvince.short === 'WA' && postalCode){
-      if ($window.localStorage.currentWaRate){
-        var parsedTax = parseFloat($window.localStorage.currentWaRate)
-        ngCart.setTaxRate(parsedTax);    
-      } else {
         var req = {
           url: '/taxRate',
           method: 'GET',
@@ -304,11 +306,10 @@ $scope.submitForm = function(form){
 
         $http(req).then(function success(res) {
           ngCart.setTaxRate(res.data.totalRate); 
-          $window.localStorage.currentWaRate = res.data.totalRate; 
         }, function error(res) {
           console.log("error ",res);             
         });
-      }
+      
     } else if (country.code === 'US' && stateProvince.short !== 'WA'){
       ngCart.setTaxRate(0);
     } else if (country.code !== 'US'){
@@ -481,7 +482,7 @@ $scope.createCharge = function () {
       tax: ngCart.getTax(),
       token: $scope.token.id,
       name: $scope.token.card.name,
-      cart: JSON.stringify(ngCart.getItems()),
+      cart: angular.toJson(ngCart.getItems()),
       order: $scope.$storage.orderData,
       shipChoice: $scope.currentShipping
     }

@@ -233,7 +233,7 @@ angular.module('ngCart', ['ngCart.directives'])
 
 
         this.$save = function () {
-            return store.set('cart', JSON.stringify(this.getCart()));
+            return store.set('cart', angular.toJson(this.getCart()));
         }
 
     }])
@@ -335,16 +335,13 @@ angular.module('ngCart', ['ngCart.directives'])
         };
 
         item.prototype.setAttr = function(attributes){
+            console.log("attributes are ",attributes);
             if (attributes) this.attr = attributes;
         };
 
         item.prototype.getAttr = function(){
             if (this.attr){
-                if (this.attr["size"]){
-                    return this.attr["size"]
-                } else if (this.attr["color"]) {
-                    return this.attr["size"]
-                };
+                return this.attr;
             } 
             else {};
         };
@@ -410,10 +407,12 @@ angular.module('ngCart', ['ngCart.directives'])
   
             var filtered = [];
             angular.forEach(items, function(item) {
+                console.log(item);
                 if (item._data.product_type === "shippable") {
                     filtered.push(item);
                 }
             });
+            console.log("filtered: ",filtered);
             if (filtered.length > 0){
                 $scope.shipBool = true;
                 $scope.$emit('setShippable', true);
@@ -546,6 +545,50 @@ angular.module('ngCart.directives', ['ngCart.fulfilment'])
                 });
                 
               
+
+            }
+
+        };
+    }])
+
+    .directive('ngcartAddtocartProduct', ['ngCart', function(ngCart){
+        return {
+            restrict : 'E',
+            controller : 'CartController',
+            scope: {
+                id:'@',
+                sku: '@',
+                name:'@',
+                attr: '@',
+                quantity:'@',
+                quantityMax:'@',
+                price:'@',
+                data:'='
+            },
+            transclude: true,
+            templateUrl: function(element, attrs) {
+                if ( typeof attrs.templateUrl == 'undefined' ) {
+                    return 'views/ngCart/addtocartProduct.html';
+                } else {
+                    return attrs.templateUrl;
+                }
+            },
+            link:function(scope, element, attrs){
+                scope.attrs = attrs;
+                scope.inCart = function(){
+                    return  ngCart.getItemById(attrs.id);
+                };
+
+                if (scope.inCart()){
+                    scope.q = ngCart.getItemById(attrs.id).getQuantity();
+                } else {
+                    scope.q = parseInt(scope.quantity);
+                }
+
+                scope.qtyOpt =  [];
+                for (var i = 1; i <= scope.quantityMax; i++) {
+                    scope.qtyOpt.push(i);
+                }
 
             }
 

@@ -50,7 +50,7 @@ router.post("/newOrder", function(req, res){
 
 
   
-  if (req.query.shippable === true){
+  if (req.query.shippable){
     
     var addressFrom = {
       "object_purpose": "PURCHASE",
@@ -93,8 +93,10 @@ router.post("/newOrder", function(req, res){
     }, function(err, shipment){
     if (err){
       console.log("error: ",err);
+      res.send(err);
     }
     if (shipment){
+      console.log(shipment);
       res.send({
         shipment: shipment, 
         order: parsedOrder
@@ -103,6 +105,7 @@ router.post("/newOrder", function(req, res){
     });
 
   } else {
+    console.log("sending wrong status")
     res.send({order: parsedOrder});
   }
   

@@ -375,6 +375,33 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
     }
   })
 
+  .state('store', {
+    url: '/store',
+    metaTags: {
+            title: 'SISTERS - Store',
+            description: 'The official store for Seattle duo SISTERS.'
+        },
+    templateUrl: '/views/store/store.html',
+    controller: 'StoreCtrl',
+    resolve: {
+      "currentAuth": authWait,
+      "allProducts": function(ProductsService){
+        return ProductsService.allProducts();
+      }
+    }
+  })
+
+  .state('addProduct', {
+    url: '/store/add',
+    templateUrl: '/views/store/addProduct.html',
+    controller: 'StoreProductAddCtrl',
+    resolve: {
+      "currentAuth": authRequire
+    }
+  })
+
+
+
 
   .state('storeCart', {
     url: '/store/cart',
@@ -382,6 +409,32 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
     controller: 'StoreCartCtrl',
     resolve: {
       "currentAuth": authWait
+    }
+  })
+
+  .state('storeShow', {
+    url: '/store/:id',
+    templateUrl: '/views/store/storeShow.html',
+    controller: 'StoreShowCtrl',
+    resolve: {
+      "currentAuth": authWait,
+      "oneProduct": function(ProductsService, $stateParams){
+        console.log("params are: ",$stateParams);
+        return ProductsService.oneProduct($stateParams.id).$loaded();
+      }
+    }
+  })
+
+
+   .state('editProduct', {
+    url: '/store/edit/:id',
+    templateUrl: '/views/store/editProduct.html',
+    controller: 'StoreProductEditCtrl',
+    resolve: {
+      "currentAuth": authRequire,
+      "oneProduct": function(ProductsService, $stateParams){
+        return ProductsService.oneProduct($stateParams.id);
+      }
     }
   })
 

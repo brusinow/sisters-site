@@ -11,7 +11,6 @@ var Entities = require('html-entities').AllHtmlEntities;
 var http = require('http');
 var fs = require('fs');
 
-// var firebase = require("firebase");
 var shippo = require('shippo')(process.env.SHIPPO_TOKEN);
 
 
@@ -23,11 +22,6 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(express.static(path.join(__dirname, 'app')));
 
-
-// firebase.initializeApp({
-//   serviceAccount: "app/firebaseCredentials.json",
-//   databaseURL: "https://sisters-site.firebaseio.com"
-// });
 
 entities = new Entities();
 
@@ -157,9 +151,7 @@ app.post("/stripe/orderComplete", function(req, res){
 
 
 app.post("/stripe/taxCallback", function(req, res){
-  console.log("ENTERING STRIPE CALLBACK!!!!!!!")
   var order = req.body.order;
-  console.log(order.id);
   var orderId = order.id;
   var shipping = order.shipping.address;
   var taxRate = order.metadata.taxRate;
@@ -190,7 +182,6 @@ app.post("/stripe/taxCallback", function(req, res){
         ]
       }
   }   
-  console.log(JSON.stringify(myJSON, null, 4));
   res.json(myJSON); 
 });
 

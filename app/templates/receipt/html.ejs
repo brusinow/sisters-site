@@ -20,14 +20,22 @@
   </tr>
   <% cart.forEach(function(item){ %>
   <tr>
+    <% if (item._data.order_type === "ticket"){ %>
     <td><%= item.description %> (<%= item.sku %>)</td>
+    <% } else if (item._data.attr){%>
+    <td><%= item.description %> (<%= item._data.attr %>)</td>
+    <% } %>
     <td><%= item.quantity%>x </td>
     <td>$<%= (item.amount / 100).toFixed(2) %></td>
     <td>$<%= ((item.amount / 100) * item.quantity).toFixed(2) %></td>
   </tr>
   <% }) %>
   <tr>
-    <td>Will Call Name: <%= orderData.willCallName %></td>
+    <td>
+    <% if (orderData.willCallName){ %>
+    Will Call Name: <%= orderData.willCallName %>
+    <% } %>
+    </td>
     <td></td>
     <td>Tax (<%= orderData.metadata.taxRate %>%):</td>
     <td>$<%= (orderData.tax.amount/100).toFixed(2) %></td>

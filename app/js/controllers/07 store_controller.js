@@ -247,7 +247,7 @@ $scope.submitForm = function(form){
 
       if ($scope.shipBool){
         req.params.shippable = true;
-        req.params.shipping = {
+        req.params.order.shipping = {
               name: ship.name,
               address: {
                 line1: ship.address1,
@@ -262,14 +262,13 @@ $scope.submitForm = function(form){
         req.params.shippable = false;
       }
 
-      var orderNumber = Math.floor(100000 + Math.random() * 1000000000);
-      $scope.$storage.orderData = req.params.order;
-      $scope.$storage.orderData.orderNumber = orderNumber;
-
-      firebase.database().ref('orders/order_' + orderNumber).set(req.params.order);
+      var orderNumber = Math.floor(100000 + Math.random() * 1000000000);      
       $http(req).then(function success(res) {
         console.log(res);
-          $scope.$storage.shippingData = res.data;
+          $scope.$storage.shippingData = res.data.shipment;
+          $scope.$storage.orderData = res.data.order;
+          $scope.$storage.orderData.orderNumber = orderNumber;
+          firebase.database().ref('orders/order_' + orderNumber).set(res.data.order);
           $scope.$storage.pathCount = 2;
           $location.url('/store/checkout/payment');
         }, function error(res) {
@@ -351,21 +350,23 @@ $scope.submitForm = function(form){
   }
 
   if ($scope.$storage.shippingData.rates_list){
-     $scope.shipOptions = $scope.$storage.shippingData.rates_list;
-    $scope.$storage.savedSelectedShip = $scope.$storage.shippingData.rates_list[0];
-
-     for (var i = 0; i < $scope.shipOptions.length; i++){
-    if ($scope.shipOptions[i].object_id === $scope.$storage.savedSelectedShip.object_id){
-      $scope.selectedShip = $scope.shipOptions[i];
-      break;
-    }
+    $scope.shipOptions = $scope.$storage.shippingData.rates_list;
+    for (var i = 0; i < $scope.shipOptions.length; i++){
+      if ($scope.$storage.savedSelectedShip !== undefined && $scope.shipOptions[i].object_id === $scope.$storage.savedSelectedShip.object_id){
+        $scope.data.selectedShip = $scope.shipOptions[i];
+        break;
+      } else {
+        $scope.$storage.savedSelectedShip = $scope.$storage.shippingData.rates_list[0];
+        $scope.data.selectedShip = $scope.$storage.savedSelectedShip;
+      }
+    }  
   }
 
-   $scope.$watch('selectedShip', function (newValue, oldValue, scope) {
-     $scope.$storage.savedSelectedShip = $scope.selectedShip;
-    ngCart.setShipping(($scope.selectedShip.amount * 100));  
+ $scope.$watch('data.selectedShip', function (newValue, oldValue, scope) {
+     console.log("watch triggered!!!")
+     $scope.$storage.savedSelectedShip = $scope.data.selectedShip;
+    ngCart.setShipping(($scope.data.selectedShip.amount * 100));  
   }, false);
-  }
 
   $timeout(function(){
    $scope.loaded = true; 
@@ -437,6 +438,7 @@ var thisItemIndex;
 
 // referencing stuff from local storage (current shipping choice, token, shipping & billing address info)
 $scope.currentShipping = $scope.$storage.savedSelectedShip;
+console.log($scope.currentShipping);
 $scope.token = $scope.$storage.tokenData;
 $scope.shipping = $scope.$storage.shippingAddress;
 $scope.billing = $scope.$storage.billingAddress;

@@ -52,7 +52,7 @@
         <br>
         <span class="credit-card">**** **** **** {{token.card.last4}}</span>
     </div>
-     <div style="margin-top: 15px;" class="store-header-div">
+     <div ng-if="order.willCallName" style="margin-top: 15px;" class="store-header-div">
           <h6 class="text-center">Will Call Name</h6>
       </div>
       <div style="font-size: 1.2em;">
@@ -99,7 +99,7 @@
                         <td></td>
                         <td></td>
                         <td></td>
-                        <td>Shipping ({{thisShip.servicelevel_name}}) :</td>
+                        <td>Shipping ({{currentShipping.servicelevel_name}}) :</td>
                         <td>{{ ngCart.getShipping() | centsToDollars | currency }}</td>
                     </tr>
                     <tr class="main-cart-row">

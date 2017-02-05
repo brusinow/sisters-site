@@ -335,7 +335,6 @@ angular.module('ngCart', ['ngCart.directives'])
         };
 
         item.prototype.setAttr = function(attributes){
-            console.log("attributes are ",attributes);
             if (attributes) this.attr = attributes;
         };
 
@@ -407,12 +406,10 @@ angular.module('ngCart', ['ngCart.directives'])
   
             var filtered = [];
             angular.forEach(items, function(item) {
-                console.log(item);
                 if (item._data.product_type === "shippable") {
                     filtered.push(item);
                 }
             });
-            console.log("filtered: ",filtered);
             if (filtered.length > 0){
                 $scope.shipBool = true;
                 $scope.$emit('setShippable', true);

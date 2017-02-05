@@ -62,6 +62,7 @@ router.post("/newOrder", function(req, res){
       "country": "US",
       "email": "iheartsistersband@gmail.com"
     };
+    console.log("addressFrom: ",addressFrom);
 
     var addressTo = {
       "object_purpose": "PURCHASE",
@@ -72,8 +73,9 @@ router.post("/newOrder", function(req, res){
       'state' : parsedOrder.shipping.address.country,
       'zip' : parsedOrder.shipping.address.postal_code,
       'country' : parsedOrder.shipping.address.country,
-      'email' : parsedOrder.shipping.email
+      'email' : parsedOrder.billing.email
     }
+    console.log("addressTo: ",addressTo);
 
     var parcel = {
       "length": "5",

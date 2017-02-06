@@ -52,7 +52,9 @@ angular.module('SistersCtrls')
 
 .controller('StoreShowCtrl', function($scope, $stateParams, $state, $http, $timeout, $location, $sessionStorage, oneProduct){
   var main = document.getElementById("main");
-  main.style.backgroundColor = '';
+  main.style.backgroundColor = 'rgba(252, 244, 247, 0)';
+  main.style.width = '';
+  main.style.padding = '';
   $scope.$emit('loadMainContainer', 'loaded');
   if (oneProduct.description){
     $scope.product = oneProduct;
@@ -63,7 +65,6 @@ angular.module('SistersCtrls')
 
     $scope.data = {};
     $scope.data.selected = $scope.product.skus[0];
-    console.log($scope.data.selected);
 
 
     var mainImg = document.querySelector(".main-product-photo img");
@@ -204,10 +205,6 @@ $scope.submitForm = function(form){
       
     $scope.loaded = [];
     setMailingList();
-    var taxObj = {
-      amount: ngCart.getTax(),
-      description: "tax: ("+ ngCart.getTaxRate() + "%)",
-    }
     var ship = $scope.data.shipping;
     var bill = $scope.data.billing; 
     $scope.$storage.billingAddress = $scope.data.billing;
@@ -224,7 +221,6 @@ $scope.submitForm = function(form){
             currency: 'usd',
             items: $scope.cartItems,
             totalItemsPrice: ngCart.getSubTotal(),
-            tax: taxObj,
             billing : {
               name: bill.name,
               email: bill.email,
@@ -262,7 +258,7 @@ $scope.submitForm = function(form){
         req.params.shippable = false;
       }
 
-      var orderNumber = Math.floor(100000 + Math.random() * 1000000000);      
+      var orderNumber = Math.floor(100000 + Math.random() * 1000000000);   
       $http(req).then(function success(res) {
         console.log(res);
           $scope.$storage.shippingData = res.data.shipment;
@@ -399,6 +395,10 @@ $scope.submitForm = function(form){
         if (token) {
           $timeout(function () {
             $scope.$storage.tokenData = token;
+            $scope.$storage.orderData.tax = {
+            amount: ngCart.getTax(),
+            description: "tax: ("+ ngCart.getTaxRate() + "%)",
+            };
             $scope.$storage.pathCount = 3;
             $scope.$emit('pathCountChange', $scope.$storage.pathCount);
             $location.url('/store/checkout/confirm');
@@ -465,9 +465,15 @@ var updateTicketCount = function (cartItems, itemIndex) {
 }
 
 var orderStatusDone = function(orderNumber, resData) {
+   var taxObj = {
+      amount: ngCart.getTax(),
+      description: "tax: ("+ ngCart.getTaxRate() + "%)",
+    }
   firebase.database().ref('orders/order_' + orderNumber + '/status').set("complete");
-  firebase.database().ref('orders/order_' + orderNumber + '/totalItemsPrice').set(resData.amount);
-  firebase.database().ref('orders/order_' + orderNumber + '/stripeChargeId').set(resData.id);
+  firebase.database().ref('orders/order_' + orderNumber + '/totalItemsPrice').set(resData.charge.amount);
+  firebase.database().ref('orders/order_' + orderNumber + '/stripeData').set(resData.charge);
+  firebase.database().ref('orders/order_' + orderNumber + '/tax').set(taxObj);
+  firebase.database().ref('orders/order_' + orderNumber + '/shipping/shippoData').set(resData.transaction);
 }
 
 
@@ -500,6 +506,7 @@ $scope.createCharge = function () {
         }
       }
     }
+    console.log("res.data!!!!!!",res.data);
     orderStatusDone($scope.$storage.orderData.orderNumber, res.data);
     if ($scope.$storage.mailingList === true) {
       mailchimpSubmit($scope.$storage.billingAddress.email);

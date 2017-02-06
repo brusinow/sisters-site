@@ -541,7 +541,7 @@ select {
 }
 
 .disabled-inputs input, .disabled-inputs textarea, .disabled-inputs select {
-  background-color : rgb(247, 220, 241);
+  background-color : #f9edf1;
 }
 
 .checkbox input {
@@ -2155,6 +2155,13 @@ display: none;
   background-color: rgba(255, 255, 255, .9);
   padding: 20px;
   margin: 20px auto 20px auto;
+}
+
+#store-product-container {
+  width: 100%;
+  background-color: rgba(255, 255, 255, .9);
+  padding: 40px;
+  margin: 20px auto 50px auto;
 }
 
 #admin-container {

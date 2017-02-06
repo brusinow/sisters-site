@@ -39,14 +39,15 @@ angular.module('ngCart', ['ngCart.directives'])
         };
 
         this.addItem = function (id, sku, name, price, quantity, data, attr) {
-            var inCart = this.getItemById(id);
+            var inCart = this.getItemBySku(sku);
 
             if (typeof inCart === 'object'){
                 //Update quantity of an item if it's already in the cart
                 inCart.setQuantity(quantity, false);
                 $rootScope.$broadcast('ngCart:itemUpdated', inCart);
             } else {
-                var newItem = new ngCartItem(id, sku, name, price, quantity, data, attr);
+                var newItem = new ngCartItem(id, sku, name, price, quantity, data);
+                console.log("what is new item? ",newItem);
                 this.$cart.items.push(newItem);
                 $rootScope.$broadcast('ngCart:itemAdded', newItem);
             }
@@ -55,10 +56,11 @@ angular.module('ngCart', ['ngCart.directives'])
         };
 
         this.addItemBtn = function (id, sku, name, price, quantity, data) {
+            console.log(id, sku, name, price, quantity, data);
             var skus = data.skus;
           
             if (skus.length === 1){
-            var inCart = this.getItemById(id);
+            var inCart = this.getItemBySku(sku);
 
             if (typeof inCart === 'object'){
                 //Update quantity of an item if it's already in the cart
@@ -72,13 +74,13 @@ angular.module('ngCart', ['ngCart.directives'])
 
             $rootScope.$broadcast('ngCart:change', {});
             } else {
-                $location.url('/store/'+ data.id);
+                $location.url('/store/'+ id);
             }
         };
 
 
-        this.changeQuantity = function (id, quantity){
-            var inCart = this.getItemById(id);
+        this.changeQuantity = function (sku, quantity){
+            var inCart = this.getItemBySku(sku);
             if (typeof inCart === 'object'){
             inCart.setQuantity(quantity, true);
             $rootScope.$broadcast('ngCart:itemUpdated', inCart);
@@ -95,6 +97,18 @@ angular.module('ngCart', ['ngCart.directives'])
 
             angular.forEach(items, function (item) {
                 if  (item.getId() === itemId) {
+                    build = item;
+                }
+            });
+            return build;
+        };
+
+         this.getItemBySku = function (itemSku) {
+            var items = this.getCart().items;
+            var build = false;
+
+            angular.forEach(items, function (item) {
+                if  (item.getSku() === itemSku) {
                     build = item;
                 }
             });
@@ -157,11 +171,13 @@ angular.module('ngCart', ['ngCart.directives'])
             angular.forEach(this.getCart().items, function (item) {
                 total += item.getTotal();
             });
-            return +parseFloat(total).toFixed(2);
+            var shipping = this.getShipping() || 0;
+                total += shipping;
+            return parseFloat(total).toFixed(2);
         };
 
         this.totalCost = function () {
-            return +parseFloat(this.getSubTotal() + this.getShipping() + this.getTax()).toFixed(2);
+            return +parseInt(this.getSubTotal() + this.getShipping() + this.getTax());
         };
 
         this.removeItem = function (index) {
@@ -241,13 +257,23 @@ angular.module('ngCart', ['ngCart.directives'])
     .factory('ngCartItem', ['$rootScope', '$log', function ($rootScope, $log) {
 
         var item = function (id, sku, name, price, quantity, data, attr) {
+            console.log("what is data? ",data);
+            var myData = {
+                "product_type": data.product_type,    
+            };
+            if (myData.product_type === 'ticket'){
+                myData.unix = data.unix;
+            } else if (myData.product_type === 'shippable'){
+                myData.ship_details = data.ship_details;
+            }
+            
             this.setId(id);
             this.setSku(sku);
             this.setName(name);
             this.setPrice(price);
             this.setQuantity(quantity);
-            this.setData(data);
-            this.setAttr(attr);
+            this.setData(myData);
+            this.setAttr(attr || data.attr);
         };
 
 
@@ -471,11 +497,11 @@ angular.module('ngCart.directives', ['ngCart.fulfilment'])
             link:function(scope, element, attrs){
                 scope.attrs = attrs;
                 scope.inCart = function(){
-                    return  ngCart.getItemById(attrs.id);
+                    return  ngCart.getItemBySku(attrs.sku);
                 };
 
                 if (scope.inCart()){
-                    scope.q = ngCart.getItemById(attrs.id).getQuantity();
+                    scope.q = ngCart.getItemBySku(attrs.sku).getQuantity();
                 } else {
                     scope.q = parseInt(scope.quantity);
                 }
@@ -514,11 +540,11 @@ angular.module('ngCart.directives', ['ngCart.fulfilment'])
             link:function(scope, element, attrs){
                 scope.attrs = attrs;
                 scope.inCart = function(){
-                    return  ngCart.getItemById(attrs.id);
+                    return  ngCart.getItemBySku(attrs.sku);
                 };
 
                 if (scope.inCart()){
-                    scope.q = ngCart.getItemById(attrs.id).getQuantity();
+                    scope.q = ngCart.getItemBySku(attrs.sku).getQuantity();
                 } else {
                     scope.q = parseInt(scope.quantity);
                 }
@@ -573,11 +599,11 @@ angular.module('ngCart.directives', ['ngCart.fulfilment'])
             link:function(scope, element, attrs){
                 scope.attrs = attrs;
                 scope.inCart = function(){
-                    return  ngCart.getItemById(attrs.id);
+                    return  ngCart.getItemBySku(attrs.sku);
                 };
 
                 if (scope.inCart()){
-                    scope.q = ngCart.getItemById(attrs.id).getQuantity();
+                    scope.q = ngCart.getItemBySku(attrs.sku).getQuantity();
                 } else {
                     scope.q = parseInt(scope.quantity);
                 }

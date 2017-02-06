@@ -1,27 +1,29 @@
-<div style="margin-left: 5px; margin-bottom: 15px;">
-    <a class="store-back-link" href="/store"><i class="fa fa-long-arrow-left" aria-hidden="true"></i> Back to Store</a>
-</div>
-<div class="row">
-    <div class="seven columns">
-
-
-        <div ng-if="images.length > 1" class="product-thumb-container">
-        <div id="attr-select" ng-click="changeActive()" ng-repeat="img in images" class="product-thumb-div"><img ng-class="{'activeThumb': isActiveImg()}" ng-src="{{img}}"/></div>
-        </div>
-        <div class="main-product-img-wrap">
-            <div class="main-product-photo"><img /></div>
-        </div>
+<div id="store-product-container">
+    <div style="margin-left: 5px; margin-bottom: 15px;">
+        <a class="store-back-link" href="/store"><i class="fa fa-long-arrow-left" aria-hidden="true"></i> Back to Store</a>
     </div>
-    <div class="five columns">
-        <h3 class="single-product-name text-center">{{product.title}}</h3>
-        <p style="padding: 0 5%">{{product.description}}</p>
-        <div class="text-center" ng-if="product.skus.length > 1" id="sku-radio-div">
-            <div>
-                <!--<label style="display: inline" for="attr-select">Size:</label>-->
-                <select id="attr-select" ng-options="sku as sku.attr for sku in skus track by sku.id"  ng-change="whatSelected()" ng-model="data.selected"></select>
+    <div class="row">
+        <div class="seven columns">
+
+
+            <div ng-if="images.length > 1" class="product-thumb-container">
+            <div id="attr-select" ng-click="changeActive()" ng-repeat="img in images" class="product-thumb-div"><img ng-class="{'activeThumb': isActiveImg()}" ng-src="{{img}}"/></div>
+            </div>
+            <div class="main-product-img-wrap">
+                <div class="main-product-photo"><img /></div>
             </div>
         </div>
-        <h5 class="text-center">{{ data.selected.price | centsToDollars | currency}}</h5>
-        <ngcart-addtocart-product class="text-center" id="{{ data.selected.parent_id }}" sku="{{data.selected.id}}" name="{{ product.title }}" price="{{ data.selected.price }}" attr="{{data.selected.attr}}" quantity="1" quantity-max="30" data="data.selected">Add to Cart</ngcart-addtocart-product>
+        <div class="five columns">
+            <h3 class="single-product-name text-center">{{product.title}}</h3>
+            <p style="padding: 0 5%">{{product.description}}</p>
+            <div class="text-center" ng-if="product.skus.length > 1" id="sku-radio-div">
+                <div>
+                    <!--<label style="display: inline" for="attr-select">Size:</label>-->
+                    <select id="attr-select" ng-options="sku as sku.attr for sku in skus track by sku.id"  ng-change="whatSelected()" ng-model="data.selected"></select>
+                </div>
+            </div>
+            <h5 class="text-center">{{ data.selected.price | centsToDollars | currency}}</h5>
+            <ngcart-addtocart-product class="text-center" id="{{ data.selected.parent_id }}" sku="{{data.selected.id}}" name="{{ product.title }}" price="{{ data.selected.price }}" attr="{{data.selected.attr}}" quantity="1" quantity-max="30" data="data.selected">Add to Cart</ngcart-addtocart-product>
+        </div>
     </div>
 </div>

@@ -88,6 +88,13 @@
                     </tr>
                 </tbody>
                 <tfoot>
+                      <tr ng-if="shipBool" class="main-cart-row">
+                        <td></td>
+                        <td></td>
+                        <td></td>
+                        <td>Shipping ({{currentShipping.servicelevel_name}}) :</td>
+                        <td>{{ ngCart.getShipping() | centsToDollars | currency }}</td>
+                    </tr>
                     <tr class="main-cart-row">
                         <td></td>
                         <td></td>
@@ -95,13 +102,7 @@
                         <td>Tax ({{ ngCart.getTaxRate() }}%):</td>
                         <td>{{ ngCart.getTax() | centsToDollars | currency }}</td>
                     </tr>
-                    <tr ng-if="shipBool" class="main-cart-row">
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td>Shipping ({{currentShipping.servicelevel_name}}) :</td>
-                        <td>{{ ngCart.getShipping() | centsToDollars | currency }}</td>
-                    </tr>
+                  
                     <tr class="main-cart-row">
                         <td></td>
                         <td></td>

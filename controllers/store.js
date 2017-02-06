@@ -51,17 +51,18 @@ router.post("/newOrder", function(req, res){
 
   
   if (req.query.shippable){
-    
-    var addressFrom = {
-      "object_purpose": "PURCHASE",
-      "name": "SISTERS",
-      "street1": "7510 24th Ave NW",
-      "city": "Seattle",
-      "state": "WA",
-      "zip": "98117",
-      "country": "US",
-      "email": "iheartsistersband@gmail.com"
-    };
+
+    var addressFrom  = {
+    "object_purpose": "PURCHASE",
+    "name": "SISTERS",
+    "street1": "7510 24th Ave NW",
+    "city": "Seattle",
+    "state": "WA",
+    "zip": "98117",
+    "country": "US",
+    "phone": "555 341 9393",
+    "email": "iheartsistersband@gmail.com"
+};
     console.log("addressFrom: ",addressFrom);
 
     var addressTo = {
@@ -70,7 +71,7 @@ router.post("/newOrder", function(req, res){
       'street1' : parsedOrder.shipping.address.line1,
       'street2' : parsedOrder.shipping.address.line2,
       'city' : parsedOrder.shipping.address.city,
-      'state' : parsedOrder.shipping.address.country,
+      'state' : parsedOrder.shipping.address.state,
       'zip' : parsedOrder.shipping.address.postal_code,
       'country' : parsedOrder.shipping.address.country,
       'email' : parsedOrder.billing.email
@@ -125,13 +126,9 @@ router.post("/newOrder", function(req, res){
 
 router.post("/orderComplete", function(req, res){
   var data = req.query;
-  console.log("what is order? ",data.order);
   var myOrder = JSON.parse(data.order);
   var myTax = JSON.parse(data.tax);
-  console.log("what is willcall name? ",myOrder.willCallName);
-  console.log("what is order number? ",myOrder.orderNumber);
   var cart = JSON.parse(data.cart);
-  console.log(cart);
   // Initiate Stripe Charge Creation
   stripe.charges.create({
   amount: data.totalAmount,
@@ -146,9 +143,6 @@ router.post("/orderComplete", function(req, res){
     }
     if (charge){
       // Stripe charge was created successfully
-    console.log(charge);
-    res.send(charge); 
-
       var order = {
         email: myOrder.billing.email,
         subject: 'Thank you for your order! Order #' + myOrder.orderNumber,
@@ -158,8 +152,42 @@ router.post("/orderComplete", function(req, res){
         orderData: myOrder,
         charge: charge
       }
+// Purchase the desired rate.
+    if (data.shipChoice){
+      var shippoInfo = JSON.parse(data.shipChoice)
+      console.log("OBJECT ID????? ",shippoInfo.object_id);
+      shippo.transaction.create({
+      "rate": shippoInfo.object_id,
+      "servicelevel_token": shippoInfo.servicelevel_token,
+      "label_file_type": "PDF",
+      "async": false
+        }, function(err, transaction) {
+        if (transaction){
+          order.shipping = shippoInfo;
+          order.shipping.res = transaction;
+          var response = {
+            "charge": charge,
+            "transaction": transaction
+          }
+          res.status(200).send(response);
+          generateEmailReceipt(order);
+        }
 
+        if (err){
+          res.status(500).send(err);
+        }
+      });
+    } else {
+      var response = {
+            "charge": charge
+          }
+      res.status(200).send(response);
       generateEmailReceipt(order);
+    }
+
+      
+
+      
 
 
 
@@ -189,7 +217,6 @@ var generateEmailReceipt = function(order){
     if (err) {
       return console.error(err)
     }
-    console.log(responseStatus.message)
   })
 })
 }

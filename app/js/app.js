@@ -7,6 +7,7 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
 
 .run(["$rootScope", "$state","$location","$window",'MetaTags','Analytics', function($rootScope, $state, $location, $window,MetaTags,Analytics) {
   $rootScope.MetaTags = MetaTags;
+  moment.tz.add('America/Los_Angeles|PST PDT|80 70|0101|1Lzm0 1zb0 Op0');
   $rootScope.$on("$stateChangeError", function(event, toState, toParams, fromState, fromParams, error) {
     // We can catch the error thrown when the $requireSignIn promise is rejected
     // and redirect the user back to the home page
@@ -492,6 +493,8 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
 
 }])
 
+
+
 .filter('cut', function () {
   return function (value, enable, wordwise, max, tail) {
     var source = angular.element('<div/>').html(value);
@@ -510,13 +513,13 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
 
 .filter('MomentFilter', ['moment', function(moment){
   return function(val){
-    return  moment(val).format('dddd, MMMM Do, YYYY');
+    return  moment(val).tz("America/Los_Angeles").format('dddd, MMMM Do, YYYY');
   }
 }])
 
 .filter('tooOld', function() {
   return function(events) {
-    var currentDay = moment().unix()
+    var currentDay = moment().tz("America/Los_Angeles").unix()
     var filtered = [];
     angular.forEach(events, function(event) {
       var thisEvent = event.unixDate/1000;
@@ -530,19 +533,19 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
 
 .filter('DeliveryEstDate', ['moment', function(moment){
   return function(val){
-    return  moment(val).format('dddd, MMMM Do');
+    return  moment(val).tz("America/Los_Angeles").format('dddd, MMMM Do');
   }
 }])
 
 .filter('TimeDate', ['moment', function(moment){
   return function(val){
-    return  moment(val).format('MMMM Do YYYY, h:mm:ss a');
+    return  moment(val).tz("America/Los_Angeles").format('MMMM Do YYYY, h:mm:ss a');
   }
 }])
 
 .filter('slashDate', ['moment', function(moment){
   return function(val){
-    return  moment(val * 1000).format('MM/DD/YYYY');
+    return  moment(val * 1000).tz("America/Los_Angeles").format('MM/DD/YYYY');
   }
 }])
 
@@ -551,7 +554,7 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
     var date = new Date(val);
     console.log(date);
     console.log(typeof date);
-    return moment(date).fromNow();
+    return moment(date).tz("America/Los_Angeles").fromNow();
   }
 }])
 

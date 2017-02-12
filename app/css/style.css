@@ -7,11 +7,11 @@
 
 @font-face {
     font-family: creditCard;
-    src: url('/fonts/kredit-front.ttf');
+    src: url('/fonts/kredit.ttf');
 }
 
 @font-face {
-    font-family: creditCardBold;
+    font-family: creditCardBack;
     src: url('/fonts/kredit-back.ttf');
 }
 
@@ -312,8 +312,9 @@ select {
 /********************/
 
 #admin-table {
-  margin: 0 auto;
+  width: 100%;
   text-align: center;
+  font-size: 12px;
 }
 
 #admin-table td, #admin-table th {
@@ -685,7 +686,7 @@ form .show {
 }
 
 .credit-card {
-  font-family: creditCardBold;
+  font-family: creditCard;
   font-size: 1.2em;
 }
 
@@ -829,7 +830,7 @@ form .show {
 }
 
 .payment-input input, .payment-input select, .payment-input textarea {
-    font-family: creditCard;
+    font-family: creditCardBack;
     height: 36px;
     text-align: center;
     padding: 6px 10px;
@@ -840,6 +841,10 @@ form .show {
     box-sizing: border-box;
     margin-bottom: .5rem;
     font-size: 1.5em;
+}
+
+input #cvc-input {
+  font-family: creditCardBack;
 }
 
 #willcall-input {

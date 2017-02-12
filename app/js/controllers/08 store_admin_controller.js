@@ -21,6 +21,7 @@ angular.module('SistersCtrls')
   $scope.completeOrders = ReturnCompleteOrders(Orders);
   $scope.pendingOrders = ReturnPendingOrders(Orders);
   $scope.orders = $scope.completeOrders;
+
   var main = document.getElementById("main");
   main.style.backgroundColor = 'rgba(255,255,255,0)';
   main.style.width = '';

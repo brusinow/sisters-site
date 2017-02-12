@@ -96,7 +96,7 @@
       <span style="top: 10px;" class="input-validate-text" ng-class='{"show": form["card-exp"].$error.required && form.$submitted}'>*Required</span>
     </div>
     <div class="six columns input-container">
-       <input name="card-cvc" class="exp-cvc-line u-full-width" type="text" ng-model="cvc" placeholder="cvc" payments-validate="cvc"
+       <input id="cvc-input" name="card-cvc" class="exp-cvc-line u-full-width" type="text" ng-model="cvc" placeholder="cvc" payments-validate="cvc"
         payments-type-model="type" payments-format="cvc" required/>
         <span style="top: 10px;" class="input-validate-text" ng-class='{"show": form["card-cvc"].$error.required && form.$submitted}'>*Required</span>
     </div>

@@ -46,10 +46,6 @@ $scope.$on('loadMainContainer', function (event, data) {
       $scope.user = {};
         if(isNav){
         $scope.mailConfirm = true;
-          // $timeout(function(){
-          //   $scope.mailConfirm = false;
-          //   console.log("mail confirm reset");
-          // },7000);
         }
     }, function error(res){
       console.log(res);

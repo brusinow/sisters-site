@@ -12,7 +12,7 @@ angular.module('SistersCtrls')
 
 
   $scope.ok = function () {
-    $scope.show.date = moment($scope.dateObj).format('ddd, MMMM Do YYYY');
+    $scope.show.date = moment($scope.dateObj).format('ddd, MMMM Do');
     $scope.show.unix = $scope.dateObj.getTime() / 1000;
     $scope.shows.$save($scope.show).then(function(ref) {
       console.log("success");

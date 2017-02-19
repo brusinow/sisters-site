@@ -14,7 +14,8 @@ angular.module('SistersServices')
   var currentDay = moment().unix();
   var calcDay = currentDay - 86400;
   return function(){
-    var ticketsRef = firebase.database().ref('tickets').orderByChild("unix").startAt(calcDay);
+    // var ticketsRef = firebase.database().ref('tickets').orderByChild("unix").startAt(calcDay);
+    var ticketsRef = firebase.database().ref('tickets').orderByChild("unix");
     return $firebaseArray(ticketsRef);
   }
 }])

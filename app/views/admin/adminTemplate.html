@@ -1,0 +1,41 @@
+
+  <!--<div class="row">
+    <div class="four columns offset-by-two">
+      <a href="/admin/orders" class="circle" ng-class="{display: hover1}" ng-mouseenter="hover1 = true" ng-mouseleave="hover1 = false">
+        <div class="circle__inner">
+          <div class="circle__wrapper">
+            <div class="circle__content">
+            <span class="admin-main-links">ORDERS</span>
+            </div>
+          </div>
+        </div>
+      </a>
+    </div>
+    <div class="four columns">
+    <a href="/admin/tickets" class="circle" ng-class="{display: hover2}" ng-mouseenter="hover2 = true" ng-mouseleave="hover2 = false">
+      <div class="circle__inner">
+        <div class="circle__wrapper">
+          <div class="circle__content">
+           <span class="admin-main-links">TICKETS</span>
+          </div>
+        </div>
+      </div>
+    </a>
+    </div>
+  </div>-->
+
+
+<div id="admin-container">
+  <div class="row admin-row">
+    <div class="two columns nav-column">
+      <div class="admin-sidebar" ng-class="{'fade-in': loaded}" ng-include="'/views/admin/adminSideNav.html'" ng-controller="AdminSidebarCtrl"></div>
+    </div>
+    <div class="ten columns">
+      <div class="admin-body">
+        <ui-view></ui-view>
+      </div>
+    </div>
+  </div>
+
+
+</div>

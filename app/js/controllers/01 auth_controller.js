@@ -11,7 +11,7 @@ angular.module('SistersCtrls')
   Auth.$onAuthStateChanged(function(firebaseUser) {
     if (firebaseUser) {
       $scope.logged = true;
-      $state.go('home');
+      $state.go('admin.main');
 
     } else {
       console.log("Not logged in.");

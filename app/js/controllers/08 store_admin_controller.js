@@ -7,7 +7,6 @@ angular.module('SistersCtrls')
   main.style.width = '';
   main.style.padding = '0';
   $scope.$emit('loadMainContainer', 'loaded');
-
   $scope.auth = Auth;
     $scope.auth.$onAuthStateChanged(function(firebaseUser) {
     $scope.firebaseUser = firebaseUser;
@@ -16,16 +15,33 @@ angular.module('SistersCtrls')
 
 })
 
+.controller('AdminSidebarCtrl', function($scope, $state, $http, $timeout, $location, $sessionStorage, $window, Auth){
+$scope.$emit('loadMainContainer', 'loaded');
+
+console.log("state: ",$state);
+$scope.activePill = $state.current.activetab;
+
+$scope.goToPage = function(url){
+  $location.url(url);
+}
+
+
+  $scope.model = {
+    name: 'Tabs'
+  };
+
+})
+
 .controller('AdminOrdersCtrl', function($scope, $state, $http, $timeout, $location, $sessionStorage, Auth, Orders, ReturnCompleteOrders, ReturnPendingOrders){
   console.log(Orders);
   $scope.completeOrders = ReturnCompleteOrders(Orders);
   $scope.pendingOrders = ReturnPendingOrders(Orders);
   $scope.orders = $scope.completeOrders;
+  
 
   var main = document.getElementById("main");
   main.style.backgroundColor = 'rgba(255,255,255,0)';
   main.style.width = '';
-  main.style.padding = '0';
   $scope.$emit('loadMainContainer', 'loaded');
 
   $scope.auth = Auth;
@@ -36,6 +52,8 @@ angular.module('SistersCtrls')
 
 
 })
+
+
 
 
 .controller('AdminTicketsCtrl', function($scope, $state, $http, $timeout, $location, $sessionStorage, Auth, Tickets){

@@ -173,7 +173,7 @@ angular.module('ngCart', ['ngCart.directives'])
             });
             var shipping = this.getShipping() || 0;
                 total += shipping;
-            return parseFloat(total).toFixed(2);
+            return parseFloat(total);
         };
 
         this.totalCost = function () {

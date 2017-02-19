@@ -85,14 +85,25 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
     controller: 'HomeCtrl'
   })
   .state('admin', {
-    url: '/admin',
-    templateUrl: '/views/admin/adminMain.html',
+    templateUrl: '/views/admin/adminTemplate.html',
     controller: 'AdminMainCtrl',
     resolve: {
       "currentAuth": authRequire
     }
   })
-  .state('admin-orders', {
+  .state('admin.main', {
+    url: '/admin',
+    templateUrl: '/views/admin/adminMain.html',
+    controller: 'AdminMainCtrl',
+    resolve: {
+      "currentAuth": authRequire,
+      "Orders": function(GetAllOrders){
+        return GetAllOrders().$loaded();
+      }    
+    },
+    activetab: 0
+  })
+  .state('admin.orders', {
     url: '/admin/orders',
     templateUrl: '/views/admin/adminOrders.html',
     controller: 'AdminOrdersCtrl',
@@ -101,9 +112,10 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
       "Orders": function(GetAllOrders){
         return GetAllOrders().$loaded();
       }    
-    }
+    },
+    activetab: 1
   })
-   .state('admin-tickets', {
+   .state('admin.tickets', {
     url: '/admin/tickets',
     templateUrl: '/views/admin/adminTickets.html',
     controller: 'AdminTicketsCtrl',
@@ -112,10 +124,11 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
       "Tickets": function(GetAllTickets){
         return GetAllTickets().$loaded();
       }    
-    }
+    },
+    activetab: 2
   })
 
-   .state('admin-ticket-each', {
+   .state('admin.ticketEach', {
     url: '/admin/tickets/:id',
     templateUrl: '/views/admin/adminTicketEach.html',
     controller: 'AdminTicketsEachCtrl',

@@ -122,7 +122,6 @@ $scope.changeActive = function(){
 .controller('StoreAddressCtrl', function($scope, $state, $window, $timeout, $http, $location, $localStorage, ngCart, $rootScope, CurrentOrderService, moment){
   var main = document.getElementById("main");
   main.style.backgroundColor = 'rgba(247, 237, 245, 0)';
-
   $scope.$emit('loadMainContainer', 'loaded');
   $scope.$storage = $localStorage;
   $scope.cartItems = ngCart.getItems();
@@ -147,6 +146,9 @@ $scope.changeActive = function(){
       "country": {}
     }
   };
+
+
+  function createOrderNumber(data){}
 
   if ($scope.$storage.billingAddress){
     $scope.data.billing = $scope.$storage.billingAddress;
@@ -258,13 +260,10 @@ $scope.submitForm = function(form){
         req.params.shippable = false;
       }
 
-      var orderNumber = Math.floor(100000 + Math.random() * 1000000000);   
       $http(req).then(function success(res) {
         console.log(res);
           $scope.$storage.shippingData = res.data.shipment;
           $scope.$storage.orderData = res.data.order;
-          $scope.$storage.orderData.orderNumber = orderNumber;
-          firebase.database().ref('orders/order_' + orderNumber).set(res.data.order);
           $scope.$storage.pathCount = 2;
           $location.url('/store/checkout/payment');
         }, function error(res) {

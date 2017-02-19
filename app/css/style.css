@@ -49,6 +49,76 @@ h4 {
     line-height: 1.2;
 }
 
+
+.nav-pills {
+  background-color: #f7adc2;
+  height: 100%;
+}
+
+.nav-pills>li+li {
+    /* margin-top: 2px; */
+    margin-left: 0;
+}
+
+.nav-pills>li {
+  margin-bottom: 0;
+}
+
+.nav-pills>li.active>a, .nav-pills>li.active>a:focus, .nav-pills>li.active>a:hover {
+    color: #fff;
+    background-color: #f7799e;
+}
+
+.nav-pills>li>a {
+  color: white;
+  font-size: 16px;
+  border-radius: 0px;
+}
+
+.nav>li>a:focus, .nav>li>a:hover {
+    text-decoration: none;
+    background-color: #f9d9e2;
+}
+
+.admin-body {
+  padding: 10px;
+}
+
+.admin-row {
+  overflow: hidden;
+}
+
+.nav-column {
+  padding-bottom: 100%;
+  margin-bottom: -100%;
+  background-color: #f7adc2;
+}
+
+.pagination>.active>a, .pagination>.active>a:focus, .pagination>.active>a:hover, .pagination>.active>span, .pagination>.active>span:focus, .pagination>.active>span:hover {
+    z-index: 3;
+    color: #fff;
+    cursor: default;
+    background-color: #f7799e;
+    border-color: #f7799e;
+}
+
+.pagination>li>a, .pagination>li>span {
+    position: relative;
+    float: left;
+    padding: 6px 12px;
+    margin-left: -1px;
+    line-height: 1.42857143;
+    color: #222;
+    text-decoration: none;
+    background-color: #fff;
+    border: 1px solid #ddd;
+}
+
+.pagination>li>a:focus, .pagination>li>a:hover, .pagination>li>span:focus, .pagination>li>span:hover {
+    color: #f7799e;
+}
+
+
 .master-header {
   display: inline-block;
   margin: 20px;
@@ -314,7 +384,7 @@ select {
 #admin-table {
   width: 100%;
   text-align: center;
-  font-size: 12px;
+  font-size: 11px;
 }
 
 #admin-table td, #admin-table th {
@@ -2170,11 +2240,11 @@ display: none;
 }
 
 #admin-container {
-  width: 100%;
-  background-color: rgba(255, 255, 255, 1);
-  padding: 20px;
-  margin: 20px auto 300px auto;
-
+    position: relative;
+    width: 100%;
+     background-color: rgba(255, 255, 255, 1); 
+    padding: 0px;
+     margin: 0px auto 174px auto; 
 }
 
 #admin-container h3 {

@@ -8,21 +8,30 @@ var EmailTemplate = require('email-templates').EmailTemplate
 var nodemailer = require('nodemailer')
 var wellknown = require('nodemailer-wellknown')
 var async = require('async')
+var session = require('express-session')
 
 var templatesDir = path.resolve(__dirname, '../app/templates')
 var template = new EmailTemplate(path.join(templatesDir, 'receipt'))
 
 
-// var serviceAccount = require("../sisters-site-creds.json");
+var serviceAccount = require("../sisters-site-test-creds.json");
 
-// admin.initializeApp({
-//   credential: admin.credential.cert(serviceAccount),
-//   databaseURL: "https://sisters-site.firebaseio.com"
-// });
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  databaseURL: "https://sisters-site-test.firebaseio.com"
+});
+
+var db = admin.database();
+var lastOrderNumber;
+
+db.ref('orders').limitToLast(1).on("child_added", function(snapshot) {
+  lastOrderNumber = snapshot.key;
+  console.log("last order number? ",lastOrderNumber);
+});
+
 
 // var xoauth2 = require('xoauth2');
 var router = express.Router();
-
 
 
 
@@ -36,22 +45,17 @@ var transport = nodemailer.createTransport({
 
 
 
-
+// Generating the new order
 
 router.post("/newOrder", function(req, res){
   var thisOrder = req.query.order;
-  console.log("THIS ORDER!!!!!!! ",thisOrder);
   var parsedOrder = JSON.parse(thisOrder);
-
-  var orderNumber = Math.random().toString(36).substr(2, 9);
-  console.log("order number: ",orderNumber);
-  console.log("req.query.shippable is ",req.query.shippable);
-  
-
+  var orderNumber = parseInt(lastOrderNumber) + 1;
+  parsedOrder.orderNumber = orderNumber;
+  db.ref('orders/' + orderNumber).set(parsedOrder);
 
   
   if (req.query.shippable){
-
     var addressFrom  = {
     "object_purpose": "PURCHASE",
     "name": "SISTERS",
@@ -108,7 +112,7 @@ router.post("/newOrder", function(req, res){
     });
 
   } else {
-    console.log("sending wrong status")
+
     res.send({order: parsedOrder});
   }
   
@@ -196,7 +200,7 @@ router.post("/orderComplete", function(req, res){
 });
 
 
-var generateEmailReceipt = function(order){
+function generateEmailReceipt(order){
     template.render(order, function (err, results) {
   if (err) {
     return console.error(err)
@@ -219,6 +223,21 @@ var generateEmailReceipt = function(order){
     }
   })
 })
+}
+
+
+
+function createOrderNumber(){
+  var number = Math.floor(100000 + Math.random() * 1000000000); 
+  var ref = db.ref('orders/order_' + number)
+  ref.once("value", function(snap) {
+  var thisVal = snap.val();
+  if (thisVal.orderNumber){
+    createOrderNumber();
+  } else {
+    return number;
+  }
+  });
 }
 
 

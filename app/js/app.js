@@ -383,8 +383,9 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
       "GetShow": function(GetSingleShow, $stateParams){
         return GetSingleShow($stateParams.showId).$loaded();
       },
-      "GetTicket": function(GetTicket, $stateParams){
-        return GetTicket($stateParams.showId).$loaded();
+       "GetTicket": function(ticketFactory, $stateParams){
+         console.log("state params! ",$stateParams);
+        return ticketFactory.getTicket($stateParams.showId);
       }
     }
   })
@@ -476,8 +477,11 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
     controller: 'StorePaymentCtrl',
     resolve: {
       "currentAuth": authWait,
-      "currentOrder": function(CurrentOrderService){
-        return CurrentOrderService.get();
+      "currentOrder": function($http){
+        return $http({method: 'GET', url: '/storeAPI/order'})
+      },
+      "shipment": function($http){
+        return $http({method: 'GET', url: '/storeAPI/shipment'})
       }
     }
   })
@@ -558,6 +562,7 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
 
 .filter('slashDate', ['moment', function(moment){
   return function(val){
+    console.log("val is: ",val);
     return  moment(val * 1000).tz("America/Los_Angeles").format('MM/DD/YYYY');
   }
 }])

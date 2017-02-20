@@ -28,13 +28,13 @@ angular.module('SistersServices')
   }
 }])
 
-.factory("GetTicket", ["$firebaseObject", 
-  function($firebaseObject){
-    return function(key){
-    var ticketRef = firebase.database().ref('tickets/'+key);
-    return $firebaseObject(ticketRef);
-  }
-}])
+// .factory("GetTicket", ["$firebaseObject", 
+//   function($firebaseObject){
+//     return function(key){
+//     var ticketRef = firebase.database().ref('tickets/'+key);
+//     return $firebaseObject(ticketRef);
+//   }
+// }])
 
 .factory("WillCallListService", ["$firebaseArray", 
   function($firebaseArray){

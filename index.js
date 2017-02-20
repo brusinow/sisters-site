@@ -1,6 +1,7 @@
 var subdomain = require('express-subdomain');
 var express = require('express');
 var session = require('express-session');
+var RedisStore = require('connect-redis')(session);
 var bodyParser = require('body-parser');
 var path = require('path');
 var request = require('request');
@@ -19,10 +20,11 @@ var shippo = require('shippo')(process.env.SHIPPO_TOKEN);
 var app = express();
 app.set('trust proxy', 1) // trust first proxy
 app.use(session({
+  // store: new RedisStore(),
   secret: 'keyboard cat',
   resave: false,
   saveUninitialized: true,
-  cookie: { secure: true }
+  cookie: { secure: false }
 }))
 
 app.use(bodyParser.json());
@@ -47,7 +49,6 @@ app.use(session({
   saveUninitialized: true,
   cookie: { secure: false },
 }));
-
 
 
 
@@ -196,13 +197,15 @@ app.post("/stripe/taxCallback", function(req, res){
 
 
 
-app.get('/*', function(req, res) {
-  res.sendFile(path.join(__dirname, 'app/index.html'));
-});
+
 
 
 app.use('/store', require('./controllers/store'));
+app.use('/storeAPI', require('./controllers/storeAPI'));
+app.use('/ticketAPI', require('./controllers/ticketAPI'));
 
-
+app.get('/*', function(req, res) {
+  res.sendFile(path.join(__dirname, 'app/index.html'));
+});
 
 app.listen(process.env.PORT || 8080)

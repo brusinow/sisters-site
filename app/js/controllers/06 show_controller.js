@@ -47,19 +47,27 @@ $scope.$emit('loadMainContainer', 'loaded');
   main.style.width = '';
   main.style.padding = '';
   
-  if (GetTicket.description){
+  console.log("get show! ",GetShow);
+  console.log("get ticket! ",GetTicket);
+  // if (GetTicket.description){
     $scope.show = GetShow;
-    $scope.ticket = GetTicket;
+    $scope.ticket = GetTicket.data;
     $scope.showUnix = $scope.ticket.unix * 1000;
     $scope.images = $scope.ticket.images;
     var currentActiveSrc = $scope.images[0];
 
+    if ($scope.ticket.tixAvailableCount){
+      $scope.maxTickets = $scope.ticket.tixAvailableCount
+    } else {
+      $scope.maxTickets = 8;
+    }
+
     var mainImg = document.querySelector(".main-product-photo img");
     mainImg.src = $scope.images[0];
     $scope.$emit('loadMainContainer', 'loaded');
-  } else {
-    $location.url('/store');
-  }
+  // } else {
+  //   $location.url('/store');
+  // }
 
 
 $scope.isActiveImg = function(){

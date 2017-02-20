@@ -119,7 +119,7 @@ $scope.changeActive = function(){
 
 
 
-.controller('StoreAddressCtrl', function($scope, $state, $window, $timeout, $http, $location, $localStorage, ngCart, $rootScope, CurrentOrderService, moment){
+.controller('StoreAddressCtrl', function($scope, $state, $window, $timeout, $http, $location, $localStorage, ngCart, $rootScope, moment){
   var main = document.getElementById("main");
   main.style.backgroundColor = 'rgba(247, 237, 245, 0)';
   $scope.$emit('loadMainContainer', 'loaded');
@@ -211,6 +211,7 @@ $scope.submitForm = function(form){
     var bill = $scope.data.billing; 
     $scope.$storage.billingAddress = $scope.data.billing;
     $scope.$storage.shippingAddress = $scope.data.shipping;
+    $scope.$storage.shipBool = $scope.shipBool;
     var d = new Date();
     
       var req = {
@@ -243,7 +244,7 @@ $scope.submitForm = function(form){
         }
       } 
 
-      if ($scope.shipBool){
+      if ($scope.shipBool === true){
         req.params.shippable = true;
         req.params.order.shipping = {
               name: ship.name,
@@ -262,8 +263,9 @@ $scope.submitForm = function(form){
 
       $http(req).then(function success(res) {
         console.log(res);
-          $scope.$storage.shippingData = res.data.shipment;
-          $scope.$storage.orderData = res.data.order;
+          // $scope.$storage.shippingData = res.data.shipment;
+          // $scope.$storage.orderData = res.data.order;
+          
           $scope.$storage.pathCount = 2;
           $location.url('/store/checkout/payment');
         }, function error(res) {
@@ -288,7 +290,7 @@ $scope.submitForm = function(form){
 
     $scope.getTaxRate = function(country, stateProvince, postalCode){
       console.log(country, stateProvince, postalCode);
-    if (country.code === 'US' && stateProvince.short === 'WA' && postalCode){
+      if (country.code === 'US' && stateProvince.short === 'WA' && postalCode){
         var req = {
           url: '/taxRate',
           method: 'GET',
@@ -320,8 +322,7 @@ $scope.submitForm = function(form){
 
 
 .controller('StorePaymentCtrl', 
-  function($scope, $state, $http, $timeout, $location, $localStorage, 
-  ngCart, $rootScope, currentOrder){
+  function($scope, $state, $http, $timeout, $location, $localStorage, ngCart, $rootScope, currentOrder, shipment){
 
   var main = document.getElementById("main");
   main.style.backgroundColor = 'rgba(247, 237, 245, 0)';
@@ -332,39 +333,52 @@ $scope.submitForm = function(form){
   $scope.data = {};
 
 
+
+
+
   $scope.$on('setShippable', function (event, data) {
+    console.log("ship bool data: ",data);
     $scope.shipBool = data;
   });
 
-  var orderNumber = $scope.$storage.orderData.orderNumber;
-  var items = $scope.$storage.orderData.items;
+  var order = currentOrder.data;
+  console.log("order: ",order);
+  if (!order.items){
+    $location.url('/store');
+  }
+  var orderNumber = order.orderNumber;
+  var items = order.items;
   for (var i = 0; i < items.length; i++){
     if (items[i]._data.product_type === "ticket"){
       $scope.showWillCall = true;
     }
   }
 
-  if ($scope.$storage.shippingData.rates_list){
-    $scope.shipOptions = $scope.$storage.shippingData.rates_list;
+  var shipmentData = shipment.data;
+  console.log("shipment data: ",shipmentData);
+
+  if (shipmentData.rates_list){
+    $scope.shipOptions = shipmentData.rates_list;
     for (var i = 0; i < $scope.shipOptions.length; i++){
       if ($scope.$storage.savedSelectedShip !== undefined && $scope.shipOptions[i].object_id === $scope.$storage.savedSelectedShip.object_id){
         $scope.data.selectedShip = $scope.shipOptions[i];
         break;
       } else {
-        $scope.$storage.savedSelectedShip = $scope.$storage.shippingData.rates_list[0];
+        $scope.$storage.savedSelectedShip = shipmentData.rates_list[0];
         $scope.data.selectedShip = $scope.$storage.savedSelectedShip;
       }
     }  
   }
 
  $scope.$watch('data.selectedShip', function (newValue, oldValue, scope) {
-     console.log("watch triggered!!!")
-     $scope.$storage.savedSelectedShip = $scope.data.selectedShip;
-    ngCart.setShipping(($scope.data.selectedShip.amount * 100));  
+   console.log("entering watch");
+      if ($scope.data.selectedShip){
+          $scope.$storage.savedSelectedShip = $scope.data.selectedShip;
+          ngCart.setShipping(($scope.data.selectedShip.amount * 100));  
+      }
   }, false);
-
-  $timeout(function(){
-   $scope.loaded = true; 
+    $timeout(function(){
+    $scope.loaded = true; 
   })
 
   

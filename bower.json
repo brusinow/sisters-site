@@ -19,7 +19,11 @@
     "angulartics-google-analytics": "^0.3.0",
     "chart.js": "^2.4.0",
     "angular-file-saver": "^1.1.2",
-    "moment-timezone": "^0.5.11"
+    "moment-timezone": "^0.5.11",
+    "jquery": "^3.1.1",
+    "firebase": "^3.6.9",
+    "angularfire": "^2.3.0",
+    "angular-resource": "^1.6.2"
   },
   "directory": "app/lib"
 }

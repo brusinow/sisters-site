@@ -22,8 +22,8 @@
         <div style="padding: 0 5%;" ng-bind-html="ticket.description"></div>
      
      
-        <ngcart-addtocart ng-if="ticket.totalTickets > 0" class="text-center" id="{{ ticket.$id }}" sku="{{ticket.skus[0].id}}" name="{{ show.venue }}" price="{{ ticket.skus[0].price }}" quantity="1" quantity-max="8" data="{'product_type': ticket.product_type, 'date': show.unix }">Add to Cart</ngcart-addtocart>
-        <div style="text-align: center;" ng-if="ticket.totalTickets <= 0">
+        <ngcart-addtocart ng-if="ticket.tixAvailable" class="text-center" sku="{{ticket.skus[0].id}}" id="{{ticket.id}}" name="{{ show.venue }}" price="{{ ticket.skus[0].price }}" quantity="1" quantity-max="{{maxTickets}}" data="{'product_type': ticket.product_type, 'unix': show.unix }">Add to Cart</ngcart-addtocart>
+        <div style="text-align: center;" ng-if="!ticket.tixAvailable">
             <h3>SOLD OUT</h3>
         </div>
     </div>

@@ -16,7 +16,7 @@
           <img ng-src="{{products[$index].images[0]}}"/>
         </div>
         <h6 class="store-item-title">{{products[$index].title}}</h6>
-        <h6 class="store-item-price text-center no-margin">{{products[$index].skus[0].price | centsToDollars | currency}}</h6>
+        <h5 class="store-item-price text-center no-margin">{{products[$index].skus[0].price | centsToDollars | currency}}</h5>
         <ngcart-add-btn id="{{ products[$index].$id}}" sku="{{ products[$index].skus[0].id }}" name="{{ products[$index].title }}" price="{{ products[$index].skus[0].price }}" quantity="1" quantity-max="30" data="{'skus': products[$index].skus}">Add to Cart</ngcart-addtocart>
            
     
@@ -27,7 +27,7 @@
            <img ng-src="{{products[$index + 1].images[0]}}"/>
         </div>
         <h6 class="store-item-title">{{products[$index + 1].title}}</h6>
-        <h6 class="store-item-price text-center no-margin">{{products[$index + 1].skus[0].price | centsToDollars | currency}}</h6>
+        <h5 class="store-item-price text-center no-margin">{{products[$index + 1].skus[0].price | centsToDollars | currency}}</h5>
         <ngcart-add-btn id="{{ products[$index + 1].$id}}" sku="{{ products[$index + 1].skus[0].id }}" name="{{ products[$index + 1].title }}" price="{{ products[$index + 1].skus[0].price }}" quantity="1" quantity-max="30" data="products[$index + 1]">Add to Cart</ngcart-addtocart>
 
     </div>
@@ -38,7 +38,7 @@
         </div>
         <h6 class="store-item-title">{{products[$index + 2].title}}</h6>
        <!--  <p>{{products[$index + 2].description}}</p> -->
-        <h6 class="store-item-price text-center no-margin">{{products[$index + 2].skus.data[0].price | centsToDollars | currency}}</h6>
+        <h5 class="store-item-price text-center no-margin">{{products[$index + 2].skus.data[0].price | centsToDollars | currency}}</h5>
         <ngcart-add-btn id="{{ products[$index + 2].skus.data[0].id }}" name="{{ products[$index + 2].name }}" price="{{ products[$index + 2].skus.data[0].price }}" quantity="1" quantity-max="30" data="products[$index + 2]">Add to Cart</ngcart-addtocart>
     </div>
      <div ng-click="showProduct(products[$index + 3].id)" class="storefront columns store-item" ng-if="products.length > ($index + 3)">
@@ -48,7 +48,7 @@
         </div>
         <h6 class="store-item-title">{{products[$index + 3].name}}</h6>
        <!--  <p>{{products[$index + 2].description}}</p> -->
-        <h6 class="store-item-price text-center no-margin">{{products[$index + 3].skus.data[0].price | centsToDollars | currency}}</h6>
+        <h5 class="store-item-price text-center no-margin">{{products[$index + 3].skus.data[0].price | centsToDollars | currency}}</h5>
         <ngcart-add-btn id="{{ products[$index + 3].skus.data[0].id }}" name="{{ products[$index + 3].name }}" price="{{ products[$index + 3].skus.data[0].price }}" quantity="1" quantity-max="30" data="products[$index + 3]">Add to Cart</ngcart-addtocart>
     </div>
 </div>

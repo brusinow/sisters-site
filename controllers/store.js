@@ -10,6 +10,7 @@ var wellknown = require('nodemailer-wellknown')
 var async = require('async')
 var session = require('express-session')
 
+
 var templatesDir = path.resolve(__dirname, '../app/templates')
 var template = new EmailTemplate(path.join(templatesDir, 'receipt'))
 
@@ -33,8 +34,6 @@ db.ref('orders').limitToLast(1).on("child_added", function(snapshot) {
 // var xoauth2 = require('xoauth2');
 var router = express.Router();
 
-
-
 var transport = nodemailer.createTransport({
      service: 'Gmail', // no need to set host or port etc.
      auth: {
@@ -42,20 +41,20 @@ var transport = nodemailer.createTransport({
        pass: process.env.GMAIL_PASS
        }
 });
-
-
-
 // Generating the new order
 
 router.post("/newOrder", function(req, res){
+  console.log(req.query);
   var thisOrder = req.query.order;
   var parsedOrder = JSON.parse(thisOrder);
   var orderNumber = parseInt(lastOrderNumber) + 1;
   parsedOrder.orderNumber = orderNumber;
+  req.session.order = parsedOrder;
+  console.log("session data at new order: ",req.session);
   db.ref('orders/' + orderNumber).set(parsedOrder);
 
   
-  if (req.query.shippable){
+  if (req.query.shippable === true){
     var addressFrom  = {
     "object_purpose": "PURCHASE",
     "name": "SISTERS",
@@ -67,7 +66,6 @@ router.post("/newOrder", function(req, res){
     "phone": "555 341 9393",
     "email": "iheartsistersband@gmail.com"
 };
-    console.log("addressFrom: ",addressFrom);
 
     var addressTo = {
       "object_purpose": "PURCHASE",
@@ -80,7 +78,6 @@ router.post("/newOrder", function(req, res){
       'country' : parsedOrder.shipping.address.country,
       'email' : parsedOrder.billing.email
     }
-    console.log("addressTo: ",addressTo);
 
     var parcel = {
       "length": "5",
@@ -100,20 +97,23 @@ router.post("/newOrder", function(req, res){
     }, function(err, shipment){
     if (err){
       console.log("error: ",err);
-      res.send(err);
+      res.status(500).send({error: err});
     }
     if (shipment){
-      console.log(shipment);
-      res.send({
-        shipment: shipment, 
-        order: parsedOrder
-      });
+      req.session.shipment = shipment;
+        req.session.save(function(err) {
+          console.log("SESSION SAVED");
+          res.status(200).send({shipBool: true});
+        })
+      
     }
     });
 
   } else {
-
-    res.send({order: parsedOrder});
+      req.session.save(function(err) {
+          res.status(200).send({shipBool: false});
+      })
+    
   }
   
 
@@ -157,44 +157,37 @@ router.post("/orderComplete", function(req, res){
         charge: charge
       }
 // Purchase the desired rate.
-    if (data.shipChoice){
-      var shippoInfo = JSON.parse(data.shipChoice)
-      console.log("OBJECT ID????? ",shippoInfo.object_id);
-      shippo.transaction.create({
-      "rate": shippoInfo.object_id,
-      "servicelevel_token": shippoInfo.servicelevel_token,
-      "label_file_type": "PDF",
-      "async": false
-        }, function(err, transaction) {
-        if (transaction){
-          order.shipping = shippoInfo;
-          order.shipping.res = transaction;
-          var response = {
-            "charge": charge,
-            "transaction": transaction
+      if (data.shipChoice){
+        var shippoInfo = JSON.parse(data.shipChoice)
+        console.log("OBJECT ID????? ",shippoInfo.object_id);
+        shippo.transaction.create({
+        "rate": shippoInfo.object_id,
+        "servicelevel_token": shippoInfo.servicelevel_token,
+        "label_file_type": "PDF",
+        "async": false
+          }, function(err, transaction) {
+          if (transaction){
+            order.shipping = shippoInfo;
+            order.shipping.res = transaction;
+            var response = {
+              "charge": charge,
+              "transaction": transaction
+            }
+            res.status(200).send(response);
+            generateEmailReceipt(order);
           }
-          res.status(200).send(response);
-          generateEmailReceipt(order);
-        }
 
-        if (err){
-          res.status(500).send(err);
-        }
-      });
-    } else {
-      var response = {
-            "charge": charge
+          if (err){
+            res.status(500).send(err);
           }
-      res.status(200).send(response);
-      generateEmailReceipt(order);
-    }
-
-      
-
-      
-
-
-
+        });
+      } else {
+        var response = {
+              "charge": charge
+            }
+        res.status(200).send(response);
+        generateEmailReceipt(order);
+      }
     }
   });
 });

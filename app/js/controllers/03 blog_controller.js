@@ -212,6 +212,10 @@ angular.module('SistersCtrls')
  // $scope.photos = Instagram.data; 
  $scope.posts = thisPost;
  $scope.allPosts = thisPost;
+ 
+ $scope.editPost = function(slug){ 
+    $location.url('/blog/edit/'+slug);
+  }
 
   $timeout(function(){
     $scope.$emit('loadMainContainer', 'loaded');  

@@ -118,13 +118,16 @@ angular.module('SistersServices', ['ngResource'])
       
     return title.split(' ').join('-');
     },
-    slugify: function(text){
-      return text.toString().toLowerCase()
+    slugify: function(text, unix){
+      var text = text.toString().toLowerCase()
       .replace(/\s+/g, '-')           // Replace spaces with -
       .replace(/[^\w\-]+/g, '')       // Remove all non-word chars
       .replace(/\-\-+/g, '-')         // Replace multiple - with single -
       .replace(/^-+/, '')             // Trim - from start of text
       .replace(/-+$/, '');            // Trim - from end of text
+      var date = moment(unix).tz("America/Los_Angeles").format('MM-DD-YY');
+      var complete = date + "_" + text;
+      return complete;
     },
     imgResize: function (img) {
       console.log("inside resize!!");

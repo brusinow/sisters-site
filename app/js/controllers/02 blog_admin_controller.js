@@ -19,6 +19,8 @@ angular.module('SistersCtrls')
   $scope.submit = function(){
     console.log("submit clicked");
     console.log("what is post? ",$scope.post);
+    var test = document.getElementById("new-blog-textarea").innerText;
+    console.log("what is the inner text of the textarea? ",test);
     if ($scope.data.mediaSelect === 'image'){
       SubmitImage($scope.post, $scope.BlogPosts, $scope.data.image, addPost);
     } else if ($scope.data.mediaSelect === 'youtube'){
@@ -48,8 +50,8 @@ angular.module('SistersCtrls')
   }
 
   var addPost = function(post, postArray, img, youtube){
-    var slug = HelperService.slugify(post.title);
     var postDate = new Date().getTime();
+    var slug = HelperService.slugify(post.title, postDate);
     var year = moment(postDate).format("YYYY");
     var month = moment(postDate).format("MMMM");
 
@@ -156,7 +158,7 @@ angular.module('SistersCtrls')
   }
 
   var updatePost = function(post, postArray, img, youtube){
-    var slug = HelperService.slugify(post.postTitle);
+    var slug = HelperService.slugify(post.postTitle, post.timestamp);
     console.log(slug);
     var year = moment(post.timestamp).format("YYYY");
     var month = moment(post.timestamp).format("MMMM");

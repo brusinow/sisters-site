@@ -319,7 +319,7 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
 
   .state('blog.show', {
     url: '/blog/show/:slug',
-    templateUrl: '/views/blog/blog-content.html',
+    templateUrl: '/views/blog/blog-content-show.html',
     controller: 'BlogShowCtrl',
     resolve: {
       "currentAuth": authWait,
@@ -588,7 +588,31 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
   return function(val){
     return  val/100;
   }
-});
+})
 
+.filter('htmlBlogPreview', function(){
+  return function shorten(val, slug){
+    var cutoff = 300;
+    var target = "";
+    var source = val;
+    var cutIndex;
+    if (val.length < cutoff){
+      return val;
+    }
+    while (target.length < cutoff){
+      cutIndex = (source.indexOf("</p>") + 4);
+      target += source.slice(0, cutIndex);
+      source = source.slice(cutIndex);
+    }
+    if (val.length === target.length){
+      return target;
+    } else {
+      target = target.slice(0, (target.length - 4));
+      var readMore = " <a href='/blog/show/"+ slug +"'>  Read More...</a></p>";
+      target += readMore;
+      return target;
+    }  
+  }
+});
 
 

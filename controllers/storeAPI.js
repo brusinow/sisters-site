@@ -32,20 +32,24 @@ var router = express.Router();
 
 
 router.get("/order", function(req, res){
-  console.log("ENTERING ORDER ROUTE!!!!!");
-  console.log("session data: ",req.session);
+  if (req.session.order){
   var order = req.session.order;
   console.log("session order is: ",order);
   res.send(order);
+  } else {
+    res.send(null);
+  }
+
 });
 
 
 router.get("/shipment", function(req, res){
   if (req.session.shipment){
     var shipment = req.session.shipment;
+    console.log("shipment data: ",shipment);
     res.send(shipment);
   } else {
-    res.send();
+    res.send(null);
   }
   
 });

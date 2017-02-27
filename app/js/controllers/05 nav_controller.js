@@ -1,20 +1,14 @@
 angular.module('SistersCtrls')
 
 
-.controller('NavCtrl', ['$scope','$timeout','$log','$uibModal','$http','Auth','$state','$sessionStorage','$location','$window', function($scope, $timeout,$log, $uibModal, $http, Auth, $state, $sessionStorage,$location, $window){
-  // $scope.sessionStorage = $sessionStorage;
-  // if (!$scope.sessionStorage.hash){
-  //   $scope.sessionStorage.hash = Math.random().toString(36).slice(2);
-  // } else {
-  //   console.log("already a session hash");
-  // }
-  // console.log("What is session storage? ",$scope.sessionStorage);
+.controller('NavCtrl', ['$scope','$timeout','$log','$uibModal','$http','Auth','$state','$localStorage','$location','$window', function($scope, $timeout,$log, $uibModal, $http, Auth, $state, $localStorage, $location, $window){
+
   $scope.auth = Auth;
   $scope.auth.$onAuthStateChanged(function(firebaseUser) {
     $scope.firebaseUser = firebaseUser;
   });
 
-
+  $scope.$storage = $localStorage;
 
   $scope.user = {};
   $scope.mailConfirm = false;
@@ -44,7 +38,7 @@ angular.module('SistersCtrls')
     // OVERLAY CREATION
    
       // if (w >= 678){
-      if ($scope.firebaseUser === null && $location.$$path !== "/login"){
+      if ($scope.firebaseUser === null && $location.$$path !== "/login" && !$scope.$storage.popup){
    
         
         if (!document.getElementById("overlayMail")){
@@ -64,6 +58,7 @@ angular.module('SistersCtrls')
         // var content = document.querySelector("#overlay-content");
         // content.style.top = scrollTop + "px";
         $scope.isPopup = true;
+        
       }
     // };
   },6000)
@@ -71,6 +66,7 @@ angular.module('SistersCtrls')
 
   $scope.closePopup = function(){
     $scope.isPopup = false;
+    $scope.$storage.popup = true;
   }
     
    
@@ -97,7 +93,7 @@ angular.module('SistersCtrls')
   }
 }])
 
-.controller('FooterCtrl', ['$scope','$timeout','$log','$uibModal','$http','Auth','$state','$sessionStorage', function($scope, $timeout,$log, $uibModal, $http, Auth, $state, $sessionStorage){
+.controller('FooterCtrl', ['$scope','$timeout','$log','$uibModal','$http','Auth','$state','$localStorage', function($scope, $timeout,$log, $uibModal, $http, Auth, $state, $localStorage){
   $scope.auth = Auth;
   $scope.auth.$onAuthStateChanged(function(firebaseUser) {
     $scope.firebaseUser = firebaseUser;

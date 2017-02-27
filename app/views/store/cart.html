@@ -1,4 +1,7 @@
   <div id="cart-container">
+    <div ng-if="errorMessage.message !== null" class="alert" ng-class="errorMessage.messageType === 'danger' ? 'alert-danger' : 'alert-info'" role="alert" ng-if="isError">
+      {{errorMessage.message}}
+    </div>
   <div class="row">
   <ngcart-cart class="u-full-width"></ngcart-cart>
   </div>

@@ -424,6 +424,10 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
     controller: 'StoreCartCtrl',
     resolve: {
       "currentAuth": authWait
+    },
+    params: {
+      message: null,
+      messageType: null
     }
   })
 
@@ -468,7 +472,13 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
     templateUrl: '/views/store/checkoutAddress.html',
     controller: 'StoreAddressCtrl',
     resolve: {
-      "currentAuth": authWait
+      "currentAuth": authWait,
+      "currentOrder": function($http){
+        return $http({method: 'GET', url: '/storeAPI/order'})
+      },
+      "shipment": function($http){
+        return $http({method: 'GET', url: '/storeAPI/shipment'})
+      }
     }
   })
   .state('checkout.payment', {
@@ -494,6 +504,12 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
       "currentAuth": authWait,
       "AllTickets": function(GetAllTickets){
         return GetAllTickets().$loaded();
+      },
+      "currentOrder": function($http){
+        return $http({method: 'GET', url: '/storeAPI/order'})
+      },
+      "shipment": function($http){
+        return $http({method: 'GET', url: '/storeAPI/shipment'})
       }
     }
   })
@@ -562,7 +578,6 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
 
 .filter('slashDate', ['moment', function(moment){
   return function(val){
-    console.log("val is: ",val);
     return  moment(val * 1000).tz("America/Los_Angeles").format('MM/DD/YYYY');
   }
 }])

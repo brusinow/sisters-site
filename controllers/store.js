@@ -44,17 +44,18 @@ var transport = nodemailer.createTransport({
 // Generating the new order
 
 router.post("/newOrder", function(req, res){
-  console.log(req.query);
+  console.log("what is shipping status? ",req.query.shippable);
+  console.log(typeof req.query.shippable);
   var thisOrder = req.query.order;
   var parsedOrder = JSON.parse(thisOrder);
   var orderNumber = parseInt(lastOrderNumber) + 1;
-  parsedOrder.orderNumber = orderNumber;
+  // parsedOrder.orderNumber = orderNumber;
   req.session.order = parsedOrder;
   console.log("session data at new order: ",req.session);
-  db.ref('orders/' + orderNumber).set(parsedOrder);
+  // db.ref('orders/' + orderNumber).set(parsedOrder);
 
   
-  if (req.query.shippable === true){
+  if (req.query.shippable === 'true'){
     var addressFrom  = {
     "object_purpose": "PURCHASE",
     "name": "SISTERS",
@@ -65,13 +66,13 @@ router.post("/newOrder", function(req, res){
     "country": "US",
     "phone": "555 341 9393",
     "email": "iheartsistersband@gmail.com"
-};
+    };
 
     var addressTo = {
       "object_purpose": "PURCHASE",
       "name": parsedOrder.shipping.name,
       'street1' : parsedOrder.shipping.address.line1,
-      'street2' : parsedOrder.shipping.address.line2,
+      'street2' : parsedOrder.shipping.address.line2 || null,
       'city' : parsedOrder.shipping.address.city,
       'state' : parsedOrder.shipping.address.state,
       'zip' : parsedOrder.shipping.address.postal_code,
@@ -79,12 +80,13 @@ router.post("/newOrder", function(req, res){
       'email' : parsedOrder.billing.email
     }
 
+
     var parcel = {
       "length": "5",
       "width": "5",
       "height": "5",
       "distance_unit": "in",
-      "weight": "32",
+      "weight": "7",
       "mass_unit": "oz"
     }
 
@@ -95,33 +97,51 @@ router.post("/newOrder", function(req, res){
       'parcel': parcel,
       'async': false
     }, function(err, shipment){
+      console.log("shippo response");
     if (err){
       console.log("error: ",err);
-      res.status(500).send({error: err});
+      res.status(500).send({error: "shit is fucking up"});
     }
     if (shipment){
       req.session.shipment = shipment;
+      console.log("what is shipment object from Shippo? ",shipment);
         req.session.save(function(err) {
-          console.log("SESSION SAVED");
           res.status(200).send({shipBool: true});
         })
       
+    } else {
+      res.status(500).send({message: "There is no Shippo shipment object. Try again."})
     }
     });
 
-  } else {
+  } else if (req.query.shippable === 'false') {
       req.session.save(function(err) {
           res.status(200).send({shipBool: false});
       })
     
+  } else {
+    res.status(500).send({message: "Didn't get into proper shippable status."})
   }
   
-
-  
-
-
   
         
+})
+
+
+router.post("/saveToken", function(req, res){
+  console.log("what is req query at saveToken? ",req.body);
+  req.session.token = req.body.token;
+  if (req.body.willCallName){
+    req.session.order.willCallName = req.body.willCallName;
+  }
+  req.session.save(function(err) {
+      console.log("error: ",err);
+  })
+  if (req.session.token){
+    res.status(200).send("successful saving of token");
+  } else {
+    res.status(500).send("no token was saved to server");
+  } 
 })
 
 

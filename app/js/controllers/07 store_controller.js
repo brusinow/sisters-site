@@ -30,9 +30,12 @@ angular.module('SistersCtrls')
  
 })
 
-.controller('StoreCartCtrl', function($scope, $state, $http, $timeout, $location, $sessionStorage){
+.controller('StoreCartCtrl', function($scope, $state, $http, $timeout, $location, $sessionStorage, $stateParams){
   var main = document.getElementById("main");
   main.style.backgroundColor = 'rgba(255,255,255,0)';
+
+  $scope.errorMessage = $stateParams;
+  console.log("message object: ",$scope.errorMessage);
 
   $timeout(function(){
       $scope.$emit('loadMainContainer', 'loaded');
@@ -119,24 +122,19 @@ $scope.changeActive = function(){
 
 
 
-.controller('StoreAddressCtrl', function($scope, $state, $window, $timeout, $http, $location, $localStorage, ngCart, $rootScope, moment){
+.controller('StoreAddressCtrl', function($scope, $state, $window, $timeout, $http, $location, $localStorage, ngCart, $rootScope, moment, currentOrder, shipment){
   var main = document.getElementById("main");
   main.style.backgroundColor = 'rgba(247, 237, 245, 0)';
   $scope.$emit('loadMainContainer', 'loaded');
   $scope.$storage = $localStorage;
   $scope.cartItems = ngCart.getItems();
+  // var billingAddress = currentOrder.data.billing.address;
+
 
   $scope.$on('setShippable', function (event, data) {
     $scope.shipBool = data;
   });
 
-  if (!$scope.$storage.billingAddress){
-    $scope.$storage.pathCount = 1;
-  }
-
- 
-  $scope.$emit('pathChange', $location.$$path); 
-  $scope.$emit('pathCountChange', $scope.$storage.pathCount);
   
   $scope.loaded = [];
 
@@ -148,15 +146,18 @@ $scope.changeActive = function(){
   };
 
 
-  function createOrderNumber(data){}
-
-  if ($scope.$storage.billingAddress){
-    $scope.data.billing = $scope.$storage.billingAddress;
+  if (currentOrder.data.billing){
+    $scope.data.billing = currentOrder.data.billing.address;
   } else {
     $scope.data.billing = {
       "country": {}
     }
+    $scope.$storage.pathCount = 1;
+    ngCart.setShipping(0);  
   }
+
+  $scope.$emit('pathChange', $location.$$path); 
+  $scope.$emit('pathCountChange', $scope.$storage.pathCount);
   $scope.mailingListAdd = true;
   $scope.shippingSameBool = false;
 
@@ -261,8 +262,10 @@ $scope.submitForm = function(form){
         req.params.shippable = false;
       }
 
+      console.log("what is req? ",req);
+
       $http(req).then(function success(res) {
-        console.log(res);
+        console.log("res: ",res);
           // $scope.$storage.shippingData = res.data.shipment;
           // $scope.$storage.orderData = res.data.order;
           
@@ -343,16 +346,19 @@ $scope.submitForm = function(form){
 
   var order = currentOrder.data;
   console.log("order: ",order);
-  if (!order.items){
-    $location.url('/store');
+  if (!order){
+    // $location.url('/store/cart');
+    $state.go("storeCart", { message: "Your current session has expired. Please start your checkout again.", messageType: "info" });
+  } else {
+      // var orderNumber = order.orderNumber;
+      var items = order.items;
+      for (var i = 0; i < items.length; i++){
+        if (items[i]._data.product_type === "ticket"){
+          $scope.showWillCall = true;
+        }
+      }
   }
-  var orderNumber = order.orderNumber;
-  var items = order.items;
-  for (var i = 0; i < items.length; i++){
-    if (items[i]._data.product_type === "ticket"){
-      $scope.showWillCall = true;
-    }
-  }
+
 
   var shipmentData = shipment.data;
   console.log("shipment data: ",shipmentData);
@@ -386,7 +392,7 @@ $scope.submitForm = function(form){
   $scope.submitForm = function (form) {
     if (form.$valid) {
 
-      $scope.$storage.orderData.willCallName = $scope.data.willCallName;
+      // $scope.$storage.orderData.willCallName = $scope.data.willCallName;
 
       $scope.loaded = false;
       Stripe.card.createToken({
@@ -407,14 +413,14 @@ $scope.submitForm = function(form){
 
         if (token) {
           $timeout(function () {
-            $scope.$storage.tokenData = token;
-            $scope.$storage.orderData.tax = {
-            amount: ngCart.getTax(),
-            description: "tax: ("+ ngCart.getTaxRate() + "%)",
-            };
-            $scope.$storage.pathCount = 3;
-            $scope.$emit('pathCountChange', $scope.$storage.pathCount);
-            $location.url('/store/checkout/confirm');
+            console.log("what is token? ",token);
+            $http.post('/store/saveToken', {token: token, willCallName: $scope.data.willCallName || null}).then(function(success){
+              $scope.$storage.pathCount = 3;
+              $scope.$emit('pathCountChange', $scope.$storage.pathCount);
+              $location.url('/store/checkout/confirm');
+            }, function(err){
+              console.log("error: ",err);
+            });
           }, 1);
 
         }
@@ -428,7 +434,7 @@ $scope.submitForm = function(form){
 })
 
 
-.controller('StoreConfirmCtrl', function($scope, $state, $http, $timeout, $location, $localStorage, ngCart, $rootScope, AllTickets, WillCallListService){
+.controller('StoreConfirmCtrl', function($scope, $state, $http, $timeout, $location, $localStorage, ngCart, $rootScope, AllTickets, WillCallListService, currentOrder, shipment){
 
   $scope.$on('setShippable', function (event, data) {
     $scope.shipBool = data;
@@ -441,6 +447,21 @@ main.style.backgroundColor = 'rgba(247, 237, 245, 0)';
 $scope.$emit('loadMainContainer', 'loaded');
 $scope.$storage = $localStorage;
 $scope.orderComplete = false;
+
+var order = currentOrder.data;
+console.log("order: ",order);
+if (!order){
+  // $location.url('/store/cart');
+  $state.go("storeCart", { message: "Your current session has expired. Please start your checkout again.", messageType: "info" });
+} else {
+    // var orderNumber = order.orderNumber;
+    var items = order.items;
+    for (var i = 0; i < items.length; i++){
+      if (items[i]._data.product_type === "ticket"){
+        $scope.showWillCall = true;
+      }
+    }
+}
 $scope.$emit('pathChange', $location.$$path); 
 $scope.$emit('pathCountChange', $scope.$storage.pathCount);
 $scope.ngCart = ngCart;
@@ -482,11 +503,11 @@ var orderStatusDone = function(orderNumber, resData) {
       amount: ngCart.getTax(),
       description: "tax: ("+ ngCart.getTaxRate() + "%)",
     }
-  firebase.database().ref('orders/order_' + orderNumber + '/status').set("complete");
-  firebase.database().ref('orders/order_' + orderNumber + '/totalItemsPrice').set(resData.charge.amount);
-  firebase.database().ref('orders/order_' + orderNumber + '/stripeData').set(resData.charge);
-  firebase.database().ref('orders/order_' + orderNumber + '/tax').set(taxObj);
-  firebase.database().ref('orders/order_' + orderNumber + '/shipping/shippoData').set(resData.transaction);
+  firebase.database().ref('orders/' + orderNumber + '/status').set("complete");
+  firebase.database().ref('orders/' + orderNumber + '/totalItemsPrice').set(resData.charge.amount);
+  firebase.database().ref('orders/' + orderNumber + '/stripeData').set(resData.charge);
+  firebase.database().ref('orders/' + orderNumber + '/tax').set(taxObj);
+  firebase.database().ref('orders/' + orderNumber + '/shipping/shippoData').set(resData.transaction);
 }
 
 

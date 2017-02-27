@@ -183,6 +183,14 @@ angular.module('ngCart', ['ngCart.directives'])
             return this.getCart().items.length;
         };
 
+        this.getCartTotal = function(){
+            var total = 0;
+            angular.forEach(this.getCart().items, function (item) {
+                total += item.getTotal();
+            });
+            return parseFloat(total);
+        };
+
         this.getSubTotal = function(){
             var total = 0;
             angular.forEach(this.getCart().items, function (item) {
@@ -194,7 +202,7 @@ angular.module('ngCart', ['ngCart.directives'])
         };
 
         this.totalCost = function () {
-            return +parseInt(this.getSubTotal() + this.getShipping() + this.getTax());
+            return +parseInt(this.getCartTotal() + this.getShipping() + this.getTax());
         };
 
         this.removeItem = function (index) {

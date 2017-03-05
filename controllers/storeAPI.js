@@ -42,6 +42,18 @@ router.get("/order", function(req, res){
 
 });
 
+router.get("/token", function(req, res){
+  if (req.session.token){
+  var token = req.session.token;
+  console.log("token: ",token);
+  res.send(token);
+  } else {
+    res.send(null);
+  }
+
+});
+
+
 
 router.get("/shipment", function(req, res){
   if (req.session.shipment){

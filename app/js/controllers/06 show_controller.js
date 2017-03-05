@@ -46,7 +46,17 @@ $scope.$emit('loadMainContainer', 'loaded');
   main.style.backgroundColor = 'rgba(252, 244, 247, 0)';
   main.style.width = '';
   main.style.padding = '';
-  
+  $scope.itemCount = 1;
+  $scope.lowCount = false;
+
+  $scope.$on('lowCount', function (event, data) {
+    $scope.lowCount = data.bool;
+    if (data.bool = true){
+      $scope.itemCount = data.originalVal;
+    }
+    
+  });
+
   console.log("get show! ",GetShow);
   console.log("get ticket! ",GetTicket);
   // if (GetTicket.description){

@@ -23,12 +23,7 @@ admin.initializeApp({
 });
 
 var db = admin.database();
-var lastOrderNumber;
 
-db.ref('orders').limitToLast(1).on("child_added", function(snapshot) {
-  lastOrderNumber = snapshot.key;
-  console.log("last order number? ",lastOrderNumber);
-});
 
 
 // var xoauth2 = require('xoauth2');
@@ -43,15 +38,27 @@ var transport = nodemailer.createTransport({
 });
 // Generating the new order
 
+var ticketTimeout;
+var timerAmount = 60000;
+
+
+function startTicketTO(val){
+  ticketTimeout = setTimeout(function(){
+    updateTicketCounts(val);
+    val = {};
+    console.log("tickets are now: ",val);
+  }, timerAmount);
+}
+
+function stopTicketTO() {
+    clearTimeout(ticketTimeout);
+}
+
 router.post("/newOrder", function(req, res){
-  console.log("what is shipping status? ",req.query.shippable);
-  console.log(typeof req.query.shippable);
   var thisOrder = req.query.order;
   var parsedOrder = JSON.parse(thisOrder);
-  var orderNumber = parseInt(lastOrderNumber) + 1;
   // parsedOrder.orderNumber = orderNumber;
   req.session.order = parsedOrder;
-  console.log("session data at new order: ",req.session);
   // db.ref('orders/' + orderNumber).set(parsedOrder);
 
   
@@ -144,13 +151,71 @@ router.post("/saveToken", function(req, res){
   } 
 })
 
+router.post("/addSessionTicket", function(req, res){
+  // process to remove quantity of tickets from inventory and set timer to restore them if not purchased in time
+  console.log("what is req.body? ",req.body);
+    db.ref('tickets/' + req.body.ticketId).once('value').then(function(snapshot) {
+      var ticketObj = snapshot.val();
+      console.log("ticket obj: ",ticketObj);
+      var ticketsLeft = parseInt(ticketObj.ticketCapacity) - parseInt(ticketObj.ticketsSold)
+      if (ticketsLeft >= req.body.ticketCount){
+        //reserve the tickets and start timeout
+        db.ref('tickets/' + req.body.ticketId + '/ticketsSold').set(parseInt(ticketObj.ticketsSold) + parseInt(req.body.ticketCount))
+        if (!req.session.tickets){
+        req.session.tickets = {};
+        }
+          req.session.tickets[req.body.ticketId] = req.body.ticketCount
+          req.session.save(function(err) {
+            console.log("error: ",err);
+          })
+          console.log("tickets in session: ",req.session.tickets);
+          // set timeout here
+          startTicketTO(req.session.tickets);
+          res.status(200).send("success");;
+      } else {
+        // return error
+        res.status(500).send("no tickets left");
+      }
+    });
+})
+
+router.post("/changeSessionTicket", function(req, res){
+  // process to remove quantity of tickets from inventory and set timer to restore them if not purchased in time
+    db.ref('tickets/' + req.body.ticketId).once('value').then(function(snapshot) {
+      var ticketObj = snapshot.val();
+      console.log("ticket obj: ",ticketObj);
+      var ticketsLeft = parseInt(ticketObj.ticketCapacity) - parseInt(ticketObj.ticketsSold)
+      if (ticketsLeft >= req.body.ticketCount){
+        //reserve the tickets and start timeout
+        db.ref('tickets/' + req.body.ticketId + '/ticketsSold').set(parseInt(ticketObj.ticketsSold) + parseInt(req.body.ticketCount))
+          req.session.tickets[req.body.ticketId] += req.body.ticketCount;
+          req.session.save(function(err) {
+            console.log("error: ",err);
+          })
+          console.log("session tickets is now: ",req.session.tickets);
+          stopTicketTO();
+          startTicketTO(req.session.tickets);
+          console.log("what are tickets? ",req.session.tickets);
+          res.status(200).send("success");;
+      } else {
+        // return error
+        res.status(500).send("can't make this change");
+      }
+    });
+})
 
 
 
 
 router.post("/orderComplete", function(req, res){
+  var orderNumber;
+
+  // get current order number
+  db.ref('orders').limitToLast(1).on("child_added", function(snapshot) {
+    orderNumber = parseInt(snapshot.key);
+  });
+
   var data = req.query;
-  var myOrder = JSON.parse(data.order);
   var myTax = JSON.parse(data.tax);
   var cart = JSON.parse(data.cart);
   // Initiate Stripe Charge Creation
@@ -168,18 +233,17 @@ router.post("/orderComplete", function(req, res){
     if (charge){
       // Stripe charge was created successfully
       var order = {
-        email: myOrder.billing.email,
-        subject: 'Thank you for your order! Order #' + myOrder.orderNumber,
+        email: req.session.billing.email,
+        subject: 'Thank you for your order! Order #' + orderNumber,
         name: data.name,
         cart: cart,
         total: data.totalAmount,
-        orderData: myOrder,
+        orderData: req.session.order,
         charge: charge
       }
 // Purchase the desired rate.
       if (data.shipChoice){
         var shippoInfo = JSON.parse(data.shipChoice)
-        console.log("OBJECT ID????? ",shippoInfo.object_id);
         shippo.transaction.create({
         "rate": shippoInfo.object_id,
         "servicelevel_token": shippoInfo.servicelevel_token,
@@ -193,8 +257,20 @@ router.post("/orderComplete", function(req, res){
               "charge": charge,
               "transaction": transaction
             }
+            // save order to db!
+            var sessOrder = req.session.order;
+            sessOrder.orderNumber = orderNumber;
+            sessOrder.shipping.shippo = shippoInfo;
+            sessOrder.shipping.res = transaction;
+            sessOrder.totalItemsPrice = data.totalAmount;
+            sessOrder.tax = myTax;
+            var d = new Date();
+            sessOrder.timeCompleted = d.getTime(),
+            sessOrder.status = "COMPLETE"
+            db.ref('orders/' + orderNumber).set(sessOrder);
             res.status(200).send(response);
             generateEmailReceipt(order);
+            req.session.destroy();
           }
 
           if (err){
@@ -211,6 +287,16 @@ router.post("/orderComplete", function(req, res){
     }
   });
 });
+
+function updateTicketCounts(obj){
+  for (prop in obj){
+    console.log(prop + ' is :',obj[prop]);
+    var showCountRef = db.ref('tickets/' + prop + '/ticketsSold')
+      showCountRef.once('value').then(function(snapshot) {
+      showCountRef.set(snapshot.val() - obj[prop]);
+    });
+  }
+}
 
 
 function generateEmailReceipt(order){

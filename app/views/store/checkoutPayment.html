@@ -34,7 +34,7 @@
   </div>
   <div class="shipping-box">
     <ul>
-      <li ng-repeat="ship in shipOptions">
+      <li ng-repeat="ship in shipOptions | orderBy:orderByPrice">
         <label>
             <input type="radio" ng-model="data.selectedShip" ng-value="ship">
             <span class="ship-info-main">{{ship.amount | currency}} (<img ng-src="{{ship.provider_image_75}}"/>{{ship.servicelevel_name}})</span><br>

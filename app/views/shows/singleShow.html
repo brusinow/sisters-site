@@ -1,5 +1,8 @@
 
 <div id="shows-container" class="single-show-div">
+    <div ng-if="lowCount" class="alert alert-info" role="alert" ng-if="isError">
+      There are not enough tickets available to complete this change. To buy what you already have reserved, complete your order.
+    </div>
     <div style="margin-left: 5px; margin-bottom: 15px;">
     <a style="color: #1A0504;" class="store-back-link" href="/shows"><i class="fa fa-long-arrow-left" aria-hidden="true"></i> Back to Shows</a>
 </div>
@@ -22,7 +25,7 @@
         <div style="padding: 0 5%;" ng-bind-html="ticket.description"></div>
      
      
-        <ngcart-addtocart ng-if="ticket.tixAvailable" class="text-center" sku="{{ticket.skus[0].id}}" id="{{ticket.id}}" name="{{ show.venue }}" price="{{ ticket.skus[0].price }}" quantity="1" quantity-max="{{maxTickets}}" data="{'product_type': ticket.product_type, 'unix': show.unix }">Add to Cart</ngcart-addtocart>
+        <ngcart-addtocart ng-if="ticket.tixAvailable" class="text-center" sku="{{ticket.skus[0].id}}" id="{{ticket.id}}" name="{{ show.venue }}" price="{{ ticket.skus[0].price }}" quantity="{{itemCount}}" quantity-max="{{maxTickets}}" data="{'product_type': ticket.product_type, 'unix': show.unix }">Add to Cart</ngcart-addtocart>
         <div style="text-align: center;" ng-if="!ticket.tixAvailable">
             <h3>SOLD OUT</h3>
         </div>

@@ -135,6 +135,7 @@ $scope.changeActive = function(){
     $scope.shipBool = data;
   });
 
+  console.log("items in cart: ",ngCart.getCart().items);
   
   $scope.loaded = [];
 
@@ -213,15 +214,12 @@ $scope.submitForm = function(form){
     $scope.$storage.billingAddress = $scope.data.billing;
     $scope.$storage.shippingAddress = $scope.data.shipping;
     $scope.$storage.shipBool = $scope.shipBool;
-    var d = new Date();
-    
       var req = {
         url: '/store/newOrder',
         method: 'POST',
         params: {
           order: {
             status: "pending",
-            dateCreated: d.getTime(),
             currency: 'usd',
             items: $scope.cartItems,
             totalItemsPrice: ngCart.getSubTotal(),
@@ -266,8 +264,6 @@ $scope.submitForm = function(form){
 
       $http(req).then(function success(res) {
         console.log("res: ",res);
-          // $scope.$storage.shippingData = res.data.shipment;
-          // $scope.$storage.orderData = res.data.order;
           
           $scope.$storage.pathCount = 2;
           $location.url('/store/checkout/payment');
@@ -359,21 +355,31 @@ $scope.submitForm = function(form){
       }
   }
 
+  $scope.orderByPrice = function(item){
+    return parseInt(item.amount);
+};
+
 
   var shipmentData = shipment.data;
   console.log("shipment data: ",shipmentData);
 
   if (shipmentData.rates_list){
     $scope.shipOptions = shipmentData.rates_list;
+    var minIndex;
+    var minVal;
     for (var i = 0; i < $scope.shipOptions.length; i++){
+      if (!minVal || $scope.shipOptions[i].amount < minVal){
+        minVal = $scope.shipOptions[i].amount;
+        minIndex = i;
+      }
       if ($scope.$storage.savedSelectedShip !== undefined && $scope.shipOptions[i].object_id === $scope.$storage.savedSelectedShip.object_id){
         $scope.data.selectedShip = $scope.shipOptions[i];
-        break;
-      } else {
-        $scope.$storage.savedSelectedShip = shipmentData.rates_list[0];
+      } 
+    } 
+    if (!$scope.data.selectedShip){
+        $scope.$storage.savedSelectedShip = shipmentData.rates_list[minIndex];
         $scope.data.selectedShip = $scope.$storage.savedSelectedShip;
-      }
-    }  
+    } 
   }
 
  $scope.$watch('data.selectedShip', function (newValue, oldValue, scope) {
@@ -434,7 +440,7 @@ $scope.submitForm = function(form){
 })
 
 
-.controller('StoreConfirmCtrl', function($scope, $state, $http, $timeout, $location, $localStorage, ngCart, $rootScope, AllTickets, WillCallListService, currentOrder, shipment){
+.controller('StoreConfirmCtrl', function($scope, $state, $http, $timeout, $location, $localStorage, ngCart, $rootScope, currentOrder, shipment, currentToken){
 
   $scope.$on('setShippable', function (event, data) {
     $scope.shipBool = data;
@@ -466,17 +472,16 @@ $scope.$emit('pathChange', $location.$$path);
 $scope.$emit('pathCountChange', $scope.$storage.pathCount);
 $scope.ngCart = ngCart;
 
-var items = $scope.$storage.orderData.items;
-var tickets = AllTickets;
+
 var thisItemIndex;
 
 // referencing stuff from local storage (current shipping choice, token, shipping & billing address info)
 $scope.currentShipping = $scope.$storage.savedSelectedShip;
 console.log($scope.currentShipping);
-$scope.token = $scope.$storage.tokenData;
-$scope.shipping = $scope.$storage.shippingAddress;
-$scope.billing = $scope.$storage.billingAddress;
-$scope.order = $scope.$storage.orderData;
+$scope.token = currentToken.data;
+$scope.shipping = order.shipping;
+$scope.billing = order.billing;
+$scope.order = order;
 
 $timeout(function(){
   $scope.loaded = true;
@@ -484,33 +489,39 @@ $timeout(function(){
   
 
 
-var updateTicketCount = function (cartItems, itemIndex) {
-  var thisQuant = cartItems[itemIndex].quantity;
-  var willCallArr = WillCallListService(cartItems[itemIndex].parent);
-  willCallArr.$add({ "name": $scope.$storage.orderData.willCallName, "quantity": thisQuant }).then(function (ref) {
-    var id = ref.key;
-    var showCountRef = firebase.database().ref('tickets/' + cartItems[itemIndex].parent + '/totalTickets');
-    showCountRef.once('value').then(function (snapshot) {
-      showCountRef.set(snapshot.val() - thisQuant);
-    });
-  }, function (err) {
-    console.log("what is err: ", err);
-  });
-}
+// var updateTicketCount = function (cartItems, itemIndex) {
+//   var thisQuant = cartItems[itemIndex].quantity;
+//   var willCallArr = WillCallListService(cartItems[itemIndex].parent);
+//   willCallArr.$add({ "name": $scope.$storage.orderData.willCallName, "quantity": thisQuant }).then(function (ref) {
+//     var id = ref.key;
+//     var showCountRef = firebase.database().ref('tickets/' + cartItems[itemIndex].parent + '/totalTickets');
+//     showCountRef.once('value').then(function (snapshot) {
+//       showCountRef.set(snapshot.val() - thisQuant);
+//     });
+//   }, function (err) {
+//     console.log("what is err: ", err);
+//   });
+// }
 
-var orderStatusDone = function(orderNumber, resData) {
-   var taxObj = {
-      amount: ngCart.getTax(),
-      description: "tax: ("+ ngCart.getTaxRate() + "%)",
+    // for (var i = 0; i < items.length; i++) {
+    //   for (var j = 0; j < tickets.length; j++) {
+    //     if (tickets[j].$id === items[i].parent) {
+    //       updateTicketCount(items, i);
+    //     }
+    //   }
+    // }
+
+function makeTicketObject(items){
+    var ticketObj = {}
+    for (var i = 0; i < items.length; i++) {
+      if (item[i].product_type === 'ticket' && !ticketObj[item[i].parent]){
+        ticketObj[item[i].parent] = item[i].quantity;
+      } else if (item[i].product_type === 'ticket' && ticketObj[item[i].parent]){
+        parseInt(ticketObj[item[i].parent]) += item[i].quantity;
+      }
     }
-  firebase.database().ref('orders/' + orderNumber + '/status').set("complete");
-  firebase.database().ref('orders/' + orderNumber + '/totalItemsPrice').set(resData.charge.amount);
-  firebase.database().ref('orders/' + orderNumber + '/stripeData').set(resData.charge);
-  firebase.database().ref('orders/' + orderNumber + '/tax').set(taxObj);
-  firebase.database().ref('orders/' + orderNumber + '/shipping/shippoData').set(resData.transaction);
+    return ticketObj;
 }
-
-
 
 
 $scope.createCharge = function () {
@@ -521,27 +532,22 @@ $scope.createCharge = function () {
     method: 'POST',
     params: {
       totalAmount: ngCart.totalCost(),
-      tax: ngCart.getTax(),
+      tax: { 
+        amount: ngCart.getTax(),
+        description: "tax: ("+ ngCart.getTaxRate() + "%)"
+      },
       token: $scope.token.id,
       name: $scope.token.card.name,
       cart: angular.toJson(ngCart.getItems()),
-      order: $scope.$storage.orderData,
-      shipChoice: $scope.currentShipping
+      shipChoice: $scope.currentShipping,
+      ticketObj: makeTicketObject(ngCart.getItems())
     }
   }
 
   $http(req).then(function (res) {
     console.log(res);
     $scope.isError = false;
-    for (var i = 0; i < items.length; i++) {
-      for (var j = 0; j < tickets.length; j++) {
-        if (tickets[j].$id === items[i].parent) {
-          updateTicketCount(items, i);
-        }
-      }
-    }
-    console.log("res.data!!!!!!",res.data);
-    orderStatusDone($scope.$storage.orderData.orderNumber, res.data);
+
     if ($scope.$storage.mailingList === true) {
       mailchimpSubmit($scope.$storage.billingAddress.email);
     }

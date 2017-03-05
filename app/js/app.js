@@ -502,11 +502,11 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
     controller: 'StoreConfirmCtrl',
     resolve: {
       "currentAuth": authWait,
-      "AllTickets": function(GetAllTickets){
-        return GetAllTickets().$loaded();
-      },
       "currentOrder": function($http){
         return $http({method: 'GET', url: '/storeAPI/order'})
+      },
+      "currentToken": function($http){
+        return $http({method: 'GET', url: '/storeAPI/token'})
       },
       "shipment": function($http){
         return $http({method: 'GET', url: '/storeAPI/shipment'})
@@ -602,6 +602,16 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
 .filter('centsToDollars', function(){
   return function(val){
     return  val/100;
+  }
+})
+
+.filter('twoDigitTime', function(){
+  return function(val){
+    if (val > 9){
+      return val.toString();
+    } else {
+      return "0" + val.toString();
+    }
   }
 })
 

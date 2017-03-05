@@ -27,7 +27,8 @@ angular.module('ngCart', ['ngCart.directives'])
 
     }])
 
-    .service('ngCart', ['$rootScope', '$location', '$window', 'ngCartItem', 'store', function ($rootScope, $location, $window, ngCartItem, store) {
+    .service('ngCart', ['$rootScope', '$http', '$location', '$state', '$window', 'ngCartItem', 'store', function ($rootScope, $http, $location, $state, $window, ngCartItem, store) {
+        var myTimeout;
 
         this.init = function(){
             this.$cart = {
@@ -38,33 +39,63 @@ angular.module('ngCart', ['ngCart.directives'])
             };
         };
 
-        // this.addItem = function (id, sku, name, price, quantity, data, attr) {
-        //     var inCart = this.getItemBySku(sku);
-
-        //     if (typeof inCart === 'object'){
-        //         //Update quantity of an item if it's already in the cart
-        //         inCart.setQuantity(quantity, false);
-        //         $rootScope.$broadcast('ngCart:itemUpdated', inCart);
-        //     } else {
-        //         var newItem = new ngCartItem(id, sku, name, price, quantity, data);
-        //         console.log("what is new item? ",newItem);
-        //         this.$cart.items.push(newItem);
-        //         $rootScope.$broadcast('ngCart:itemAdded', newItem);
-        //     }
-
-        //     $rootScope.$broadcast('ngCart:change', {});
-        // };
-
         this.addItem = function (id, sku, name, price, quantity, data, attr) {
+            var that = this;
+            var timerAmount = 60000;
             var inCart = this.getItemBySku(sku);
 
             if (typeof inCart === 'object'){
                 //Update quantity of an item if it's already in the cart
+                var diff;
+                var inCartQ = inCart.getQuantity();
+                if (inCart._data.product_type === "ticket"){
+                    diff = quantity - inCartQ;
+                    var data = {
+                        ticketId: inCart.parent,
+                        ticketCount: diff
+                    }
+                    $http.post('/store/changeSessionTicket', data).then(function(){
+                        console.log("success");
+                        clearTimeout(myTimeout);
+                        $rootScope.$broadcast('setTimer', true);
+                        console.log("should be restarting timer");
+                        myTimeout = setTimeout(function(){ 
+                            that.removeTickets();
+                            $rootScope.$broadcast('setTimer', false);
+                        }, timerAmount);
+                        inCart.setQuantity(quantity, false);
+                        $rootScope.$broadcast('ngCart:itemUpdated', inCart);
+                    }, function(err){
+                    // didn't work
+                        console.log(err);
+                        $rootScope.$broadcast('lowCount', {bool: true, originalVal: inCartQ});
+                    });
+
+                } else {
                 inCart.setQuantity(quantity, false);
                 $rootScope.$broadcast('ngCart:itemUpdated', inCart);
+                }
+
             } else {
                 var newItem = new ngCartItem(id, sku, name, price, quantity, data, attr);
-                console.log("what is new item? ",newItem);
+                if (newItem._data.product_type === "ticket"){
+                    console.log("A ticket was added! ",newItem);
+                    var data = {
+                        ticketId: newItem.parent,
+                        ticketCount: newItem.quantity
+                    }
+                    $http.post('/store/addSessionTicket', data).then(function(){
+                    $rootScope.$broadcast('setTimer', true);
+                    myTimeout = setTimeout(function(){ 
+                        that.removeTickets();
+                        $rootScope.$broadcast('setTimer', false);
+                    }, timerAmount);
+                }, function(err){
+                    // didn't work
+                        console.log(err);
+                    });
+          
+                }
                 this.$cart.items.push(newItem);
                 $rootScope.$broadcast('ngCart:itemAdded', newItem);
             }
@@ -199,6 +230,15 @@ angular.module('ngCart', ['ngCart.directives'])
             var shipping = this.getShipping() || 0;
                 total += shipping;
             return parseFloat(total);
+        };
+
+        this.removeTickets = function(){
+            var _self = this;
+            angular.forEach(this.getCart().items, function (item, i) {
+                if (item._data.product_type === "ticket"){
+                    _self.removeItem(i);
+                }
+            });
         };
 
         this.totalCost = function () {

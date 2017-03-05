@@ -22,7 +22,7 @@ app.set('trust proxy', 1) // trust first proxy
 app.use(session({
   // store: new RedisStore(),
   secret: 'keyboard cat',
-  resave: false,
+  resave: true,
   saveUninitialized: true,
   cookie: { secure: false }
 }))

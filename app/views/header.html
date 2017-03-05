@@ -34,7 +34,7 @@
   <div class="four columns right-nav-social-width">
     
     <div class="nav-right">
-     
+      <div ng-if="setTimer" class="timer-div"><span>{{minutes | twoDigitTime}} : {{seconds | twoDigitTime}}</span></div>
       <div style="margin-top: 1.5rem; margin-bottom: 0;" class="social header-social float-right">
         <a href="https://soundcloud.com/sisterstheband" target="_blank"><i class="fa fa-soundcloud fa-lg" aria-hidden="true"></i></a>
         <a href="https://open.spotify.com/artist/2Hb8mc3CoUktri3i4Q4ACR" target="_blank"><i class="fa fa-spotify fa-lg" aria-hidden="true"></i></a>

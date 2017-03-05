@@ -23,22 +23,22 @@
               </div>
               <div class="white-confirm">
                 {{shipping.name}}<br>
-                {{shipping.address1}}<br>
-                <span ng-if="shipping.address2">{{shipping.address2}}<br></span>
-                {{shipping.city}}, <span ng-if="shipping.state">{{shipping.state}}</span> {{shipping.postalCode}}<br>
-                <span country-name country-code="shipping.country.code"></span>
+                {{shipping.address.line1}}<br>
+                <span ng-if="shipping.address2">{{shipping.address.line2}}<br></span>
+                {{shipping.address.city}}, <span ng-if="shipping.state">{{shipping.address.state}}</span> {{shipping.address.postal_code}}<br>
+                <span country-name country-code="shipping.address.country"></span>
             </div>
             </div>
             <div style="margin-top: 15px;" class="store-header-div">
               <h6 class="text-center">Billing Address</h6>
           </div>
           <div class="white-confirm">
-            {{token.card.name}}<br>
-            {{token.card.address_line1}}<br>
-            <span ng-if="token.card.address_line2">{{token.card.address_line2}}<br></span>
-            {{token.card.address_city}}, <span ng-if="token.card.address_state">{{token.card.address_state}}</span> {{token.card.address_zip}}<br>
+            {{billing.name}}<br>
+            {{billing.address.line1}}<br>
+            <span ng-if="token.card.address_line2">{{billing.address.line2}}<br></span>
+            {{billing.address.city}}, <span ng-if="token.card.address_state">{{billing.address.state}}</span> {{billing.address.postal_code}}<br>
             <!-- {{token.card.address_country}} -->
-            <span country-name country-code="token.card.address_country"></span>
+            <span country-name country-code="billing.address.country"></span>
         </div>
         <div style="margin-top: 15px;" class="store-header-div">
           <h6 class="text-center">Payment Details</h6>
@@ -68,7 +68,7 @@
 
                 <thead>
                     <tr>
-                        <th></th>
+                       
                         <th>Item</th>
                         <th>Quantity</th>
                         <th>Amount</th>
@@ -77,9 +77,9 @@
                 </thead>
                   <tbody>
                     <tr ng-repeat="item in ngCart.getCart().items track by $index">
-                        <td></td>
+                      
 
-                        <td>{{ item.getName() }} <span ng-show="item._data.product_type === 'ticket'"> ({{item._data.date | slashDate}})</span></td>
+                        <td>{{ item.getName() }} <span ng-show="item._data.product_type === 'ticket'"> ({{item._data.unix | slashDate}})</span></td>
                         <td>
                             {{ item.getQuantity() | number }}
                         </td>
@@ -89,25 +89,25 @@
                 </tbody>
                 <tfoot>
                       <tr ng-if="shipBool" class="main-cart-row">
-                        <td></td>
-                        <td></td>
+                      
                         <td></td>
                         <td>Shipping ({{currentShipping.servicelevel_name}}) :</td>
+                         <td></td>
                         <td>{{ ngCart.getShipping() | centsToDollars | currency }}</td>
                     </tr>
                     <tr class="main-cart-row">
-                        <td></td>
-                        <td></td>
+                     
                         <td></td>
                         <td>Tax ({{ ngCart.getTaxRate() }}%):</td>
+                        <td></td>
                         <td>{{ ngCart.getTax() | centsToDollars | currency }}</td>
                     </tr>
                   
                     <tr class="main-cart-row">
-                        <td></td>
-                        <td></td>
+                     
                         <td></td>
                         <td>Total:</td>
+                         <td></td>
                         <td>{{ ngCart.totalCost() | centsToDollars | currency }}</td>
                     </tr>
                 </tfoot>

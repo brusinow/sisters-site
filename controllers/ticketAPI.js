@@ -32,25 +32,25 @@ var router = express.Router();
 
 
 router.get("/ticket", function(req, res){
+  console.log("running ticket route!!");
   var id = req.query.id
-  db.ref('tickets/' + id).on("value", function(snapshot) {
+  db.ref('tickets/' + id).once("value", function(snapshot) {
   var ticket = snapshot.val();
+  var ticketsLeft = parseInt(ticket.ticketCapacity) - parseInt(ticket.ticketsSold);
     var ticketData = {
       id: snapshot.key,
       description: ticket.description,
       images: ticket.images,
-      tixAvailable: ticket.totalTickets > 0 ? true : false,
+      tixAvailable: ticketsLeft > 0 ? true : false,
       title: ticket.title,
       subheader: ticket.subheader,
       skus: ticket.skus,
       unix: ticket.unix,
       product_type: ticket.product_type
     }
-    if (ticket.totalTickets < 8){
-      ticketData.tixAvailableCount = ticket.totalTickets;
+    if (ticketsLeft < 8){
+      ticketData.tixAvailableCount = ticketsLeft;
     }
-
-    console.log("what is ticket? ",ticket);
     res.send(ticketData);
   });
 });

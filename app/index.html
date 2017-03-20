@@ -38,7 +38,7 @@
   <link rel="stylesheet" href="/css/buttons.css">
  <link rel="stylesheet" href="/css/style.css">
 </head>
-<body>
+<body flow-prevent-drop flow-drag-enter="dropClass='drag-over'" flow-drag-leave="dropClass=''">
      <div id="mobile-background-div" ng-controller="NavCtrl" style='width:120%; right:-20px; background-image:url("/img/sistersBackgroundSmall.jpg"); background-size:cover; position: fixed; z-index:-10;'></div>
 <div id="wrap">
     <div id="top-of-page"></div>
@@ -92,6 +92,7 @@
 <script src='/components/chart.js/dist/Chart.min.js'></script>
 <script src='/components/angular-chart/angular-chart.min.js'></script>
 <script src='/components/angular-file-saver/dist/angular-file-saver.bundle.js'></script>
+<script src="/components/ng-flow/dist/ng-flow-standalone.min.js"></script>
 <script src="//twemoji.maxcdn.com/twemoji.min.js"></script>
 <script src="/lib/angular-tablesort.js"></script>
 <script src="/lib/angular-fontawesome.min.js"></script>

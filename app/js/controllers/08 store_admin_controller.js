@@ -53,6 +53,34 @@ $scope.goToPage = function(url){
 
 })
 
+.controller('AdminProductsCtrl', function($scope, $state, $http, $timeout, $location, $sessionStorage, Auth){
+
+  var main = document.getElementById("main");
+  main.style.backgroundColor = 'rgba(255,255,255,0)';
+  main.style.width = '';
+  $scope.$emit('loadMainContainer', 'loaded');
+
+  $scope.auth = Auth;
+    $scope.auth.$onAuthStateChanged(function(firebaseUser) {
+    $scope.firebaseUser = firebaseUser;
+    // console.log("firebase user is ",$scope.firebaseUser);
+  });
+
+  $scope.obj = {};
+
+
+$scope.submitImages = function(files, event, flow){
+  console.log("files: ",files);
+  console.log("flow: ",flow);
+}
+
+$scope.testClick = function(){
+  console.log("what is flow? ",$scope.obj);
+}
+
+
+})
+
 
 
 

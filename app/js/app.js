@@ -1,7 +1,7 @@
 var authWait = ["Auth", function(Auth) { return Auth.$waitForSignIn(); }]
 var authRequire = ["Auth", function(Auth) { return Auth.$requireSignIn(); }]
 
-angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui.bootstrap','firebase','angularMoment','ngCart','ngStorage','angularPayments','ngAnimate','picardy.fontawesome','textAngular','ui.router.metatags','angular-parallax','angular-google-analytics', 'tableSort','chart.js','ngFileSaver'])
+angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui.bootstrap','firebase','angularMoment','ngCart','ngStorage','angularPayments','ngAnimate','picardy.fontawesome','textAngular','ui.router.metatags','angular-parallax','angular-google-analytics', 'tableSort','chart.js','ngFileSaver','flow'])
 
 
 
@@ -52,7 +52,19 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
         tableSortConfigProvider.paginationTemplate = pagerString;
    }])
 
-
+.config(['flowFactoryProvider', function (flowFactoryProvider) {
+    flowFactoryProvider.defaults = {
+      target: '',
+      permanentErrors: [500, 501],
+      maxChunkRetries: 1,
+      chunkRetryInterval: 5000,
+      simultaneousUploads: 1
+    };
+    flowFactoryProvider.on('catchAll', function (event) {
+      console.log('catchAll', arguments);
+    });
+    // Can be used with different implementations of Flow.js
+  }])
 
 .config(['$stateProvider', '$urlRouterProvider','$locationProvider','UIRouterMetatagsProvider','$provide','AnalyticsProvider', function($stateProvider, $urlRouterProvider,$locationProvider, UIRouterMetatagsProvider, $provide, AnalyticsProvider){
   UIRouterMetatagsProvider
@@ -126,6 +138,15 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
       }    
     },
     activetab: 2
+  })
+  .state('admin.products', {
+    url: '/admin/products',
+    templateUrl: '/views/admin/adminProducts.html',
+    controller: 'AdminProductsCtrl',
+    resolve: {
+      "currentAuth": authRequire
+    },
+    activetab: 3
   })
 
    .state('admin.ticketEach', {

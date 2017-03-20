@@ -1,0 +1,76 @@
+<div class="row">
+  <div class="eight columns">
+    <div class="panel panel-default">
+      <div class="panel-body">
+          <label for="product-name">Product Name</label>
+          <input class="u-full-width" type="text" placeholder="Red T-Shirt" name="product-name">
+          <label for="product-description">Description</label>
+          <text-angular name="product-description" id="new-blog-textarea" ta-toolbar="[['h1','h2','h3'],['bold','italics','underline'],['insertLink', 'wordcount', 'charcount','html']]" ng-model="post.postBody"></text-angular>
+      </div>
+    </div>
+    <div class="panel panel-default">
+      <div class="panel-body">
+
+        <label for="image-upload">Product Images</label>
+       <div flow-init
+       flow-drop
+       flow-name="obj.flow"
+     flow-files-submitted="$flow.upload()"
+     flow-file-added="!!{png:1,gif:1,jpg:1,jpeg:1}[$file.getExtension()]">
+  <div class="drop" ng-class="dropClass">
+    <span class="btn btn-default" flow-btn>Upload Image</span>
+    <span class="btn btn-default" flow-btn flow-directory ng-show="$flow.supportDirectory">Upload Folder of Images</span>
+    <b>OR</b>
+    Drag And Drop your images here
+  </div>
+
+  <br/>
+
+  <div>
+
+    <div ng-repeat="file in $flow.files" class="gallery-box">
+      <span class="title">{{file.name}}</span>
+      <div class="thumbnail" ng-show="$flow.files.length">
+        <img flow-img="file" />
+      </div>
+      <div class="progress progress-striped" ng-class="{active: file.isUploading()}">
+        <div class="progress-bar" role="progressbar"
+             aria-valuenow="{{file.progress() * 100}}"
+             aria-valuemin="0"
+             aria-valuemax="100"
+             ng-style="{width: (file.progress() * 100) + '%'}">
+          <span class="sr-only">{{file.progress()}}% Complete</span>
+        </div>
+      </div>
+      <div class="btn-group">
+        <a class="btn btn-xs btn-danger" ng-click="file.cancel()">
+          Remove
+        </a>
+      </div>
+    </div>
+    <div class="clear"></div>
+  </div>
+
+</div>
+
+
+
+
+
+      </div>
+    </div>
+  </div>
+
+  <div class="four columns">
+    <div class="panel panel-default">
+      <div class="panel-body">
+        <button ng-click="testClick()">Test click?</button>
+      </div>
+    </div>
+    <div class="panel panel-default">
+      <div class="panel-body">
+        Basic panel example
+      </div>
+    </div>
+  </div>
+</div>

@@ -149,6 +149,16 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
     activetab: 3
   })
 
+  .state('admin.products-add', {
+    url: '/admin/products/add',
+    templateUrl: '/views/admin/adminProductsAdd.html',
+    controller: 'AdminProductsAddCtrl',
+    resolve: {
+      "currentAuth": authRequire
+    },
+    activetab: 3
+  })
+
    .state('admin.ticketEach', {
     url: '/admin/tickets/:id',
     templateUrl: '/views/admin/adminTicketEach.html',
@@ -427,14 +437,6 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
     }
   })
 
-  .state('addProduct', {
-    url: '/store/add',
-    templateUrl: '/views/store/addProduct.html',
-    controller: 'StoreProductAddCtrl',
-    resolve: {
-      "currentAuth": authRequire
-    }
-  })
 
 
 

@@ -1,0 +1,103 @@
+<div class="row">
+  <div class="eight columns">
+    <div class="panel panel-default">
+      <div class="panel-body">
+          <label for="product-name">Product Name</label>
+          <input class="u-full-width" type="text" placeholder="Red T-Shirt" name="product-name">
+          <label for="product-description">Description</label>
+          <text-angular name="product-description" id="new-blog-textarea" ta-toolbar="[['h1','h2','h3'],['bold','italics','underline'],['insertLink', 'wordcount', 'charcount','html']]" ng-model="post.postBody"></text-angular>
+      </div>
+    </div>
+    <div class="panel panel-default">
+      <div class="panel-body">
+
+        <label for="image-upload">Product Images</label>
+       <div flow-init
+       flow-drop
+       flow-name="obj.flow"
+     flow-files-submitted="$flow.upload()"
+     flow-file-added="!!{png:1,gif:1,jpg:1,jpeg:1}[$file.getExtension()]">
+  <div class="drop" ng-class="dropClass">
+    <span class="btn btn-default" flow-btn>Upload Image</span>
+    <span class="btn btn-default" flow-btn flow-directory ng-show="$flow.supportDirectory">Upload Folder of Images</span>
+    <b>OR</b>
+    Drag And Drop your images here
+  </div>
+
+  <br/>
+
+  <div>
+
+    <div ng-repeat="file in $flow.files" class="gallery-box">
+      <span class="title">{{file.name}}</span>
+      <div class="thumbnail" ng-show="$flow.files.length">
+        <img flow-img="file" />
+      </div>
+      <div class="progress progress-striped" ng-class="{active: file.isUploading()}">
+        <div class="progress-bar" role="progressbar"
+             aria-valuenow="{{file.progress() * 100}}"
+             aria-valuemin="0"
+             aria-valuemax="100"
+             ng-style="{width: (file.progress() * 100) + '%'}">
+          <span class="sr-only">{{file.progress()}}% Complete</span>
+        </div>
+      </div>
+      <div class="btn-group">
+        <a class="btn btn-xs btn-danger" ng-click="file.cancel()">
+          Remove
+        </a>
+      </div>
+    </div>
+    <div class="clear"></div>
+  </div>
+
+</div>
+
+
+
+
+
+      </div>
+    </div>
+  </div>
+
+  <div class="four columns">
+    <div class="panel panel-default">
+      <div class="panel-body">
+        <p>Does this product include variants?</p>
+        <form name="myForm">
+          <label>
+            <input type="radio" ng-model="variant.bool" ng-value="false">
+            No
+          </label><br/>
+          <label>
+            <input type="radio" ng-model="variant.bool" ng-value="true">
+            Yes
+          </label><br/>
+          <label>
+        </form>
+      </div>
+    </div>
+    <div ng-if="variant.bool === true" class="panel panel-default">
+      <div class="panel-body">
+        <button ng-click="addVariant()">Add Variant</button>
+        <table style="margin-top: 10px;" id="variant-table" class="table table-bordered">
+          <tr ng-if="variant.array.length > 0">
+            <th>Variant Name</th>
+            <th>Price</th>
+            <th></th>
+          </tr>
+          <tr ng-repeat="thisVariant in variant.array">
+            <td><input class="variant-input" type="text" placeholder="Variant Name (ie: Large)" ng-model="thisVariant.variantName"></td>
+            <td style="max-width: 40px;"><input class="variant-input" type="text" placeholder="10.99" ng-model="thisVariant.price"></td>
+            <td style="min-width: 70px; padding: 4px; text-align: center; cursor: pointer;">
+              <i class="variant-controls fa fa-arrow-up" aria-hidden="true"></i>
+              <i class="variant-controls fa fa-arrow-down" aria-hidden="true"></i>
+              <i class="variant-controls fa fa-trash-o" aria-hidden="true"></i>
+            </td>
+          </tr>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>

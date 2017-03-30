@@ -96,6 +96,8 @@ h4 {
     background-color: #f9d9e2;
 }
 
+
+
 .admin-body {
   padding: 10px;
 }
@@ -168,15 +170,46 @@ h4 {
     word-break: normal;
 }
 
-/*.drop {
+.drop {
     padding: 15px;
     border: 2px #999 dashed;
     border-radius: 5px;
     line-height: 34px;
 }
 .drop.drag-over {
-    background: rgba(223, 130, 157, .1);
-}*/
+    background: rgba(247, 173, 194, .1);
+}
+
+#variant-table {
+  width: 100%;
+}
+
+.table-bordered {
+  border: none;
+}
+
+#variant-table td{
+  padding: 0;
+}
+
+#variant-table th{
+  border: none;
+}
+
+
+.variant-input, .variant-input:focus, .variant-input:active, .variant-input:visited {
+  border: none !important;
+  margin-bottom: none !important;
+  width: 100%;
+}
+
+.variant-controls {
+  margin: 0 2px;
+}
+
+i.variant-controls:hover{
+  color:pink;
+}
 
 .admin-nav-btn {
   background-color: rgb(248, 145, 175); 

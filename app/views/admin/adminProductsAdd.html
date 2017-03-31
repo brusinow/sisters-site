@@ -91,13 +91,14 @@
             <td><input class="variant-input" type="text" placeholder="Variant Name (ie: Large)" ng-model="thisVariant.variantName"></td>
             <td style="max-width: 40px;"><input class="variant-input" type="text" placeholder="10.99" ng-model="thisVariant.price"></td>
             <td style="min-width: 70px; padding: 4px; text-align: center; cursor: pointer;">
-              <i class="variant-controls fa fa-arrow-up" aria-hidden="true"></i>
-              <i class="variant-controls fa fa-arrow-down" aria-hidden="true"></i>
-              <i class="variant-controls fa fa-trash-o" aria-hidden="true"></i>
+              <i ng-click="variantUp($index)" class="variant-controls fa fa-arrow-up" aria-hidden="true"></i>
+              <i ng-click="variantDown($index)" class="variant-controls fa fa-arrow-down" aria-hidden="true"></i>
+              <i ng-click="deleteVariant($index)" class="variant-controls fa fa-trash-o" aria-hidden="true"></i>
             </td>
           </tr>
         </table>
       </div>
     </div>
+    <button ng-click="submit()" class="btn btn-flat-pink">Submit</button>
   </div>
 </div>

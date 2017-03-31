@@ -102,14 +102,37 @@ $scope.goToPage = function(url){
     $scope.variant.array.push(newObj);
   }
 
+  $scope.deleteVariant = function(index){
+    $scope.variant.array.splice(index, 1);
+  }
 
-$scope.submitImages = function(files, event, flow){
+  $scope.variantUp = function(index){
+    if (index > 0){
+      var temp = $scope.variant.array[index];
+      $scope.variant.array[index] = $scope.variant.array[index - 1];
+      $scope.variant.array[index - 1] = temp;
+    }
+  }
+
+  $scope.variantDown = function(index){
+    if (index < $scope.variant.array.length - 1){
+      var temp = $scope.variant.array[index];
+      $scope.variant.array[index] = $scope.variant.array[index + 1];
+      $scope.variant.array[index + 1] = temp;
+    }
+  }
+
+
+var submitImages = function(files){
   console.log("files: ",files);
-  console.log("flow: ",flow);
 }
 
 $scope.testClick = function(){
   console.log("what is flow? ",$scope.obj);
+}
+
+$scope.submit = function(){
+  submitImages($scope.obj.flow);
 }
 
 

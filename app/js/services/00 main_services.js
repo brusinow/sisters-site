@@ -210,30 +210,65 @@ angular.module('SistersServices', ['ngResource'])
       var deferred = $q.defer();
       var loadIMG = new Image;
       loadIMG.src = window.URL.createObjectURL(img);;
-      loadIMG.onload = function(){
-       console.log(this.width + " " + this.height);
-       var aspectRatio = loadIMG.width / loadIMG.height;
-       console.log("WHAT IS RATIO??? ",aspectRatio);
-       
-        if (loadIMG.height < 1000 || loadIMG.width < 1000){
-          deferred.reject("Not all images are at least 1000px x 1000px. Please double check and try again."); 
-        } else if (aspectRatio !== 1){
-          deferred.reject("Please upload only square images."); 
+        loadIMG.onload = function(){
+        console.log(this.width + " " + this.height);
+        var aspectRatio = loadIMG.width / loadIMG.height;
+        console.log("WHAT IS RATIO??? ",aspectRatio);
+        
+          if (loadIMG.height < 1000 || loadIMG.width < 1000){
+            deferred.reject("Not all images are at least 1000px x 1000px. Please double check and try again."); 
+          } else if (aspectRatio !== 1){
+            deferred.reject("Please upload only square images."); 
+          } else {
+            var canvas = document.createElement('canvas');
+            canvas.height = 1000;
+            canvas.width = 1000;
+            var ctx = canvas.getContext("2d");
+            ctx.drawImage(loadIMG, 0, 0, canvas.width, canvas.height);
+            var resizedResult = canvas.toDataURL("image/jpeg");
+            var base64result = HelperService.getBase64Image(resizedResult);
+            var file = HelperService.b64toBlob(base64result, "image/jpeg");
+            deferred.resolve(file);  
+          }
+        }      
+        console.log("right before return for resize: ",deferred.promise);
+        return deferred.promise; 
+      },
+      imgResizeBlog: function (img) {
+      console.log("what is img? ",img);
+      var deferred = $q.defer();
+      var loadIMG = new Image;
+      loadIMG.src = window.URL.createObjectURL(img);;
+        loadIMG.onload = function(){
+        console.log(this.width + " " + this.height);
+        var aspectRatio = loadIMG.width / loadIMG.height;
+        console.log("WHAT IS RATIO??? ",aspectRatio);
+        var canvas = document.createElement('canvas');
+        if (aspectRatio >= 1.776 && loadIMG.height >= 500){
+          console.log("loadIMG: ",loadIMG);
+          var percentChange = (loadIMG.height - 500) / loadIMG.height;
+          canvas.height = 500;
+          canvas.width = loadIMG.width - (loadIMG.width * percentChange);
+        
+        } else if (aspectRatio < 1.776 && loadIMG.width >= 889){
+          console.log("loadIMG: ",loadIMG);
+          var percentChange = (loadIMG.width - 889) / loadIMG.width;
+          canvas.width = 889;
+          canvas.height = loadIMG.height - (loadIMG.height * percentChange);
+          
         } else {
-          var canvas = document.createElement('canvas');
-          canvas.height = 1000;
-          canvas.width = 1000;
+          deferred.reject("This image does not have a high enough resolution (Minimum size: 889px x 500px)");
+        }
           var ctx = canvas.getContext("2d");
           ctx.drawImage(loadIMG, 0, 0, canvas.width, canvas.height);
           var resizedResult = canvas.toDataURL("image/jpeg");
           var base64result = HelperService.getBase64Image(resizedResult);
           var file = HelperService.b64toBlob(base64result, "image/jpeg");
           deferred.resolve(file);  
-        }
-      }      
-    console.log("right before return for resize: ",deferred.promise);
-    return deferred.promise; 
-  }
+          
+        }      
+        return deferred.promise; 
+      }
   }
 }])
 
@@ -247,7 +282,6 @@ angular.module('SistersServices', ['ngResource'])
         urlPath = 'blog-images/';
       }     
       var promises = imageObject.map(function(obj){
-        console.log("obj: ",obj);
         var deferred = $q.defer();  
           ImageResizeFactory.imgResizeSquare(obj.file).then(function(newImg){
             var photoId = obj.file.name;
@@ -256,13 +290,12 @@ angular.module('SistersServices', ['ngResource'])
             var fbStorage = $firebaseStorage(storageRef);
             uploadTask = fbStorage.$put(newImg);
             uploadTask.$complete(function(snapshot) {
-            var downloadURL = snapshot.downloadURL;
-            deferred.resolve(downloadURL);
-          }); 
-        }), function(reason){
-          console.log("reason: ",reason);
-          alert(reason);
-        }   
+              var downloadURL = snapshot.downloadURL;
+              deferred.resolve(downloadURL);
+            }); 
+          }, function(reason){
+            alert(reason);
+          })  
  
         return deferred.promise; 
       })
@@ -276,52 +309,52 @@ angular.module('SistersServices', ['ngResource'])
 
 
 
-.factory('SubmitBlogImage', ["HelperService", function(HelperService) {
-  return function(post, postArray, image, callback){
-    HelperService.imgResizeBlog(image).then(function(newImage){
-    var mime = HelperService.base64MimeType(newImage);
-    var base64result = HelperService.getBase64Image(newImage)
-    var file = HelperService.b64toBlob(base64result, mime)
-    var metadata = {
-    contentType: mime
-    };
-    var photoId = (Math.random()*1e32).toString(36);
-    var storageRef = firebase.storage().ref();
-    var uploadTask = storageRef.child('blog-images/' + photoId).put(file, metadata);
-    uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, // or 'state_changed'
-    function(snapshot) {
-      // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
-      var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-      console.log('Upload is ' + progress + '% done');
-      switch (snapshot.state) {
-        case firebase.storage.TaskState.PAUSED: // or 'paused'
-          console.log('Upload is paused');
-          break;
-        case firebase.storage.TaskState.RUNNING: // or 'running'
-          console.log('Upload is running');
-          break;
-      }
-    }, function(error) {
-    switch (error.code) {
-      case 'storage/unauthorized':
-        break;
-      case 'storage/canceled':
-        // User canceled the upload
-        break;
-      case 'storage/unknown':
-        // Unknown error occurred, inspect error.serverResponse
-        break;
-    }
-  }, function() {
-    console.log("upload finished")
-    var downloadURL = uploadTask.snapshot.downloadURL;
-    callback(post, postArray, downloadURL, null);
-  });
-    })
+// .factory('SubmitBlogImage', ["HelperService", function(HelperService) {
+//   return function(post, postArray, image, callback){
+//     HelperService.imgResizeBlog(image).then(function(newImage){
+//     var mime = HelperService.base64MimeType(newImage);
+//     var base64result = HelperService.getBase64Image(newImage)
+//     var file = HelperService.b64toBlob(base64result, mime)
+//     var metadata = {
+//     contentType: mime
+//     };
+//     var photoId = (Math.random()*1e32).toString(36);
+//     var storageRef = firebase.storage().ref();
+//     var uploadTask = storageRef.child('blog-images/' + photoId).put(file, metadata);
+//     uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, // or 'state_changed'
+//     function(snapshot) {
+//       // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
+//       var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+//       console.log('Upload is ' + progress + '% done');
+//       switch (snapshot.state) {
+//         case firebase.storage.TaskState.PAUSED: // or 'paused'
+//           console.log('Upload is paused');
+//           break;
+//         case firebase.storage.TaskState.RUNNING: // or 'running'
+//           console.log('Upload is running');
+//           break;
+//       }
+//     }, function(error) {
+//     switch (error.code) {
+//       case 'storage/unauthorized':
+//         break;
+//       case 'storage/canceled':
+//         // User canceled the upload
+//         break;
+//       case 'storage/unknown':
+//         // Unknown error occurred, inspect error.serverResponse
+//         break;
+//     }
+//   }, function() {
+//     console.log("upload finished")
+//     var downloadURL = uploadTask.snapshot.downloadURL;
+//     callback(post, postArray, downloadURL, null);
+//   });
+//     })
     
-  }
+//   }
 
-}])
+// }])
 
 
 

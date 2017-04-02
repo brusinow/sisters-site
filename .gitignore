@@ -8,4 +8,5 @@ node_modules
 app/components
 .DS_Store
 sisters-site-creds.json
+sisters-site-test-creds.json
 .ebextensions

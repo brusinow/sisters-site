@@ -188,6 +188,10 @@ h4 {
   border: none;
 }
 
+.gallery-box span {
+  font-size: .8em;
+}
+
 #variant-table td{
   padding: 0;
 }

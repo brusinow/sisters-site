@@ -8,7 +8,7 @@ angular.module('SistersCtrls')
   main.style.padding = '0';
   $scope.$emit('loadMainContainer', 'loaded');
   $scope.auth = Auth;
-    $scope.auth.$onAuthStateChanged(function(firebaseUser) {
+  $scope.auth.$onAuthStateChanged(function(firebaseUser) {
     $scope.firebaseUser = firebaseUser;
     // console.log("firebase user is ",$scope.firebaseUser);
   });
@@ -74,8 +74,9 @@ $scope.goToPage = function(url){
 
 })
 
-.controller('AdminProductsAddCtrl', function($scope, $state, $http, $timeout, $location, $sessionStorage, Auth){
+.controller('AdminProductsAddCtrl', function($scope, $state, $http, $timeout, $location, $sessionStorage, Auth, StoreCurrent, UploadImages){
 
+  // StoreCurrent.product();
   var main = document.getElementById("main");
   main.style.backgroundColor = 'rgba(255,255,255,0)';
   main.style.width = '';
@@ -132,7 +133,12 @@ $scope.testClick = function(){
 }
 
 $scope.submit = function(){
-  submitImages($scope.obj.flow);
+  StoreCurrent.product().then(function(productId){
+    UploadImages($scope.obj.flow.files, "store", productId).then(function(links){
+      console.log("we have links!: ",links);
+    });
+  })
+  
 }
 
 

@@ -2,7 +2,7 @@ angular.module('SistersCtrls')
 
 
 
-.controller('NewBlogCtrl', ['$scope', '$state','$http','Auth','BlogPosts','AllTags','HelperService','SubmitImage','moment', function($scope, $state, $http, Auth, BlogPosts, AllTags, HelperService, SubmitImage, moment){
+.controller('NewBlogCtrl', ['$scope', '$state','$http','Auth','BlogPosts','AllTags','HelperService','SubmitBlogImage','moment', function($scope, $state, $http, Auth, BlogPosts, AllTags, HelperService, SubmitBlogImage, moment){
   var main = document.getElementById("main");
   main.style.backgroundColor = 'rgba(0,0,0,0)';
   $scope.$emit('loadMainContainer', 'loaded');
@@ -17,12 +17,9 @@ angular.module('SistersCtrls')
   }
 
   $scope.submit = function(){
-    console.log("submit clicked");
-    console.log("what is post? ",$scope.post);
     var test = document.getElementById("new-blog-textarea").innerText;
-    console.log("what is the inner text of the textarea? ",test);
     if ($scope.data.mediaSelect === 'image'){
-      SubmitImage($scope.post, $scope.BlogPosts, $scope.data.image, addPost);
+      SubmitBlogImage($scope.post, $scope.BlogPosts, $scope.data.image, addPost);
     } else if ($scope.data.mediaSelect === 'youtube'){
       $scope.data.youtube = HelperService.parseYouTube($scope.data.youtube);
       addPost($scope.post, $scope.BlogPosts, null, $scope.data.youtube);
@@ -86,7 +83,7 @@ angular.module('SistersCtrls')
   }
 }])
 
-.controller('EditBlogCtrl', ['$scope', '$state', '$timeout', '$stateParams','SendDataService','AllTags','thisPost','HelperService','SubmitImage','$uibModal','$log','BlogPosts', function($scope, $state, $timeout, $stateParams, SendDataService, AllTags, thisPost, HelperService, SubmitImage, $uibModal, $log, BlogPosts){
+.controller('EditBlogCtrl', ['$scope', '$state', '$timeout', '$stateParams','SendDataService','AllTags','thisPost','HelperService','SubmitBlogImage','$uibModal','$log','BlogPosts', function($scope, $state, $timeout, $stateParams, SendDataService, AllTags, thisPost, HelperService, SubmitBlogImage, $uibModal, $log, BlogPosts){
   var main = document.getElementById("main");
   main.style.backgroundColor = 'rgba(0,0,0,0)';
   $scope.$emit('loadMainContainer', 'loaded');
@@ -148,7 +145,7 @@ angular.module('SistersCtrls')
 
   $scope.submit = function(){
     if ($scope.data.mediaSelect === 'image' && $scope.data.image){
-      SubmitImage($scope.post, $scope.postArray, $scope.data.image, updatePost);
+      SubmitBlogImage($scope.post, $scope.postArray, $scope.data.image, updatePost);
     } else if ($scope.data.mediaSelect === 'image' && !$scope.data.image){
       updatePost($scope.post, $scope.BlogPosts, $scope.post.img, null);
     } else if ($scope.data.mediaSelect === 'youtube'){

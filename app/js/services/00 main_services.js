@@ -51,6 +51,44 @@ angular.module('SistersServices', ['ngResource'])
  }
 })
 
+.factory("StoreCurrent", ["$q", function($q){
+  return {
+    product: function(){
+    var deferred = $q.defer();
+    var productIdRef = firebase.database().ref('saved_values/lastProduct');
+    productIdRef.once('value').then(function(snapshot) {
+      var id = snapshot.val();
+      var num = parseInt(id.slice(4));
+      var newNumString = (num + 1).toString();
+      while (newNumString.length < 4){
+        newNumString = "0" + newNumString;
+      }
+      newNumString = "prod" + newNumString;
+      productIdRef.set(newNumString);
+      console.log("new num string: ",newNumString);
+      deferred.resolve(newNumString);     
+    });
+    return deferred.promise;
+    },
+    sku: function(){
+    var deferred = $q.defer();
+    var skuRef = firebase.database().ref('saved_values/lastSku');
+    skuRef.once('value').then(function(snapshot) {
+      var id = snapshot.val();
+      var num = parseInt(id.slice(3));
+      var newNumString = (num + 1).toString();
+      while (newNumString.length < 4){
+        newNumString = "0" + newNumString;
+      }
+      newNumString = "sku" + newNumString;
+      skuRef.set(newNumString);
+      deferred.resolve(newNumString);    
+    });
+    return deferred.promise;
+    }
+  }
+}])
+
 
 .factory('HelperService', ["moment","$q", function(moment, $q) {
   return {
@@ -129,7 +167,7 @@ angular.module('SistersServices', ['ngResource'])
       var complete = date + "_" + text;
       return complete;
     },
-    imgResize: function (img) {
+    imgResizeBlog: function (img) {
       console.log("inside resize!!");
     var deferred = $q.defer();
     var loadIMG = new Image;
@@ -161,18 +199,87 @@ angular.module('SistersServices', ['ngResource'])
         deferred.resolve(resizedResult);   
     }
     return deferred.promise; 
-    }
+  }
   } 
+}])
+
+.factory('ImageResizeFactory', ["HelperService", "$q", function(HelperService, $q){
+  return {
+      imgResizeSquare: function (img) {
+      console.log("what is img? ",img);
+      var deferred = $q.defer();
+      var loadIMG = new Image;
+      loadIMG.src = window.URL.createObjectURL(img);;
+      loadIMG.onload = function(){
+       console.log(this.width + " " + this.height);
+       var aspectRatio = loadIMG.width / loadIMG.height;
+       console.log("WHAT IS RATIO??? ",aspectRatio);
+       
+        if (loadIMG.height < 1000 || loadIMG.width < 1000){
+          deferred.reject("Not all images are at least 1000px x 1000px. Please double check and try again."); 
+        } else if (aspectRatio !== 1){
+          deferred.reject("Please upload only square images."); 
+        } else {
+          var canvas = document.createElement('canvas');
+          canvas.height = 1000;
+          canvas.width = 1000;
+          var ctx = canvas.getContext("2d");
+          ctx.drawImage(loadIMG, 0, 0, canvas.width, canvas.height);
+          var resizedResult = canvas.toDataURL("image/jpeg");
+          var base64result = HelperService.getBase64Image(resizedResult);
+          var file = HelperService.b64toBlob(base64result, "image/jpeg");
+          deferred.resolve(file);  
+        }
+      }      
+    console.log("right before return for resize: ",deferred.promise);
+    return deferred.promise; 
+  }
+  }
+}])
+
+.factory('UploadImages', ["ImageResizeFactory", '$q','$firebaseStorage', function(ImageResizeFactory, $q, $firebaseStorage){
+  return function(imageObject, type, identifier){
+    var urlPath;
+    var uploadTask;
+      if (type === "store"){
+        urlPath = 'store-images/' + identifier + '/';
+      } else if (type === "blog"){
+        urlPath = 'blog-images/';
+      }     
+      var promises = imageObject.map(function(obj){
+        console.log("obj: ",obj);
+        var deferred = $q.defer();  
+          ImageResizeFactory.imgResizeSquare(obj.file).then(function(newImg){
+            var photoId = obj.file.name;
+            var fullPath = urlPath + photoId;
+            var storageRef = firebase.storage().ref(fullPath);
+            var fbStorage = $firebaseStorage(storageRef);
+            uploadTask = fbStorage.$put(newImg);
+            uploadTask.$complete(function(snapshot) {
+            var downloadURL = snapshot.downloadURL;
+            deferred.resolve(downloadURL);
+          }); 
+        }), function(reason){
+          console.log("reason: ",reason);
+          alert(reason);
+        }   
+ 
+        return deferred.promise; 
+      })
+              
+    return $q.all(promises);
+  }
 }])
 
 
 
 
-.factory('SubmitImage', ["HelperService", function(HelperService) {
+
+
+.factory('SubmitBlogImage', ["HelperService", function(HelperService) {
   return function(post, postArray, image, callback){
-    HelperService.imgResize(image).then(function(newImage){
-      var mime = HelperService.base64MimeType(newImage);
-    console.log("TYPE IS ",mime);
+    HelperService.imgResizeBlog(image).then(function(newImage){
+    var mime = HelperService.base64MimeType(newImage);
     var base64result = HelperService.getBase64Image(newImage)
     var file = HelperService.b64toBlob(base64result, mime)
     var metadata = {

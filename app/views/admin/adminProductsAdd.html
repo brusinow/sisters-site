@@ -3,9 +3,9 @@
     <div class="panel panel-default">
       <div class="panel-body">
           <label for="product-name">Product Name</label>
-          <input class="u-full-width" type="text" placeholder="Red T-Shirt" name="product-name">
+          <input class="u-full-width" type="text" placeholder="Red T-Shirt" name="product-name" ng-model="product.title">
           <label for="product-description">Description</label>
-          <text-angular name="product-description" id="new-blog-textarea" ta-toolbar="[['h1','h2','h3'],['bold','italics','underline'],['insertLink', 'wordcount', 'charcount','html']]" ng-model="post.postBody"></text-angular>
+          <text-angular name="product-description" id="new-blog-textarea" ta-toolbar="[['h1','h2','h3'],['bold','italics','underline'],['insertLink', 'wordcount', 'charcount','html']]" ng-model="product.description"></text-angular>
       </div>
     </div>
     <div class="panel panel-default">
@@ -64,32 +64,73 @@
   <div class="four columns">
     <div class="panel panel-default">
       <div class="panel-body">
-        <p>Does this product include variants?</p>
-        <form name="myForm">
+        <h5>Should this product be active?</h5>
           <label>
-            <input type="radio" ng-model="variant.bool" ng-value="false">
+            <input type="radio" ng-model="product.active" ng-value="false">
             No
           </label><br/>
           <label>
-            <input type="radio" ng-model="variant.bool" ng-value="true">
+            <input type="radio" ng-model="product.active" ng-value="true">
             Yes
           </label><br/>
           <label>
-        </form>
       </div>
     </div>
-    <div ng-if="variant.bool === true" class="panel panel-default">
+    <div class="panel panel-default">
       <div class="panel-body">
+        <h5>Is this product shippable?</h5>
+          <label>
+            <input type="radio" ng-model="product.shippable" ng-value="false">
+            No
+          </label><br/>
+          <label>
+            <input type="radio" ng-model="product.shippable" ng-value="true">
+            Yes
+          </label>       
+          <div ng-if="product.shippable === true">
+             <hr>
+          <label>
+            Weight (oz):
+            <input type="number" ng-model="product.shipping.weight">         
+          </label><br/>
+          <label>
+            Length (in):
+            <input type="number" ng-model="product.shipping.length">         
+          </label>
+          <label>
+            Width (in):
+            <input type="number" ng-model="product.shipping.width">         
+          </label>
+          <label>
+            Height (in):
+            <input type="number" ng-model="product.shipping.height">         
+          </label>
+      </div>
+      </div>
+    </div>
+    <div class="panel panel-default">
+      <div class="panel-body">
+        <h5>Does this product include variants?</h5>
+          <label>
+            <input type="radio" ng-model="product.variant.bool" ng-value="false">
+            No
+          </label><br/>
+          <label>
+            <input type="radio" ng-model="product.variant.bool" ng-value="true">
+            Yes
+          </label><br/>
+        <div ng-if="product.variant.bool === true">
+          <hr>
         <button ng-click="addVariant()">Add Variant</button>
         <table style="margin-top: 10px;" id="variant-table" class="table table-bordered">
-          <tr ng-if="variant.array.length > 0">
+          <tr ng-if="product.variant.bool === true">
             <th>Variant Name</th>
             <th>Price</th>
             <th></th>
           </tr>
-          <tr ng-repeat="thisVariant in variant.array">
+          <tr ng-repeat="thisVariant in product.variant.skus">
             <td><input class="variant-input" type="text" placeholder="Variant Name (ie: Large)" ng-model="thisVariant.variantName"></td>
-            <td style="max-width: 40px;"><input class="variant-input" type="text" placeholder="10.99" ng-model="thisVariant.price"></td>
+            <td style="max-width: 40px;"><input class="variant-input" type="text" placeholder="10.99" cents-to-dollars ng-model="thisVariant.price"></td>
             <td style="min-width: 70px; padding: 4px; text-align: center; cursor: pointer;">
               <i ng-click="variantUp($index)" class="variant-controls fa fa-arrow-up" aria-hidden="true"></i>
               <i ng-click="variantDown($index)" class="variant-controls fa fa-arrow-down" aria-hidden="true"></i>
@@ -97,8 +138,10 @@
             </td>
           </tr>
         </table>
+    </div>
       </div>
     </div>
+
     <button ng-click="submit()" class="btn btn-flat-pink">Submit</button>
   </div>
 </div>

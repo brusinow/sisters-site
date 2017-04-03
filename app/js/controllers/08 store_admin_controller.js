@@ -74,7 +74,7 @@ $scope.goToPage = function(url){
 
 })
 
-.controller('AdminProductsAddCtrl', function($scope, $state, $http, $timeout, $location, $sessionStorage, Auth, StoreCurrent, UploadImages){
+.controller('AdminProductsAddCtrl', function($scope, $state, $http, $timeout, $location, $sessionStorage, Auth, ProdSkuFactory, UploadImages, HelperService){
 
   // StoreCurrent.product();
   var main = document.getElementById("main");
@@ -89,53 +89,93 @@ $scope.goToPage = function(url){
   });
 
   $scope.obj = {};
+  $scope.product = {
+    variant: {
+      bool: false,
+      skus: []
+    },
+    shippable: false,
+    active: true
+  };
 
-  $scope.variant = {
-    bool: false,
-    array: []
-  }
 
   $scope.addVariant = function(){
     var newObj = {
       "variantName": "",
       "price": ""
     }
-    $scope.variant.array.push(newObj);
+    $scope.product.variant.skus.push(newObj);
   }
 
   $scope.deleteVariant = function(index){
-    $scope.variant.array.splice(index, 1);
+    $scope.product.variant.skus.splice(index, 1);
   }
 
   $scope.variantUp = function(index){
     if (index > 0){
-      var temp = $scope.variant.array[index];
-      $scope.variant.array[index] = $scope.variant.array[index - 1];
-      $scope.variant.array[index - 1] = temp;
+      var temp = $scope.product.variant.skus[index];
+      $scope.product.variant.skus[index] = $scope.product.variant.skus[index - 1];
+      $scope.product.variant.skus[index - 1] = temp;
     }
   }
 
   $scope.variantDown = function(index){
-    if (index < $scope.variant.array.length - 1){
-      var temp = $scope.variant.array[index];
-      $scope.variant.array[index] = $scope.variant.array[index + 1];
-      $scope.variant.array[index + 1] = temp;
+    if (index < $scope.product.variant.skus.length - 1){
+      var temp = $scope.product.variant.skus[index];
+      $scope.product.variant.skus[index] = $scope.product.variant.skus[index + 1];
+      $scope.product.variant.skus[index + 1] = temp;
     }
   }
 
 
-var submitImages = function(files){
-  console.log("files: ",files);
-}
-
-$scope.testClick = function(){
-  console.log("what is flow? ",$scope.obj);
-}
-
 $scope.submit = function(){
-  StoreCurrent.product().then(function(productId){
+  ProdSkuFactory.get("prod").then(function(id){
+    var productId = HelperService.idGenerator(id, "prod");
     UploadImages($scope.obj.flow.files, "store", productId).then(function(links){
-      console.log("we have links!: ",links);
+      $scope.product.images = links;
+      $scope.product.id = productId;
+      var skus = {};
+      ProdSkuFactory.get("sku").then(function(skuResult){
+        var skuNum = skuResult;
+        if ($scope.product.variant.skus.length > 0){            
+        var array = $scope.product.variant.skus;
+        for (var i = 0; i < array.length; i++){
+          console.log("current variant: ",array[i].variantName); 
+            var currentSku = HelperService.idGenerator(skuNum, "sku");  
+            console.log("currentSku: ",currentSku);   
+            var data = {
+              "variantName": array[i].variantName,
+              "price": array[i].price,
+              "parentId": productId,
+              "id": currentSku
+            }
+            skus[currentSku] = data;
+            if (i !== array.length - 1){
+              skuNum++;
+            }    
+        }
+        ProdSkuFactory.set(skuNum, "sku");
+      } else {
+        console.log("else");
+        ProdSkuFactory.get("sku").then(function(currentSku){
+          skus[currentSku] = {
+            variantName: null,
+            price: $scope.product.price,
+            parentId: productId,
+            id: currentSku
+          }
+        });
+      }
+      $scope.product.variant.skus = skus;
+      console.log($scope.product);
+      var productRef = firebase.database().ref('products/' + productId);
+      productRef.set($scope.product).then(function(){
+        console.log("saved!!!");
+        ProdSkuFactory.set(id, "prod");
+      })
+      });
+
+     
     });
   })
   

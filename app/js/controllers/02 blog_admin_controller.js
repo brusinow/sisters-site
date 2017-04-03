@@ -60,6 +60,7 @@ angular.module('SistersCtrls')
   $scope.post = thisPost[0];
   $scope.originalTags = angular.copy($scope.post.tags);
   $scope.tags = AllTags;
+  console.log("what is data? ",$scope.data);
 
   if ($scope.post.youtube){
     console.log($scope.post.youtube);
@@ -116,13 +117,13 @@ angular.module('SistersCtrls')
       // SubmitBlogImage($scope.post, $scope.postArray, $scope.data.flow, updatePost);
       UploadImages($scope.data.flow.files, "blog", null).then(function(resultImg){
         console.log("what is result image? ",resultImg[0]);
-        BlogFactory.updatePost($scope.post, $scope.BlogPosts, resultImg[0], null);
+        BlogFactory.updatePost($scope.post, thisPost, resultImg[0], null, $scope.originalTags);
       })
     } else if ($scope.data.mediaSelect === 'image' && !$scope.data.flow){
-      BlogFactory.updatePost($scope.post, $scope.BlogPosts, $scope.post.img, null);
+      BlogFactory.updatePost($scope.post, thisPost, $scope.post.img, null, $scope.originalTags);
     } else if ($scope.data.mediaSelect === 'youtube'){
       $scope.data.youtube = HelperService.parseYouTube($scope.data.youtube);
-      BlogFactory.updatePost($scope.post, $scope.BlogPosts, null, $scope.data.youtube);
+      BlogFactory.updatePost($scope.post, thisPost, null, $scope.data.youtube, $scope.originalTags);
     }
   }
 

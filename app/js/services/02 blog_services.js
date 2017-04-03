@@ -93,7 +93,7 @@ angular.module('SistersServices')
   }
 }])
 
-.factory("BlogFactory", ["HelperService", "moment","$state", function(HelperService, moment, $state){
+.factory("BlogFactory", ["HelperService", "moment","$state","$timeout", function(HelperService, moment, $state, $timeout){
   return {
     addPost: function(post, postArray, img, youtube, checkedTags){
       var postDate = new Date().getTime();
@@ -124,7 +124,7 @@ angular.module('SistersServices')
       $state.go('blog.main');
     });
     },
-    updatePost: function(post, postArray, img, youtube){
+    updatePost: function(post, postArray, img, youtube, originalTags){
       var slug = HelperService.slugify(post.postTitle, post.timestamp);
       console.log(slug);
       var year = moment(post.timestamp).format("YYYY");
@@ -146,12 +146,12 @@ angular.module('SistersServices')
         tags: newTags,
         timestamp: post.timestamp   
       };
-      $scope.postArray.$save(post).then(function(ref) {
+      postArray.$save(post).then(function(ref) {
       var key = ref.key;
       firebase.database().ref('archives/' + year + '/' + month + '/' + key).remove();
       firebase.database().ref('archives/' + year + '/' + month + '/' + key).set(thisPost);
-      for (prop in $scope.originalTags){
-        if ($scope.originalTags[prop] === true){
+      for (prop in originalTags){
+        if (originalTags[prop] === true){
           var url = 'tags/' + prop + '/posts/' + key;
           firebase.database().ref(url).remove().then(function(message) {
           })

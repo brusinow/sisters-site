@@ -23,17 +23,6 @@ angular.module('SistersServices', ['ngResource'])
   }
 ])
 
-// .factory("DownloadKeyService", function(){
-//     return function(hash){
-//       console.log("hash is "+hash);
-//       // firebase.database().ref('downloadKeys/' + hash).set("test value");
-//       firebase.database().ref('downloadKeys/'+hash).once('value').then(function(snapshot) {
-//         var snap = snapshot.val();
-//         console.log(snap);
-//       });
-//     }
-//   }
-// )
 
 
 .factory('SendDataService', function() {
@@ -51,47 +40,25 @@ angular.module('SistersServices', ['ngResource'])
  }
 })
 
-.factory("StoreCurrent", ["$q", function($q){
-  return {
-    product: function(){
-    var deferred = $q.defer();
-    var productIdRef = firebase.database().ref('saved_values/lastProduct');
-    productIdRef.once('value').then(function(snapshot) {
-      var id = snapshot.val();
-      var num = parseInt(id.slice(4));
-      var newNumString = (num + 1).toString();
-      while (newNumString.length < 4){
-        newNumString = "0" + newNumString;
-      }
-      newNumString = "prod" + newNumString;
-      productIdRef.set(newNumString);
-      console.log("new num string: ",newNumString);
-      deferred.resolve(newNumString);     
-    });
-    return deferred.promise;
-    },
-    sku: function(){
-    var deferred = $q.defer();
-    var skuRef = firebase.database().ref('saved_values/lastSku');
-    skuRef.once('value').then(function(snapshot) {
-      var id = snapshot.val();
-      var num = parseInt(id.slice(3));
-      var newNumString = (num + 1).toString();
-      while (newNumString.length < 4){
-        newNumString = "0" + newNumString;
-      }
-      newNumString = "sku" + newNumString;
-      skuRef.set(newNumString);
-      deferred.resolve(newNumString);    
-    });
-    return deferred.promise;
-    }
-  }
-}])
+
+
+
+
+
+
+
 
 
 .factory('HelperService', ["moment","$q", function(moment, $q) {
   return {
+    idGenerator: function(num, type){
+      var newNumString = (num).toString();
+      while (newNumString.length < 4){
+        newNumString = "0" + newNumString;
+      }
+      newNumString = type + newNumString;
+      return newNumString;
+    },
     parseYouTube: function(url){
       var videoid = url.match(/(?:https?:\/{2})?(?:w{3}\.)?youtu(?:be)?\.(?:com|be)(?:\/watch\?v=|\/)([^\s&]+)/);
         if(videoid != null) {
@@ -166,41 +133,43 @@ angular.module('SistersServices', ['ngResource'])
       var date = moment(unix).tz("America/Los_Angeles").format('MM-DD-YY');
       var complete = date + "_" + text;
       return complete;
-    },
-    imgResizeBlog: function (img) {
-      console.log("inside resize!!");
-    var deferred = $q.defer();
-    var loadIMG = new Image;
-    loadIMG.src = img;
-    loadIMG.onload = function(){
-       console.log(this.width + " " + this.height);
-       var aspectRatio = loadIMG.width / loadIMG.height;
-       console.log("WHAT IS RATIO??? ",aspectRatio);
-       var canvas = document.createElement('canvas');
-        if (aspectRatio >= 1.776 && loadIMG.height >= 500){
-          console.log("loadIMG: ",loadIMG);
-          var percentChange = (loadIMG.height - 500) / loadIMG.height;
-          canvas.height = 500;
-          canvas.width = loadIMG.width - (loadIMG.width * percentChange);
-        
-        } else if (aspectRatio < 1.776 && loadIMG.width >= 889){
-          console.log("loadIMG: ",loadIMG);
-          var percentChange = (loadIMG.width - 889) / loadIMG.width;
-          canvas.width = 889;
-          canvas.height = loadIMG.height - (loadIMG.height * percentChange);
-          
-        } else {
-          console.log("loadIMG: ",loadIMG);
-          console.log("image is not big enough!");  
-        }
-        var ctx = canvas.getContext("2d");
-        ctx.drawImage(loadIMG, 0, 0, canvas.width, canvas.height);
-        var resizedResult = canvas.toDataURL("image/jpeg");
-        deferred.resolve(resizedResult);   
     }
-    return deferred.promise; 
-  }
   } 
+}])
+
+.factory("ProdSkuFactory", ["$q", "HelperService", function($q, HelperService){
+  return {
+    get: function(type){
+      var deferred = $q.defer();
+      var idRef;
+      var slicePoint;
+      if (type === "sku"){
+        idRef = firebase.database().ref('saved_values/lastSku');
+        slicePoint = 3;
+      } else if (type === "prod"){
+        idRef = firebase.database().ref('saved_values/lastProduct');
+        slicePoint = 4;
+      }
+      idRef.once('value').then(function(snapshot) {
+        var id = snapshot.val()
+        var num = parseInt(id.slice(slicePoint))     
+        deferred.resolve(num);     
+      });
+      return deferred.promise;
+    },
+    set: function(num, type){
+      var idRef
+      if (type === "sku"){
+        idRef = firebase.database().ref('saved_values/lastSku');
+        slicePoint = 3;
+      } else if (type === "prod"){
+        idRef = firebase.database().ref('saved_values/lastProduct');
+        slicePoint = 4;
+      }
+      var id = HelperService.idGenerator(num + 1, type);
+      idRef.set(id);
+    }
+  }
 }])
 
 .factory('ImageResizeFactory', ["HelperService", "$q", function(HelperService, $q){
@@ -303,62 +272,4 @@ angular.module('SistersServices', ['ngResource'])
     return $q.all(promises);
   }
 }])
-
-
-
-
-
-
-// .factory('SubmitBlogImage', ["HelperService", function(HelperService) {
-//   return function(post, postArray, image, callback){
-//     HelperService.imgResizeBlog(image).then(function(newImage){
-//     var mime = HelperService.base64MimeType(newImage);
-//     var base64result = HelperService.getBase64Image(newImage)
-//     var file = HelperService.b64toBlob(base64result, mime)
-//     var metadata = {
-//     contentType: mime
-//     };
-//     var photoId = (Math.random()*1e32).toString(36);
-//     var storageRef = firebase.storage().ref();
-//     var uploadTask = storageRef.child('blog-images/' + photoId).put(file, metadata);
-//     uploadTask.on(firebase.storage.TaskEvent.STATE_CHANGED, // or 'state_changed'
-//     function(snapshot) {
-//       // Get task progress, including the number of bytes uploaded and the total number of bytes to be uploaded
-//       var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-//       console.log('Upload is ' + progress + '% done');
-//       switch (snapshot.state) {
-//         case firebase.storage.TaskState.PAUSED: // or 'paused'
-//           console.log('Upload is paused');
-//           break;
-//         case firebase.storage.TaskState.RUNNING: // or 'running'
-//           console.log('Upload is running');
-//           break;
-//       }
-//     }, function(error) {
-//     switch (error.code) {
-//       case 'storage/unauthorized':
-//         break;
-//       case 'storage/canceled':
-//         // User canceled the upload
-//         break;
-//       case 'storage/unknown':
-//         // Unknown error occurred, inspect error.serverResponse
-//         break;
-//     }
-//   }, function() {
-//     console.log("upload finished")
-//     var downloadURL = uploadTask.snapshot.downloadURL;
-//     callback(post, postArray, downloadURL, null);
-//   });
-//     })
-    
-//   }
-
-// }])
-
-
-
-
-
-
 

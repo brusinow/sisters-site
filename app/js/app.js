@@ -144,7 +144,10 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
     templateUrl: '/views/admin/adminProducts.html',
     controller: 'AdminProductsCtrl',
     resolve: {
-      "currentAuth": authRequire
+      "currentAuth": authRequire,
+      "allProducts": function(ProductsService){
+        return ProductsService.allProducts();
+      }
     },
     activetab: 3
   })

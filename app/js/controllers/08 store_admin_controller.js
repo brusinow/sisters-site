@@ -53,7 +53,7 @@ $scope.goToPage = function(url){
 
 })
 
-.controller('AdminProductsCtrl', function($scope, $state, $http, $timeout, $location, $sessionStorage, Auth){
+.controller('AdminProductsCtrl', function($scope, $state, $http, $timeout, $location, $sessionStorage, Auth, allProducts){
 
   var main = document.getElementById("main");
   main.style.backgroundColor = 'rgba(255,255,255,0)';
@@ -66,8 +66,21 @@ $scope.goToPage = function(url){
     // console.log("firebase user is ",$scope.firebaseUser);
   });
 
+  $scope.products = allProducts;
+
   $scope.addProduct = function(){
     $state.go('admin.products-add');
+  }
+
+  $scope.editProduct = function(id){
+    console.log("edit: ",id);
+  }
+
+  $scope.deleteProduct = function(id){
+    console.log("index: ",id);
+    allProducts.$remove(allProducts[id]).then(function(ref) {
+      console.log("deleted");
+    });
   }
 
 
@@ -125,6 +138,14 @@ $scope.goToPage = function(url){
       $scope.product.variant.skus[index] = $scope.product.variant.skus[index + 1];
       $scope.product.variant.skus[index + 1] = temp;
     }
+  }
+
+  $scope.makeMainImage = function(i){
+    console.log("before: ",$scope.obj.flow);
+    var tmp = $scope.obj.flow.files.splice(i, 1);
+    console.log("temp: ",tmp);
+    $scope.obj.flow.files.unshift(tmp[0]);
+    console.log("after: ",$scope.obj.flow);
   }
 
 

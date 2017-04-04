@@ -33,12 +33,20 @@ angular.module('SistersDirectives', [])
 						ngModel.$parsers.push(function (val) {
 							//make sure the val is string
 							val = val.toString();
+                            var result;
 							//filter the value for displaying, so keep the '$'
 							var displayedValue = val.replace(/[^\d\.\$]/g, '');
 							var replaced = val.replace(/[^\d\.]/g, '');
-							var split = replaced.split('.');
-							var merged = split[0] + split[1].slice(0, 2);
-							var typeConverted = Number(merged);
+                            if (replaced.indexOf(".") > -1){
+                                var split = replaced.split('.');
+                                result = split[0] + split[1].slice(0, 2);
+                                console.log(result);
+                            } else {
+                                result = (replaced * 100).toString();
+                                console.log(result);
+                            }
+							
+							var typeConverted = Number(result);
 							//update the $viewValue
               ngModel.$setViewValue(displayedValue);
               //reflect on the DOM element

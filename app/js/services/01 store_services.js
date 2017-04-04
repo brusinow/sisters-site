@@ -15,39 +15,6 @@ angular.module('SistersServices')
   }
 }])
 
-// .factory('CurrentOrderService', function($window) {
-//  function set(data) {
-//    $window.localStorage.setItem( 'orderData', angular.toJson(data) );
-//   //  console.log("order saved!");
-//  }
-//  function get() {
-//   var order = angular.fromJson( $window.localStorage.getItem('orderData') ) ;
-//     return JSON.parse(order);
-//  }
-
-//  return {
-//   set: set,
-//   get: get
-//  }
-// })
-
-// .factory('SessionService', ['$http', function($http){
-
-//     var urlBase = '/storeAPI';
-//     var dataFactory = {};
-
-//     dataFactory.currentOrder = function () {
-//         return $http.get(urlBase + '/' + 'currentOrder');
-//     };
-
-//     dataFactory.currentShipment = function () {
-//         return $http.get(urlBase + '/' + 'currentShipment');
-//     };
-
-// return dataFactory;
-// }])
-
-
 .service('ThisOrderService', ['$http', '$q', 
   function ($http, $q) {
     var deferred = $q.defer();

@@ -58,6 +58,7 @@ angular.module('SistersDirectives', [])
 			}
 ])
 
+
 .directive("countryName", ['$http', function($http) {
   return {
     template: "<span>{{name}}</span>",

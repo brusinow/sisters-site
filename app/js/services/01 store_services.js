@@ -9,6 +9,7 @@ angular.module('SistersServices')
       return $firebaseArray(allProductsRef);
     },
     oneProduct: function(productId){
+      console.log("in the service? ",productId);
       var oneProductRef = firebase.database().ref('products/'+ productId);
       return $firebaseObject(oneProductRef);
     }

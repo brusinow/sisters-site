@@ -60,9 +60,9 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
       chunkRetryInterval: 5000,
       simultaneousUploads: 1
     };
-    flowFactoryProvider.on('catchAll', function (event) {
-      console.log('catchAll', arguments);
-    });
+    // flowFactoryProvider.on('catchAll', function (event) {
+    //   console.log('catchAll', arguments);
+    // });
     // Can be used with different implementations of Flow.js
   }])
 
@@ -158,6 +158,22 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
     controller: 'AdminProductsAddCtrl',
     resolve: {
       "currentAuth": authRequire
+    },
+    activetab: 3
+  })
+
+  .state('admin.products-edit', {
+    url: '/admin/products/edit/:id',
+    templateUrl: '/views/admin/adminProductsAdd.html',
+    controller: 'AdminProductsEditCtrl',
+    resolve: {
+      "currentAuth": authRequire,
+      "product": function(ProductsService, $stateParams){
+        return ProductsService.oneProduct($stateParams.id).$loaded();
+      },
+      "images": function(product, FirebaseImgDownloader){
+        return FirebaseImgDownloader(product);
+      }
     },
     activetab: 3
   })

@@ -28,6 +28,7 @@
 
   <div>
 
+
     <div ng-repeat="file in $flow.files" class="gallery-box">
       <span class="title">{{file.name}}</span>
       <div class="thumbnail" ng-show="$flow.files.length">
@@ -122,16 +123,24 @@
             <input type="radio" ng-model="product.variant.bool" ng-value="true">
             Yes
           </label><br/>
+        <div ng-if="product.variant.bool === false">
+           <label>
+            Price:
+          <input type="text" placeholder="10.99" cents-to-dollars ng-model="obj.price">
+          </label>
+        </div>
         <div ng-if="product.variant.bool === true">
-          <hr>
-        <button ng-click="addVariant()">Add Variant</button>
+        <hr>
+        <div style="text-align: center;">
+          <button class="button button-flat-pink" ng-click="addVariant()">Add Variant</button>
+        </div>
         <table style="margin-top: 10px;" id="variant-table" class="table table-bordered">
-          <tr ng-if="product.variant.bool === true">
+          <tr ng-if="product.variant.bool === true && newSkus.length > 0">
             <th>Variant Name</th>
             <th>Price</th>
             <th></th>
           </tr>
-          <tr ng-repeat="thisVariant in product.variant.skus">
+          <tr ng-repeat="thisVariant in newSkus">
             <td><input class="variant-input" type="text" placeholder="Variant Name (ie: Large)" ng-model="thisVariant.variantName"></td>
             <td style="max-width: 40px;"><input class="variant-input" type="text" placeholder="10.99" cents-to-dollars ng-model="thisVariant.price"></td>
             <td style="min-width: 70px; padding: 4px; text-align: center; cursor: pointer;">

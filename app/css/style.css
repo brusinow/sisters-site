@@ -137,22 +137,21 @@ h4 {
 }
 
 #product-container td {
-  line-height: 50px;
+  line-height: 64px;
 }
 
 
 .product-thumb {
   display: inline-block;
-  height: 50px;
-  width: 50px;
-  border: 5px solid white;
-  border-radius: 2px;
+  height: 64px;
+  width: 64px;
+  background-color: white;
 }
 
 .product-thumb img {
-  width: 100%;
-  height: 100%;
-  vertical-align: top;
+  width: 50px;
+  height: 50px;
+  margin: 7px;
 }
 
 

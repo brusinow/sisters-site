@@ -86,3 +86,29 @@ angular.module('SistersServices')
     return myBlob;
   }
 }])
+
+
+.factory('Variant', function() {
+    // instantiate our initial object
+    var Variant = function(id, sku, name, price, index){
+      var that = this;
+      this.id = sku || null;
+      this.parentId = id;
+      this.variantName = name || "";
+      this.price = price || ""; 
+      this.index = index || 0; 
+    }
+
+    Variant.prototype.changeIndex = function(index){
+      this.index = index;
+    }
+
+    Variant.prototype.changeProductId = function(id){
+      this.parentId = id;
+    }
+
+    Variant.prototype.changeSku = function(sku){
+      this.id = sku;
+    }
+    return Variant;
+})

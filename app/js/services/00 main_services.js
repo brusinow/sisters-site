@@ -42,7 +42,28 @@ angular.module('SistersServices', ['ngResource'])
 
 
 
-
+.factory('FirebaseImgDownloader', ['$q', function($q){
+  return function(product){
+      var images = product.images;
+      var promises = images.map(function(obj, i){
+        var deferred = $q.defer();  
+          var url = obj;
+          var xhr = new XMLHttpRequest();
+          xhr.responseType = 'blob';
+          xhr.onload = function(event) {
+            var blob = xhr.response;
+            console.log("Blob!!!!", blob);
+            blob.name = product.id + "_" + i + ".jpg";
+            deferred.resolve(blob);
+          };
+          xhr.open('GET', url);
+          xhr.send();     
+        return deferred.promise; 
+      })
+              
+    return $q.all(promises);
+  }
+}])
 
 
 
@@ -250,10 +271,10 @@ angular.module('SistersServices', ['ngResource'])
       } else if (type === "blog"){
         urlPath = 'blog-images/';
       }     
-      var promises = imageObject.map(function(obj){
+      var promises = imageObject.map(function(obj, i){
         var deferred = $q.defer();  
           ImageResizeFactory.imgResizeSquare(obj.file).then(function(newImg){
-            var photoId = obj.file.name;
+            var photoId = identifier + "_" + i + ".jpg";
             var fullPath = urlPath + photoId;
             var storageRef = firebase.storage().ref(fullPath);
             var fbStorage = $firebaseStorage(storageRef);

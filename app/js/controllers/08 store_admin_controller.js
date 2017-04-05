@@ -74,11 +74,12 @@ $scope.goToPage = function(url){
 
   $scope.editProduct = function(id){
     console.log("edit: ",id);
+    $state.go('admin.products-edit', {id: id});
   }
 
-  $scope.deleteProduct = function(id){
-    console.log("index: ",id);
-    allProducts.$remove(allProducts[id]).then(function(ref) {
+  $scope.deleteProduct = function(i){
+    console.log("index: ",i);
+    allProducts.$remove(allProducts[i]).then(function(ref) {
       console.log("deleted");
     });
   }
@@ -87,9 +88,8 @@ $scope.goToPage = function(url){
 
 })
 
-.controller('AdminProductsAddCtrl', function($scope, $state, $http, $timeout, $location, $sessionStorage, Auth, ProdSkuFactory, UploadImages, HelperService){
+.controller('AdminProductsAddCtrl', function($scope, $state, $http, $timeout, $location, $sessionStorage, Auth, ProdSkuFactory, UploadImages, HelperService, Variant){
 
-  // StoreCurrent.product();
   var main = document.getElementById("main");
   main.style.backgroundColor = 'rgba(255,255,255,0)';
   main.style.width = '';
@@ -101,7 +101,10 @@ $scope.goToPage = function(url){
     // console.log("firebase user is ",$scope.firebaseUser);
   });
 
-  $scope.obj = {};
+  $scope.obj = {
+    "price": 0
+  };
+  $scope.newSkus = [];
   $scope.product = {
     variant: {
       bool: false,
@@ -113,30 +116,28 @@ $scope.goToPage = function(url){
 
 
   $scope.addVariant = function(){
-    var newObj = {
-      "variantName": "",
-      "price": ""
-    }
-    $scope.product.variant.skus.push(newObj);
+    var myObj = new Variant();
+    $scope.newSkus.push(myObj);
+    console.log($scope.newSkus);
   }
 
   $scope.deleteVariant = function(index){
-    $scope.product.variant.skus.splice(index, 1);
+    $scope.newSkus.splice(index, 1);
   }
 
   $scope.variantUp = function(index){
     if (index > 0){
-      var temp = $scope.product.variant.skus[index];
-      $scope.product.variant.skus[index] = $scope.product.variant.skus[index - 1];
-      $scope.product.variant.skus[index - 1] = temp;
+      var temp = $scope.newSkus[index];
+      $scope.newSkus[index] = $scope.newSkus[index - 1];
+      $scope.newSkus[index - 1] = temp;
     }
   }
 
   $scope.variantDown = function(index){
-    if (index < $scope.product.variant.skus.length - 1){
-      var temp = $scope.product.variant.skus[index];
-      $scope.product.variant.skus[index] = $scope.product.variant.skus[index + 1];
-      $scope.product.variant.skus[index + 1] = temp;
+    if (index < $scope.newSkus.length - 1){
+      var temp = $scope.newSkus[index];
+      $scope.newSkus[index] = $scope.newSkus[index + 1];
+      $scope.newSkus[index + 1] = temp;
     }
   }
 
@@ -150,50 +151,53 @@ $scope.goToPage = function(url){
 
 
 $scope.submit = function(){
+  console.log($scope.product);
   ProdSkuFactory.get("prod").then(function(id){
     var productId = HelperService.idGenerator(id, "prod");
     UploadImages($scope.obj.flow.files, "store", productId).then(function(links){
       $scope.product.images = links;
       $scope.product.id = productId;
       var skus = {};
-      ProdSkuFactory.get("sku").then(function(skuResult){
-        var skuNum = skuResult;
-        if ($scope.product.variant.skus.length > 0){            
-        var array = $scope.product.variant.skus;
+      ProdSkuFactory.get("sku").then(function(skuNum){
+        var productRef = firebase.database().ref('products/' + productId);
+        if ($scope.newSkus.length > 0){            
+        var array = $scope.newSkus;
         for (var i = 0; i < array.length; i++){
-          console.log("current variant: ",array[i].variantName); 
-            var currentSku = HelperService.idGenerator(skuNum, "sku");  
-            console.log("currentSku: ",currentSku);   
-            var data = {
-              "variantName": array[i].variantName,
-              "price": array[i].price,
-              "parentId": productId,
-              "id": currentSku
-            }
-            skus[currentSku] = data;
+            var currentSku = HelperService.idGenerator(skuNum, "sku");   
+            array[i].changeSku(currentSku);
+            array[i].changeProductId(productId);
+            array[i].changeIndex(i); 
+            skus[currentSku] = array[i];
             if (i !== array.length - 1){
               skuNum++;
             }    
         }
-        ProdSkuFactory.set(skuNum, "sku");
+        $scope.product.variant.skus = skus;
+        productRef.set($scope.product).then(function(){
+            console.log("saved!!!");
+            ProdSkuFactory.set(id, "prod");
+            ProdSkuFactory.set(skuNum, "sku");
+          }, function(error){
+            console.log("ERROR! ",error);
+          })
       } else {
         console.log("else");
-        ProdSkuFactory.get("sku").then(function(currentSku){
-          skus[currentSku] = {
-            variantName: null,
-            price: $scope.product.price,
-            parentId: productId,
-            id: currentSku
-          }
+        ProdSkuFactory.get("sku").then(function(skuNum){
+          var currentSku = HelperService.idGenerator(skuNum, "sku");
+          console.log("current price: ",$scope.obj.price);   
+          var masterItem = new Variant(productId, currentSku, null, $scope.obj.price, null)
+          skus[currentSku] = masterItem;
+          $scope.product.variant.skus = skus;
+          productRef.set($scope.product).then(function(){
+            console.log("saved!!!");
+            ProdSkuFactory.set(id, "prod");
+            ProdSkuFactory.set(skuNum, "sku");
+          }, function(error){
+            console.log("ERROR! ",error);
+          })
+           
         });
       }
-      $scope.product.variant.skus = skus;
-      console.log($scope.product);
-      var productRef = firebase.database().ref('products/' + productId);
-      productRef.set($scope.product).then(function(){
-        console.log("saved!!!");
-        ProdSkuFactory.set(id, "prod");
-      })
       });
 
      
@@ -205,7 +209,145 @@ $scope.submit = function(){
 
 })
 
+.controller('AdminProductsEditCtrl', function($scope, $state, $http, $timeout, $location, $sessionStorage, Auth, ProdSkuFactory, UploadImages, HelperService, product, images, Variant){
 
+  var main = document.getElementById("main");
+  main.style.backgroundColor = 'rgba(255,255,255,0)';
+  main.style.width = '';
+  $scope.$emit('loadMainContainer', 'loaded');
+
+  $scope.auth = Auth;
+    $scope.auth.$onAuthStateChanged(function(firebaseUser) {
+    $scope.firebaseUser = firebaseUser;
+  });
+
+  $scope.product = product;
+  $scope.obj = {};
+  $scope.price = "";
+  if (product.variant.bool === false){
+    console.log(product.variant.skus)
+    var key = Object.keys(product.variant.skus);
+    $scope.obj.price = product.variant.skus[key].price;
+  } else {
+    $scope.obj.price = 0;
+  }
+  
+  $scope.newSkus = [];
+
+  $scope.addVariant = function(){
+    var myObj = new Variant(product.id);
+    $scope.newSkus.push(myObj);
+    console.log($scope.newSkus);
+  }
+
+  $scope.deleteVariant = function(index){
+    $scope.newSkus.splice(index, 1);
+  }
+
+  $scope.variantUp = function(index){
+    if (index > 0){
+      var temp = $scope.newSkus[index];
+      $scope.newSkus[index] = $scope.newSkus[index - 1];
+      $scope.newSkus[index - 1] = temp;
+    }
+  }
+
+  $scope.variantDown = function(index){
+    if (index < $scope.newSkus.length - 1){
+      var temp = $scope.newSkus[index];
+      $scope.newSkus[index] = $scope.newSkus[index + 1];
+      $scope.newSkus[index + 1] = temp;
+    }
+  }
+
+    // fill newSkus array with saved data
+    console.log("WHAT ARE VARIANT SKUS???? ",product.variant.skus);
+  for (prop in product.variant.skus){
+    var skus = product.variant.skus;
+    console.log("this variant: ",skus[prop]);
+    console.log("variant index: ",skus[prop].index);
+    var obj = new Variant(product.id, prop, skus[prop].variantName, skus[prop].price, skus[prop].index);
+    $scope.newSkus[skus[prop].index] = obj;
+    console.log($scope.newSkus);
+  }
+  
+
+  $scope.makeMainImage = function(i){
+    var tmp = $scope.obj.flow.files.splice(i, 1);
+    $scope.obj.flow.files.unshift(tmp[0]);
+  }
+
+  $scope.submit = function(){
+    UploadImages($scope.obj.flow.files, "store", product.id).then(function(links){
+      $scope.product.images = links;
+      var skus = {};
+      ProdSkuFactory.get("sku").then(function(skuResult){
+      var skuNum = skuResult;
+      if ($scope.product.variant.bool === true){   
+        if ($scope.newSkus.length === 0){
+          alert ('Either select "No Variants" or add some.');
+          return;
+        }         
+        for (var i = 0; i < $scope.newSkus.length; i++){
+            if ($scope.newSkus[i].id === null){
+              var currentSku = HelperService.idGenerator(skuNum, "sku");
+               $scope.newSkus[i].id = currentSku; 
+               $scope.newSkus[i].changeIndex(i);
+               skus[currentSku] = $scope.newSkus[i];
+                if (i !== $scope.newSkus.length - 1){
+                  skuNum++;
+                } 
+            } else {
+              $scope.newSkus[i].changeIndex(i);
+              skus[$scope.newSkus[i].id] = $scope.newSkus[i];
+            }  
+        }
+        ProdSkuFactory.set(skuNum, "sku");
+      } else {
+        console.log("price: ",$scope.price);
+        if ($scope.price === 0){
+          alert("please enter a price for this item.")
+          return;
+        }
+        console.log("else");
+        ProdSkuFactory.get("sku").then(function(currentSku){
+          var masterItem = new Variant(product.Id, currentSku, null, $scope.obj.price, null)
+          skus[currentSku] = masterItem;
+        });
+      }
+      $scope.product.variant.skus = skus;
+      console.log($scope.product);
+      product.$save().then(function(ref) {
+        ref.key === obj.$id; // true
+      }, function(error) {
+        console.log("Error:", error);
+      });
+      });
+
+     
+    });
+
+  
+}
+
+
+// make into service to use in resolve (with $q) !!!!!!
+$timeout(function(){
+  if (images.length > 0){
+    console.log("images exist");
+    for (var i = 0; i < images.length; i++){
+        var blob = images[i];
+        console.log("blob: ",images[i]);
+        console.log("flow: ",$scope.obj);
+        $scope.obj.flow.addFile(blob);  
+    }
+  }
+},100)
+
+
+
+
+})
 
 
 .controller('AdminTicketsCtrl', function($scope, $state, $http, $timeout, $location, $sessionStorage, Auth, Tickets){

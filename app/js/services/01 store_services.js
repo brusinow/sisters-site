@@ -8,6 +8,11 @@ angular.module('SistersServices')
       var allProductsRef = firebase.database().ref('products');
       return $firebaseArray(allProductsRef);
     },
+    allActiveProducts: function(){
+    var allProductsRef = firebase.database().ref('products');
+    var query = allProductsRef.orderByChild("active").equalTo(true);
+      return $firebaseArray(query);
+    },
     oneProduct: function(productId){
       console.log("in the service? ",productId);
       var oneProductRef = firebase.database().ref('products/'+ productId);

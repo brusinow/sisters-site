@@ -24,9 +24,12 @@
   <tr>
     <% if (item._data.order_type === "ticket"){ %>
     <td><%= item.description %> (<%= item.sku %>)</td>
-    <% } else if (item.attr){%>
+    <% } else if (item._data.order_type !== "ticket" && item.attr){%>
     <td><%= item.description %> (<%= item.attr %>)</td>
+    <% } else {%>
+    <td><%= item.description %></td>
     <% } %>
+
     <td><%= item.quantity%>x </td>
     <td>$<%= (item.amount / 100).toFixed(2) %></td>
     <td>$<%= ((item.amount / 100) * item.quantity).toFixed(2) %></td>

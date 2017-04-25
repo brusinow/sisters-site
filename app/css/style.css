@@ -450,6 +450,10 @@ i.variant-controls:hover{
     rgb(208, 150, 167) 100px 100px;
 }
 
+#store-product.container p {
+    white-space: pre-wrap; 
+}
+
 button.button-tiny-circle {
     font-size: .6em;
     line-height: 15px;
@@ -2440,6 +2444,9 @@ display: none;
   width: 90%;
   margin: 10px auto;
   overflow: hidden;
+  -webkit-box-shadow: -1px 2px 6px #ccc;
+  -moz-box-shadow: -1px 2px 6px #ccc;
+  box-shadow: -1px 2px 6px #ccc;
 }
 
 .item-image-div img {

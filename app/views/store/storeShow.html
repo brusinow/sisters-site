@@ -15,15 +15,18 @@
         </div>
         <div class="five columns">
             <h3 class="single-product-name text-center">{{product.title}}</h3>
-            <p style="padding: 0 5%">{{product.description}}</p>
-            <div class="text-center" ng-if="product.skus.length > 1" id="sku-radio-div">
+            <p style="padding: 0 5%" ng-bind-html="product.description"></p>
+            <div class="text-center" ng-if="areVariants()" id="sku-radio-div">
                 <div>
                     <!--<label style="display: inline" for="attr-select">Size:</label>-->
-                    <select id="attr-select" ng-options="sku as sku.attr for sku in skus track by sku.id"  ng-change="whatSelected()" ng-model="data.selected"></select>
+                    <select id="attr-select" ng-options="sku as sku.variantName for sku in skus track by sku.id"  ng-change="whatSelected()" ng-model="data.selected"></select>
                 </div>
             </div>
             <h5 class="text-center">{{ data.selected.price | centsToDollars | currency}}</h5>
-            <ngcart-addtocart-product class="text-center" id="{{ data.selected.parent_id }}" sku="{{data.selected.id}}" name="{{ product.title }}" price="{{ data.selected.price }}" attr="{{data.selected.attr}}" quantity="1" quantity-max="30" data="data.selected">Add to Cart</ngcart-addtocart-product>
+            <ngcart-addtocart-product ng-if="data.selected.count > 0" class="text-center" id="{{ data.selected.parentId }}" sku="{{data.selected.id}}" name="{{ product.title }}" price="{{ data.selected.price }}" attr="{{data.selected.variantName}}" quantity="1" quantity-max="{{data.selected.count < 30 ? data.selected.count : 30}}" data="data">Add to Cart</ngcart-addtocart-product>
+            <div style="text-align: center;" ng-if="data.selected.count === 0">
+                <h3>SOLD OUT</h3
+            </div>
         </div>
     </div>
 </div>

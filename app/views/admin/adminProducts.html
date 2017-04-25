@@ -2,11 +2,11 @@
 <button class="button button-flat-pink" ng-click="addProduct()">Add a New Product</button>
 <h3 ng-if="products.length === 0">You have no products.</h3>
 <table ng-if="products.length > 0" class="table table-striped">
+  <h2 style="text-align: center">All Products</h2>
 <tr>
   <th></th>
   <th>Product #</th>
   <th>Name</th>
-  <th>Inventory</th>
   <th>Active</th>
   <th></th>
 </tr>
@@ -18,7 +18,6 @@
   </td>
   <td>{{product.id}}</td>
   <td>{{product.title}}</td>
-  <td>100</td>
   <td>{{product.active}}</td>
   <td>
     <a ng-click="editProduct(product.id)" href="#">Edit</a>

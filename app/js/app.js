@@ -149,7 +149,22 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
         return ProductsService.allProducts();
       }
     },
-    activetab: 3
+    activetab: 3,
+    activeSub: 0
+  })
+
+  .state('admin.products-quickInventory', {
+    url: '/admin/products/inventory',
+    templateUrl: '/views/admin/adminProductsInventory.html',
+    controller: 'AdminProductsInventoryCtrl',
+    resolve: {
+      "currentAuth": authRequire,
+      "allProducts": function(ProductsService){
+        return ProductsService.allActiveProducts();
+      }
+    },
+    activetab: 3,
+    activeSub: 1
   })
 
   .state('admin.products-add', {
@@ -175,7 +190,8 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
         return FirebaseImgDownloader(product);
       }
     },
-    activetab: 3
+    activetab: 3,
+    activeSub: 1
   })
 
    .state('admin.ticketEach', {
@@ -451,7 +467,7 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
     resolve: {
       "currentAuth": authWait,
       "allProducts": function(ProductsService){
-        return ProductsService.allProducts();
+        return ProductsService.allActiveProducts();
       }
     }
   })
@@ -646,6 +662,7 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
     return  val/100;
   }
 })
+
 
 .filter('twoDigitTime', function(){
   return function(val){

@@ -22,6 +22,11 @@ angular.module('SistersCtrls')
       $state.go('addProduct');
     }
 
+    $scope.firstPrice = function(obj){
+      for (var first in obj) break;
+      return obj[first].price;
+    }
+
 
     $timeout(function(){
         $scope.loaded = true;
@@ -53,7 +58,7 @@ angular.module('SistersCtrls')
 
 
 
-.controller('StoreShowCtrl', function($scope, $stateParams, $state, $http, $timeout, $location, $sessionStorage, oneProduct){
+.controller('StoreShowCtrl', function($scope, $rootScope, $stateParams, $state, $http, $timeout, $location, $sessionStorage, oneProduct){
   var main = document.getElementById("main");
   main.style.backgroundColor = 'rgba(252, 244, 247, 0)';
   main.style.width = '';
@@ -64,10 +69,31 @@ angular.module('SistersCtrls')
     $scope.images = oneProduct.images;
     var currentActiveSrc = $scope.images[0];
 
-    $scope.skus = $scope.product.skus;
+    $scope.skus = $scope.product.variant.skus;
 
-    $scope.data = {};
-    $scope.data.selected = $scope.product.skus[0];
+    var first = function(obj){
+      for (var first in obj) break;
+      console.log("what is first? ",first);
+      return obj[first];
+    }
+
+    $scope.data = {
+      "shippable": $scope.product.shippable,
+      "ship_details": $scope.product.shipping || null
+    };
+    $scope.data.selected = first($scope.skus);
+
+    $scope.areVariants = function(){
+      var count = 0;
+      for (prop in $scope.skus){
+        count++;
+      }
+      if (count < 2){
+        return false;
+      } else {
+        return true;
+      }
+    }
 
 
     var mainImg = document.querySelector(".main-product-photo img");
@@ -87,7 +113,10 @@ $scope.isActiveImg = function(){
 
 $scope.whatSelected = function(){
   console.log($scope.data.selected);
+  $rootScope.$broadcast('changeQ', $scope.data.selected);
 }
+
+
 
 $scope.changeActive = function(){
   currentActiveSrc = this.img;
@@ -133,6 +162,7 @@ $scope.changeActive = function(){
 
   $scope.$on('setShippable', function (event, data) {
     $scope.shipBool = data;
+    console.log("is it shippable???? ", data);
   });
 
   console.log("items in cart: ",ngCart.getCart().items);
@@ -242,6 +272,7 @@ $scope.submitForm = function(form){
           }
         }
       } 
+      console.log("items: ",req.params.order.items);
 
       if ($scope.shipBool === true){
         req.params.shippable = true;
@@ -514,10 +545,10 @@ $timeout(function(){
 function makeTicketObject(items){
     var ticketObj = {}
     for (var i = 0; i < items.length; i++) {
-      if (item[i].product_type === 'ticket' && !ticketObj[item[i].parent]){
-        ticketObj[item[i].parent] = item[i].quantity;
-      } else if (item[i].product_type === 'ticket' && ticketObj[item[i].parent]){
-        parseInt(ticketObj[item[i].parent]) += item[i].quantity;
+      if (items[i].product_type === 'ticket' && !ticketObj[items[i].parent]){
+        ticketObj[items[i].parent] = items[i].quantity;
+      } else if (items[i].product_type === 'ticket' && ticketObj[items[i].parent]){
+        parseInt(ticketObj[items[i].parent]) += items[i].quantity;
       }
     }
     return ticketObj;

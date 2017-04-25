@@ -34,7 +34,6 @@ var router = express.Router();
 router.get("/order", function(req, res){
   if (req.session.order){
   var order = req.session.order;
-  console.log("session order is: ",order);
   res.send(order);
   } else {
     res.send(null);

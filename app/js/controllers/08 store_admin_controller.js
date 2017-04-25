@@ -20,6 +20,7 @@ $scope.$emit('loadMainContainer', 'loaded');
 
 console.log("state: ",$state);
 $scope.activePill = $state.current.activetab;
+$scope.subPill = $state.current.activesub || null;
 
 $scope.goToPage = function(url){
   $location.url(url);
@@ -84,6 +85,40 @@ $scope.goToPage = function(url){
     });
   }
 
+})
+
+.controller('AdminProductsInventoryCtrl', function($scope, $state, $http, $timeout, $location, $sessionStorage, Auth, allProducts, UpdateAllCounts){
+
+  var main = document.getElementById("main");
+  main.style.backgroundColor = 'rgba(255,255,255,0)';
+  main.style.width = '';
+  $scope.$emit('loadMainContainer', 'loaded');
+
+  $scope.auth = Auth;
+    $scope.auth.$onAuthStateChanged(function(firebaseUser) {
+    $scope.firebaseUser = firebaseUser;
+    // console.log("firebase user is ",$scope.firebaseUser);
+  });  
+  $scope.products = allProducts;
+
+  $scope.getFirstSkuCount = function(obj){
+      var sku = obj[Object.keys(obj)[0]];
+      return sku.count;
+  }
+
+   $scope.setFirstSkuCount = function(obj, newCount){
+      var sku = obj[Object.keys(obj)[0]];
+      sku.count = newCount;
+  }
+
+  $scope.updateInventory = function(prods){
+    UpdateAllCounts(allProducts).then(function(){
+      console.log("what are products now? ",allProducts);  
+    })
+
+  }
+
+
 
 
 })
@@ -111,7 +146,8 @@ $scope.goToPage = function(url){
       skus: []
     },
     shippable: false,
-    active: true
+    active: true,
+    product_type: "merch"
   };
 
 
@@ -162,6 +198,7 @@ $scope.submit = function(){
         var productRef = firebase.database().ref('products/' + productId);
         if ($scope.newSkus.length > 0){            
         var array = $scope.newSkus;
+        console.log("what is array? ",array);
         for (var i = 0; i < array.length; i++){
             var currentSku = HelperService.idGenerator(skuNum, "sku");   
             array[i].changeSku(currentSku);
@@ -172,26 +209,28 @@ $scope.submit = function(){
               skuNum++;
             }    
         }
-        $scope.product.variant.skus = skus;
+        $scope.product.variant.skus = angular.copy(skus);
         productRef.set($scope.product).then(function(){
             console.log("saved!!!");
             ProdSkuFactory.set(id, "prod");
             ProdSkuFactory.set(skuNum, "sku");
+            $state.go('admin.products');
           }, function(error){
             console.log("ERROR! ",error);
           })
       } else {
         console.log("else");
         ProdSkuFactory.get("sku").then(function(skuNum){
-          var currentSku = HelperService.idGenerator(skuNum, "sku");
-          console.log("current price: ",$scope.obj.price);   
-          var masterItem = new Variant(productId, currentSku, null, $scope.obj.price, null)
+          var currentSku = HelperService.idGenerator(skuNum, "sku"); 
+          console.log("what is count? ",$scope.obj.count);
+          var masterItem = new Variant(productId, currentSku, null, $scope.obj.price, null, $scope.obj.count)
           skus[currentSku] = masterItem;
-          $scope.product.variant.skus = skus;
+          $scope.product.variant.skus = angular.copy(skus);
           productRef.set($scope.product).then(function(){
             console.log("saved!!!");
             ProdSkuFactory.set(id, "prod");
             ProdSkuFactory.set(skuNum, "sku");
+            $state.go('admin.products');
           }, function(error){
             console.log("ERROR! ",error);
           })
@@ -225,14 +264,16 @@ $scope.submit = function(){
   $scope.obj = {};
   $scope.price = "";
   if (product.variant.bool === false){
-    console.log(product.variant.skus)
     var key = Object.keys(product.variant.skus);
     $scope.obj.price = product.variant.skus[key].price;
+    $scope.obj.count = product.variant.skus[key].count;
   } else {
     $scope.obj.price = 0;
   }
   
   $scope.newSkus = [];
+
+  console.log("Product!!! ",product);
 
   $scope.addVariant = function(){
     var myObj = new Variant(product.id);
@@ -266,7 +307,7 @@ $scope.submit = function(){
     var skus = product.variant.skus;
     console.log("this variant: ",skus[prop]);
     console.log("variant index: ",skus[prop].index);
-    var obj = new Variant(product.id, prop, skus[prop].variantName, skus[prop].price, skus[prop].index);
+    var obj = new Variant(product.id, prop, skus[prop].variantName, skus[prop].price, skus[prop].index, skus[prop].count);
     $scope.newSkus[skus[prop].index] = obj;
     console.log($scope.newSkus);
   }
@@ -278,6 +319,7 @@ $scope.submit = function(){
   }
 
   $scope.submit = function(){
+    $scope.product.product_type = "merch";
     UploadImages($scope.obj.flow.files, "store", product.id).then(function(links){
       $scope.product.images = links;
       var skus = {};
@@ -303,6 +345,13 @@ $scope.submit = function(){
             }  
         }
         ProdSkuFactory.set(skuNum, "sku");
+        product.variant.skus = skus;
+        product.$save().then(function(ref) {
+            ref.key === obj.$id; // true
+            $state.go('admin.products');
+          }, function(error) {
+            console.log("Error:", error);
+        }); 
       } else {
         console.log("price: ",$scope.price);
         if ($scope.price === 0){
@@ -310,21 +359,20 @@ $scope.submit = function(){
           return;
         }
         console.log("else");
-        ProdSkuFactory.get("sku").then(function(currentSku){
-          var masterItem = new Variant(product.Id, currentSku, null, $scope.obj.price, null)
+        ProdSkuFactory.get("sku").then(function(skuNum){
+          var currentSku = HelperService.idGenerator(skuNum, "sku"); 
+          var masterItem = new Variant(product.id, currentSku, null, $scope.obj.price, null, $scope.obj.count);
           skus[currentSku] = masterItem;
+          product.variant.skus = skus;
+          product.$save().then(function(ref) {
+            ref.key === obj.$id; // true
+            $state.go('admin.products');
+          }, function(error) {
+            console.log("Error:", error);
+          });
         });
       }
-      $scope.product.variant.skus = skus;
-      console.log($scope.product);
-      product.$save().then(function(ref) {
-        ref.key === obj.$id; // true
-      }, function(error) {
-        console.log("Error:", error);
-      });
-      });
-
-     
+      });   
     });
 
   

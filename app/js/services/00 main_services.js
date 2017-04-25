@@ -66,6 +66,54 @@ angular.module('SistersServices', ['ngResource'])
 }])
 
 
+.factory('UpdateAllCounts', ['$q', function($q){
+  return function(prods){
+    var defer = $q.defer();
+    var promises = [];
+    for (var i = 0; i < prods.length; i++){
+      if (!prods[i].variant.bool){
+        // check add and remove
+      
+        var firstSku = prods[i].variant.skus[Object.keys(prods[i].variant.skus)[0]];
+        console.log("first sku? ",firstSku);
+        var count = firstSku.count;
+        if (prods[i].add && prods[i].add > 0){
+          count = parseInt(count) + prods[i].add;
+          firstSku.count = count;
+          delete prods[i].add;
+        }
+        if (prods[i].remove && prods[i].remove > 0){
+          count = parseInt(count) - prods[i].remove;
+          firstSku.count = count;
+          delete prods[i].remove;
+        }
+        promises.push("test");
+      } else {
+        angular.forEach(prods[i].variant.skus, function(value, key) {
+          var count = value.count;
+          if (value.add && value.add > 0){
+            value.count = parseInt(value.count) + value.add;
+            delete value.add;
+          }
+          if (value.remove && value.remove > 0){
+            value.count = parseInt(value.count) - value.remove;
+            delete value.remove;
+          }
+           promises.push("test");
+        });
+      }
+      prods.$save(i).then(function(ref) {
+          console.log("saved");
+      });
+    }
+    $q.all(promises).then(function(){
+      defer.resolve();
+    });
+    return defer.promise;
+  }
+}])
+
+
 
 
 

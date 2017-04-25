@@ -1,0 +1,40 @@
+<div id="product-container">
+
+<h3 ng-if="products.length === 0">You have no products.</h3>
+<table ng-if="products.length > 0" class="table table-striped">
+  <div style="text-align: center;">
+    <h2>Quick Inventory</h2>
+    <button class="button button-flat-pink" ng-click="updateInventory()">Update Inventory</button>
+  </div>
+<tr>
+  <th></th>
+  <th>Product #</th>
+  <th>Name</th>
+  <th>Current Inventory</th>
+  <th>Inventory Add</th>
+  <th>Inventory Remove</th>
+</tr>
+<tbody ng-repeat="product in products">
+  <tr>
+  <td>
+    <div class="product-thumb">
+      <img ng-src="{{product.images[0]}}"/>
+    </div>
+  </td>
+  <td>{{product.id}}</td>
+  <td>{{product.title}}</td>
+  <td><span ng-if="!product.variant.bool">{{getFirstSkuCount(product.variant.skus)}}</span></td>
+  <td><input ng-if="!product.variant.bool" type="number" ng-model="product.add"/></td>
+  <td><input ng-if="!product.variant.bool" type="number" ng-model="product.remove"/></td>
+  </tr>
+  <tr ng-if="product.variant.bool" ng-repeat="sku in product.variant.skus">
+      <td></td>
+      <td>{{sku.id}}</td>
+      <td>{{sku.variantName}}</td>
+      <td>{{sku.count}}</td>
+      <td><input type="number" ng-model="sku.add"/></td>
+      <td><input type="number" ng-model="sku.remove"/></td>
+  </tr>
+</tbody>
+</table>
+</div>

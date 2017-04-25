@@ -57,12 +57,31 @@ function stopTicketTO() {
 router.post("/newOrder", function(req, res){
   var thisOrder = req.query.order;
   var parsedOrder = JSON.parse(thisOrder);
+  
   // parsedOrder.orderNumber = orderNumber;
   req.session.order = parsedOrder;
+
   // db.ref('orders/' + orderNumber).set(parsedOrder);
 
   
   if (req.query.shippable === 'true'){
+    var items = parsedOrder.items;
+    var maxWidth = null;
+    var maxLength = null;
+    var height = 0;
+    var weight = 0;
+    for (var i = 0; i < items.length; i++){
+      console.log("what is item? ",items[i]);
+      if (maxWidth === null || items[i]._data.ship_details.width > maxWidth){
+        maxWidth = items[i]._data.ship_details.width;
+      }
+      if (maxLength === null || items[i]._data.ship_details.length > maxLength){
+        maxLength = items[i]._data.ship_details.length;
+      }
+      height += items[i]._data.ship_details.height;
+      weight += items[i]._data.ship_details.weight;
+    }
+
     var addressFrom  = {
     "object_purpose": "PURCHASE",
     "name": "SISTERS",
@@ -87,13 +106,17 @@ router.post("/newOrder", function(req, res){
       'email' : parsedOrder.billing.email
     }
 
+    console.log("maxLength: ",maxLength);
+    console.log("maxWidth: ",maxWidth);
+    console.log("height: ",height);
+    console.log("weight: ",weight);
 
     var parcel = {
-      "length": "5",
-      "width": "5",
-      "height": "5",
+      "length": maxLength,
+      "width": maxWidth,
+      "height": height,
       "distance_unit": "in",
-      "weight": "7",
+      "weight": weight,
       "mass_unit": "oz"
     }
 
@@ -107,11 +130,10 @@ router.post("/newOrder", function(req, res){
       console.log("shippo response");
     if (err){
       console.log("error: ",err);
-      res.status(500).send({error: "shit is fucking up"});
+      res.status(500).send({error: "Oops."});
     }
     if (shipment){
       req.session.shipment = shipment;
-      console.log("what is shipment object from Shippo? ",shipment);
         req.session.save(function(err) {
           res.status(200).send({shipBool: true});
         })
@@ -209,10 +231,10 @@ router.post("/changeSessionTicket", function(req, res){
 
 router.post("/orderComplete", function(req, res){
   var orderNumber;
-
+  console.log("what is session billing? ",req.session.order.billing);
   // get current order number
   db.ref('orders').limitToLast(1).on("child_added", function(snapshot) {
-    orderNumber = parseInt(snapshot.key);
+    orderNumber = parseInt(snapshot.key) + 1;
   });
 
   var data = req.query;
@@ -232,8 +254,9 @@ router.post("/orderComplete", function(req, res){
     }
     if (charge){
       // Stripe charge was created successfully
+      updateProductCount(cart);
       var order = {
-        email: req.session.billing.email,
+        email: req.session.order.billing.email,
         subject: 'Thank you for your order! Order #' + orderNumber,
         name: data.name,
         cart: cart,
@@ -267,6 +290,7 @@ router.post("/orderComplete", function(req, res){
             var d = new Date();
             sessOrder.timeCompleted = d.getTime(),
             sessOrder.status = "COMPLETE"
+            console.log("what is order number? ",orderNumber);
             db.ref('orders/' + orderNumber).set(sessOrder);
             res.status(200).send(response);
             generateEmailReceipt(order);
@@ -299,6 +323,23 @@ function updateTicketCounts(obj){
 }
 
 
+// THIS NEEDS ASYNC!!!!
+function updateProductCount(obj){
+  for (var i = 0; i < obj.length; i++){
+    console.log(i + " thing is: ",obj[i]);
+    var urlPath = 'products/' + obj[i].parent + '/variant/skus/' + obj[i].sku + '/count';
+    var buyCount = obj[i].quantity;
+    console.log("how many units are being sold? ",buyCount);
+    console.log("what is path? ",urlPath);
+    var skuCountRef = db.ref(urlPath)
+    skuCountRef.once('value').then(function(snapshot) {
+        console.log("what is snapshot? ",snapshot.val());
+      skuCountRef.set(snapshot.val() - buyCount);
+    });
+  }
+}
+
+
 function generateEmailReceipt(order){
     template.render(order, function (err, results) {
   if (err) {
@@ -326,18 +367,18 @@ function generateEmailReceipt(order){
 
 
 
-function createOrderNumber(){
-  var number = Math.floor(100000 + Math.random() * 1000000000); 
-  var ref = db.ref('orders/order_' + number)
-  ref.once("value", function(snap) {
-  var thisVal = snap.val();
-  if (thisVal.orderNumber){
-    createOrderNumber();
-  } else {
-    return number;
-  }
-  });
-}
+// function createOrderNumber(){
+//   var number = Math.floor(100000 + Math.random() * 1000000000); 
+//   var ref = db.ref('orders/order_' + number)
+//   ref.once("value", function(snap) {
+//   var thisVal = snap.val();
+//   if (thisVal.orderNumber){
+//     createOrderNumber();
+//   } else {
+//     return number;
+//   }
+//   });
+// }
 
 
 

@@ -104,10 +104,14 @@ angular.module('ngCart', ['ngCart.directives'])
         };
 
         this.addItemBtn = function (id, sku, name, price, quantity, data) {
-            console.log(id, sku, name, price, quantity, data);
-            var skus = data.skus;
-          
-            if (skus.length === 1){
+            var count = 0;
+            var skuParsed = JSON.parse(sku);
+            for (var prop in skuParsed){
+                console.log("prop: ",skuParsed[prop]);
+                count++;
+            }
+            console.log("count is : ",count);
+            if (count < 2){
             var inCart = this.getItemBySku(sku);
 
             if (typeof inCart === 'object'){
@@ -434,7 +438,9 @@ angular.module('ngCart', ['ngCart.directives'])
             if (this.attr){
                 return this.attr;
             } 
-            else {};
+            else {
+                return false;
+            };
         };
         
 
@@ -495,10 +501,10 @@ angular.module('ngCart', ['ngCart.directives'])
 
           var items = ngCart.getItems();
             // loop to determine if any items are shippable
-  
+            console.log("items before filtering shippable: ",items);
             var filtered = [];
             angular.forEach(items, function(item) {
-                if (item._data.product_type === "shippable") {
+                if (item._data.shippable === true) {
                     filtered.push(item);
                 }
             });
@@ -622,23 +628,6 @@ angular.module('ngCart.directives', ['ngCart.fulfilment'])
                     scope.qtyOpt.push(i);
                 }
 
-                // scope.qtyOpt =  [];
-                // var thisMax;
-                // var showCountRef = firebase.database().ref('tickets/'+ scope.id + '/totalTickets');
-                // showCountRef.once('value').then(function(snapshot) {
-                //     scope.totalTix = snapshot.val();
-                //     if (scope.quantityMax < scope.totalTix){
-                //     thisMax = scope.quantityMax;
-                //     } else {
-                //     thisMax = scope.totalTix;
-                //     }
-                //     if (thisMax > 0){
-                //         for (var i = 1; i <= thisMax; i++) {
-                //         scope.qtyOpt.push(i);
-                //         }
-                //     }
-                    
-                // });
                 
               
 
@@ -681,10 +670,23 @@ angular.module('ngCart.directives', ['ngCart.fulfilment'])
                     scope.q = parseInt(scope.quantity);
                 }
 
-                scope.qtyOpt =  [];
-                for (var i = 1; i <= scope.quantityMax; i++) {
-                    scope.qtyOpt.push(i);
+                scope.updateQ = function(count){
+                    console.log("count should be: ",count);
+                    scope.qtyOpt =  [];
+                    for (var i = 1; i <= count; i++) {
+                        scope.qtyOpt.push(i);
+                    }
                 }
+                scope.updateQ(scope.quantityMax);
+
+                scope.$on('changeQ',function(event, data){
+                    console.log("data in $on? ",data);
+                    console.log("updating in directive!")
+                scope.updateQ(data.count); 
+                });
+                    
+
+                
 
             }
 

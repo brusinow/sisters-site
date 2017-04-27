@@ -323,20 +323,24 @@ function updateTicketCounts(obj){
 }
 
 
-// THIS NEEDS ASYNC!!!!
 function updateProductCount(obj){
-  for (var i = 0; i < obj.length; i++){
-    console.log(i + " thing is: ",obj[i]);
-    var urlPath = 'products/' + obj[i].parent + '/variant/skus/' + obj[i].sku + '/count';
-    var buyCount = obj[i].quantity;
-    console.log("how many units are being sold? ",buyCount);
-    console.log("what is path? ",urlPath);
-    var skuCountRef = db.ref(urlPath)
-    skuCountRef.once('value').then(function(snapshot) {
-        console.log("what is snapshot? ",snapshot.val());
-      skuCountRef.set(snapshot.val() - buyCount);
-    });
-  }
+  var allProducts;
+  var productsRef = db.ref('products/')
+  productsRef.once('value').then(function(snapshot) {
+    allProducts = snapshot.val();
+    var currentCount;
+    for (var i = 0; i < obj.length; i++){
+      currentCount = allProducts[obj[i].parent].variant.skus[obj[i].sku].count;
+      console.log("what is count? ",currentCount);
+      console.log(i + " thing is: ",obj[i]);
+      var urlPath = 'products/' + obj[i].parent + '/variant/skus/' + obj[i].sku + '/count';
+      var buyCount = obj[i].quantity;
+      console.log("how many units are being sold? ",buyCount);
+      console.log("what is path? ",urlPath);
+      var skuCountRef = db.ref(urlPath)
+      skuCountRef.set(currentCount - obj[i].quantity);
+    }
+  });
 }
 
 

@@ -9,6 +9,9 @@
 </div>
 <div class="alert alert-danger" role="alert" ng-if="isError">
     {{errorMessage}}
+    <ul ng-if="lowStock">
+        <li ng-repeat="item in lowStock">{{item.description}} ({{item.attr}})</li>
+    <ul>
 </div>
 
 

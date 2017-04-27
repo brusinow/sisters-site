@@ -231,28 +231,51 @@ router.post("/changeSessionTicket", function(req, res){
 
 router.post("/orderComplete", function(req, res){
   var orderNumber;
-  console.log("what is session billing? ",req.session.order.billing);
-  // get current order number
-  db.ref('orders').limitToLast(1).on("child_added", function(snapshot) {
-    orderNumber = parseInt(snapshot.key) + 1;
-  });
 
-  var data = req.query;
-  var myTax = JSON.parse(data.tax);
-  var cart = JSON.parse(data.cart);
-  // Initiate Stripe Charge Creation
-  stripe.charges.create({
-  amount: data.totalAmount,
-  currency: "usd",
-  source: data.token, // obtained with Stripe.js
-  description: "Charge for " + data.name 
-    }, function(err, charge) {
-    if (err){
+  // function to check if anything is low stock and handle accordingly
+  function allInStock(obj, data, callback){
+    var allProducts;
+    var productsRef = db.ref('products/');
+    productsRef.once('value').then(function(snapshot) {
+      allProducts = snapshot.val();
+      var currentCount;
+      var buyCount;
+      var lowCountArr = [];
+      for (var i = 0; i < obj.length; i++){
+        currentCount = allProducts[obj[i].parent].variant.skus[obj[i].sku].count;
+        buyCount = obj[i].quantity;
+        if (buyCount > currentCount){
+          lowCountArr.push(obj[i]);
+        }
+      }
+      if (lowCountArr.length > 0){
+        console.log("LOW COUNT!!!!!!!!!!!!!!");
+      return res.status(500).send({message: "Sorry friend, we don't have the quantity to fulfill the following items in your order for the quantities requested: ", lowStock: lowCountArr});
+      
+    } else {
+      console.log("not low count!!! Continuing.......");
+        callback(data);
+      }
+    });
+  }
+
+  // if stock is not low, process sale and shipping
+  function createChargeAndShipping(data){
+    var myTax = JSON.parse(data.tax);
+    var cart = JSON.parse(data.cart);
+    // Initiate Stripe Charge Creation
+    stripe.charges.create({
+    amount: data.totalAmount,
+    currency: "usd",
+    source: data.token, // obtained with Stripe.js
+    description: "Charge for " + data.name 
+      }, function(err, charge) {
+      if (err){
       // there is an error with Stripe charge
       console.log("we have an error: ",err);
       res.status(500).send(err);
-    }
-    if (charge){
+      }
+      if (charge){
       // Stripe charge was created successfully
       updateProductCount(cart);
       var order = {
@@ -264,7 +287,7 @@ router.post("/orderComplete", function(req, res){
         orderData: req.session.order,
         charge: charge
       }
-// Purchase the desired rate.
+      // Purchase the desired rate.
       if (data.shipChoice){
         var shippoInfo = JSON.parse(data.shipChoice)
         shippo.transaction.create({
@@ -301,16 +324,37 @@ router.post("/orderComplete", function(req, res){
             res.status(500).send(err);
           }
         });
-      } else {
-        var response = {
+        } else {
+            var response = {
               "charge": charge
             }
-        res.status(200).send(response);
-        generateEmailReceipt(order);
+          res.status(200).send(response);
+          generateEmailReceipt(order);
+        }
       }
-    }
+    });
+  }
+
+
+
+
+  // get current order number
+  db.ref('orders').limitToLast(1).on("child_added", function(snapshot) {
+    orderNumber = parseInt(snapshot.key) + 1;
   });
+
+  var data = req.query;
+  var cart = JSON.parse(data.cart);
+  allInStock(cart, data, createChargeAndShipping);
 });
+
+
+
+
+
+
+
+
 
 function updateTicketCounts(obj){
   for (prop in obj){
@@ -321,6 +365,7 @@ function updateTicketCounts(obj){
     });
   }
 }
+
 
 
 function updateProductCount(obj){

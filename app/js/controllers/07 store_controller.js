@@ -392,15 +392,13 @@ $scope.submitForm = function(form){
 
 
   var shipmentData = shipment.data;
-  console.log("shipment data: ",shipmentData);
-
   if (shipmentData.rates_list){
     $scope.shipOptions = shipmentData.rates_list;
     var minIndex;
     var minVal;
     for (var i = 0; i < $scope.shipOptions.length; i++){
-      if (!minVal || $scope.shipOptions[i].amount < minVal){
-        minVal = $scope.shipOptions[i].amount;
+      if (!minVal || parseInt($scope.shipOptions[i].amount) < minVal){
+        minVal = parseInt($scope.shipOptions[i].amount);
         minIndex = i;
       }
       if ($scope.$storage.savedSelectedShip !== undefined && $scope.shipOptions[i].object_id === $scope.$storage.savedSelectedShip.object_id){
@@ -414,7 +412,6 @@ $scope.submitForm = function(form){
   }
 
  $scope.$watch('data.selectedShip', function (newValue, oldValue, scope) {
-   console.log("entering watch");
       if ($scope.data.selectedShip){
           $scope.$storage.savedSelectedShip = $scope.data.selectedShip;
           ngCart.setShipping(($scope.data.selectedShip.amount * 100));  
@@ -519,29 +516,6 @@ $timeout(function(){
 })
   
 
-
-// var updateTicketCount = function (cartItems, itemIndex) {
-//   var thisQuant = cartItems[itemIndex].quantity;
-//   var willCallArr = WillCallListService(cartItems[itemIndex].parent);
-//   willCallArr.$add({ "name": $scope.$storage.orderData.willCallName, "quantity": thisQuant }).then(function (ref) {
-//     var id = ref.key;
-//     var showCountRef = firebase.database().ref('tickets/' + cartItems[itemIndex].parent + '/totalTickets');
-//     showCountRef.once('value').then(function (snapshot) {
-//       showCountRef.set(snapshot.val() - thisQuant);
-//     });
-//   }, function (err) {
-//     console.log("what is err: ", err);
-//   });
-// }
-
-    // for (var i = 0; i < items.length; i++) {
-    //   for (var j = 0; j < tickets.length; j++) {
-    //     if (tickets[j].$id === items[i].parent) {
-    //       updateTicketCount(items, i);
-    //     }
-    //   }
-    // }
-
 function makeTicketObject(items){
     var ticketObj = {}
     for (var i = 0; i < items.length; i++) {
@@ -592,6 +566,9 @@ $scope.createCharge = function () {
     localStorage.clear();
   }, function (res) {
     $scope.errorMessage = res.data.message;
+    if (res.data.lowStock){
+      $scope.lowStock = res.data.lowStock;
+    }
     $scope.isError = true;
     $scope.loaded = true;
     //do something if the response has an error

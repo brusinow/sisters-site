@@ -56,7 +56,7 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
 .config(['$stateProvider', '$urlRouterProvider','$locationProvider','UIRouterMetatagsProvider','$provide','AnalyticsProvider', function($stateProvider, $urlRouterProvider,$locationProvider, UIRouterMetatagsProvider, $provide, AnalyticsProvider){
   UIRouterMetatagsProvider
         .setDefaultTitle('SISTERS')
-        .setDefaultDescription('Seattle duo. "Drink Champagne", the debut album, out Valentine\'s Day 2017!')
+        .setDefaultDescription('Seattle duo. "Drink Champagne", the debut album, available now!')
         .setStaticProperties({
                 'og:site_name': 'SISTERS'
             })
@@ -78,7 +78,7 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
     url: '/',
     metaTags: {
                 title: 'SISTERS',
-                description: 'Seattle duo. "Drink Champagne", the debut album, out Valentine\'s Day 2017!'
+                description: 'Seattle duo. "Drink Champagne", the debut album, available now!'
             },
     templateUrl: '/views/home.html',
     controller: 'HomeCtrl'

@@ -1,7 +1,7 @@
 var authWait = ["Auth", function(Auth) { return Auth.$waitForSignIn(); }]
 var authRequire = ["Auth", function(Auth) { return Auth.$requireSignIn(); }]
 
-angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui.bootstrap','firebase','angularMoment','ngCart','ngStorage','angularPayments','ngAnimate','picardy.fontawesome','textAngular','ui.router.metatags','angular-parallax','angular-google-analytics', 'tableSort','chart.js','ngFileSaver'])
+angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui.bootstrap','firebase','angularMoment','ngCart','ngStorage','angularPayments','ngAnimate','picardy.fontawesome','textAngular','ui.router.metatags','angular-parallax','angular-google-analytics', 'tableSort','ngFileSaver'])
 
 
 

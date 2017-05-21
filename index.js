@@ -1,4 +1,5 @@
 var subdomain = require('express-subdomain');
+var compression = require('compression')
 var express = require('express');
 var session = require('express-session');
 var bodyParser = require('body-parser');
@@ -19,11 +20,20 @@ var shippo = require('shippo')(process.env.SHIPPO_TOKEN);
 
 var app = express();
 
+app.use(compression({filter: shouldCompress}))
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
 app.use(express.static(path.join(__dirname, 'app')));
 
+function shouldCompress (req, res) {
+  if (req.headers['x-no-compression']) {
+    // don't compress responses with this request header
+    return false
+  }
 
+  // fallback to standard filter function
+  return compression.filter(req, res)
+}
 // firebase.initializeApp({
 //   serviceAccount: "app/firebaseCredentials.json",
 //   databaseURL: "https://sisters-site.firebaseio.com"
@@ -46,6 +56,15 @@ app.use(session({
   saveUninitialized: true,
   cookie: { secure: false },
 }));
+
+app.get('/*', function (req, res, next) {
+
+  if (req.url.indexOf("/img/") === 0 ) {
+    res.setHeader("Cache-Control", "public, max-age=2592000");
+    res.setHeader("Expires", new Date(Date.now() + 2592000000).toUTCString());
+  }
+  next();
+});
 
 
 

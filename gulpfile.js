@@ -1,10 +1,13 @@
 
-var gulp = require('gulp')
-var concat = require('gulp-concat')
+var gulp = require('gulp');
+var concat = require('gulp-concat');
+var concatCss = require('gulp-concat-css');
+var cssmin = require('gulp-cssmin');
 var jshint = require('gulp-jshint');
-var sourcemaps = require('gulp-sourcemaps')
-var uglify = require('gulp-uglify')
-var ngAnnotate = require('gulp-ng-annotate')
+var sourcemaps = require('gulp-sourcemaps');
+var uglify = require('gulp-uglify');
+var ngAnnotate = require('gulp-ng-annotate');
+var gzip = require('gulp-gzip');
 
 gulp.task('lint', function() {
     return gulp.src('js/*.js')
@@ -13,7 +16,7 @@ gulp.task('lint', function() {
 });
 
 gulp.task('js', function () {
-  gulp.src(['app/js/app.js','app/js/controllers/*.js','app/js/directives.js','app/js/services/*.js'])
+  gulp.src(['app/lib/ngCart.js','app/lib/angular-parallax.js','app/components/angular-file-saver/dist/angular-file-saver.bundle.js', 'app/lib/metatags/ui-router-metatags.js','app/lib/angular-tablesort.js', 'app/lib/angular-fontawesome.js', 'app/lib/buttons.js','app/lib/angular-payments.js', 'app/js/app.js','app/js/controllers/*.js','app/js/directives.js','app/js/services/*.js'])
     .pipe(sourcemaps.init())
       .pipe(concat('app.js'))
       .pipe(ngAnnotate())
@@ -22,12 +25,20 @@ gulp.task('js', function () {
     .pipe(gulp.dest('app/dist'))
 })
 
+gulp.task('css', function () {
+  return gulp.src(['app/css/normalize.css','app/css/skeleton.css','app/css/store-layout.css','app/components/textAngular/dist/textAngular.css','app/css/font-awesome.css', 'app/css/buttons.css', 'app/css/style.css'])
+    .pipe(concatCss('bundle.css'))
+    .pipe(cssmin())
+    .pipe(gulp.dest('app/dist'))
+});
+
 // Watch Files For Changes
 gulp.task('watch', function() {
     gulp.watch('app/js/*.js', ['lint','js']);
     gulp.watch('app/js/controllers/*.js', ['lint','js']);
     gulp.watch('app/js/services/*.js', ['lint','js']);
+    gulp.watch('app/css/*.css', ['css'])
 });
 
 // Default Task
-gulp.task('default', ['lint', 'js', 'watch']);
+gulp.task('default', ['lint', 'css', 'js', 'watch']);

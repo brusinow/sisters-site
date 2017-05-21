@@ -49,6 +49,14 @@ h4 {
     line-height: 1.2;
 }
 
+.sprite-logo, .sprite-cassette
+{background: url('/img/spritesheet.png') no-repeat; overflow: hidden; text-indent: -9999px; text-align: center }
+ 
+.sprite-logo { display: inline-block; background-position: -0px -0px; width: 198px; height: 40px; float: left;}
+.sprite-cassette { display: block; background-position: -0px -40px; width: 100px; height: 66px; }
+
+
+
 .master-header {
   display: inline-block;
   margin: 20px;
@@ -1871,12 +1879,14 @@ display: none;
     /* background-color: rgba(223,	210,	199, .5); */
 }
 
-.site-header, .site-footer { 
+.site-header{ 
   opacity:0;  
 }
 
 
-.site-header.fade-in, .site-footer.fade-in { 
+
+
+.site-header.fade-in { 
   opacity:1; 
 }
 
@@ -2109,7 +2119,7 @@ display: none;
 
 
 .home-content.fade-in {
-    transition: all 1000ms ease-in-out;
+    transition: all 700ms ease-in-out;
     opacity: 1;
     padding-bottom: 30px;
 }
@@ -2464,8 +2474,8 @@ display: none;
     font-size: 1.1em;
   }
 
-  .site-header.fade-in, .site-footer.fade-in { 
-    transition: all 1000ms ease-in-out; 
+  .site-header.fade-in { 
+    transition: all 300ms ease-in-out; 
     opacity:1; 
   }
 

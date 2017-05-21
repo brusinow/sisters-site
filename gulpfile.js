@@ -15,8 +15,18 @@ gulp.task('lint', function() {
         .pipe(jshint.reporter('default'));
 });
 
-gulp.task('js', function () {
-  gulp.src(['app/lib/ngCart.js','app/lib/angular-parallax.js','app/components/angular-file-saver/dist/angular-file-saver.bundle.js', 'app/lib/metatags/ui-router-metatags.js','app/lib/angular-tablesort.js', 'app/lib/angular-fontawesome.js', 'app/lib/buttons.js','app/lib/angular-payments.js', 'app/js/app.js','app/js/controllers/*.js','app/js/directives.js','app/js/services/*.js'])
+gulp.task('libJs', function () {
+  gulp.src(['app/lib/ngCart.js','app/lib/angular-parallax.js','app/components/angular-file-saver/dist/angular-file-saver.bundle.js', 'app/lib/metatags/ui-router-metatags.js','app/lib/angular-tablesort.js', 'app/lib/angular-fontawesome.js', 'app/lib/buttons.js','app/lib/angular-payments.js'])
+    .pipe(sourcemaps.init())
+      .pipe(concat('libs.js'))
+      .pipe(ngAnnotate())
+      .pipe(uglify())
+    .pipe(sourcemaps.write())
+    .pipe(gulp.dest('app/dist'))
+})
+
+gulp.task('myJs', function () {
+  gulp.src(['app/js/app.js','app/js/controllers/*.js','app/js/directives.js','app/js/services/*.js'])
     .pipe(sourcemaps.init())
       .pipe(concat('app.js'))
       .pipe(ngAnnotate())
@@ -34,11 +44,11 @@ gulp.task('css', function () {
 
 // Watch Files For Changes
 gulp.task('watch', function() {
-    gulp.watch('app/js/*.js', ['lint','js']);
-    gulp.watch('app/js/controllers/*.js', ['lint','js']);
-    gulp.watch('app/js/services/*.js', ['lint','js']);
+    gulp.watch('app/js/*.js', ['lint','myJs']);
+    gulp.watch('app/js/controllers/*.js', ['lint','myJs']);
+    gulp.watch('app/js/services/*.js', ['lint','myJs']);
     gulp.watch('app/css/*.css', ['css'])
 });
 
 // Default Task
-gulp.task('default', ['lint', 'css', 'js', 'watch']);
+gulp.task('default', ['lint', 'css', 'myJs','libJs', 'watch']);

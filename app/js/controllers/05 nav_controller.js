@@ -9,6 +9,7 @@ angular.module('SistersCtrls')
   //   console.log("already a session hash");
   // }
   // console.log("What is session storage? ",$scope.sessionStorage);
+  $scope.fade = true;
   $scope.auth = Auth;
   $scope.auth.$onAuthStateChanged(function(firebaseUser) {
     $scope.firebaseUser = firebaseUser;
@@ -88,13 +89,10 @@ angular.module('SistersCtrls')
   $scope.toggle = true;
   var width = window.innerWidth;
 
-  if (width > 806){
-    $timeout(function () {
-      $scope.fade = true;
-    }, 100);
-  } else {
-    $scope.fade = true;
-  }
+
+ 
+
+
 }])
 
 .controller('FooterCtrl', ['$scope','$timeout','$log','$uibModal','$http','Auth','$state','$sessionStorage', function($scope, $timeout,$log, $uibModal, $http, Auth, $state, $sessionStorage){
@@ -112,18 +110,8 @@ angular.module('SistersCtrls')
     // console.log("clicked log in");
     $state.go('login');  
   }
-
-
-
-
   var width = window.innerWidth;
-  if (width > 806){
-    $timeout(function () {
-      $scope.fade = true;
-    }, 100);
-  } else {
-    $scope.fade = true;
-  }
+
 }])
 
 

@@ -1,11 +1,11 @@
 var authWait = ["Auth", function(Auth) { return Auth.$waitForSignIn(); }]
 var authRequire = ["Auth", function(Auth) { return Auth.$requireSignIn(); }]
 
-angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui.bootstrap','firebase','angularMoment','ngCart','ngStorage','angularPayments','ngAnimate','picardy.fontawesome','textAngular','ui.router.metatags','angular-parallax','angular-google-analytics', 'tableSort','ngFileSaver'])
+angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui.bootstrap','firebase','angularMoment','ngCart','ngStorage','angularPayments','ngAnimate','picardy.fontawesome','textAngular','ui.router.metatags','angular-parallax', 'tableSort','ngFileSaver'])
 
 
 
-.run(["$rootScope", "$state","$location","$window",'MetaTags','Analytics', function($rootScope, $state, $location, $window,MetaTags,Analytics) {
+.run(["$rootScope", "$state","$location","$window",'MetaTags', function($rootScope, $state, $location, $window,MetaTags) {
   $rootScope.MetaTags = MetaTags;
   $rootScope.$on("$stateChangeError", function(event, toState, toParams, fromState, fromParams, error) {
     // We can catch the error thrown when the $requireSignIn promise is rejected
@@ -53,7 +53,7 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
 
 
 
-.config(['$stateProvider', '$urlRouterProvider','$locationProvider','UIRouterMetatagsProvider','$provide','AnalyticsProvider', function($stateProvider, $urlRouterProvider,$locationProvider, UIRouterMetatagsProvider, $provide, AnalyticsProvider){
+.config(['$stateProvider', '$urlRouterProvider','$locationProvider','UIRouterMetatagsProvider','$provide', function($stateProvider, $urlRouterProvider,$locationProvider, UIRouterMetatagsProvider, $provide){
   UIRouterMetatagsProvider
         .setDefaultTitle('SISTERS')
         .setDefaultDescription('Seattle duo. "Drink Champagne", the debut album, available now!')
@@ -63,9 +63,7 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
         .setOGURL(true);
 
 
-        AnalyticsProvider
-        .logAllCalls(true)
-        .setAccount('UA-85668273-1');
+
 
   
   

@@ -27,13 +27,13 @@ $scope.$on('loadMainContainer', function (event, data) {
       $scope.$emit('loadMainContainer', 'loaded');
       $scope.fadeHome = true;
       LoadedService.set(true);
-    }, 2500);
+    }, 500);
   } else {
      $timeout(function () {
       $scope.$emit('loadMainContainer', 'loaded');
       $scope.fadeHome = true;
       LoadedService.set(true);
-    }, 2500);
+    },500);
   } 
 
 

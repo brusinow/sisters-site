@@ -23,14 +23,14 @@ var app = express();
 app.use(compression({filter: shouldCompress}))
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
-app.use(express.static(path.join(__dirname, 'app'), {etag: true}));
+
 
 function shouldCompress (req, res) {
   if (req.headers['x-no-compression']) {
     // don't compress responses with this request header
     return false
   }
-
+  console.log("we have a req!")
   // fallback to standard filter function
   return compression.filter(req, res)
 }
@@ -38,6 +38,21 @@ function shouldCompress (req, res) {
 //   serviceAccount: "app/firebaseCredentials.json",
 //   databaseURL: "https://sisters-site.firebaseio.com"
 // });
+
+app.get('*', function (req, res, next) {
+
+  if (req.url.indexOf("/img/") === 0 || req.url.indexOf("/js/") === 0 || req.url.indexOf("/dist/") === 0 || req.url.indexOf("/css/") === 0) {
+    console.log("this url:", req.url);
+    console.log("this header: ",req.headers);
+    if (!req.headers['cache-control'] || req.headers['cache-control'] === 'no-cache'){
+      res.setHeader("Cache-Control", "public, max-age=2592000");
+      res.setHeader("Expires", new Date(Date.now() + 2592000000).toUTCString());
+    }
+  }
+  next();
+});
+
+app.use(express.static(path.join(__dirname, 'app'), {etag: true}));
 
 entities = new Entities();
 
@@ -57,14 +72,7 @@ app.use(session({
   cookie: { secure: false },
 }));
 
-app.get('*', function (req, res, next) {
-  console.log(req.url);
-  if (req.url.indexOf("/img/") === 0 || req.url.indexOf(".css") !== -1) {
-    res.setHeader("Cache-Control", "public, max-age=2592000");
-    res.setHeader("Expires", new Date(Date.now() + 2592000000).toUTCString());
-  }
-  next();
-});
+
 
 
 

@@ -52,7 +52,7 @@ h4 {
 .sprite-logo, .sprite-cassette
 {background: url('/img/spritesheet.png') no-repeat; overflow: hidden; text-indent: -9999px; text-align: center }
  
-.sprite-logo { display: inline-block; background-position: -0px -0px; width: 198px; height: 40px; float: left;}
+.sprite-logo { display: inline-block; background-position: -0px -0px; width: 236px; height: 40px; float: left;}
 .sprite-cassette { display: block; background-position: -0px -40px; width: 100px; height: 66px; }
 
 

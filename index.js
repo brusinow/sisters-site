@@ -23,7 +23,7 @@ var app = express();
 app.use(compression({filter: shouldCompress}))
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({extended: false}));
-app.use(express.static(path.join(__dirname, 'app')));
+app.use(express.static(path.join(__dirname, 'app'), {etag: true}));
 
 function shouldCompress (req, res) {
   if (req.headers['x-no-compression']) {
@@ -57,8 +57,8 @@ app.use(session({
   cookie: { secure: false },
 }));
 
-app.get('/*', function (req, res, next) {
-
+app.get('*', function (req, res, next) {
+  console.log(req.url);
   if (req.url.indexOf("/img/") === 0 || req.url.indexOf(".css") !== -1) {
     res.setHeader("Cache-Control", "public, max-age=2592000");
     res.setHeader("Expires", new Date(Date.now() + 2592000000).toUTCString());

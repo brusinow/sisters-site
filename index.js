@@ -59,7 +59,7 @@ app.use(session({
 
 app.get('/*', function (req, res, next) {
 
-  if (req.url.indexOf("/img/") === 0 ) {
+  if (req.url.indexOf("/img/") === 0 || req.url.indexOf(".css") !== -1) {
     res.setHeader("Cache-Control", "public, max-age=2592000");
     res.setHeader("Expires", new Date(Date.now() + 2592000000).toUTCString());
   }

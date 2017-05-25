@@ -15,11 +15,11 @@ gulp.task('lint', function() {
         .pipe(jshint.reporter('default'));
 });
 
+
 gulp.task('libJs', function () {
-  gulp.src(['app/lib/ngCart.js','app/lib/angular-parallax.js','app/components/angular-file-saver/dist/angular-file-saver.bundle.js', 'app/lib/metatags/ui-router-metatags.js','app/lib/angular-tablesort.js', 'app/lib/angular-fontawesome.js', 'app/lib/buttons.js','app/lib/angular-payments.js'])
+  gulp.src(['app/components/moment-timezone/moment-timezone.js','app/lib/ngCart.js','app/lib/angular-parallax.js','app/components/angular-file-saver/dist/angular-file-saver.bundle.js', 'app/lib/metatags/ui-router-metatags.js','app/lib/angular-tablesort.js', 'app/lib/angular-fontawesome.js', 'app/lib/buttons.js','app/lib/angular-payments.js', 'app/components/ng-flow/dist/ng-flow-standalone.min.js'])
     .pipe(sourcemaps.init())
       .pipe(concat('libs.js'))
-      .pipe(ngAnnotate())
       .pipe(uglify())
     .pipe(sourcemaps.write())
     .pipe(gulp.dest('app/dist'))
@@ -36,7 +36,7 @@ gulp.task('myJs', function () {
 })
 
 gulp.task('css', function () {
-  return gulp.src(['app/css/normalize.css','app/css/skeleton.css','app/css/store-layout.css','app/components/textAngular/dist/textAngular.css','app/css/font-awesome.css', 'app/css/buttons.css', 'app/css/style.css'])
+  return gulp.src(['app/css/normalize.css','app/css/skeleton.css','app/css/store-layout.css','app/css/tablesort.css', 'app/components/textAngular/dist/textAngular.css','app/css/font-awesome.css', 'app/css/buttons.css', 'app/css/style.css'])
     .pipe(concatCss('bundle.css'))
     .pipe(cssmin())
     .pipe(gulp.dest('app/dist'))

@@ -57,26 +57,26 @@ $scope.$on('loadMainContainer', function (event, data) {
 
 }])
 
-.controller('AboutCtrl', function($scope, $state, $timeout){
+.controller('AboutCtrl', ["$scope", function($scope){
   var main = document.getElementById("main");
   main.style.backgroundColor = 'rgba(255, 255, 255, 1)';
   main.style.padding = "0 0 176px 0";
   main.style.width = '100%';
   $scope.$emit('loadMainContainer', 'loaded');
-}) 
+}]) 
 
-.controller('ContactCtrl', function($scope, $state, $timeout){
+.controller('ContactCtrl', ["$scope", function($scope){
   var main = document.getElementById("main");
   main.style.backgroundColor = 'rgba(255, 255, 255, 0)';
   main.style.padding = "";
   main.style.width = '';
   $scope.$emit('loadMainContainer', 'loaded');
-}) 
+}]) 
 
-.controller('PressCtrl', function($scope, $state, $timeout){
+.controller('PressCtrl', ["$scope", function($scope){
   var main = document.getElementById("main");
   main.style.backgroundColor = 'rgba(255, 255, 255, 0)';
   main.style.padding = "0 0 176px 0";
   main.style.width = '90%';
   $scope.$emit('loadMainContainer', 'loaded');
-});
+}]);

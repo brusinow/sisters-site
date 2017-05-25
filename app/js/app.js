@@ -1,57 +1,58 @@
-var authWait = ["Auth", function(Auth) { return Auth.$waitForSignIn(); }]
-var authRequire = ["Auth", function(Auth) { return Auth.$requireSignIn(); }]
+var authWait = ["Auth", function (Auth) { return Auth.$waitForSignIn(); }]
+var authRequire = ["Auth", function (Auth) { return Auth.$requireSignIn(); }]
 
-angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui.bootstrap','firebase','angularMoment','ngCart','ngStorage','angularPayments','ngAnimate','picardy.fontawesome','textAngular','ui.router.metatags','angular-parallax', 'tableSort','ngFileSaver','flow'])
-
-.run(["$rootScope", "$state","$location","$window",'MetaTags', 
-function($rootScope, $state, $location, $window,MetaTags) {
-  $rootScope.MetaTags = MetaTags;
-   moment.tz.add('America/Los_Angeles|PST PDT|80 70|0101|1Lzm0 1zb0 Op0');
-  $rootScope.$on("$stateChangeError", function(event, toState, toParams, fromState, fromParams, error) {
-    // We can catch the error thrown when the $requireSignIn promise is rejected
-    // and redirect the user back to the home page
-    if (error === "AUTH_REQUIRED") {
-      $state.go("login");
-    }
-  });
-  $rootScope.$on('$stateChangeSuccess', function(event) {
-   document.body.scrollTop = document.documentElement.scrollTop = 0;
-
-                if (!$window.ga)
-                    return;
- 
-                $window.ga('send', 'pageview', { page: $location.path() });
+angular.module("SistersApp", ['SistersCtrls', 'SistersDirectives', 'ui.router', 'ui.bootstrap', 'firebase', 'angularMoment', 'ngCart', 'ngStorage', 'angularPayments', 'ngAnimate', 'picardy.fontawesome', 'textAngular', 'ui.router.metatags', 'angular-parallax', 'tableSort', 'ngFileSaver', 'flow'])
 
 
-  });
-}])
+  .run(["$rootScope", "$state", "$location", "$window", 'MetaTags',
+    function ($rootScope, $state, $location, $window, MetaTags) {
+      $rootScope.MetaTags = MetaTags;
+      moment.tz.add('America/Los_Angeles|PST PDT|80 70|0101|1Lzm0 1zb0 Op0');
+      $rootScope.$on("$stateChangeError", function (event, toState, toParams, fromState, fromParams, error) {
+        // We can catch the error thrown when the $requireSignIn promise is rejected
+        // and redirect the user back to the home page
+        if (error === "AUTH_REQUIRED") {
+          $state.go("login");
+        }
+      });
+      $rootScope.$on('$stateChangeSuccess', function (event) {
+        document.body.scrollTop = document.documentElement.scrollTop = 0;
 
-   .config(['tableSortConfigProvider', function(tableSortConfigProvider){
-        var filterString = "<div class='row'>";
-        filterString +=      "<div class='col-sm-4 col-md-3 col-sm-offset-8 col-md-offset-9'>";
-        filterString +=        "<div class='form-group has-feedback'>";
-        filterString +=          "<input type='search' class='form-control' placeholder='filter {{ITEM_NAME_PLURAL}}' ng-model='FILTER_STRING'/>";
-        filterString +=          "<span class='glyphicon glyphicon-search form-control-feedback' aria-hidden='true'></span>";
-        filterString +=        "</div>";
-        filterString +=      "</div>";
-        filterString +=    "</div>";
-        tableSortConfigProvider.filterTemplate = filterString;
+        if (!$window.ga)
+          return;
 
-        var pagerString = "<div class='text-center'>";
+        $window.ga('send', 'pageview', { page: $location.path() });
 
-        pagerString +=      "<ul uib-pagination style='vertical-align:middle;' ng-show='ITEMS_PER_PAGE < TOTAL_COUNT' ng-model='CURRENT_PAGE_NUMBER' ";
-        pagerString +=        "total-items='FILTERED_COUNT' items-per-page='ITEMS_PER_PAGE' force-ellipses='false'></ul>";
-        pagerString +=      "<div class='form-group' style='display:inline-block;'>";
-        pagerString +=      "</div>";
-        pagerString +=      "<br/><small class='text-muted'>Showing {{CURRENT_PAGE_RANGE}} {{FILTERED_COUNT === 0 ? '' : 'of'}} ";
-        pagerString +=        "<span ng-if='FILTERED_COUNT === TOTAL_COUNT'>{{TOTAL_COUNT | number}} {{TOTAL_COUNT === 1 ? ITEM_NAME_SINGULAR : ITEM_NAME_PLURAL}}</span>";
-        pagerString +=        "<span ng-if='FILTERED_COUNT !== TOTAL_COUNT'>{{FILTERED_COUNT | number}} {{FILTERED_COUNT === 1 ? ITEM_NAME_SINGULAR : ITEM_NAME_PLURAL}} (filtered from {{TOTAL_COUNT | number}})</span>";
-        pagerString +=      "</small>&nbsp;";
-        pagerString +=    "</div>";
-        tableSortConfigProvider.paginationTemplate = pagerString;
-   }])
 
-.config(['flowFactoryProvider', function (flowFactoryProvider) {
+      });
+    }])
+
+  .config(['tableSortConfigProvider', function (tableSortConfigProvider) {
+    var filterString = "<div class='row'>";
+    filterString += "<div class='col-sm-4 col-md-3 col-sm-offset-8 col-md-offset-9'>";
+    filterString += "<div class='form-group has-feedback'>";
+    filterString += "<input type='search' class='form-control' placeholder='filter {{ITEM_NAME_PLURAL}}' ng-model='FILTER_STRING'/>";
+    filterString += "<span class='glyphicon glyphicon-search form-control-feedback' aria-hidden='true'></span>";
+    filterString += "</div>";
+    filterString += "</div>";
+    filterString += "</div>";
+    tableSortConfigProvider.filterTemplate = filterString;
+
+    var pagerString = "<div class='text-center'>";
+
+    pagerString += "<ul uib-pagination style='vertical-align:middle;' ng-show='ITEMS_PER_PAGE < TOTAL_COUNT' ng-model='CURRENT_PAGE_NUMBER' ";
+    pagerString += "total-items='FILTERED_COUNT' items-per-page='ITEMS_PER_PAGE' force-ellipses='false'></ul>";
+    pagerString += "<div class='form-group' style='display:inline-block;'>";
+    pagerString += "</div>";
+    pagerString += "<br/><small class='text-muted'>Showing {{CURRENT_PAGE_RANGE}} {{FILTERED_COUNT === 0 ? '' : 'of'}} ";
+    pagerString += "<span ng-if='FILTERED_COUNT === TOTAL_COUNT'>{{TOTAL_COUNT | number}} {{TOTAL_COUNT === 1 ? ITEM_NAME_SINGULAR : ITEM_NAME_PLURAL}}</span>";
+    pagerString += "<span ng-if='FILTERED_COUNT !== TOTAL_COUNT'>{{FILTERED_COUNT | number}} {{FILTERED_COUNT === 1 ? ITEM_NAME_SINGULAR : ITEM_NAME_PLURAL}} (filtered from {{TOTAL_COUNT | number}})</span>";
+    pagerString += "</small>&nbsp;";
+    pagerString += "</div>";
+    tableSortConfigProvider.paginationTemplate = pagerString;
+  }])
+
+  .config(['flowFactoryProvider', function (flowFactoryProvider) {
     flowFactoryProvider.defaults = {
       target: '',
       permanentErrors: [500, 501],
@@ -65,635 +66,614 @@ function($rootScope, $state, $location, $window,MetaTags) {
     // Can be used with different implementations of Flow.js
   }])
 
-.config(['$stateProvider', '$urlRouterProvider','$locationProvider','UIRouterMetatagsProvider','$provide', function($stateProvider, $urlRouterProvider,$locationProvider, UIRouterMetatagsProvider, $provide){
-  UIRouterMetatagsProvider
-        .setDefaultTitle('SISTERS')
-        .setDefaultDescription('Seattle duo. "Drink Champagne", the debut album, available now!')
-        .setStaticProperties({
-                'og:site_name': 'SISTERS'
-            })
-        .setOGURL(true);
+  .config(['$stateProvider', '$urlRouterProvider', '$locationProvider', 'UIRouterMetatagsProvider', '$provide', function ($stateProvider, $urlRouterProvider, $locationProvider, UIRouterMetatagsProvider, $provide) {
+    UIRouterMetatagsProvider
+      .setDefaultTitle('SISTERS')
+      .setDefaultDescription('Seattle duo. "Drink Champagne", the debut album, available now!')
+      .setStaticProperties({
+        'og:site_name': 'SISTERS'
+      })
+      .setOGURL(true);
 
 
+    $urlRouterProvider.otherwise('/');
 
-
-  
-  
-  
-  
-  $urlRouterProvider.otherwise('/');
-
-  $stateProvider
-  .state('home', {
-    url: '/',
-    metaTags: {
-                title: 'SISTERS',
-                description: 'Seattle duo. "Drink Champagne", the debut album, available now!'
-            },
-    templateUrl: '/views/home.html',
-    controller: 'HomeCtrl'
-  })
-  .state('admin', {
-    templateUrl: '/views/admin/adminTemplate.html',
-    controller: 'AdminMainCtrl',
-    resolve: {
-      "currentAuth": authRequire
-    }
-  })
-  .state('admin.main', {
-    url: '/admin',
-    templateUrl: '/views/admin/adminMain.html',
-    controller: 'AdminMainCtrl',
-    resolve: {
-      "currentAuth": authRequire,
-      "Orders": function(GetAllOrders){
-        return GetAllOrders().$loaded();
-      }    
-    },
-    activetab: 0
-  })
-  .state('admin.orders', {
-    url: '/admin/orders',
-    templateUrl: '/views/admin/adminOrders.html',
-    controller: 'AdminOrdersCtrl',
-    resolve: {
-      "currentAuth": authRequire,
-      "Orders": function(GetAllOrders){
-        return GetAllOrders().$loaded();
-      }    
-    },
-    activetab: 1
-  })
-   .state('admin.tickets', {
-    url: '/admin/tickets',
-    templateUrl: '/views/admin/adminTickets.html',
-    controller: 'AdminTicketsCtrl',
-    resolve: {
-      "currentAuth": authRequire,
-      "Tickets": function(GetAllTickets){
-        return GetAllTickets().$loaded();
-      }    
-    },
-    activetab: 2
-  })
-  .state('admin.products', {
-    url: '/admin/products',
-    templateUrl: '/views/admin/adminProducts.html',
-    controller: 'AdminProductsCtrl',
-    resolve: {
-      "currentAuth": authRequire,
-      "allProducts": function(ProductsService){
-        return ProductsService.allProducts();
-      }
-    },
-    activetab: 3,
-    activeSub: 0
-  })
-
-  .state('admin.products-quickInventory', {
-    url: '/admin/products/inventory',
-    templateUrl: '/views/admin/adminProductsInventory.html',
-    controller: 'AdminProductsInventoryCtrl',
-    resolve: {
-      "currentAuth": authRequire,
-      "allProducts": function(ProductsService){
-        return ProductsService.allActiveProducts();
-      }
-    },
-    activetab: 3,
-    activeSub: 1
-  })
-
-  .state('admin.products-add', {
-    url: '/admin/products/add',
-    templateUrl: '/views/admin/adminProductsAdd.html',
-    controller: 'AdminProductsAddCtrl',
-    resolve: {
-      "currentAuth": authRequire
-    },
-    activetab: 3
-  })
-
-  .state('admin.products-edit', {
-    url: '/admin/products/edit/:id',
-    templateUrl: '/views/admin/adminProductsAdd.html',
-    controller: 'AdminProductsEditCtrl',
-    resolve: {
-      "currentAuth": authRequire,
-      "product": function(ProductsService, $stateParams){
-        return ProductsService.oneProduct($stateParams.id).$loaded();
-      },
-      "images": function(product, FirebaseImgDownloader){
-        return FirebaseImgDownloader(product);
-      }
-    },
-    activetab: 3,
-    activeSub: 1
-  })
-
-   .state('admin.ticketEach', {
-    url: '/admin/tickets/:id',
-    templateUrl: '/views/admin/adminTicketEach.html',
-    controller: 'AdminTicketsEachCtrl',
-    resolve: {
-      "currentAuth": authRequire,
-      "ThisTicket": function(GetSingleTicket, $stateParams){
-        return GetSingleTicket($stateParams.id).$loaded();
-      },
-      "WillCall": function(ThisWillCall, $stateParams){
-        return ThisWillCall($stateParams.id).$loaded();
-      },    
-    }
-  })
-  
-  .state('about', {
-    url: '/about',
-    templateUrl: '/views/about.html',
-    controller: 'AboutCtrl'
-  })
-
-   .state('press', {
-    url: '/press',
-    templateUrl: '/views/press.html',
-    controller: 'PressCtrl'
-  })
-
-    .state('contact', {
-    url: '/contact',
-    templateUrl: '/views/contact.html',
-    controller: 'ContactCtrl'
-  })
-
-  .state('download', {
-    url: '/download/:id',
-    resolve: {
-      "downloadKey": function(DownloadKeyService, $stateParams){
-        return DownloadKeyService($stateParams.id).$loaded();
-      }
-    },
-    onEnter: function($state, $stateParams, $timeout, downloadKey) {
-      if (downloadKey === true) {
-          $timeout(function() {
-                  console.log("success!");
-                  // $state.go('downloadConfirm');
-              }, 0);
-      } else {
-          $timeout(function() {
-                  console.log("failed!");
-                  // $state.go('downloadFailed');
-              }, 0);
-      }
-    }
-  })
-
-
-  .state('blog', {
-    templateUrl: '/views/blog/blog.html',
-    controller: 'BlogMasterCtrl',
-    resolve: {
-      "currentAuth": authWait,
-      "Blog": function(BlogPosts){
-        return BlogPosts().$loaded();
-      }      
-    }
-  })
-
-  .state('blog-new', {
-    url: '/blog/new',
-    templateUrl: '/views/blog/newBlogPost.html',
-    controller: 'NewBlogCtrl',
-    resolve: {
-      "currentAuth": authRequire,
-      "AllTags": function(AllTagsService){
-        return AllTagsService().$loaded();
-      }
-    }
-  })
-  .state('blog-edit', {
-    url: '/blog/edit/:slug',
-    templateUrl: '/views/blog/editBlogPost.html',
-    controller: 'EditBlogCtrl',
-    resolve: {
-      "currentAuth": authRequire,
-      "AllTags": function(AllTagsService){
-        return AllTagsService().$loaded();
-      },
-      "thisPost": function($stateParams, ThisPostService){
-        return ThisPostService($stateParams.slug).$loaded();
-      }
-    }
-  })
-  .state('blog-tags-edit', {
-    url: '/blog/editTags/',
-    templateUrl: '/views/blog/editTags.html',
-    controller: 'EditBlogTagsCtrl',
-    resolve: {
-      "currentAuth": authRequire,
-      "AllTags": function(AllTagsService){
-        return AllTagsService().$loaded();
-      }
-    }
-  })
-
-  .state('blog.main', {
-    url: '/blog',
-    metaTags: {
-            title: 'SISTERS - Blog',
-            description: 'Updates, news, and commentary from Seattle band SISTERS.'
+    $stateProvider
+      .state('home', {
+        url: '/',
+        metaTags: {
+          title: 'SISTERS',
+          description: 'Seattle duo. "Drink Champagne", the debut album, available now!'
         },
-    templateUrl: '/views/blog/blog-content.html',
-    controller: 'BlogCtrl',
-    resolve: {
-      "currentAuth": authWait
-    }
-  })
-    .state('blog.page', {
-    url: '/blog/:page',
-    metaTags: {
-            title: 'SISTERS - Blog',
-            description: 'Updates, news, and commentary from Seattle band SISTERS.'
-        },
-    templateUrl: '/views/blog/blog-content.html',
-    controller: 'BlogCtrl',
-    resolve: {
-      "currentAuth": authWait     
-    }
-  })
+        templateUrl: '/views/home.html',
+        controller: 'HomeCtrl'
+      })
 
-     .state('blog.archive', {
-    url: '/blog/archives/:year/:month',
-    metaTags: {
-            title: 'SISTERS - Blog',
-            description: 'Updates, news, and commentary from Seattle band SISTERS.'
-        },
-    templateUrl: '/views/blog/blog-content.html',
-    controller: 'BlogArchiveCtrl',
-    resolve: {
-      "currentAuth": authWait,
-      "Blog": function(BlogPosts){
-        return BlogPosts().$loaded();
-      },
-      "Archive": function($stateParams, ArchiveShowService){
-        return ArchiveShowService($stateParams.year, $stateParams.month).$loaded();
-      }      
-    }
-  })
-
-    .state('blog.archivePage', {
-      url: '/blog/archives/:year/:month/:page',
-      metaTags: {
-            title: 'SISTERS - Blog',
-            description: 'Updates, news, and commentary from Seattle band SISTERS.'
-        },
-      templateUrl: '/views/blog/blog-content.html',
-      controller: 'BlogArchiveCtrl',
-      resolve: {
-        "currentAuth": authWait,
-        "Blog": function(BlogPosts){
-          return BlogPosts().$loaded();
-        },
-        "Archive": function($stateParams, ArchiveShowService){
-          return ArchiveShowService($stateParams.year, $stateParams.month).$loaded();
+      .state('admin', {
+        templateUrl: '/views/admin/adminTemplate.html',
+        controller: 'AdminMainCtrl',
+        resolve: {
+          "currentAuth": authRequire
         }
+      })
 
-      }
-    })
-
-    .state('blog.tags', {
-    url: '/blog/tags/:tagName',
-    metaTags: {
-            title: 'SISTERS - Blog',
-            description: 'Updates, news, and commentary from Seattle band SISTERS.'
+      .state('admin.main', {
+        url: '/admin',
+        templateUrl: '/views/admin/adminMain.html',
+        controller: 'AdminMainCtrl',
+        resolve: {
+          "currentAuth": authRequire,
+          "Orders": ["GetAllOrders", function (GetAllOrders) {
+            return GetAllOrders().$loaded();
+          }]
         },
-    templateUrl: '/views/blog/blog-content.html',
-    controller: 'BlogTagsCtrl',
-    resolve: {
-      "currentAuth": authWait,
-      "Blog": function(BlogPosts){
-        return BlogPosts().$loaded();
-      },
-      "TagsShow": function($stateParams, TagsShowService){
-        return TagsShowService($stateParams.tagName).$loaded();
-      }      
-    }
-  })
+        activetab: 0
+      })
 
-
-
-  .state('blog.show', {
-    url: '/blog/show/:slug',
-    templateUrl: '/views/blog/blog-content-show.html',
-    controller: 'BlogShowCtrl',
-    resolve: {
-      "currentAuth": authWait,
-      "thisPost": function($stateParams, ThisPostService){        
-        return ThisPostService($stateParams.slug).$loaded();
-      },
-      "Blog": function(BlogPosts){
-        return BlogPosts().$loaded();
-      }       
-    },
-    metaTags: {
-            title: function(thisPost){
-              console.log("what is Blog? ",thisPost);
-              var title = "SISTERS - " + thisPost[0].postTitle;
-              return title;
-            },
-            description: function(thisPost){
-              return thisPost[0].postBody;
-            }
+      .state('admin.orders', {
+        url: '/admin/orders',
+        templateUrl: '/views/admin/adminOrders.html',
+        controller: 'AdminOrdersCtrl',
+        resolve: {
+          "currentAuth": authRequire,
+          "Orders": ["GetAllOrders", function (GetAllOrders) {
+            return GetAllOrders().$loaded();
+          }]
         },
-  })
-  
+        activetab: 1
+      })
 
-
-  .state('shows', {
-    url: '/shows',
-    metaTags: {
-            title: 'SISTERS - Shows',
-            description: 'Upcoming shows for Seattle duo SISTERS.'
+      .state('admin.tickets', {
+        url: '/admin/tickets',
+        templateUrl: '/views/admin/adminTickets.html',
+        controller: 'AdminTicketsCtrl',
+        resolve: {
+          "currentAuth": authRequire,
+          "Tickets": ["GetAllTickets", function (GetAllTickets) {
+            return GetAllTickets().$loaded();
+          }]
         },
-    templateUrl: '/views/shows/shows.html',
-    controller: 'ShowsCtrl',
-    resolve: {
-      "currentAuth": authWait,
-      getShows: function(GetShows){
-        console.log("app resolve entered");
-        return GetShows().$loaded();
-      }
-    }
-  })
+        activetab: 2
+      })
 
-  .state('shows-new', {
-    url: '/shows/new',
-    templateUrl: '/views/shows/newShow.html',
-    controller: 'NewShowCtrl',
-    resolve: {
-      "currentAuth": authWait,
-      getShows: function(GetShows){
-        console.log("app resolve entered");
-        return GetShows().$loaded();
-      }
-    }
-  })
-
-  .state('showTickets', {
-    url: '/shows/:showId',
-    templateUrl: '/views/shows/singleShow.html',
-    controller: 'SingleShowCtrl',
-      resolve: {
-      "currentAuth": authWait,
-      "GetShow": function(GetSingleShow, $stateParams){
-        return GetSingleShow($stateParams.showId).$loaded();
-      },
-       "GetTicket": function(ticketFactory, $stateParams){
-         console.log("state params! ",$stateParams);
-        return ticketFactory.getTicket($stateParams.showId);
-      }
-    }
-  })
-
-  .state('store', {
-    url: '/store',
-    metaTags: {
-            title: 'SISTERS - Store',
-            description: 'The official store for Seattle duo SISTERS.'
+      .state('admin.products', {
+        url: '/admin/products',
+        templateUrl: '/views/admin/adminProducts.html',
+        controller: 'AdminProductsCtrl',
+        resolve: {
+          "currentAuth": authRequire,
+          "allProducts": ["ProductsService", function (ProductsService) {
+            return ProductsService.allProducts();
+          }]
         },
-    templateUrl: '/views/store/store.html',
-    controller: 'StoreCtrl',
-    resolve: {
-      "currentAuth": authWait,
-      "allProducts": function(ProductsService){
-        return ProductsService.allActiveProducts();
-      }
+        activetab: 3,
+        activeSub: 0
+      })
+
+      .state('admin.products-quickInventory', {
+        url: '/admin/products/inventory',
+        templateUrl: '/views/admin/adminProductsInventory.html',
+        controller: 'AdminProductsInventoryCtrl',
+        resolve: {
+          "currentAuth": authRequire,
+          "allProducts": ["ProductsService", function (ProductsService) {
+            return ProductsService.allActiveProducts();
+          }]
+        },
+        activetab: 3,
+        activeSub: 1
+      })
+
+      .state('admin.products-add', {
+        url: '/admin/products/add',
+        templateUrl: '/views/admin/adminProductsAdd.html',
+        controller: 'AdminProductsAddCtrl',
+        resolve: {
+          "currentAuth": authRequire
+        },
+        activetab: 3
+      })
+
+      .state('admin.products-edit', {
+        url: '/admin/products/edit/:id',
+        templateUrl: '/views/admin/adminProductsAdd.html',
+        controller: 'AdminProductsEditCtrl',
+        resolve: {
+          "currentAuth": authRequire,
+          "product": ["ProductsService", "$stateParams", function (ProductsService, $stateParams) {
+            return ProductsService.oneProduct($stateParams.id).$loaded();
+          }],
+          "images": ["product", "FirebaseImgDownloader", function (product, FirebaseImgDownloader) {
+            return FirebaseImgDownloader(product);
+          }]
+        },
+        activetab: 3,
+        activeSub: 1
+      })
+
+      .state('admin.ticketEach', {
+        url: '/admin/tickets/:id',
+        templateUrl: '/views/admin/adminTicketEach.html',
+        controller: 'AdminTicketsEachCtrl',
+        resolve: {
+          "currentAuth": authRequire,
+          "ThisTicket": ["GetSingleTicket", "$stateParams", function (GetSingleTicket, $stateParams) {
+            return GetSingleTicket($stateParams.id).$loaded();
+          }],
+          "WillCall": ["ThisWillCall", "$stateParams", function (ThisWillCall, $stateParams) {
+            return ThisWillCall($stateParams.id).$loaded();
+          }],
+        }
+      })
+
+      .state('about', {
+        url: '/about',
+        templateUrl: '/views/about.html',
+        controller: 'AboutCtrl',
+      })
+
+      .state('press', {
+        url: '/press',
+        templateUrl: '/views/press.html',
+        controller: 'PressCtrl'
+      })
+
+      .state('contact', {
+        url: '/contact',
+        templateUrl: '/views/contact.html',
+        controller: 'ContactCtrl'
+      })
+
+      .state('download', {
+        url: '/download/:id',
+        resolve: {
+          "downloadKey": ["DownloadKeyService", "$stateParams", function (DownloadKeyService, $stateParams) {
+            return DownloadKeyService($stateParams.id).$loaded();
+          }]
+        },
+        onEnter: ["$state", "$stateParams", "$timeout", "downloadKey", function ($state, $stateParams, $timeout, downloadKey) {
+          if (downloadKey === true) {
+            $timeout(function () {
+              console.log("success!");
+              // $state.go('downloadConfirm');
+            }, 0);
+          } else {
+            $timeout(function () {
+              console.log("failed!");
+              // $state.go('downloadFailed');
+            }, 0);
+          }
+        }]
+      })
+
+      .state('blog', {
+        templateUrl: '/views/blog/blog.html',
+        controller: 'BlogMasterCtrl',
+        resolve: {
+          "currentAuth": authWait,
+          "Blog": ["BlogPosts", function (BlogPosts) {
+            return BlogPosts().$loaded();
+          }]
+        }
+      })
+
+      .state('blog-new', {
+        url: '/blog/new',
+        templateUrl: '/views/blog/newBlogPost.html',
+        controller: 'NewBlogCtrl',
+        resolve: {
+          "currentAuth": authRequire,
+          "AllTags": ["AllTagsService", function (AllTagsService) {
+            return AllTagsService().$loaded();
+          }]
+        }
+      })
+
+      .state('blog-edit', {
+        url: '/blog/edit/:slug',
+        templateUrl: '/views/blog/editBlogPost.html',
+        controller: 'EditBlogCtrl',
+        resolve: {
+          "currentAuth": authRequire,
+          "AllTags": ["AllTagsService", function (AllTagsService) {
+            return AllTagsService().$loaded();
+          }],
+          "thisPost": ["$stateParams", "ThisPostService", function ($stateParams, ThisPostService) {
+            return ThisPostService($stateParams.slug).$loaded();
+          }]
+        }
+      })
+
+      .state('blog-tags-edit', {
+        url: '/blog/editTags/',
+        templateUrl: '/views/blog/editTags.html',
+        controller: 'EditBlogTagsCtrl',
+        resolve: {
+          "currentAuth": authRequire,
+          "AllTags": ["AllTagsService", function (AllTagsService) {
+            return AllTagsService().$loaded();
+          }]
+        }
+      })
+
+      .state('blog.main', {
+        url: '/blog',
+        metaTags: {
+          title: 'SISTERS - Blog',
+          description: 'Updates, news, and commentary from Seattle band SISTERS.'
+        },
+        templateUrl: '/views/blog/blog-content.html',
+        controller: 'BlogCtrl',
+        resolve: {
+          "currentAuth": authWait
+        }
+      })
+
+      .state('blog.page', {
+        url: '/blog/:page',
+        metaTags: {
+          title: 'SISTERS - Blog',
+          description: 'Updates, news, and commentary from Seattle band SISTERS.'
+        },
+        templateUrl: '/views/blog/blog-content.html',
+        controller: 'BlogCtrl',
+        resolve: {
+          "currentAuth": authWait
+        }
+      })
+
+      .state('blog.archive', {
+        url: '/blog/archives/:year/:month',
+        metaTags: {
+          title: 'SISTERS - Blog',
+          description: 'Updates, news, and commentary from Seattle band SISTERS.'
+        },
+        templateUrl: '/views/blog/blog-content.html',
+        controller: 'BlogArchiveCtrl',
+        resolve: {
+          "currentAuth": authWait,
+          "Blog": ["BlogPosts", function (BlogPosts) {
+            return BlogPosts().$loaded();
+          }],
+          "Archive": ["$stateParams", "ArchiveShowService", function ($stateParams, ArchiveShowService) {
+            return ArchiveShowService($stateParams.year, $stateParams.month).$loaded();
+          }]
+        }
+      })
+
+      .state('blog.archivePage', {
+        url: '/blog/archives/:year/:month/:page',
+        metaTags: {
+          title: 'SISTERS - Blog',
+          description: 'Updates, news, and commentary from Seattle band SISTERS.'
+        },
+        templateUrl: '/views/blog/blog-content.html',
+        controller: 'BlogArchiveCtrl',
+        resolve: {
+          "currentAuth": authWait,
+          "Blog": ["BlogPosts", function (BlogPosts) {
+            return BlogPosts().$loaded();
+          }],
+          "Archive": ["$stateParams", "ArchiveShowService", function ($stateParams, ArchiveShowService) {
+            return ArchiveShowService($stateParams.year, $stateParams.month).$loaded();
+          }]
+        }
+      })
+
+      .state('blog.tags', {
+        url: '/blog/tags/:tagName',
+        metaTags: {
+          title: 'SISTERS - Blog',
+          description: 'Updates, news, and commentary from Seattle band SISTERS.'
+        },
+        templateUrl: '/views/blog/blog-content.html',
+        controller: 'BlogTagsCtrl',
+        resolve: {
+          "currentAuth": authWait,
+          "Blog": ["BlogPosts", function (BlogPosts) {
+            return BlogPosts().$loaded();
+          }],
+          "TagsShow": ["$stateParams", "TagsShowService", function ($stateParams, TagsShowService) {
+            return TagsShowService($stateParams.tagName).$loaded();
+          }]
+        }
+      })
+
+      .state('blog.show', {
+        url: '/blog/show/:slug',
+        templateUrl: '/views/blog/blog-content-show.html',
+        controller: 'BlogShowCtrl',
+        resolve: {
+          "currentAuth": authWait,
+          "thisPost": ["$stateParams", "ThisPostService", function ($stateParams, ThisPostService) {
+            return ThisPostService($stateParams.slug).$loaded();
+          }],
+          "Blog": ["BlogPosts", function (BlogPosts) {
+            return BlogPosts().$loaded();
+          }]
+        },
+        metaTags: {
+          title: ["ThisPost", function (thisPost) {
+            console.log("what is Blog? ", thisPost);
+            var title = "SISTERS - " + thisPost[0].postTitle;
+            return title;
+          }],
+          description: ["thisPost", function (thisPost) {
+            return thisPost[0].postBody;
+          }]
+        },
+      })
+
+      .state('shows', {
+        url: '/shows',
+        metaTags: {
+          title: 'SISTERS - Shows',
+          description: 'Upcoming shows for Seattle duo SISTERS.'
+        },
+        templateUrl: '/views/shows/shows.html',
+        controller: 'ShowsCtrl',
+        resolve: {
+          "currentAuth": authWait,
+          getShows: ["GetShows", function (GetShows) {
+            console.log("app resolve entered");
+            return GetShows().$loaded();
+          }]
+        }
+      })
+
+      .state('shows-new', {
+        url: '/shows/new',
+        templateUrl: '/views/shows/newShow.html',
+        controller: 'NewShowCtrl',
+        resolve: {
+          "currentAuth": authWait,
+          getShows: ["GetShows", function (GetShows) {
+            return GetShows().$loaded();
+          }]
+        }
+      })
+
+      .state('showTickets', {
+        url: '/shows/:showId',
+        templateUrl: '/views/shows/singleShow.html',
+        controller: 'SingleShowCtrl',
+        resolve: {
+          "currentAuth": authWait,
+          "GetShow": ["GetSingleShow", "$stateParams", function (GetSingleShow, $stateParams) {
+            return GetSingleShow($stateParams.showId).$loaded();
+          }],
+          "GetTicket": ["ticketFactory", "$stateParams", function (ticketFactory, $stateParams) {
+            return ticketFactory.getTicket($stateParams.showId);
+          }]
+        }
+      })
+
+      .state('store', {
+        url: '/store',
+        metaTags: {
+          title: 'SISTERS - Store',
+          description: 'The official store for Seattle duo SISTERS.'
+        },
+        templateUrl: '/views/store/store.html',
+        controller: 'StoreCtrl',
+        resolve: {
+          "currentAuth": authWait,
+          "allProducts": ["ProductsService", function (ProductsService) {
+            return ProductsService.allActiveProducts();
+          }]
+        }
+      })
+
+      .state('storeCart', {
+        url: '/store/cart',
+        templateUrl: '/views/store/cart.html',
+        controller: 'StoreCartCtrl',
+        resolve: {
+          "currentAuth": authWait
+        },
+        params: {
+          message: null,
+          messageType: null
+        }
+      })
+
+      .state('storeShow', {
+        url: '/store/:id',
+        templateUrl: '/views/store/storeShow.html',
+        controller: 'StoreShowCtrl',
+        resolve: {
+          "currentAuth": authWait,
+          "oneProduct": ["ProductsService", "$stateParams", function (ProductsService, $stateParams) {
+            return ProductsService.oneProduct($stateParams.id).$loaded();
+          }]
+        }
+      })
+
+      .state('editProduct', {
+        url: '/store/edit/:id',
+        templateUrl: '/views/store/editProduct.html',
+        controller: 'StoreProductEditCtrl',
+        resolve: {
+          "currentAuth": authRequire,
+          "oneProduct": ["ProductsService", "$stateParams", function (ProductsService, $stateParams) {
+            return ProductsService.oneProduct($stateParams.id);
+          }]
+        }
+      })
+
+      .state('checkout', {
+        templateUrl: '/views/store/checkoutTemplate.html',
+        controller: 'CheckoutTemplateCtrl',
+        resolve: {
+          "currentAuth": authWait,
+        }
+      })
+
+      .state('checkout.address', {
+        url: '/store/checkout/address',
+        templateUrl: '/views/store/checkoutAddress.html',
+        controller: 'StoreAddressCtrl',
+        resolve: {
+          "currentAuth": authWait,
+          "currentOrder": ["$http", function ($http) {
+            return $http({ method: 'GET', url: '/storeAPI/order' })
+          }],
+          "shipment": ["$http", function ($http) {
+            return $http({ method: 'GET', url: '/storeAPI/shipment' })
+          }]
+        }
+      })
+
+      .state('checkout.payment', {
+        url: '/store/checkout/payment',
+        templateUrl: '/views/store/checkoutPayment.html',
+        controller: 'StorePaymentCtrl',
+        resolve: {
+          "currentAuth": authWait,
+          "currentOrder": ["$http", function ($http) {
+            return $http({ method: 'GET', url: '/storeAPI/order' })
+          }],
+          "shipment": ["$http", function ($http) {
+            return $http({ method: 'GET', url: '/storeAPI/shipment' })
+          }]
+        }
+      })
+
+      .state('checkout.confirm', {
+        url: '/store/checkout/confirm',
+        templateUrl: '/views/store/checkoutConfirm.html',
+        controller: 'StoreConfirmCtrl',
+        resolve: {
+          "currentAuth": authWait,
+          "currentOrder": ["$http", function ($http) {
+            return $http({ method: 'GET', url: '/storeAPI/order' })
+          }],
+          "currentToken": ["$http", function ($http) {
+            return $http({ method: 'GET', url: '/storeAPI/token' })
+          }],
+          "shipment": ["$http", function ($http) {
+            return $http({ method: 'GET', url: '/storeAPI/shipment' })
+          }]
+        }
+      })
+
+
+      .state('login', {
+        url: '/login',
+        templateUrl: '/views/login.html',
+        controller: 'LoginCtrl'
+      })
+
+    $locationProvider.html5Mode(true);
+  }])
+
+  .filter('cut', function () {
+    return function (value, enable, wordwise, max, tail) {
+      var source = angular.element('<div/>').html(value);
+      console.log("source: ", source);
+      var length = source.text().length;
+      console.log("length: ", length);
+    };
+  })
+
+  .filter('trustAsResourceUrl', ['$sce', function ($sce) {
+    return function (val) {
+      return $sce.trustAsResourceUrl('https://www.youtube.com/embed/' + val);
+    };
+  }])
+
+  .filter('MomentFilter', ['moment', function (moment) {
+    return function (val) {
+      return moment(val).tz("America/Los_Angeles").format('dddd, MMMM Do, YYYY');
     }
+  }])
+
+  .filter('tooOld', function () {
+    return function (events) {
+      var currentDay = moment().tz("America/Los_Angeles").unix()
+      var filtered = [];
+      angular.forEach(events, function (event) {
+        var thisEvent = event.unixDate / 1000;
+        if ((currentDay - thisEvent) <= 86400) {
+          filtered.push(event);
+        }
+      });
+      return filtered;
+    };
   })
 
-
-
-
-
-  .state('storeCart', {
-    url: '/store/cart',
-    templateUrl: '/views/store/cart.html',
-    controller: 'StoreCartCtrl',
-    resolve: {
-      "currentAuth": authWait
-    },
-    params: {
-      message: null,
-      messageType: null
+  .filter('DeliveryEstDate', ['moment', function (moment) {
+    return function (val) {
+      return moment(val).tz("America/Los_Angeles").format('dddd, MMMM Do');
     }
-  })
+  }])
 
-  .state('storeShow', {
-    url: '/store/:id',
-    templateUrl: '/views/store/storeShow.html',
-    controller: 'StoreShowCtrl',
-    resolve: {
-      "currentAuth": authWait,
-      "oneProduct": function(ProductsService, $stateParams){
-        console.log("params are: ",$stateParams);
-        return ProductsService.oneProduct($stateParams.id).$loaded();
-      }
+  .filter('TimeDate', ['moment', function (moment) {
+    return function (val) {
+      return moment(val).tz("America/Los_Angeles").format('MMMM Do YYYY, h:mm:ss a');
     }
-  })
+  }])
 
-
-   .state('editProduct', {
-    url: '/store/edit/:id',
-    templateUrl: '/views/store/editProduct.html',
-    controller: 'StoreProductEditCtrl',
-    resolve: {
-      "currentAuth": authRequire,
-      "oneProduct": function(ProductsService, $stateParams){
-        return ProductsService.oneProduct($stateParams.id);
-      }
+  .filter('slashDate', ['moment', function (moment) {
+    return function (val) {
+      return moment(val * 1000).tz("America/Los_Angeles").format('MM/DD/YYYY');
     }
-  })
+  }])
 
-
-
-
-  .state('checkout', {
-    templateUrl: '/views/store/checkoutTemplate.html',
-    controller: 'CheckoutTemplateCtrl',
-    resolve: {
-      "currentAuth": authWait,
+  .filter('timeAgo', ['moment', function () {
+    return function (val) {
+      var date = new Date(val);
+      console.log(date);
+      console.log(typeof date);
+      return moment(date).tz("America/Los_Angeles").fromNow();
     }
-  })
-  .state('checkout.address', {
-    url: '/store/checkout/address',
-    templateUrl: '/views/store/checkoutAddress.html',
-    controller: 'StoreAddressCtrl',
-    resolve: {
-      "currentAuth": authWait,
-      "currentOrder": function($http){
-        return $http({method: 'GET', url: '/storeAPI/order'})
-      },
-      "shipment": function($http){
-        return $http({method: 'GET', url: '/storeAPI/shipment'})
-      }
-    }
-  })
-  .state('checkout.payment', {
-    url: '/store/checkout/payment',
-    templateUrl: '/views/store/checkoutPayment.html',
-    controller: 'StorePaymentCtrl',
-    resolve: {
-      "currentAuth": authWait,
-      "currentOrder": function($http){
-        return $http({method: 'GET', url: '/storeAPI/order'})
-      },
-      "shipment": function($http){
-        return $http({method: 'GET', url: '/storeAPI/shipment'})
-      }
-    }
-  })
+  }])
 
-   .state('checkout.confirm', {
-    url: '/store/checkout/confirm',
-    templateUrl: '/views/store/checkoutConfirm.html',
-    controller: 'StoreConfirmCtrl',
-    resolve: {
-      "currentAuth": authWait,
-      "currentOrder": function($http){
-        return $http({method: 'GET', url: '/storeAPI/order'})
-      },
-      "currentToken": function($http){
-        return $http({method: 'GET', url: '/storeAPI/token'})
-      },
-      "shipment": function($http){
-        return $http({method: 'GET', url: '/storeAPI/shipment'})
-      }
-    }
-  })
-  
-  
-  .state('login', {
-    url: '/login',
-    templateUrl: '/views/login.html',
-    controller: 'LoginCtrl'
-  })
-
-  
-  $locationProvider.html5Mode(true);
-
-}])
-
-
-
-.filter('cut', function () {
-  return function (value, enable, wordwise, max, tail) {
-    var source = angular.element('<div/>').html(value);
-    console.log("source: ",source);
-    var length = source.text().length;
-    console.log("length: ",length);
-  };
-})
-
-.filter('trustAsResourceUrl', ['$sce', function($sce) {
-  return function(val) {
-    return $sce.trustAsResourceUrl('https://www.youtube.com/embed/'+val);
-  };
-}])
-
-
-.filter('MomentFilter', ['moment', function(moment){
-  return function(val){
-    return  moment(val).tz("America/Los_Angeles").format('dddd, MMMM Do, YYYY');
-  }
-}])
-
-.filter('tooOld', function() {
-  return function(events) {
-    var currentDay = moment().tz("America/Los_Angeles").unix()
-    var filtered = [];
-    angular.forEach(events, function(event) {
-      var thisEvent = event.unixDate/1000;
-      if ((currentDay - thisEvent) <= 86400) {
-        filtered.push(event);
-      }
-    });
-    return filtered;
-  };
-})
-
-.filter('DeliveryEstDate', ['moment', function(moment){
-  return function(val){
-    return  moment(val).tz("America/Los_Angeles").format('dddd, MMMM Do');
-  }
-}])
-
-.filter('TimeDate', ['moment', function(moment){
-  return function(val){
-    return  moment(val).tz("America/Los_Angeles").format('MMMM Do YYYY, h:mm:ss a');
-  }
-}])
-
-.filter('slashDate', ['moment', function(moment){
-  return function(val){
-    return  moment(val * 1000).tz("America/Los_Angeles").format('MM/DD/YYYY');
-  }
-}])
-
-.filter('timeAgo', ['moment', function(){
-  return function(val){
-    var date = new Date(val);
-    console.log(date);
-    console.log(typeof date);
-    return moment(date).tz("America/Los_Angeles").fromNow();
-  }
-}])
-
-.filter('reverse', function() {
-    return function(items) {
+  .filter('reverse', function () {
+    return function (items) {
       return items.slice().reverse();
     };
   })
 
-
-
-.filter('centsToDollars', function(){
-  return function(val){
-    return  val/100;
-  }
-})
-
-
-.filter('twoDigitTime', function(){
-  return function(val){
-    if (val > 9){
-      return val.toString();
-    } else {
-      return "0" + val.toString();
+  .filter('centsToDollars', function () {
+    return function (val) {
+      return val / 100;
     }
-  }
-})
+  })
 
-.filter('htmlBlogPreview', function(){
-  return function shorten(val, slug){
-    var cutoff = 300;
-    var target = "";
-    var source = val;
-    var cutIndex;
-    if (val.length < cutoff){
-      return val;
+  .filter('twoDigitTime', function () {
+    return function (val) {
+      if (val > 9) {
+        return val.toString();
+      } else {
+        return "0" + val.toString();
+      }
     }
-    while (target.length < cutoff){
-      cutIndex = (source.indexOf("</p>") + 4);
-      target += source.slice(0, cutIndex);
-      source = source.slice(cutIndex);
+  })
+
+  .filter('htmlBlogPreview', function () {
+    return function shorten(val, slug) {
+      var cutoff = 300;
+      var target = "";
+      var source = val;
+      var cutIndex;
+      if (val.length < cutoff) {
+        return val;
+      }
+      while (target.length < cutoff) {
+        cutIndex = (source.indexOf("</p>") + 4);
+        target += source.slice(0, cutIndex);
+        source = source.slice(cutIndex);
+      }
+      if (val.length === target.length) {
+        return target;
+      } else {
+        target = target.slice(0, (target.length - 4));
+        var readMore = " <a href='/blog/show/" + slug + "'>  Read More...</a></p>";
+        target += readMore;
+        return target;
+      }
     }
-    if (val.length === target.length){
-      return target;
-    } else {
-      target = target.slice(0, (target.length - 4));
-      var readMore = " <a href='/blog/show/"+ slug +"'>  Read More...</a></p>";
-      target += readMore;
-      return target;
-    }  
-  }
-});
+  });
 
 

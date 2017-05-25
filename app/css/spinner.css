@@ -3,14 +3,12 @@
   z-index: 999;
   height: 200px;
   width: 200px;
-/*  background: url('/img/spin.svg') no-repeat;*/
   overflow: show;
   margin: auto;
   top: -60px;
   left: 0;
   bottom: 0;
   right: 0;
-  width: 100%;
 }
 
 @-webkit-keyframes uil-spin-css {

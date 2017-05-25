@@ -1,0 +1,28 @@
+<div id="product-container">
+<button class="button button-flat-pink" ng-click="addProduct()">Add a New Product</button>
+<h3 ng-if="products.length === 0">You have no products.</h3>
+<table ng-if="products.length > 0" class="table table-striped">
+  <h2 style="text-align: center">All Products</h2>
+<tr>
+  <th></th>
+  <th>Product #</th>
+  <th>Name</th>
+  <th>Active</th>
+  <th></th>
+</tr>
+<tr ng-repeat="product in products">
+  <td>
+    <div class="product-thumb">
+      <img ng-src="{{product.images[0]}}"/>
+    </div>
+  </td>
+  <td>{{product.id}}</td>
+  <td>{{product.title}}</td>
+  <td>{{product.active}}</td>
+  <td>
+    <a ng-click="editProduct(product.id)" href="#">Edit</a>
+    <a ng-click="deleteProduct($index)" href="#">Delete</a>
+  </td>
+</tr>
+</table>
+</div>

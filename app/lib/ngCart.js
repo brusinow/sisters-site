@@ -27,7 +27,8 @@ angular.module('ngCart', ['ngCart.directives'])
 
     }])
 
-    .service('ngCart', ['$rootScope', '$location', '$window', 'ngCartItem', 'store', function ($rootScope, $location, $window, ngCartItem, store) {
+    .service('ngCart', ['$rootScope', '$http', '$location', '$state', '$window', 'ngCartItem', 'store', function ($rootScope, $http, $location, $state, $window, ngCartItem, store) {
+        var myTimeout;
 
         this.init = function(){
             this.$cart = {
@@ -39,14 +40,62 @@ angular.module('ngCart', ['ngCart.directives'])
         };
 
         this.addItem = function (id, sku, name, price, quantity, data, attr) {
-            var inCart = this.getItemById(id);
+            var that = this;
+            var timerAmount = 60000;
+            var inCart = this.getItemBySku(sku);
 
             if (typeof inCart === 'object'){
                 //Update quantity of an item if it's already in the cart
+                var diff;
+                var inCartQ = inCart.getQuantity();
+                if (inCart._data.product_type === "ticket"){
+                    diff = quantity - inCartQ;
+                    var data = {
+                        ticketId: inCart.parent,
+                        ticketCount: diff
+                    }
+                    $http.post('/store/changeSessionTicket', data).then(function(){
+                        console.log("success");
+                        clearTimeout(myTimeout);
+                        $rootScope.$broadcast('setTimer', true);
+                        console.log("should be restarting timer");
+                        myTimeout = setTimeout(function(){ 
+                            that.removeTickets();
+                            $rootScope.$broadcast('setTimer', false);
+                        }, timerAmount);
+                        inCart.setQuantity(quantity, false);
+                        $rootScope.$broadcast('ngCart:itemUpdated', inCart);
+                    }, function(err){
+                    // didn't work
+                        console.log(err);
+                        $rootScope.$broadcast('lowCount', {bool: true, originalVal: inCartQ});
+                    });
+
+                } else {
                 inCart.setQuantity(quantity, false);
                 $rootScope.$broadcast('ngCart:itemUpdated', inCart);
+                }
+
             } else {
                 var newItem = new ngCartItem(id, sku, name, price, quantity, data, attr);
+                if (newItem._data.product_type === "ticket"){
+                    console.log("A ticket was added! ",newItem);
+                    var data = {
+                        ticketId: newItem.parent,
+                        ticketCount: newItem.quantity
+                    }
+                    $http.post('/store/addSessionTicket', data).then(function(){
+                    $rootScope.$broadcast('setTimer', true);
+                    myTimeout = setTimeout(function(){ 
+                        that.removeTickets();
+                        $rootScope.$broadcast('setTimer', false);
+                    }, timerAmount);
+                }, function(err){
+                    // didn't work
+                        console.log(err);
+                    });
+          
+                }
                 this.$cart.items.push(newItem);
                 $rootScope.$broadcast('ngCart:itemAdded', newItem);
             }
@@ -55,10 +104,15 @@ angular.module('ngCart', ['ngCart.directives'])
         };
 
         this.addItemBtn = function (id, sku, name, price, quantity, data) {
-            var skus = data.skus;
-          
-            if (skus.length === 1){
-            var inCart = this.getItemById(id);
+            var count = 0;
+            var skuParsed = JSON.parse(sku);
+            for (var prop in skuParsed){
+                console.log("prop: ",skuParsed[prop]);
+                count++;
+            }
+            console.log("count is : ",count);
+            if (count < 2){
+            var inCart = this.getItemBySku(sku);
 
             if (typeof inCart === 'object'){
                 //Update quantity of an item if it's already in the cart
@@ -72,13 +126,13 @@ angular.module('ngCart', ['ngCart.directives'])
 
             $rootScope.$broadcast('ngCart:change', {});
             } else {
-                $location.url('/store/'+ data.id);
+                $location.url('/store/'+ id);
             }
         };
 
 
-        this.changeQuantity = function (id, quantity){
-            var inCart = this.getItemById(id);
+        this.changeQuantity = function (sku, quantity){
+            var inCart = this.getItemBySku(sku);
             if (typeof inCart === 'object'){
             inCart.setQuantity(quantity, true);
             $rootScope.$broadcast('ngCart:itemUpdated', inCart);
@@ -95,6 +149,18 @@ angular.module('ngCart', ['ngCart.directives'])
 
             angular.forEach(items, function (item) {
                 if  (item.getId() === itemId) {
+                    build = item;
+                }
+            });
+            return build;
+        };
+
+         this.getItemBySku = function (itemSku) {
+            var items = this.getCart().items;
+            var build = false;
+
+            angular.forEach(items, function (item) {
+                if  (item.getSku() === itemSku) {
                     build = item;
                 }
             });
@@ -152,16 +218,35 @@ angular.module('ngCart', ['ngCart.directives'])
             return this.getCart().items.length;
         };
 
+        this.getCartTotal = function(){
+            var total = 0;
+            angular.forEach(this.getCart().items, function (item) {
+                total += item.getTotal();
+            });
+            return parseFloat(total);
+        };
+
         this.getSubTotal = function(){
             var total = 0;
             angular.forEach(this.getCart().items, function (item) {
                 total += item.getTotal();
             });
-            return +parseFloat(total).toFixed(2);
+            var shipping = this.getShipping() || 0;
+                total += shipping;
+            return parseFloat(total);
+        };
+
+        this.removeTickets = function(){
+            var _self = this;
+            angular.forEach(this.getCart().items, function (item, i) {
+                if (item._data.product_type === "ticket"){
+                    _self.removeItem(i);
+                }
+            });
         };
 
         this.totalCost = function () {
-            return +parseFloat(this.getSubTotal() + this.getShipping() + this.getTax()).toFixed(2);
+            return +parseInt(this.getCartTotal() + this.getShipping() + this.getTax());
         };
 
         this.removeItem = function (index) {
@@ -225,6 +310,7 @@ angular.module('ngCart', ['ngCart.directives'])
             _self.$cart.tax = storedCart.tax;
 
             angular.forEach(storedCart.items, function (item) {
+                console.log("item: ",item);
                 _self.$cart.items.push(new ngCartItem(item.parent, item.sku, item.description, item.amount, item.quantity, item._data, item.attr));
             });
             this.$save();
@@ -233,7 +319,7 @@ angular.module('ngCart', ['ngCart.directives'])
 
 
         this.$save = function () {
-            return store.set('cart', JSON.stringify(this.getCart()));
+            return store.set('cart', angular.toJson(this.getCart()));
         }
 
     }])
@@ -241,13 +327,22 @@ angular.module('ngCart', ['ngCart.directives'])
     .factory('ngCartItem', ['$rootScope', '$log', function ($rootScope, $log) {
 
         var item = function (id, sku, name, price, quantity, data, attr) {
+            console.log("what is id? ",id);
+            console.log("what is data? ",data);
+
+            // if (myData.product_type === 'ticket'){
+            //     myData.unix = data.date;
+            // } else if (myData.product_type === 'shippable'){
+            //     myData.ship_details = data.ship_details;
+            // }
+            
             this.setId(id);
             this.setSku(sku);
             this.setName(name);
             this.setPrice(price);
             this.setQuantity(quantity);
             this.setData(data);
-            this.setAttr(attr);
+            this.setAttr(attr || data.attr);
         };
 
 
@@ -326,6 +421,7 @@ angular.module('ngCart', ['ngCart.directives'])
         };
 
         item.prototype.setData = function(data){
+            console.log("setting data");
             if (data) this._data = data;
         };
 
@@ -340,13 +436,11 @@ angular.module('ngCart', ['ngCart.directives'])
 
         item.prototype.getAttr = function(){
             if (this.attr){
-                if (this.attr["size"]){
-                    return this.attr["size"]
-                } else if (this.attr["color"]) {
-                    return this.attr["size"]
-                };
+                return this.attr;
             } 
-            else {};
+            else {
+                return false;
+            };
         };
         
 
@@ -407,17 +501,19 @@ angular.module('ngCart', ['ngCart.directives'])
 
           var items = ngCart.getItems();
             // loop to determine if any items are shippable
-  
+            console.log("items before filtering shippable: ",items);
             var filtered = [];
             angular.forEach(items, function(item) {
-                if (item._data.product_type === "shippable") {
+                if (item._data.shippable === true) {
                     filtered.push(item);
                 }
             });
             if (filtered.length > 0){
+                console.log("should be set shippable!!!!");
                 $scope.shipBool = true;
                 $scope.$emit('setShippable', true);
             } else {
+                console.log("should not be shippable!!!!");
                 $scope.shipBool = false;
                 $scope.$emit('setShippable', false);
             }
@@ -475,11 +571,11 @@ angular.module('ngCart.directives', ['ngCart.fulfilment'])
             link:function(scope, element, attrs){
                 scope.attrs = attrs;
                 scope.inCart = function(){
-                    return  ngCart.getItemById(attrs.id);
+                    return  ngCart.getItemBySku(attrs.sku);
                 };
 
                 if (scope.inCart()){
-                    scope.q = ngCart.getItemById(attrs.id).getQuantity();
+                    scope.q = ngCart.getItemBySku(attrs.sku).getQuantity();
                 } else {
                     scope.q = parseInt(scope.quantity);
                 }
@@ -518,34 +614,79 @@ angular.module('ngCart.directives', ['ngCart.fulfilment'])
             link:function(scope, element, attrs){
                 scope.attrs = attrs;
                 scope.inCart = function(){
-                    return  ngCart.getItemById(attrs.id);
+                    return  ngCart.getItemBySku(attrs.sku);
                 };
 
                 if (scope.inCart()){
-                    scope.q = ngCart.getItemById(attrs.id).getQuantity();
+                    scope.q = ngCart.getItemBySku(attrs.sku).getQuantity();
                 } else {
                     scope.q = parseInt(scope.quantity);
                 }
 
-                scope.qtyOpt =  [];
-                var thisMax;
-                var showCountRef = firebase.database().ref('tickets/'+ scope.id + '/totalTickets');
-                showCountRef.once('value').then(function(snapshot) {
-                    scope.totalTix = snapshot.val();
-                    if (scope.quantityMax < scope.totalTix){
-                    thisMax = scope.quantityMax;
-                    } else {
-                    thisMax = scope.totalTix;
-                    }
-                    if (thisMax > 0){
-                        for (var i = 1; i <= thisMax; i++) {
-                        scope.qtyOpt.push(i);
-                        }
-                    }
-                    
-                });
+                 scope.qtyOpt =  [];
+                for (var i = 1; i <= scope.quantityMax; i++) {
+                    scope.qtyOpt.push(i);
+                }
+
                 
               
+
+            }
+
+        };
+    }])
+
+    .directive('ngcartAddtocartProduct', ['ngCart', function(ngCart){
+        return {
+            restrict : 'E',
+            controller : 'CartController',
+            scope: {
+                id:'@',
+                sku: '@',
+                name:'@',
+                attr: '@',
+                quantity:'@',
+                quantityMax:'@',
+                price:'@',
+                data:'='
+            },
+            transclude: true,
+            templateUrl: function(element, attrs) {
+                if ( typeof attrs.templateUrl == 'undefined' ) {
+                    return 'views/ngCart/addtocartProduct.html';
+                } else {
+                    return attrs.templateUrl;
+                }
+            },
+            link:function(scope, element, attrs){
+                scope.attrs = attrs;
+                scope.inCart = function(){
+                    return  ngCart.getItemBySku(attrs.sku);
+                };
+
+                if (scope.inCart()){
+                    scope.q = ngCart.getItemBySku(attrs.sku).getQuantity();
+                } else {
+                    scope.q = parseInt(scope.quantity);
+                }
+
+                scope.updateQ = function(count){
+                    console.log("count should be: ",count);
+                    scope.qtyOpt =  [];
+                    for (var i = 1; i <= count; i++) {
+                        scope.qtyOpt.push(i);
+                    }
+                }
+                scope.updateQ(scope.quantityMax);
+
+                scope.$on('changeQ',function(event, data){
+                    console.log("data in $on? ",data);
+                    console.log("updating in directive!")
+                scope.updateQ(data.count); 
+                });
+                    
+
+                
 
             }
 

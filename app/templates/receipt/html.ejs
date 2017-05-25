@@ -1,18 +1,20 @@
 <div id="header-block">
-<img id="sisters-email-logo" src="cid:unique@kreata.ee"/>
+  <img id="sisters-email-logo" src="cid:unique@kreata.ee"/>
 </div>
+<table id="outer-table">
 <div style="text-align: center;">
-<h4>Hi there <%= name %>!</h4>
-<h5>Thank you for your purchase. Tickets can be picked up at will call.</h5>
+  <h4>Hi there <%= name %>!</h4>
+  <h5>Thank you for your purchase. Tickets can be picked up at will call.</h5>
 
 </div>
 
 <div style="text-align: center;">
   <h4 style="margin-bottom: 5px;">Order #<%= orderData.orderNumber %></h4>
 </div>
-<div id="receipt-table">
-<table>
-  <tr>
+
+
+<table id="receipt-table">
+  <tr style="font-size: 12px">
   <th></th>
   <th>Quantity</th>
   <th>Amount</th>
@@ -20,30 +22,50 @@
   </tr>
   <% cart.forEach(function(item){ %>
   <tr>
+    <% if (item._data.order_type === "ticket"){ %>
     <td><%= item.description %> (<%= item.sku %>)</td>
+    <% } else if (item._data.order_type !== "ticket" && item.attr){%>
+    <td><%= item.description %> (<%= item.attr %>)</td>
+    <% } else {%>
+    <td><%= item.description %></td>
+    <% } %>
+
     <td><%= item.quantity%>x </td>
     <td>$<%= (item.amount / 100).toFixed(2) %></td>
     <td>$<%= ((item.amount / 100) * item.quantity).toFixed(2) %></td>
   </tr>
   <% }) %>
+  <% if (shipping){ %>
   <tr>
-    <td>Will Call Name: <%= orderData.willCallName %></td>
+    <td><strong>Tracking info: </strong><a href="<%= shipping.res.tracking_url_provider %>"><%= shipping.res.tracking_number %></a></td>
     <td></td>
-    <td>Tax (<%= orderData.metadata.taxRate %>%):</td>
+    <td><strong>Shipping:</strong></td>
+    <td>$<%= shipping.amount %></td>
+  </tr>
+  <% } %>
+  <tr>
+    <td>
+    <% if (orderData.willCallName){ %>
+    <strong>Will Call Name: </strong><%= orderData.willCallName %>
+    <% } %>
+    </td>
+    <td></td>
+    <td><strong>Tax (<%= orderData.metadata.taxRate %>%):</strong></td>
     <td>$<%= (orderData.tax.amount/100).toFixed(2) %></td>
   </tr>
   <tr id="total-row">
-    <td>Charged to <%= charge.source.brand%> ending in <%= charge.source.last4 %></td>
+    <td><strong>Charged to <%= charge.source.brand%> ending in <%= charge.source.last4 %></strong></td>
     <td></td>
-    <td>TOTAL:</td>
+    <td><strong>TOTAL:</strong></td>
     <td>$<%= (total/100).toFixed(2)%></td>
   </tr>
 
 
 </table>
-</div>
+
 
 <div style="text-align: center; margin-top: 30px;">
   <p style="margin-bottom: 5px;">Thanks again, and we look forward to popping Champagne with you!</p>
   <p><em>-Andrew and Emily (SISTERS)</em></p>
 </div>
+</table>

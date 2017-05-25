@@ -4,8 +4,8 @@
 <form style="margin-bottom: 0;" class="new-blog-form">
   <label for="blogTitle">Post Title</label>
   <input type="text" class="u-full-width" placeholder="This is a post title..." ng-model="post.title" id="blogTitle"/>
-  <div class="row">
-    <div style="float:left;">
+  <div>
+    <div>
         <label for="singleSelect"> Media Type: </label>
           <select name="singleSelect" ng-model="data.mediaSelect" ng-init="data.mediaSelect='image'" ng-change="resetMedia()">
         <option value="image">Image</option>
@@ -13,24 +13,34 @@
         <!-- <option value="soundcloud">Soundcloud URL</option> -->
       </select>
     </div>
-    <div style="float: left;">
-       <div ng-if="data.mediaSelect === 'image'" id="image-choice">
-        <label for="imageUpload"> Image: </label>
-        <input type="file" name="imageUpload" fileread="data.image"/>
+    <div ng-if="data.mediaSelect === 'image'" flow-init="{singleFile:true}" flow-name="data.flow" flow-file-added="!!{png:1,gif:1,jpg:1,jpeg:1}[$file.getExtension()]" class="ng-scope">
+    <div class="thumbnail" ng-show="!$flow.files.length">
+      <img src="http://www.placehold.it/200x150/EFEFEF/AAAAAA&amp;text=no+image">
+    </div>
+      <div class="thumbnail ng-hide" ng-show="$flow.files.length">
+        <img flow-img="$flow.files[0]">
       </div>
+    <div>
+      <span class="btn btn-primary" ng-show="!$flow.files.length" flow-btn="">Select image<input type="file" style="visibility: hidden; position: absolute;"></span>
+      <span class="btn btn-info ng-hide" ng-show="$flow.files.length" flow-btn="">Change<input type="file" style="visibility: hidden; position: absolute;"></span>
+      <span class="btn btn-danger ng-hide" ng-show="$flow.files.length" ng-click="$flow.cancel()">
+        Remove
+      </span>
+    </div>
+    <p>
+      Only PNG,GIF,JPG,JEPG files allowed.
+    </p>
+    </div>
       <div ng-if="data.mediaSelect === 'youtube'" id="youtube-choice">
       <label for="youtube">YouTube Link</label>
         <input class="u-full-width" type="text" name="youtube" placeholder="Enter YouTube link..." ng-model="data.youtube"/>
       </div>
-    </div> 
-    <div ng-if="data.image" id="photo-preview">
-        <img ng-src="{{data.image}}"/>
-      </div>
+
     
     <br>
     </div>
      <label for="blogBody">Post Body</label>
-     <text-angular ta-toolbar="[['h1','h2','h3'],['bold','italics','underline'],['insertLink', 'wordcount', 'charcount','html']]" ng-model="post.postBody"></text-angular>
+     <text-angular id="new-blog-textarea" ta-toolbar="[['h1','h2','h3'],['bold','italics','underline'],['insertLink', 'wordcount', 'charcount','html']]" ng-model="post.postBody"></text-angular>
   <div class="tag-input">
   <input type="text" placeholder="new tag name" ng-model="data.newTag"/>
   <button class="button button-flat-pink button-tiny add-tag-btn" ng-click="addTag(data.newTag)"><i class="fa fa-plus" aria-hidden="true"></i></button>

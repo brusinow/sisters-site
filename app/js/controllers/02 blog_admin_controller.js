@@ -2,7 +2,7 @@ angular.module('SistersCtrls')
 
 
 
-.controller('NewBlogCtrl', ['$scope', '$state','$http','Auth','BlogPosts','AllTags','HelperService','SubmitImage','moment', function($scope, $state, $http, Auth, BlogPosts, AllTags, HelperService, SubmitImage, moment){
+.controller('NewBlogCtrl', ['$scope', '$state','$http','Auth','BlogPosts','AllTags','HelperService','UploadImages','moment','BlogFactory', function($scope, $state, $http, Auth, BlogPosts, AllTags, HelperService, UploadImages, moment, BlogFactory){
   var main = document.getElementById("main");
   main.style.backgroundColor = 'rgba(0,0,0,0)';
   $scope.$emit('loadMainContainer', 'loaded');
@@ -13,17 +13,19 @@ angular.module('SistersCtrls')
 
   $scope.resetMedia = function(){
     $scope.data.youtube = "";
-    $scope.data.image = "";
+    $scope.data.flow = null;
   }
 
   $scope.submit = function(){
-    console.log("submit clicked");
-    console.log("what is post? ",$scope.post);
+    var test = document.getElementById("new-blog-textarea").innerText;
     if ($scope.data.mediaSelect === 'image'){
-      SubmitImage($scope.post, $scope.BlogPosts, $scope.data.image, addPost);
+      UploadImages($scope.data.flow.files, "blog", null).then(function(resultImg){
+        console.log("what is result image? ",resultImg[0]);
+        BlogFactory.addPost($scope.post, $scope.BlogPosts, resultImg[0], null, $scope.checkedTags);
+      })
     } else if ($scope.data.mediaSelect === 'youtube'){
       $scope.data.youtube = HelperService.parseYouTube($scope.data.youtube);
-      addPost($scope.post, $scope.BlogPosts, null, $scope.data.youtube);
+      BlogFactory.addPost($scope.post, $scope.BlogPosts, null, $scope.data.youtube, $scope.checkedTags);
     }
   }
 
@@ -43,48 +45,13 @@ angular.module('SistersCtrls')
 
   $scope.deleteTag = function(item){
     $scope.tags.$remove(item).then(function(ref) {
-  ref.key === item.$id; // true
-});
-  }
-
-  var addPost = function(post, postArray, img, youtube){
-    var slug = HelperService.slugify(post.title);
-    var postDate = new Date().getTime();
-    var year = moment(postDate).format("YYYY");
-    var month = moment(postDate).format("MMMM");
-
-    var newTags = {};
-    for (var prop in $scope.checkedTags){
-        newTags[prop] = $scope.checkedTags[prop];
-    }
-    var thisPost = {
-      postTitle: post.title,
-      slug: slug,
-      postBody: post.postBody,
-      youtube: youtube ? youtube : null,
-      img: img ? img : null,
-      tags: newTags,
-      timestamp: postDate   
-    };
-    
-    console.log("thisPost: ",thisPost);
-    postArray.$add(thisPost).then(function(ref){
-      var key = ref.key;
-      var archivePost = {
-        key: key
-      }
-      firebase.database().ref('archives/' + year + '/' + month + '/' + key).set(archivePost);
-      // for (prop in newTags){
-      //   if (newTags[prop]){
-      //   firebase.database().ref('tags/' + prop + '/posts/' + key).set(archivePost); 
-      //   }
-      // }
-      $state.go('blog.main');
+      ref.key === item.$id; // true
     });
   }
+
 }])
 
-.controller('EditBlogCtrl', ['$scope', '$state', '$timeout', '$stateParams','SendDataService','AllTags','thisPost','HelperService','SubmitImage','$uibModal','$log','BlogPosts', function($scope, $state, $timeout, $stateParams, SendDataService, AllTags, thisPost, HelperService, SubmitImage, $uibModal, $log, BlogPosts){
+.controller('EditBlogCtrl', ['$scope', '$state', '$timeout', '$stateParams','SendDataService','AllTags','thisPost','HelperService','UploadImages','$uibModal','$log','BlogPosts','BlogFactory', function($scope, $state, $timeout, $stateParams, SendDataService, AllTags, thisPost, HelperService, UploadImages, $uibModal, $log, BlogPosts, BlogFactory){
   var main = document.getElementById("main");
   main.style.backgroundColor = 'rgba(0,0,0,0)';
   $scope.$emit('loadMainContainer', 'loaded');
@@ -93,6 +60,7 @@ angular.module('SistersCtrls')
   $scope.post = thisPost[0];
   $scope.originalTags = angular.copy($scope.post.tags);
   $scope.tags = AllTags;
+  console.log("what is data? ",$scope.data);
 
   if ($scope.post.youtube){
     console.log($scope.post.youtube);
@@ -141,71 +109,24 @@ angular.module('SistersCtrls')
 
   $scope.resetMedia = function(){
     $scope.data.youtube = "";
-    $scope.data.image = "";
+    $scope.data.flow = null;
   }
 
   $scope.submit = function(){
-    if ($scope.data.mediaSelect === 'image' && $scope.data.image){
-      SubmitImage($scope.post, $scope.postArray, $scope.data.image, updatePost);
-    } else if ($scope.data.mediaSelect === 'image' && !$scope.data.image){
-      updatePost($scope.post, $scope.BlogPosts, $scope.post.img, null);
+    if ($scope.data.mediaSelect === 'image' && $scope.data.flow){
+      // SubmitBlogImage($scope.post, $scope.postArray, $scope.data.flow, updatePost);
+      UploadImages($scope.data.flow.files, "blog", null).then(function(resultImg){
+        console.log("what is result image? ",resultImg[0]);
+        BlogFactory.updatePost($scope.post, thisPost, resultImg[0], null, $scope.originalTags);
+      })
+    } else if ($scope.data.mediaSelect === 'image' && !$scope.data.flow){
+      BlogFactory.updatePost($scope.post, thisPost, $scope.post.img, null, $scope.originalTags);
     } else if ($scope.data.mediaSelect === 'youtube'){
       $scope.data.youtube = HelperService.parseYouTube($scope.data.youtube);
-      updatePost($scope.post, $scope.BlogPosts, null, $scope.data.youtube);
+      BlogFactory.updatePost($scope.post, thisPost, null, $scope.data.youtube, $scope.originalTags);
     }
   }
 
-  var updatePost = function(post, postArray, img, youtube){
-    var slug = HelperService.slugify(post.postTitle);
-    console.log(slug);
-    var year = moment(post.timestamp).format("YYYY");
-    var month = moment(post.timestamp).format("MMMM");
-    var newTags = {};
-    for (var prop in post.tags){
-      newTags[prop] = post.tags[prop];
-    }
-    post.slug = slug;
-    post.tags = newTags;
-    post.youtube = youtube ? youtube : null;
-    post.img = img ? img : null;
-    var thisPost = {
-      postTitle: post.postTitle,
-      slug: slug,
-      postBody: post.postBody,
-      youtube: post.youtube,
-      img: post.img,
-      tags: newTags,
-      timestamp: post.timestamp   
-    };
-    $scope.postArray.$save(post).then(function(ref) {
-      var key = ref.key;
-      firebase.database().ref('archives/' + year + '/' + month + '/' + key).remove();
-      firebase.database().ref('archives/' + year + '/' + month + '/' + key).set(thisPost);
-      for (prop in $scope.originalTags){
-        if ($scope.originalTags[prop] === true){
-          var url = 'tags/' + prop + '/posts/' + key;
-          firebase.database().ref(url).remove().then(function(message) {
-          })
-          .catch(function(error) {
-            console.log("Remove failed: " + error.message)
-          }); 
-        } else {
-          console.log(prop + " not a tag for old edit!")
-        }
-      }
-      $timeout(function(){
-       for (prop in thisPost.tags){
-        if (thisPost.tags[prop] === true){
-          firebase.database().ref('tags/' + prop + '/posts/' + key).set(thisPost);
-        } else {
-          console.log(prop + " not a tag for new edit!");
-        }
-      }
-    },100)
-
-      $state.go('blog.main');
-    });
-  } 
 }])  
 
 

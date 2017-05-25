@@ -1,0 +1,24 @@
+<!--<ul class="nav nav-pills nav-stacked admin-nav">
+  <li role="presentation"><a href="/admin/orders">Orders</a></li>
+  <li role="presentation"><a href="#">Products</a></li>
+  <li role="presentation"><a href="/admin/tickets">Tickets</a></li>
+  <hr>
+  <li role="presentation"><a href="#">Shows</a></li>
+  
+  <li role="presentation"><a href="#">Blog Posts</a></li>
+</ul>-->
+
+
+  <uib-tabset active="activePill" vertical="true" type="pills">
+    <!--<uib-tab index="0" heading="Overview" ng-click="goToPage('/admin')"></uib-tab>-->
+    <uib-tab index="1" heading="Orders" ng-click="goToPage('/admin/orders')"></uib-tab>
+    <uib-tab index="2" heading="Tickets" ng-click="goToPage('/admin/tickets')"></uib-tab>
+    <uib-tab index="3" heading="Products" ng-click="goToPage('/admin/products')"></uib-tab>
+      <uib-tabset ng-if="activePill === 3" active="subPill" vertical="true" type="pills">
+        <!--<uib-tab index="0" heading="Overview" ng-click="goToPage('/admin')"></uib-tab>-->
+        <uib-tab index="0" heading="All Products" ng-click="goToPage('/admin/products')"></uib-tab>
+        <uib-tab index="1" heading="Quick Inventory Change" ng-click="goToPage('/admin/products/inventory')"></uib-tab>
+      </uib-tabset>
+    <uib-tab index="4" heading="Blog Posts"></uib-tab>
+    <uib-tab index="5" heading="Shows"></uib-tab>
+  </uib-tabset>

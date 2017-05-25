@@ -154,24 +154,7 @@ angular.module('SistersCtrls')
       selectPosts.push(Blog[i]);
     }
   };
-
-
-
-
-
-
-
-  
-  // var length = 0;
-  // var i;
-  // for (i in allPosts) {
-  //   if (allPosts.hasOwnProperty(i)) {
-  //       length++;
-  //       selectPosts.push(allPosts[i]);
-  //   }
-  // }
-  // $scope.parseTitle = HelperService.titleToURL;
-
+  console.log("what are selectPosts? ",selectPosts);
 
 
   $scope.auth = Auth;
@@ -182,13 +165,12 @@ angular.module('SistersCtrls')
   $scope.page = $stateParams.page || 0;
   $scope.pageUp = '/blog/tags/' + $stateParams.tagName  + '/' + (parseInt($scope.page) + 1);
   $scope.pageDown = '/blog/tags/' + $stateParams.tagName + '/' + HelperService.pageDown($scope.page);
-  $scope.length = length;
+  $scope.length = selectPosts.length;
+  console.log("length: ",$scope.length);
   $scope.first = HelperService.findFirst($scope.length, $scope.page);
 
   $scope.last = $scope.length - (4 * $scope.page);
-  // console.log("Last: ",$scope.last);
   $scope.posts = selectPosts.slice($scope.first, $scope.last);
-  // console.log($scope.posts);
 
   $timeout(function(){
     $scope.$emit('loadMainContainer', 'loaded');
@@ -212,6 +194,10 @@ angular.module('SistersCtrls')
  // $scope.photos = Instagram.data; 
  $scope.posts = thisPost;
  $scope.allPosts = thisPost;
+ 
+ $scope.editPost = function(slug){ 
+    $location.url('/blog/edit/'+slug);
+  }
 
   $timeout(function(){
     $scope.$emit('loadMainContainer', 'loaded');  

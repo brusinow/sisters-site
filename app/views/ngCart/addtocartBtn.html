@@ -8,9 +8,4 @@
            ng-click="ngCart.addItemBtn(id, sku, name, price, 1, data); $event.stopPropagation();"
            ng-transclude></a>
     </div>
-    <div style="height: 20px">
-    <div  class="in-cart" ng-show="inCart()">
-        This item is in your cart. <a ng-click="ngCart.removeItemById(id); $event.stopPropagation();" style="cursor: pointer;">Remove</a>
-    </div>
-    </div>
 </div>

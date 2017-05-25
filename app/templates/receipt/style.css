@@ -1,10 +1,10 @@
 
-body {
-  background-color: #f3d3d3;
-}
-
 h1 {
   text-align: center;
+}
+
+.bold-text {
+  font-weight: bold;
 }
 
 #header-block img {
@@ -13,19 +13,26 @@ h1 {
   margin: auto;
 }
 
-#receipt-table {
-  font-size: 10px;
+#outer-table {
+  width: 100%;
+  background-color: #fef3f7;
 }
 
-#receipt-table table {
+#receipt-table {
+  width: 500px;
   margin: 0 auto;
   border: 2px solid #555;
   padding: 5px;
 }
 
+#receipt-table table th {
+  font-size: 12px;
+}
+
 #receipt-table td {
   padding: 4px;
   text-align: center;
+  font-size: 12px;
   border-bottom: 1px solid #999;
 }
 

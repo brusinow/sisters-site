@@ -3,8 +3,6 @@ var authRequire = ["Auth", function(Auth) { return Auth.$requireSignIn(); }]
 
 angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui.bootstrap','firebase','angularMoment','ngCart','ngStorage','angularPayments','ngAnimate','picardy.fontawesome','textAngular','ui.router.metatags','angular-parallax', 'tableSort','ngFileSaver','flow'])
 
-
-
 .run(["$rootScope", "$state","$location","$window",'MetaTags', 
 function($rootScope, $state, $location, $window,MetaTags) {
   $rootScope.MetaTags = MetaTags;
@@ -39,21 +37,33 @@ function($rootScope, $state, $location, $window,MetaTags) {
         filterString +=    "</div>";
         tableSortConfigProvider.filterTemplate = filterString;
 
-        var pagerString = "<div class='text-right'>";
-        pagerString +=      "<small class='text-muted'>Showing {{CURRENT_PAGE_RANGE}} {{FILTERED_COUNT === 0 ? '' : 'of'}} ";
+        var pagerString = "<div class='text-center'>";
+
+        pagerString +=      "<ul uib-pagination style='vertical-align:middle;' ng-show='ITEMS_PER_PAGE < TOTAL_COUNT' ng-model='CURRENT_PAGE_NUMBER' ";
+        pagerString +=        "total-items='FILTERED_COUNT' items-per-page='ITEMS_PER_PAGE' force-ellipses='false'></ul>";
+        pagerString +=      "<div class='form-group' style='display:inline-block;'>";
+        pagerString +=      "</div>";
+        pagerString +=      "<br/><small class='text-muted'>Showing {{CURRENT_PAGE_RANGE}} {{FILTERED_COUNT === 0 ? '' : 'of'}} ";
         pagerString +=        "<span ng-if='FILTERED_COUNT === TOTAL_COUNT'>{{TOTAL_COUNT | number}} {{TOTAL_COUNT === 1 ? ITEM_NAME_SINGULAR : ITEM_NAME_PLURAL}}</span>";
         pagerString +=        "<span ng-if='FILTERED_COUNT !== TOTAL_COUNT'>{{FILTERED_COUNT | number}} {{FILTERED_COUNT === 1 ? ITEM_NAME_SINGULAR : ITEM_NAME_PLURAL}} (filtered from {{TOTAL_COUNT | number}})</span>";
         pagerString +=      "</small>&nbsp;";
-        pagerString +=      "<uib-pagination style='vertical-align:middle;' ng-if='ITEMS_PER_PAGE < TOTAL_COUNT' ng-model='CURRENT_PAGE_NUMBER' ";
-        pagerString +=        "total-items='FILTERED_COUNT' items-per-page='ITEMS_PER_PAGE' max-size='5' force-ellipses='true'></uib-pagination>&nbsp;";
-        pagerString +=      "<div class='form-group' style='display:inline-block;'>";
-        pagerString +=        "<select class='form-control' ng-model='ITEMS_PER_PAGE' ng-options='opt as (opt + \" per page\") for opt in PER_PAGE_OPTIONS'></select>";
-        pagerString +=      "</div>";
         pagerString +=    "</div>";
         tableSortConfigProvider.paginationTemplate = pagerString;
    }])
 
-
+.config(['flowFactoryProvider', function (flowFactoryProvider) {
+    flowFactoryProvider.defaults = {
+      target: '',
+      permanentErrors: [500, 501],
+      maxChunkRetries: 1,
+      chunkRetryInterval: 5000,
+      simultaneousUploads: 1
+    };
+    // flowFactoryProvider.on('catchAll', function (event) {
+    //   console.log('catchAll', arguments);
+    // });
+    // Can be used with different implementations of Flow.js
+  }])
 
 .config(['$stateProvider', '$urlRouterProvider','$locationProvider','UIRouterMetatagsProvider','$provide', function($stateProvider, $urlRouterProvider,$locationProvider, UIRouterMetatagsProvider, $provide){
   UIRouterMetatagsProvider
@@ -84,14 +94,25 @@ function($rootScope, $state, $location, $window,MetaTags) {
     controller: 'HomeCtrl'
   })
   .state('admin', {
-    url: '/admin',
-    templateUrl: '/views/admin/adminMain.html',
+    templateUrl: '/views/admin/adminTemplate.html',
     controller: 'AdminMainCtrl',
     resolve: {
       "currentAuth": authRequire
     }
   })
-  .state('admin-orders', {
+  .state('admin.main', {
+    url: '/admin',
+    templateUrl: '/views/admin/adminMain.html',
+    controller: 'AdminMainCtrl',
+    resolve: {
+      "currentAuth": authRequire,
+      "Orders": function(GetAllOrders){
+        return GetAllOrders().$loaded();
+      }    
+    },
+    activetab: 0
+  })
+  .state('admin.orders', {
     url: '/admin/orders',
     templateUrl: '/views/admin/adminOrders.html',
     controller: 'AdminOrdersCtrl',
@@ -100,9 +121,10 @@ function($rootScope, $state, $location, $window,MetaTags) {
       "Orders": function(GetAllOrders){
         return GetAllOrders().$loaded();
       }    
-    }
+    },
+    activetab: 1
   })
-   .state('admin-tickets', {
+   .state('admin.tickets', {
     url: '/admin/tickets',
     templateUrl: '/views/admin/adminTickets.html',
     controller: 'AdminTicketsCtrl',
@@ -111,10 +133,65 @@ function($rootScope, $state, $location, $window,MetaTags) {
       "Tickets": function(GetAllTickets){
         return GetAllTickets().$loaded();
       }    
-    }
+    },
+    activetab: 2
+  })
+  .state('admin.products', {
+    url: '/admin/products',
+    templateUrl: '/views/admin/adminProducts.html',
+    controller: 'AdminProductsCtrl',
+    resolve: {
+      "currentAuth": authRequire,
+      "allProducts": function(ProductsService){
+        return ProductsService.allProducts();
+      }
+    },
+    activetab: 3,
+    activeSub: 0
   })
 
-   .state('admin-ticket-each', {
+  .state('admin.products-quickInventory', {
+    url: '/admin/products/inventory',
+    templateUrl: '/views/admin/adminProductsInventory.html',
+    controller: 'AdminProductsInventoryCtrl',
+    resolve: {
+      "currentAuth": authRequire,
+      "allProducts": function(ProductsService){
+        return ProductsService.allActiveProducts();
+      }
+    },
+    activetab: 3,
+    activeSub: 1
+  })
+
+  .state('admin.products-add', {
+    url: '/admin/products/add',
+    templateUrl: '/views/admin/adminProductsAdd.html',
+    controller: 'AdminProductsAddCtrl',
+    resolve: {
+      "currentAuth": authRequire
+    },
+    activetab: 3
+  })
+
+  .state('admin.products-edit', {
+    url: '/admin/products/edit/:id',
+    templateUrl: '/views/admin/adminProductsAdd.html',
+    controller: 'AdminProductsEditCtrl',
+    resolve: {
+      "currentAuth": authRequire,
+      "product": function(ProductsService, $stateParams){
+        return ProductsService.oneProduct($stateParams.id).$loaded();
+      },
+      "images": function(product, FirebaseImgDownloader){
+        return FirebaseImgDownloader(product);
+      }
+    },
+    activetab: 3,
+    activeSub: 1
+  })
+
+   .state('admin.ticketEach', {
     url: '/admin/tickets/:id',
     templateUrl: '/views/admin/adminTicketEach.html',
     controller: 'AdminTicketsEachCtrl',
@@ -305,7 +382,7 @@ function($rootScope, $state, $location, $window,MetaTags) {
 
   .state('blog.show', {
     url: '/blog/show/:slug',
-    templateUrl: '/views/blog/blog-content.html',
+    templateUrl: '/views/blog/blog-content-show.html',
     controller: 'BlogShowCtrl',
     resolve: {
       "currentAuth": authWait,
@@ -369,11 +446,31 @@ function($rootScope, $state, $location, $window,MetaTags) {
       "GetShow": function(GetSingleShow, $stateParams){
         return GetSingleShow($stateParams.showId).$loaded();
       },
-      "GetTicket": function(GetTicket, $stateParams){
-        return GetTicket($stateParams.showId).$loaded();
+       "GetTicket": function(ticketFactory, $stateParams){
+         console.log("state params! ",$stateParams);
+        return ticketFactory.getTicket($stateParams.showId);
       }
     }
   })
+
+  .state('store', {
+    url: '/store',
+    metaTags: {
+            title: 'SISTERS - Store',
+            description: 'The official store for Seattle duo SISTERS.'
+        },
+    templateUrl: '/views/store/store.html',
+    controller: 'StoreCtrl',
+    resolve: {
+      "currentAuth": authWait,
+      "allProducts": function(ProductsService){
+        return ProductsService.allActiveProducts();
+      }
+    }
+  })
+
+
+
 
 
   .state('storeCart', {
@@ -382,6 +479,36 @@ function($rootScope, $state, $location, $window,MetaTags) {
     controller: 'StoreCartCtrl',
     resolve: {
       "currentAuth": authWait
+    },
+    params: {
+      message: null,
+      messageType: null
+    }
+  })
+
+  .state('storeShow', {
+    url: '/store/:id',
+    templateUrl: '/views/store/storeShow.html',
+    controller: 'StoreShowCtrl',
+    resolve: {
+      "currentAuth": authWait,
+      "oneProduct": function(ProductsService, $stateParams){
+        console.log("params are: ",$stateParams);
+        return ProductsService.oneProduct($stateParams.id).$loaded();
+      }
+    }
+  })
+
+
+   .state('editProduct', {
+    url: '/store/edit/:id',
+    templateUrl: '/views/store/editProduct.html',
+    controller: 'StoreProductEditCtrl',
+    resolve: {
+      "currentAuth": authRequire,
+      "oneProduct": function(ProductsService, $stateParams){
+        return ProductsService.oneProduct($stateParams.id);
+      }
     }
   })
 
@@ -400,7 +527,13 @@ function($rootScope, $state, $location, $window,MetaTags) {
     templateUrl: '/views/store/checkoutAddress.html',
     controller: 'StoreAddressCtrl',
     resolve: {
-      "currentAuth": authWait
+      "currentAuth": authWait,
+      "currentOrder": function($http){
+        return $http({method: 'GET', url: '/storeAPI/order'})
+      },
+      "shipment": function($http){
+        return $http({method: 'GET', url: '/storeAPI/shipment'})
+      }
     }
   })
   .state('checkout.payment', {
@@ -409,8 +542,11 @@ function($rootScope, $state, $location, $window,MetaTags) {
     controller: 'StorePaymentCtrl',
     resolve: {
       "currentAuth": authWait,
-      "currentOrder": function(CurrentOrderService){
-        return CurrentOrderService.get();
+      "currentOrder": function($http){
+        return $http({method: 'GET', url: '/storeAPI/order'})
+      },
+      "shipment": function($http){
+        return $http({method: 'GET', url: '/storeAPI/shipment'})
       }
     }
   })
@@ -421,8 +557,14 @@ function($rootScope, $state, $location, $window,MetaTags) {
     controller: 'StoreConfirmCtrl',
     resolve: {
       "currentAuth": authWait,
-      "AllTickets": function(GetAllTickets){
-        return GetAllTickets().$loaded();
+      "currentOrder": function($http){
+        return $http({method: 'GET', url: '/storeAPI/order'})
+      },
+      "currentToken": function($http){
+        return $http({method: 'GET', url: '/storeAPI/token'})
+      },
+      "shipment": function($http){
+        return $http({method: 'GET', url: '/storeAPI/shipment'})
       }
     }
   })
@@ -438,6 +580,8 @@ function($rootScope, $state, $location, $window,MetaTags) {
   $locationProvider.html5Mode(true);
 
 }])
+
+
 
 .filter('cut', function () {
   return function (value, enable, wordwise, max, tail) {
@@ -457,13 +601,13 @@ function($rootScope, $state, $location, $window,MetaTags) {
 
 .filter('MomentFilter', ['moment', function(moment){
   return function(val){
-    return  moment(val).format('dddd, MMMM Do, YYYY');
+    return  moment(val).tz("America/Los_Angeles").format('dddd, MMMM Do, YYYY');
   }
 }])
 
 .filter('tooOld', function() {
   return function(events) {
-    var currentDay = moment().unix()
+    var currentDay = moment().tz("America/Los_Angeles").unix()
     var filtered = [];
     angular.forEach(events, function(event) {
       var thisEvent = event.unixDate/1000;
@@ -477,19 +621,19 @@ function($rootScope, $state, $location, $window,MetaTags) {
 
 .filter('DeliveryEstDate', ['moment', function(moment){
   return function(val){
-    return  moment(val).format('dddd, MMMM Do');
+    return  moment(val).tz("America/Los_Angeles").format('dddd, MMMM Do');
   }
 }])
 
 .filter('TimeDate', ['moment', function(moment){
   return function(val){
-    return  moment(val).format('MMMM Do YYYY, h:mm:ss a');
+    return  moment(val).tz("America/Los_Angeles").format('MMMM Do YYYY, h:mm:ss a');
   }
 }])
 
 .filter('slashDate', ['moment', function(moment){
   return function(val){
-    return  moment(val * 1000).format('MM/DD/YYYY');
+    return  moment(val * 1000).tz("America/Los_Angeles").format('MM/DD/YYYY');
   }
 }])
 
@@ -498,7 +642,7 @@ function($rootScope, $state, $location, $window,MetaTags) {
     var date = new Date(val);
     console.log(date);
     console.log(typeof date);
-    return moment(date).fromNow();
+    return moment(date).tz("America/Los_Angeles").fromNow();
   }
 }])
 
@@ -514,7 +658,42 @@ function($rootScope, $state, $location, $window,MetaTags) {
   return function(val){
     return  val/100;
   }
-});
+})
 
+
+.filter('twoDigitTime', function(){
+  return function(val){
+    if (val > 9){
+      return val.toString();
+    } else {
+      return "0" + val.toString();
+    }
+  }
+})
+
+.filter('htmlBlogPreview', function(){
+  return function shorten(val, slug){
+    var cutoff = 300;
+    var target = "";
+    var source = val;
+    var cutIndex;
+    if (val.length < cutoff){
+      return val;
+    }
+    while (target.length < cutoff){
+      cutIndex = (source.indexOf("</p>") + 4);
+      target += source.slice(0, cutIndex);
+      source = source.slice(cutIndex);
+    }
+    if (val.length === target.length){
+      return target;
+    } else {
+      target = target.slice(0, (target.length - 4));
+      var readMore = " <a href='/blog/show/"+ slug +"'>  Read More...</a></p>";
+      target += readMore;
+      return target;
+    }  
+  }
+});
 
 

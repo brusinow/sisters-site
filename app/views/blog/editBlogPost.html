@@ -14,23 +14,35 @@
       </select>
     </div>
     <div style="float: left;">
-      <div ng-show="data.mediaSelect === 'image'" id="image-choice">
+      <!--<div ng-show="data.mediaSelect === 'image'" id="image-choice">
         <label for="imageUpload"> Image: </label>
         <div name="imageUpload">
           <input ng-show="!post.img && data.mediaSelect === 'image'" type="file" fileread="data.image"/>
           <button style="display: inline-block; margin-top:1px" class="button button-flat-pink button-rounded" ng-hide="!post.img" ng-click="post.img = null">Change image?</button>
         </div>
+      </div>-->
+      <div ng-if="data.mediaSelect === 'image'" flow-init="{singleFile:true}" flow-name="data.flow" flow-file-added="!!{png:1,gif:1,jpg:1,jpeg:1}[$file.getExtension()]" class="ng-scope">
+    <div class="thumbnail" ng-show="!data.flow.files.length && !post.img">
+      <img src="http://www.placehold.it/200x150/EFEFEF/AAAAAA&amp;text=no+image">
+    </div>
+      <div class="thumbnail ng-hide" ng-show="data.flow.files.length || post.img">
+        <img ng-if="data.flow.files.length" flow-img="data.flow.files[0]">
+        <img ng-if="!data.flow.files.length && post.img" ng-src="{{post.img}}">
       </div>
+    <div>
+      <span class="btn btn-primary" ng-show="!$flow.files.length && !post.img" flow-btn="">Select image<input type="file" style="visibility: hidden; position: absolute;"></span>
+      <span class="btn btn-info ng-hide" ng-show="$flow.files.length || post.img" flow-btn="">Change<input type="file" style="visibility: hidden; position: absolute;"></span>
+      <span class="btn btn-danger ng-hide" ng-show="$flow.files.length" ng-click="$flow.cancel()">
+        Remove
+      </span>
+    </div>
+    <p>
+      Only PNG,GIF,JPG,JEPG files allowed.
+    </p>
+    </div>
       
       <div ng-show="data.mediaSelect === 'youtube'" id="youtube-choice">
-      <label for="youtube">YouTube Link</label>
         <input id="youtube-input" class="u-full-width" type="text" name="youtube" placeholder="Enter YouTube link..." ng-model="data.youtube"/>
-      </div>
-      <div style="display: inline-block;" ng-show="data.mediaSelect === 'image'">
-        <div ng-if="data.image || post.img" id="photo-preview">
-          <img ng-if="data.image" ng-src="{{data.image}}"/>
-          <img ng-if="post.img" ng-src="{{post.img}}"/>
-        </div>
       </div>
     </div> <br>
     </div>

@@ -22,6 +22,41 @@ angular.module('SistersDirectives', [])
     }
 }])
 
+.directive('centsToDollars', [
+		function() {
+				return {
+  				require: 'ngModel',
+					link: function (elem, $scope, attrs, ngModel) {
+						ngModel.$formatters.push(function (val) {
+							return '$' + (val / 100).toFixed(2);
+						});
+						ngModel.$parsers.push(function (val) {
+							//make sure the val is string
+							val = val.toString();
+                            var result;
+							//filter the value for displaying, so keep the '$'
+							var displayedValue = val.replace(/[^\d\.\$]/g, '');
+							var replaced = val.replace(/[^\d\.]/g, '');
+                            if (replaced.indexOf(".") > -1){
+                                var split = replaced.split('.');
+                                result = split[0] + split[1].slice(0, 2);
+                                console.log(result);
+                            } else {
+                                result = (replaced * 100).toString();
+                                console.log(result);
+                            }
+							
+							var typeConverted = Number(result);
+							//update the $viewValue
+              ngModel.$setViewValue(displayedValue);
+              //reflect on the DOM element
+              ngModel.$render();
+							return typeConverted;
+						});
+					}
+				}
+			}
+])
 
 
 .directive("countryName", ['$http', function($http) {

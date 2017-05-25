@@ -2,6 +2,7 @@ var subdomain = require('express-subdomain');
 var compression = require('compression')
 var express = require('express');
 var session = require('express-session');
+var RedisStore = require('connect-redis')(session);
 var bodyParser = require('body-parser');
 var path = require('path');
 var request = require('request');
@@ -12,13 +13,20 @@ var Entities = require('html-entities').AllHtmlEntities;
 var http = require('http');
 var fs = require('fs');
 
-// var firebase = require("firebase");
 var shippo = require('shippo')(process.env.SHIPPO_TOKEN);
 
 
 
 
 var app = express();
+app.set('trust proxy', 1) // trust first proxy
+app.use(session({
+  // store: new RedisStore(),
+  secret: 'keyboard cat',
+  resave: true,
+  saveUninitialized: true,
+  cookie: { secure: false }
+}))
 
 app.use(compression({filter: shouldCompress}))
 app.use(bodyParser.json());
@@ -54,6 +62,7 @@ app.get('*', function (req, res, next) {
 
 app.use(express.static(path.join(__dirname, 'app'), {etag: true}));
 
+
 entities = new Entities();
 
 
@@ -71,10 +80,6 @@ app.use(session({
   saveUninitialized: true,
   cookie: { secure: false },
 }));
-
-
-
-
 
 
 
@@ -184,9 +189,7 @@ app.post("/stripe/orderComplete", function(req, res){
 
 
 app.post("/stripe/taxCallback", function(req, res){
-  console.log("ENTERING STRIPE CALLBACK!!!!!!!")
   var order = req.body.order;
-  console.log(order.id);
   var orderId = order.id;
   var shipping = order.shipping.address;
   var taxRate = order.metadata.taxRate;
@@ -217,7 +220,6 @@ app.post("/stripe/taxCallback", function(req, res){
         ]
       }
   }   
-  console.log(JSON.stringify(myJSON, null, 4));
   res.json(myJSON); 
 });
 
@@ -225,13 +227,15 @@ app.post("/stripe/taxCallback", function(req, res){
 
 
 
-app.get('/*', function(req, res) {
-  res.sendFile(path.join(__dirname, 'app/index.html'));
-});
+
 
 
 app.use('/store', require('./controllers/store'));
+app.use('/storeAPI', require('./controllers/storeAPI'));
+app.use('/ticketAPI', require('./controllers/ticketAPI'));
 
-
+app.get('/*', function(req, res) {
+  res.sendFile(path.join(__dirname, 'app/index.html'));
+});
 
 app.listen(process.env.PORT || 8080)

@@ -26,7 +26,7 @@
         <span class="blog-date">{{post.timestamp | MomentFilter}}</span>
         </div>
       </div>
-      <div ng-bind-html="post.postBody | htmlBlogPreview: post.slug" class="white-space-pre"></div>
+      <div ng-bind-html="post.postBody" class="white-space-pre"></div>
       <!--<div style="display: inline-block; padding: 0px 25px; text-align: right;">
         <a ng-if="enable && post.postBody.length >= 300" ng-href="/blog/show/{{post.slug}}">Read More!</a>
       </div>-->
@@ -39,9 +39,5 @@
         </div>
       </div>
     </div>
-  </div>
-  <div class="blog-nav">
-    <a id="back-link" ng-hide="last === length" ng-href="{{pageDown}}"><i class="fa fa fa-chevron-left" aria-hidden="true"></i> Newer</a>
-    <a id="next-link" ng-hide="first <= 0 || allPosts.length < 5" ng-href="{{pageUp}}">Older <i class="fa fa fa-chevron-right" aria-hidden="true"></i></a>
   </div>
 </div>

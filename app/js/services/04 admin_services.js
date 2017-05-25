@@ -14,7 +14,8 @@ angular.module('SistersServices')
   var currentDay = moment().unix();
   var calcDay = currentDay - 86400;
   return function(){
-    var ticketsRef = firebase.database().ref('tickets').orderByChild("unix").startAt(calcDay);
+    // var ticketsRef = firebase.database().ref('tickets').orderByChild("unix").startAt(calcDay);
+    var ticketsRef = firebase.database().ref('tickets').orderByChild("unix");
     return $firebaseArray(ticketsRef);
   }
 }])
@@ -85,3 +86,33 @@ angular.module('SistersServices')
     return myBlob;
   }
 }])
+
+
+.factory('Variant', function() {
+    // instantiate our initial object
+    var Variant = function(id, sku, name, price, index, count){
+      this.id = sku || null;
+      this.parentId = id;
+      this.variantName = name || "";
+      this.price = price || ""; 
+      this.index = index || 0; 
+      this.count = count || 0
+    }
+
+    Variant.prototype.changeIndex = function(index){
+      this.index = index;
+    }
+
+    Variant.prototype.changeProductId = function(id){
+      this.parentId = id;
+    }
+
+    Variant.prototype.changeSku = function(sku){
+      this.id = sku;
+    }
+
+    Variant.prototype.changeCount = function(count){
+      this.count = count;
+    }
+    return Variant;
+})

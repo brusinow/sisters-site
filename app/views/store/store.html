@@ -16,8 +16,8 @@
           <img ng-src="{{products[$index].images[0]}}"/>
         </div>
         <h6 class="store-item-title">{{products[$index].title}}</h6>
-        <h6 class="store-item-price text-center no-margin">{{products[$index].skus[0].price | centsToDollars | currency}}</h6>
-        <ngcart-add-btn id="{{ products[$index].$id}}" sku="{{ products[$index].skus[0].id }}" name="{{ products[$index].title }}" price="{{ products[$index].skus[0].price }}" quantity="1" quantity-max="30" data="{'skus': products[$index].skus}">Add to Cart</ngcart-addtocart>
+        <h5 class="store-item-price text-center no-margin">{{firstPrice(products[$index].variant.skus) | centsToDollars | currency}}</h5>
+        <ngcart-add-btn id="{{ products[$index].$id}}" sku="{{ products[$index].variant.skus }}" name="{{ products[$index].title }}" price="{{ firstPrice(products[$index].variant.skus) }}" quantity="1" quantity-max="30" data="{'shippable': products[$index].shippable, 'ship_details': products[$index].shipping}">Add to Cart</ngcart-addtocart>
            
     
     </div>
@@ -27,8 +27,8 @@
            <img ng-src="{{products[$index + 1].images[0]}}"/>
         </div>
         <h6 class="store-item-title">{{products[$index + 1].title}}</h6>
-        <h6 class="store-item-price text-center no-margin">{{products[$index + 1].skus[0].price | centsToDollars | currency}}</h6>
-        <ngcart-add-btn id="{{ products[$index + 1].$id}}" sku="{{ products[$index + 1].skus[0].id }}" name="{{ products[$index + 1].title }}" price="{{ products[$index + 1].skus[0].price }}" quantity="1" quantity-max="30" data="products[$index + 1]">Add to Cart</ngcart-addtocart>
+        <h5 class="store-item-price text-center no-margin">{{firstPrice(products[$index + 1].variant.skus) | centsToDollars | currency}}</h5>
+        <ngcart-add-btn id="{{ products[$index + 1].$id}}" sku="{{ products[$index + 1].variant.skus }}" name="{{ products[$index + 1].title }}" price="{{ firstPrice(products[$index + 1].variant.skus) }}" quantity="1" quantity-max="30" data="{'shippable': products[$index + 1].shippable, 'ship_details': products[$index + 1].shipping}">Add to Cart</ngcart-addtocart>
 
     </div>
     <div ng-click="showProduct(products[$index + 2].$id)" class="storefront columns store-item" ng-if="products.length > ($index + 2)">
@@ -38,18 +38,18 @@
         </div>
         <h6 class="store-item-title">{{products[$index + 2].title}}</h6>
        <!--  <p>{{products[$index + 2].description}}</p> -->
-        <h6 class="store-item-price text-center no-margin">{{products[$index + 2].skus.data[0].price | centsToDollars | currency}}</h6>
-        <ngcart-add-btn id="{{ products[$index + 2].skus.data[0].id }}" name="{{ products[$index + 2].name }}" price="{{ products[$index + 2].skus.data[0].price }}" quantity="1" quantity-max="30" data="products[$index + 2]">Add to Cart</ngcart-addtocart>
+        <h5 class="store-item-price text-center no-margin">{{firstPrice(products[$index + 2].variant.skus) | centsToDollars | currency}}</h5>
+        <ngcart-add-btn id="{{ products[$index + 2].$id }}" sku="{{ products[$index + 2].variant.skus }}" name="{{ products[$index + 2].title }}" price="{{ firstPrice(products[$index + 2].variant.skus) }}" quantity="1" quantity-max="30" data="{'shippable': products[$index + 2].shippable, 'ship_details': products[$index + 2].shipping}">Add to Cart</ngcart-addtocart>
     </div>
      <div ng-click="showProduct(products[$index + 3].id)" class="storefront columns store-item" ng-if="products.length > ($index + 3)">
        
         <div class="item-image-div">
            <img ng-src="{{products[$index + 3].images[0]}}"/>
         </div>
-        <h6 class="store-item-title">{{products[$index + 3].name}}</h6>
+        <h6 class="store-item-title">{{products[$index + 3].title}}</h6>
        <!--  <p>{{products[$index + 2].description}}</p> -->
-        <h6 class="store-item-price text-center no-margin">{{products[$index + 3].skus.data[0].price | centsToDollars | currency}}</h6>
-        <ngcart-add-btn id="{{ products[$index + 3].skus.data[0].id }}" name="{{ products[$index + 3].name }}" price="{{ products[$index + 3].skus.data[0].price }}" quantity="1" quantity-max="30" data="products[$index + 3]">Add to Cart</ngcart-addtocart>
+        <h5 class="store-item-price text-center no-margin">{{firstPrice(products[$index + 3].variant.skus) | centsToDollars | currency}}</h5>
+        <ngcart-add-btn id="{{ products[$index + 3].$id }}" sku="{{ products[$index + 3].variant.skus }}" name="{{ products[$index + 3].title }}" price="{{ firstPrice(products[$index + 3].variant.skus) }}" quantity="1" quantity-max="30" data="{'shippable': products[$index + 3].shippable, 'ship_details': products[$index + 3].shipping}">Add to Cart</ngcart-addtocart>
     </div>
 </div>
 </div>

@@ -11,6 +11,7 @@
       <li><a ng-click="toggle = !toggle" ng-href="/shows">shows</a></li>
       <li><a ng-click="toggle = !toggle" href="https://iheartsisters.bandcamp.com/" target="_blank">music</a></li>
       <li><a ng-click="toggle = !toggle" ng-href="/blog">blog</a></li>
+       <li><a ng-click="toggle = !toggle" ng-href="/store">store</a></li>
       <li ng-show="firebaseUser.email"><a ng-click="toggle = !toggle" ng-href="/admin">admin</a></li>
     </ul>
   </div> 
@@ -24,7 +25,8 @@
       <li><a ng-href="/shows">shows</a></li>
       <li><a href="https://iheartsisters.bandcamp.com/" target="_blank">music</a></li>
       <li><a ng-href="/blog">blog</a></li>
-      <li ng-show="firebaseUser.email" ><a class="admin-nav-btn" ng-href="/admin">admin</a></li>
+       <li><a ng-href="/store">store</a></li>
+      <li ng-show="firebaseUser.email" style="overflow: hidden;"><a class="admin-nav-btn" ng-href="/admin">admin</a></li>
     </ul>
 
   </div>
@@ -32,7 +34,7 @@
   <div class="four columns right-nav-social-width">
     
     <div class="nav-right">
-     
+      <div ng-if="setTimer" class="timer-div"><span>{{minutes | twoDigitTime}} : {{seconds | twoDigitTime}}</span></div>
       <div style="margin-top: 1.5rem; margin-bottom: 0;" class="social header-social float-right">
         <a href="https://soundcloud.com/sisterstheband" target="_blank"><i class="fa fa-soundcloud fa-lg" aria-hidden="true"></i></a>
         <a href="https://open.spotify.com/artist/2Hb8mc3CoUktri3i4Q4ACR" target="_blank"><i class="fa fa-spotify fa-lg" aria-hidden="true"></i></a>

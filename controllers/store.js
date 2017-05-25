@@ -8,23 +8,26 @@ var EmailTemplate = require('email-templates').EmailTemplate
 var nodemailer = require('nodemailer')
 var wellknown = require('nodemailer-wellknown')
 var async = require('async')
+var session = require('express-session')
+
 
 var templatesDir = path.resolve(__dirname, '../app/templates')
 var template = new EmailTemplate(path.join(templatesDir, 'receipt'))
 
 
-// var serviceAccount = require("../sisters-site-creds.json");
+var serviceAccount = require("../sisters-site-test-creds.json");
 
-// admin.initializeApp({
-//   credential: admin.credential.cert(serviceAccount),
-//   databaseURL: "https://sisters-site.firebaseio.com"
-// });
+admin.initializeApp({
+  credential: admin.credential.cert(serviceAccount),
+  databaseURL: "https://sisters-site-test.firebaseio.com"
+});
+
+var db = admin.database();
+
+
 
 // var xoauth2 = require('xoauth2');
 var router = express.Router();
-
-
-
 
 var transport = nodemailer.createTransport({
      service: 'Gmail', // no need to set host or port etc.
@@ -33,54 +36,87 @@ var transport = nodemailer.createTransport({
        pass: process.env.GMAIL_PASS
        }
 });
+// Generating the new order
+
+var ticketTimeout;
+var timerAmount = 60000;
 
 
+function startTicketTO(val){
+  ticketTimeout = setTimeout(function(){
+    updateTicketCounts(val);
+    val = {};
+    console.log("tickets are now: ",val);
+  }, timerAmount);
+}
 
-
+function stopTicketTO() {
+    clearTimeout(ticketTimeout);
+}
 
 router.post("/newOrder", function(req, res){
   var thisOrder = req.query.order;
-  console.log("THIS ORDER!!!!!!! ",thisOrder);
   var parsedOrder = JSON.parse(thisOrder);
-
-  var orderNumber = Math.random().toString(36).substr(2, 9);
-  console.log("order number: ",orderNumber);
-  console.log("req.query.shippable is ",req.query.shippable);
   
+  // parsedOrder.orderNumber = orderNumber;
+  req.session.order = parsedOrder;
 
+  // db.ref('orders/' + orderNumber).set(parsedOrder);
 
   
-  if (req.query.shippable === true){
-    
-    var addressFrom = {
-      "object_purpose": "PURCHASE",
-      "name": "SISTERS",
-      "street1": "7510 24th Ave NW",
-      "city": "Seattle",
-      "state": "WA",
-      "zip": "98117",
-      "country": "US",
-      "email": "iheartsistersband@gmail.com"
+  if (req.query.shippable === 'true'){
+    var items = parsedOrder.items;
+    var maxWidth = null;
+    var maxLength = null;
+    var height = 0;
+    var weight = 0;
+    for (var i = 0; i < items.length; i++){
+      console.log("what is item? ",items[i]);
+      if (maxWidth === null || items[i]._data.ship_details.width > maxWidth){
+        maxWidth = items[i]._data.ship_details.width;
+      }
+      if (maxLength === null || items[i]._data.ship_details.length > maxLength){
+        maxLength = items[i]._data.ship_details.length;
+      }
+      height += items[i]._data.ship_details.height;
+      weight += items[i]._data.ship_details.weight;
+    }
+
+    var addressFrom  = {
+    "object_purpose": "PURCHASE",
+    "name": "SISTERS",
+    "street1": "7510 24th Ave NW",
+    "city": "Seattle",
+    "state": "WA",
+    "zip": "98117",
+    "country": "US",
+    "phone": "555 341 9393",
+    "email": "iheartsistersband@gmail.com"
     };
 
     var addressTo = {
       "object_purpose": "PURCHASE",
       "name": parsedOrder.shipping.name,
       'street1' : parsedOrder.shipping.address.line1,
-      'street2' : parsedOrder.shipping.address.line2,
+      'street2' : parsedOrder.shipping.address.line2 || null,
       'city' : parsedOrder.shipping.address.city,
-      'state' : parsedOrder.shipping.address.country,
+      'state' : parsedOrder.shipping.address.state,
       'zip' : parsedOrder.shipping.address.postal_code,
       'country' : parsedOrder.shipping.address.country,
-      'email' : parsedOrder.shipping.email
+      'email' : parsedOrder.billing.email
     }
 
+    console.log("maxLength: ",maxLength);
+    console.log("maxWidth: ",maxWidth);
+    console.log("height: ",height);
+    console.log("weight: ",weight);
+
     var parcel = {
-      "length": "5",
-      "width": "5",
-      "height": "5",
+      "length": maxLength,
+      "width": maxWidth,
+      "height": height,
       "distance_unit": "in",
-      "weight": "32",
+      "weight": weight,
       "mass_unit": "oz"
     }
 
@@ -91,79 +127,269 @@ router.post("/newOrder", function(req, res){
       'parcel': parcel,
       'async': false
     }, function(err, shipment){
+      console.log("shippo response");
     if (err){
       console.log("error: ",err);
+      res.status(500).send({error: "Oops."});
     }
     if (shipment){
-      res.send({
-        shipment: shipment, 
-        order: parsedOrder
-      });
+      req.session.shipment = shipment;
+        req.session.save(function(err) {
+          res.status(200).send({shipBool: true});
+        })
+      
+    } else {
+      res.status(500).send({message: "There is no Shippo shipment object. Try again."})
     }
     });
 
+  } else if (req.query.shippable === 'false') {
+      req.session.save(function(err) {
+          res.status(200).send({shipBool: false});
+      })
+    
   } else {
-    res.send({order: parsedOrder});
+    res.status(500).send({message: "Didn't get into proper shippable status."})
   }
   
-
-  
-
-
   
         
 })
 
 
+router.post("/saveToken", function(req, res){
+  console.log("what is req query at saveToken? ",req.body);
+  req.session.token = req.body.token;
+  if (req.body.willCallName){
+    req.session.order.willCallName = req.body.willCallName;
+  }
+  req.session.save(function(err) {
+      console.log("error: ",err);
+  })
+  if (req.session.token){
+    res.status(200).send("successful saving of token");
+  } else {
+    res.status(500).send("no token was saved to server");
+  } 
+})
+
+router.post("/addSessionTicket", function(req, res){
+  // process to remove quantity of tickets from inventory and set timer to restore them if not purchased in time
+  console.log("what is req.body? ",req.body);
+    db.ref('tickets/' + req.body.ticketId).once('value').then(function(snapshot) {
+      var ticketObj = snapshot.val();
+      console.log("ticket obj: ",ticketObj);
+      var ticketsLeft = parseInt(ticketObj.ticketCapacity) - parseInt(ticketObj.ticketsSold)
+      if (ticketsLeft >= req.body.ticketCount){
+        //reserve the tickets and start timeout
+        db.ref('tickets/' + req.body.ticketId + '/ticketsSold').set(parseInt(ticketObj.ticketsSold) + parseInt(req.body.ticketCount))
+        if (!req.session.tickets){
+        req.session.tickets = {};
+        }
+          req.session.tickets[req.body.ticketId] = req.body.ticketCount
+          req.session.save(function(err) {
+            console.log("error: ",err);
+          })
+          console.log("tickets in session: ",req.session.tickets);
+          // set timeout here
+          startTicketTO(req.session.tickets);
+          res.status(200).send("success");;
+      } else {
+        // return error
+        res.status(500).send("no tickets left");
+      }
+    });
+})
+
+router.post("/changeSessionTicket", function(req, res){
+  // process to remove quantity of tickets from inventory and set timer to restore them if not purchased in time
+    db.ref('tickets/' + req.body.ticketId).once('value').then(function(snapshot) {
+      var ticketObj = snapshot.val();
+      console.log("ticket obj: ",ticketObj);
+      var ticketsLeft = parseInt(ticketObj.ticketCapacity) - parseInt(ticketObj.ticketsSold)
+      if (ticketsLeft >= req.body.ticketCount){
+        //reserve the tickets and start timeout
+        db.ref('tickets/' + req.body.ticketId + '/ticketsSold').set(parseInt(ticketObj.ticketsSold) + parseInt(req.body.ticketCount))
+          req.session.tickets[req.body.ticketId] += req.body.ticketCount;
+          req.session.save(function(err) {
+            console.log("error: ",err);
+          })
+          console.log("session tickets is now: ",req.session.tickets);
+          stopTicketTO();
+          startTicketTO(req.session.tickets);
+          console.log("what are tickets? ",req.session.tickets);
+          res.status(200).send("success");;
+      } else {
+        // return error
+        res.status(500).send("can't make this change");
+      }
+    });
+})
+
 
 
 
 router.post("/orderComplete", function(req, res){
-  var data = req.query;
-  console.log("what is order? ",data.order);
-  var myOrder = JSON.parse(data.order);
-  var myTax = JSON.parse(data.tax);
-  console.log("what is willcall name? ",myOrder.willCallName);
-  console.log("what is order number? ",myOrder.orderNumber);
-  var cart = JSON.parse(data.cart);
-  console.log(cart);
-  // Initiate Stripe Charge Creation
-  stripe.charges.create({
-  amount: data.totalAmount,
-  currency: "usd",
-  source: data.token, // obtained with Stripe.js
-  description: "Charge for " + data.name 
-    }, function(err, charge) {
-    if (err){
+  var orderNumber;
+
+  // function to check if anything is low stock and handle accordingly
+  function allInStock(obj, data, callback){
+    var allProducts;
+    var productsRef = db.ref('products/');
+    productsRef.once('value').then(function(snapshot) {
+      allProducts = snapshot.val();
+      var currentCount;
+      var buyCount;
+      var lowCountArr = [];
+      for (var i = 0; i < obj.length; i++){
+        currentCount = allProducts[obj[i].parent].variant.skus[obj[i].sku].count;
+        buyCount = obj[i].quantity;
+        if (buyCount > currentCount){
+          lowCountArr.push(obj[i]);
+        }
+      }
+      if (lowCountArr.length > 0){
+        console.log("LOW COUNT!!!!!!!!!!!!!!");
+      return res.status(500).send({message: "Sorry friend, we don't have the quantity to fulfill the following items in your order for the quantities requested: ", lowStock: lowCountArr});
+      
+    } else {
+      console.log("not low count!!! Continuing.......");
+        callback(data);
+      }
+    });
+  }
+
+  // if stock is not low, process sale and shipping
+  function createChargeAndShipping(data){
+    var myTax = JSON.parse(data.tax);
+    var cart = JSON.parse(data.cart);
+    // Initiate Stripe Charge Creation
+    stripe.charges.create({
+    amount: data.totalAmount,
+    currency: "usd",
+    source: data.token, // obtained with Stripe.js
+    description: "Charge for " + data.name 
+      }, function(err, charge) {
+      if (err){
       // there is an error with Stripe charge
       console.log("we have an error: ",err);
       res.status(500).send(err);
-    }
-    if (charge){
+      }
+      if (charge){
       // Stripe charge was created successfully
-    console.log(charge);
-    res.send(charge); 
-
+      updateProductCount(cart);
       var order = {
-        email: myOrder.billing.email,
-        subject: 'Thank you for your order! Order #' + myOrder.orderNumber,
+        email: req.session.order.billing.email,
+        subject: 'Thank you for your order! Order #' + orderNumber,
         name: data.name,
         cart: cart,
         total: data.totalAmount,
-        orderData: myOrder,
+        orderData: req.session.order,
         charge: charge
       }
+      // Purchase the desired rate.
+      if (data.shipChoice){
+        var shippoInfo = JSON.parse(data.shipChoice)
+        shippo.transaction.create({
+        "rate": shippoInfo.object_id,
+        "servicelevel_token": shippoInfo.servicelevel_token,
+        "label_file_type": "PDF",
+        "async": false
+          }, function(err, transaction) {
+          if (transaction){
+            order.shipping = shippoInfo;
+            order.shipping.res = transaction;
+            var response = {
+              "charge": charge,
+              "transaction": transaction
+            }
+            // save order to db!
+            var sessOrder = req.session.order;
+            sessOrder.orderNumber = orderNumber;
+            sessOrder.shipping.shippo = shippoInfo;
+            sessOrder.shipping.res = transaction;
+            sessOrder.totalItemsPrice = data.totalAmount;
+            sessOrder.tax = myTax;
+            var d = new Date();
+            sessOrder.timeCompleted = d.getTime(),
+            sessOrder.status = "COMPLETE"
+            console.log("what is order number? ",orderNumber);
+            db.ref('orders/' + orderNumber).set(sessOrder);
+            res.status(200).send(response);
+            generateEmailReceipt(order);
+            req.session.destroy();
+          }
 
-      generateEmailReceipt(order);
+          if (err){
+            res.status(500).send(err);
+          }
+        });
+        } else {
+            var response = {
+              "charge": charge
+            }
+          res.status(200).send(response);
+          generateEmailReceipt(order);
+        }
+      }
+    });
+  }
 
 
 
-    }
+
+  // get current order number
+  db.ref('orders').limitToLast(1).on("child_added", function(snapshot) {
+    orderNumber = parseInt(snapshot.key) + 1;
   });
+
+  var data = req.query;
+  var cart = JSON.parse(data.cart);
+  allInStock(cart, data, createChargeAndShipping);
 });
 
 
-var generateEmailReceipt = function(order){
+
+
+
+
+
+
+
+function updateTicketCounts(obj){
+  for (prop in obj){
+    console.log(prop + ' is :',obj[prop]);
+    var showCountRef = db.ref('tickets/' + prop + '/ticketsSold')
+      showCountRef.once('value').then(function(snapshot) {
+      showCountRef.set(snapshot.val() - obj[prop]);
+    });
+  }
+}
+
+
+
+function updateProductCount(obj){
+  var allProducts;
+  var productsRef = db.ref('products/')
+  productsRef.once('value').then(function(snapshot) {
+    allProducts = snapshot.val();
+    var currentCount;
+    for (var i = 0; i < obj.length; i++){
+      currentCount = allProducts[obj[i].parent].variant.skus[obj[i].sku].count;
+      console.log("what is count? ",currentCount);
+      console.log(i + " thing is: ",obj[i]);
+      var urlPath = 'products/' + obj[i].parent + '/variant/skus/' + obj[i].sku + '/count';
+      var buyCount = obj[i].quantity;
+      console.log("how many units are being sold? ",buyCount);
+      console.log("what is path? ",urlPath);
+      var skuCountRef = db.ref(urlPath)
+      skuCountRef.set(currentCount - obj[i].quantity);
+    }
+  });
+}
+
+
+function generateEmailReceipt(order){
     template.render(order, function (err, results) {
   if (err) {
     return console.error(err)
@@ -184,10 +410,24 @@ var generateEmailReceipt = function(order){
     if (err) {
       return console.error(err)
     }
-    console.log(responseStatus.message)
   })
 })
 }
+
+
+
+// function createOrderNumber(){
+//   var number = Math.floor(100000 + Math.random() * 1000000000); 
+//   var ref = db.ref('orders/order_' + number)
+//   ref.once("value", function(snap) {
+//   var thisVal = snap.val();
+//   if (thisVal.orderNumber){
+//     createOrderNumber();
+//   } else {
+//     return number;
+//   }
+//   });
+// }
 
 
 

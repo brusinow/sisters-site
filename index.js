@@ -49,7 +49,7 @@ function shouldCompress (req, res) {
 
 app.get('*', function (req, res, next) {
 
-  if (req.url.indexOf("/img/") === 0 || req.url.indexOf("/js/") === 0 || req.url.indexOf("/dist/") === 0 || req.url.indexOf("/css/") === 0) {
+  if (req.url.indexOf("/img/") === 0 || req.url.indexOf("/js/") === 0 || req.url.indexOf("/dist/") === 0 || req.url.indexOf("/css/") === 0 || req.url.indexOf("favicon") > -1) {
     console.log("this url:", req.url);
     console.log("this header: ",req.headers);
     if (!req.headers['cache-control'] || req.headers['cache-control'] === 'no-cache'){

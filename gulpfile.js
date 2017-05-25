@@ -29,14 +29,13 @@ gulp.task('myJs', function () {
   gulp.src(['app/js/app.js','app/js/controllers/*.js','app/js/directives.js','app/js/services/*.js'])
     .pipe(sourcemaps.init())
       .pipe(concat('app.js'))
-      .pipe(ngAnnotate())
       .pipe(uglify())
     .pipe(sourcemaps.write())
     .pipe(gulp.dest('app/dist'))
 })
 
 gulp.task('css', function () {
-  return gulp.src(['app/css/normalize.css','app/css/skeleton.css','app/css/store-layout.css','app/css/tablesort.css', 'app/components/textAngular/dist/textAngular.css','app/css/font-awesome.css', 'app/css/buttons.css', 'app/css/style.css'])
+  return gulp.src(['app/css/normalize.css','app/css/skeleton.css','app/css/store-layout.css','app/css/spinner.css', 'app/css/tablesort.css', 'app/components/textAngular/dist/textAngular.css','app/css/font-awesome.css', 'app/css/buttons.css', 'app/css/style.css'])
     .pipe(concatCss('bundle.css'))
     .pipe(cssmin())
     .pipe(gulp.dest('app/dist'))

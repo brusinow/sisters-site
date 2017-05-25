@@ -10,8 +10,9 @@
   left: 0;
   bottom: 0;
   right: 0;
+  width: 100%;
 }
-width: 100%;
+
 @-webkit-keyframes uil-spin-css {
   0% {
     opacity: 1;
@@ -320,3 +321,4 @@ width: 100%;
   -webkit-transform: translate(84px, 84px) rotate(360deg) translate(70px, 0);
   -o-transform: translate(84px, 84px) rotate(360deg) translate(70px, 0);
   transform: translate(84px, 84px) rotate(360deg) translate(70px, 0);
+}

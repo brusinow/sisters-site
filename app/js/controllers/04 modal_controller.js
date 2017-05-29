@@ -1,7 +1,7 @@
 angular.module('SistersCtrls')
 
 
-.controller('editModalCtrl', function ($scope, $uibModalInstance, editShow, index, $firebaseArray) {
+.controller('editModalCtrl', ["$scope", "$uibModalInstance", "editShow", "index", "$firebaseArray", function ($scope, $uibModalInstance, editShow, index, $firebaseArray) {
   $scope.shows = editShow;
   $scope.show = editShow[index];
 
@@ -35,11 +35,11 @@ angular.module('SistersCtrls')
     $uibModalInstance.close();
   }
 
-})
+}])
 
 
 
-.controller('newModalCtrl', function ($scope, $uibModalInstance, $firebaseArray) {
+.controller('newModalCtrl', ["$scope", "$uibModalInstance", "$firebaseArray", function ($scope, $uibModalInstance, $firebaseArray) {
 
   $scope.show = {};
   var showsRef = firebase.database().ref('shows');
@@ -65,4 +65,4 @@ angular.module('SistersCtrls')
   $scope.cancel = function () {
     $uibModalInstance.dismiss('cancel');
   };
-})
+}])

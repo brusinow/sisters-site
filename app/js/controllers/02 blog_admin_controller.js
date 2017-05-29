@@ -19,7 +19,8 @@ angular.module('SistersCtrls')
   $scope.submit = function(){
     var test = document.getElementById("new-blog-textarea").innerText;
     if ($scope.data.mediaSelect === 'image'){
-      UploadImages($scope.data.flow.files, "blog", null).then(function(resultImg){
+      var date = new Date();
+      UploadImages($scope.data.flow.files, "blog", date).then(function(resultImg){
         console.log("what is result image? ",resultImg[0]);
         BlogFactory.addPost($scope.post, $scope.BlogPosts, resultImg[0], null, $scope.checkedTags);
       })
@@ -114,6 +115,7 @@ angular.module('SistersCtrls')
 
   $scope.submit = function(){
     if ($scope.data.mediaSelect === 'image' && $scope.data.flow){
+      console.log("what is flow? ",$scope.data.flow);
       // SubmitBlogImage($scope.post, $scope.postArray, $scope.data.flow, updatePost);
       UploadImages($scope.data.flow.files, "blog", null).then(function(resultImg){
         console.log("what is result image? ",resultImg[0]);
@@ -130,7 +132,7 @@ angular.module('SistersCtrls')
 }])  
 
 
-.controller('EditBlogTagsCtrl', function ($scope, $uibModalInstance, tag, Blog) {
+.controller('EditBlogTagsCtrl', ["$scope", "$uibModalInstance", "tag", "Blog", function ($scope, $uibModalInstance, tag, Blog) {
   $scope.prompted = false;
   $scope.tag = angular.copy(tag);
   console.log(tag);
@@ -166,10 +168,10 @@ angular.module('SistersCtrls')
     } 
   }
 
-})
+}])
 
 
-.controller('DeleteBlogConfirmCtrl', function ($scope, $uibModalInstance, Post, moment, $location) {
+.controller('DeleteBlogConfirmCtrl', ["$scope", "$uibModalInstance", "Post", "moment", "$location", function ($scope, $uibModalInstance, Post, moment, $location) {
 console.log(Post);
 
 $scope.yes = function(){
@@ -186,4 +188,4 @@ $scope.no = function(){
    $uibModalInstance.dismiss('cancel');
 }
   
-})
+}])

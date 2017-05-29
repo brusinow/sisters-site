@@ -17,7 +17,7 @@ gulp.task('lint', function() {
 
 
 gulp.task('libJs', function () {
-  gulp.src(['app/lib/angular-parallax.js','app/lib/ngCart.js','app/components/angular-file-saver/dist/angular-file-saver.bundle.js', 'app/lib/metatags/ui-router-metatags.js','app/lib/angular-tablesort.js', 'app/lib/angular-fontawesome.js', 'app/lib/buttons.js','app/lib/angular-payments.js'])
+  gulp.src(['app/lib/angular-parallax.js','app/lib/ngCart.js','app/components/angular-file-saver/dist/angular-file-saver.bundle.js', 'app/lib/metatags/ui-router-metatags.js','app/lib/angular-tablesort.js', 'app/lib/angular-fontawesome.js', 'app/lib/buttons.js','app/lib/angular-payments.js', 'app/components/angular-image-compress/angular-image-compress.js'])
     .pipe(sourcemaps.init())
       .pipe(concat('libs.js'))
       .pipe(uglify())

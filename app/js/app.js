@@ -280,6 +280,9 @@ angular.module("SistersApp", ['SistersCtrls', 'SistersDirectives', 'ui.router', 
           }],
           "thisPost": ["$stateParams", "ThisPostService", function ($stateParams, ThisPostService) {
             return ThisPostService($stateParams.slug).$loaded();
+          }],
+          "images": ["thisPost", "FirebaseImgDownloader", function (thisPost, FirebaseImgDownloader) {
+            return FirebaseImgDownloader(thisPost);
           }]
         }
       })
@@ -570,9 +573,7 @@ angular.module("SistersApp", ['SistersCtrls', 'SistersDirectives', 'ui.router', 
   .filter('cut', function () {
     return function (value, enable, wordwise, max, tail) {
       var source = angular.element('<div/>').html(value);
-      console.log("source: ", source);
       var length = source.text().length;
-      console.log("length: ", length);
     };
   })
 
@@ -623,8 +624,6 @@ angular.module("SistersApp", ['SistersCtrls', 'SistersDirectives', 'ui.router', 
   .filter('timeAgo', ['moment', function () {
     return function (val) {
       var date = new Date(val);
-      console.log(date);
-      console.log(typeof date);
       return moment(date).tz("America/Los_Angeles").fromNow();
     }
   }])

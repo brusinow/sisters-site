@@ -7,7 +7,7 @@
   <div style="margin-bottom: 5px;" class="row">
     <div style="float: left;">
       <label for="singleSelect"> Media Type: </label>
-      <select style="margin-top: 3px;" name="singleSelect" ng-model="data.mediaSelect" ng-init="post.img ? data.mediaSelect = 'image' : data.mediaSelect = 'youtube'" ng-change="resetMedia()">
+      <select style="margin-top: 3px;" name="singleSelect" ng-model="data.mediaSelect" ng-init="post.images ? data.mediaSelect = 'image' : data.mediaSelect = 'youtube'" ng-change="resetMedia()">
         <option value="image">Image</option>
         <option value="youtube">YouTube URL</option>
         <!-- <option value="soundcloud">Soundcloud URL</option> -->
@@ -22,12 +22,12 @@
         </div>
       </div>-->
       <div ng-if="data.mediaSelect === 'image'" flow-init="{singleFile:true}" flow-name="data.flow" flow-file-added="!!{png:1,gif:1,jpg:1,jpeg:1}[$file.getExtension()]" class="ng-scope">
-    <div class="thumbnail" ng-show="!data.flow.files.length && !post.img">
+    <div class="thumbnail" ng-show="!data.flow.files.length && !post.images">
       <img src="http://www.placehold.it/200x150/EFEFEF/AAAAAA&amp;text=no+image">
     </div>
-      <div class="thumbnail ng-hide" ng-show="data.flow.files.length || post.img">
+      <div class="thumbnail ng-hide" ng-show="data.flow.files.length || post.images[0].downloadURL">
         <img ng-if="data.flow.files.length" flow-img="data.flow.files[0]">
-        <img ng-if="!data.flow.files.length && post.img" ng-src="{{post.img}}">
+        <img ng-if="!data.flow.files.length && post.images" ng-src="{{post.images[0].downloadURL}}">
       </div>
     <div>
       <span class="btn btn-primary" ng-show="!$flow.files.length && !post.img" flow-btn="">Select image<input type="file" style="visibility: hidden; position: absolute;"></span>

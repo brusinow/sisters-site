@@ -110,7 +110,7 @@ angular.module('SistersServices')
           slug: slug,
           postBody: post.postBody,
           youtube: youtube ? youtube : null,
-          img: img ? img : null,
+          images: img ? {"0": img} : null,
           tags: newTags,
           timestamp: postDate
         };
@@ -126,7 +126,6 @@ angular.module('SistersServices')
       },
       updatePost: function (post, postArray, img, youtube, originalTags) {
         var slug = HelperService.slugify(post.postTitle, post.timestamp);
-        console.log(slug);
         var year = moment(post.timestamp).format("YYYY");
         var month = moment(post.timestamp).format("MMMM");
         var newTags = {};
@@ -136,13 +135,13 @@ angular.module('SistersServices')
         post.slug = slug;
         post.tags = newTags;
         post.youtube = youtube ? youtube : null;
-        post.img = img ? img : null;
+        post.images = img ? {"0": img} : null;
         var thisPost = {
           postTitle: post.postTitle,
           slug: slug,
           postBody: post.postBody,
           youtube: post.youtube,
-          img: post.img,
+          img: post.images,
           tags: newTags,
           timestamp: post.timestamp
         };
@@ -161,8 +160,8 @@ angular.module('SistersServices')
             } 
           }
           $timeout(function () {
-            for (prop in thisPost.tags) {
-              if (thisPost.tags[prop] === true) {
+            for (prop in post.tags) {
+              if (post.tags[prop] === true) {
                 firebase.database().ref('tags/' + prop + '/posts/' + key).set(thisPost);
               } 
             }

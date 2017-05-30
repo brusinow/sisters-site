@@ -12,8 +12,8 @@
 </div>
 <div class="blog-container">
   <div class="blog-post" ng-class="{'fade-in': loaded}" ng-repeat="post in posts | orderBy:'-timestamp'">
-      <div ng-if="post.img.length > 0" class="image-panel">
-        <img ng-src="{{post.img}}"/>
+      <div ng-if="post.images !== null" class="image-panel">
+        <img ng-src="{{post.images[0].downloadURL}}"/>
       </div>
       <div ng-if="post.youtube.length > 0" class="videoWrapper">
        <iframe width="560" height="349" src="{{post.youtube | trustAsResourceUrl}}" frameborder="0" allowfullscreen></iframe>

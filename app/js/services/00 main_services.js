@@ -52,6 +52,7 @@ angular.module('SistersServices', ['ngResource'])
         var xhr = new XMLHttpRequest();
         xhr.responseType = 'blob';
         xhr.onload = function (event) {
+          console.log("what is xhr? ",xhr);
           var blob = xhr.response;
           console.log("Blob!!!!", blob);
           blob.name = obj.name;
@@ -61,7 +62,6 @@ angular.module('SistersServices', ['ngResource'])
         xhr.send();
         return deferred.promise;
       })
-
       return $q.all(promises);
     }
   }])
@@ -268,8 +268,6 @@ angular.module('SistersServices', ['ngResource'])
         loadIMG.src = window.URL.createObjectURL(img);;
         loadIMG.onload = function () {
           var aspectRatio = loadIMG.width / loadIMG.height;
-          console.log("WHAT IS RATIO??? ", aspectRatio);
-
           if (loadIMG.height < 1000 || loadIMG.width < 1000) {
             deferred.reject("Not all images are at least 1000px x 1000px. Please double check and try again.");
           } else if (aspectRatio !== 1) {
@@ -281,22 +279,17 @@ angular.module('SistersServices', ['ngResource'])
             deferred.resolve(file);
           }
         }
-        console.log("right before return for resize: ", deferred.promise);
         return deferred.promise;
       },
       imgResizeBlog: function (img) {
-        console.log("what is img? ", img);
         var deferred = $q.defer();
         var height;
         var width;
         var loadIMG = new Image;
         loadIMG.src = window.URL.createObjectURL(img);;
         loadIMG.onload = function () {
-          console.log(this.width + " " + this.height);
           var aspectRatio = loadIMG.width / loadIMG.height;
-          console.log("WHAT IS RATIO??? ", aspectRatio);
           if (aspectRatio >= 1.776 && loadIMG.height >= 500) {
-            console.log("loadIMG: ", loadIMG);
             var percentChange = (loadIMG.height - 500) / loadIMG.height;
             height = 500;
             width = loadIMG.width - (loadIMG.width * percentChange);
@@ -350,14 +343,10 @@ angular.module('SistersServices', ['ngResource'])
         CheckImgExists(urlPath, obj.name).then(function (checkResult) {
           if (checkResult !== false) {
             console.log("found image!!!!!");
-            if (type === "blog") {
-              deferred.resolve(checkResult);
-            } else if (type === "store") {
-              deferred.resolve({
-                "downloadURL": checkResult,
-                "name": obj.name
-              });
-            }
+            deferred.resolve({
+              "downloadURL": checkResult,
+              "name": obj.name
+            })
           } else {
             resizeMethod(obj.file).then(function (newImg) {
               console.log("resizing new image!!!");
@@ -368,25 +357,18 @@ angular.module('SistersServices', ['ngResource'])
               uploadTask = fbStorage.$put(newImg);
               uploadTask.$complete(function (snapshot) {
                 var downloadURL = snapshot.downloadURL;
-                if (type === "blog") {
-                  deferred.resolve(downloadURL)
-                } else if (type === "store") {
-                  deferred.resolve({
-                    "downloadURL": downloadURL,
-                    "name": snapshot.metadata.name
-                  })
-                }
+                deferred.resolve({
+                  "downloadURL": downloadURL,
+                  "name": snapshot.metadata.name
+                })
               });
             }, function (reason) {
               alert(reason);
             })
           }
         })
-
-
         return deferred.promise;
       })
-
       return $q.all(promises);
     }
   }])

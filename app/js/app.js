@@ -280,9 +280,6 @@ angular.module("SistersApp", ['SistersCtrls', 'SistersDirectives', 'ui.router', 
           }],
           "thisPost": ["$stateParams", "ThisPostService", function ($stateParams, ThisPostService) {
             return ThisPostService($stateParams.slug).$loaded();
-          }],
-          "images": ["thisPost", "FirebaseImgDownloader", function (thisPost, FirebaseImgDownloader) {
-            return FirebaseImgDownloader(thisPost);
           }]
         }
       })

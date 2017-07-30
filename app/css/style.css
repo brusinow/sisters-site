@@ -239,19 +239,19 @@ select {
 }
 
 #bio-img-1 {
-  background: url("/img/bio/sisters-side-by-side.jpg");
+  background: url("/img/bio/v2/sisters1_v2.jpg");
   background-size: cover;
   background-repeat: no-repeat;
 }
 
 #bio-img-2 {
-  background: url("/img/bio/sisters-bubblegum.jpg");
+  background: url("/img/bio/v2/sisters2_v2.jpg");
   background-size: cover;
   background-repeat: no-repeat;
 }
 
 #bio-img-3 {
-  background: url("/img/bio/sisters-poppin-bottle.jpg");
+  background: url("/img/bio/v2/sisters3_v2.jpg");
   background-size: cover;
   background-repeat: no-repeat;
 }

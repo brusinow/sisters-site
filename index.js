@@ -39,16 +39,15 @@ function shouldCompress (req, res) {
 //   databaseURL: "https://sisters-site.firebaseio.com"
 // });
 
-// app.get('*', function (req, res, next) {
+app.get('*', function (req, res, next) {
 
-//   if (req.url.indexOf("/img/") === 0 || req.url.indexOf("/js/") === 0 || req.url.indexOf("/dist/") === 0 || req.url.indexOf("/css/") === 0) {
-//     if (!req.headers['cache-control'] || req.headers['cache-control'] === 'no-cache'){
-//       res.setHeader("Cache-Control", "public, max-age=25920");
-//       res.setHeader("Expires", new Date(Date.now() + 25920000).toUTCString());
-//     }
-//   }
-//   next();
-// });
+  if (req.url.indexOf("/img/") === 0 || req.url.indexOf("/js/") === 0 || req.url.indexOf("/dist/") === 0 || req.url.indexOf("/css/") === 0) {
+    // if (!req.headers['cache-control'] || req.headers['cache-control'] === 'no-cache'){
+      res.setHeader("Cache-Control", "no-cache");
+    // }
+  }
+  next();
+});
 
 app.use(express.static(path.join(__dirname, 'app'), {etag: true}));
 

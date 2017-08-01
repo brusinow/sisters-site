@@ -44,6 +44,7 @@ gulp.task('css', function () {
 
 // Watch Files For Changes
 gulp.task('watch', function() {
+    console.log("gulp watch!!!!");
     gulp.watch('app/js/*.js', ['lint','myJs']);
     gulp.watch('app/js/controllers/*.js', ['lint','myJs']);
     gulp.watch('app/js/services/*.js', ['lint','myJs']);

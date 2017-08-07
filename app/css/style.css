@@ -52,9 +52,8 @@ h4 {
 .sprite-logo, .sprite-cassette
 {background: url('/img/spritesheet.png') no-repeat; overflow: hidden; text-indent: -9999px; text-align: center }
  
-.sprite-logo { display: inline-block; background-position: -0px -0px; width: 236px; height: 40px; float: left;}
-.sprite-cassette { display: block; background-position: -0px -40px; width: 100px; height: 66px; }
-
+.sprite-logo { display: inline-block; background-position: -5px -79px; width: 251px; height: 40px; float: left;}
+.sprite-cassette { display: block; background-position: -5px -5px; width: 100px; height: 64px; }
 
 
 .master-header {
@@ -138,11 +137,11 @@ td:last-child {
 }
 
 a, a:active, a:focus {
-  color: #f7799e;
+  color: #f96018;
 }
 
 a:hover {
-  color: #f7c5d4;
+  color: #f7a37b;
 }
 
 .single-show-div h4 {
@@ -261,7 +260,7 @@ select {
 .circle {
   position: relative;
   display: block;
-  margin: .5em 0;
+  margin: .2em 0;
   background-color: transparent;
   color: white;
   text-align: center;
@@ -283,15 +282,15 @@ select {
   width: 100%;
   height: 0;
   border-radius: 50%;
-  background-color: #fc9fba;
-  border: 4px solid #fc9fba;
+  background-color: #f7799e; 
+  border: 4px solid #f7799e;
   content: "";
   transition:.2s linear all;
 }
 
 .circle.display:after {
-  background-color: rgba(252, 224, 232, 1);
-  border: 4px solid #fcd9e3;
+  background-color: rgba(255, 255, 255, 1);
+  border: 4px solid #f7799e;
   transition:.2s linear all;
 }
 
@@ -358,7 +357,7 @@ select {
 .circle .info a, .circle .info a:active, .circle .info a:hover {
   display: block;
   font-size: 1.1em;
-  color: #f9eaef;
+  color: #ffffff;
   transition: .2s linear all;
   line-height: 1.3em;
   text-decoration: none;
@@ -1155,11 +1154,11 @@ form .show {
     border: none;
     border-radius: 24px;
     margin: 2px 3px 2px 3px;
-    background-color: #f497b3;
+    background-color: #f96018;
 }
 
 .tags-ovals:hover {
-  background-color: #f8becf;
+  background-color: #f7a37b;
 }
 
 .tag-delete-btn {
@@ -1568,7 +1567,7 @@ form .show {
   }
 
   .footer-icon, .footer-icon:active, .footer-icon:focus {
-    color: #5e504f;
+    color: #222222;
     font-size: 1.7em;
     padding: 0;
   }
@@ -1576,7 +1575,7 @@ form .show {
   #footer li {
     display: inline;
     padding: 5px 20px;
-    color: #5e504f;
+    color: #222222;
     font-family: 'Oswald', sans-serif;
     font-size: 1.3em;
     font-weight: 400;
@@ -1584,7 +1583,7 @@ form .show {
 }
 
   #footer li:not(:first-child){
-    border-left: 2px solid #5e504f;
+    border-left: 2px solid #222222;
   }
 
   #footer li a {
@@ -1593,7 +1592,7 @@ form .show {
   }
 
   #footer li a:hover {
-    color: #f7799e;
+    color: #f96018;
   }
 
   .footer-social {
@@ -1601,7 +1600,7 @@ form .show {
   }
 
   .footer-social a:hover {
-    color: #f7799e;
+    color: #f96018;
   }
 
   .copyright {
@@ -1988,7 +1987,7 @@ display: none;
     padding: 8px;
     margin: 10px 0 0 0;
     height: 30px;
-    border-color: #f7799e;
+    border-color: #f96018;
     border-radius: 2px 0 0 2px;
     vertical-align: bottom;
 }
@@ -1999,9 +1998,9 @@ display: none;
     float: left;
     font-size: 1em;
     vertical-align: middle;
-    background-color: #f7799e;
+    background-color: #f96018;
     color: white;
-    border-color: #f7799e;
+    border-color: #f96018;
     border: 1px 1px 1px 0;
     border-radius: 0 2px 2px 0;
     padding: 4px;
@@ -2254,7 +2253,7 @@ display: none;
     line-height: 3vw;
 }
 .circle .info a, .circle .info a:active, .circle .info a:hover {
-  font-size: 1.5vw;
+  font-size: 1.3vw;
   line-height: 1.6vw;
 }
 

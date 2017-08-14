@@ -460,10 +460,8 @@ select {
   color: #1A0504;
   font-family: 'Muli', sans-serif;
   font-weight: 200;
-  text-transform: uppercase;
-  font-size: 1.2em;
-  line-height: 1;
-  letter-spacing: .04em;
+  font-size: 1em;
+  line-height: 1.5;
 }
 
 #popup-img-div {

@@ -36,46 +36,33 @@ angular.module('SistersCtrls')
      $scope.mobileWidth = true;
   } 
 
-
-
-
-  
-
-  // $timeout(function(){
-  //   // OVERLAY CREATION
-   
-  //     // if (w >= 678){
-  //     if ($scope.firebaseUser === null && $location.$$path !== "/login"){
+    // OVERLAY CREATION
+  $timeout(function(){
+      if ($scope.firebaseUser === null && $location.$$path !== "/login"){
    
         
-  //       if (!document.getElementById("overlayMail")){
+        if (!document.getElementById("overlayMail")){
           
-  //         var div = document.createElement("div");
-  //         div.id = "overlayMail";
-  //         div.className = "overlay-start";
-  //         var body = document.body;
-  //         var popUp = document.querySelector("#pop-up");
+          var div = document.createElement("div");
+          div.id = "overlayMail";
+          div.className = "overlay-start";
+          var body = document.body;
+          var popUp = document.querySelector("#pop-up");
       
-  //         div.style.height = body.scrollHeight + "px";
-  //         popUp.appendChild(div);
-  //         var overlay = document.querySelector("#overlayMail");
-  //         overlay.classList.add("active");
-  //       }
-  //       // var scrollTop = $window.pageYOffset;
-  //       // var content = document.querySelector("#overlay-content");
-  //       // content.style.top = scrollTop + "px";
-  //       $scope.isPopup = true;
-  //     }
-  //   // };
-  // },6000)
+          div.style.height = body.scrollHeight + "px";
+          popUp.appendChild(div);
+          var overlay = document.querySelector("#overlayMail");
+          overlay.classList.add("active");
+        }
+        $scope.isPopup = true;
+      }
+  },6000)
     
 
-  // $scope.closePopup = function(){
-  //   $scope.isPopup = false;
-  // }
+  $scope.closePopup = function(){
+    $scope.isPopup = false;
+  }
     
-   
-  
   $scope.toStore = function(){
       $scope.isPopup = false;
       $timeout(function(){
@@ -83,15 +70,8 @@ angular.module('SistersCtrls')
       },300);
   }
 
-
-
-
   $scope.toggle = true;
   var width = window.innerWidth;
-
-
- 
-
 
 }])
 

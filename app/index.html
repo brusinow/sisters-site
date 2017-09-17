@@ -34,17 +34,17 @@
      <div id="mobile-background-div" ng-controller="NavCtrl" style='width:120%; right:-20px; background-image:url("/img/sistersBackgroundSmall.jpg"); background-size:cover; position: fixed; z-index:-10;'></div>
 <div id="wrap">
     <div id="top-of-page"></div>
-    <div class="site-header" ng-include="'/views/header.html'" ng-controller="NavCtrl" ng-class="{'fade-in': fade}"></div>
+    <div class="site-header" ng-include="'/views/header.html'" ng-controller="NavCtrl" ng-class="{'fade-in': fade}" ng-hide="$state.includes('releaseCountdown')"></div>
    
         <div id="main" ng-class="{'show': mainLoaded}" ng-controller="MainCtrl" class="container">
           <ui-view></ui-view>
         </div>
 </div>
 
-    <div id="footer" class="site-footer" ng-include="'/views/footer.html'" ng-controller="FooterCtrl"></div>
+    <div id="footer" class="site-footer" ng-include="'/views/footer.html'" ng-controller="FooterCtrl" ng-hide="$state.includes('releaseCountdown')"></div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/2.2.4/jquery.min.js"   integrity="sha256-BbhdlvQf/xTY9gja0Dq3HiwQF8LaCRTXxZKRutelT44="   crossorigin="anonymous"></script>  
-<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.0/angular.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angular.js/1.5.0/angular.js"></script>
 <script src="https://www.gstatic.com/firebasejs/3.6.4/firebase.js"></script>
 <script>
   // Initialize Firebase
@@ -66,6 +66,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-ui-bootstrap/2.0.1/ui-bootstrap-tpls.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.17.1/moment.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/angular-moment/1.0.0-beta.6/angular-moment.min.js"></script>
+<script src="/components/humanize-duration/humanize-duration.js"></script>
 <script src='https://cdnjs.cloudflare.com/ajax/libs/textAngular/1.5.0/textAngular-rangy.min.js'></script>
 <script src='https://cdnjs.cloudflare.com/ajax/libs/textAngular/1.5.0/textAngular-sanitize.min.js'></script>
 <script src='https://cdnjs.cloudflare.com/ajax/libs/textAngular/1.5.0/textAngular.min.js'></script>

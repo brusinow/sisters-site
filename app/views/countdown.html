@@ -1,0 +1,15 @@
+<div id="countdown-div" style="margin-top: 15%; text-align: center;" class="row" ng-show="showCountdown">
+  <img style="margin-bottom: 10px;" src="img/logo.png"/>
+  <h2 style="font-family: 'Oswald'; font-weight:800;">Please return on October 9th at 1pm PST.</h2>
+  <img style="display: block; margin: 0 auto; height: 300px;" src="img/countdown/hourglass.gif"/>
+  <div id="timer-box">
+   <timer end-time="endTime" finish-callback="endCountdown()">{{days}} days, {{hours}} hours, {{minutes}} minutes, {{seconds}} seconds.</timer> 
+  </div>
+</div>
+<div style="margin-top: 15%;" ng-hide="showCountdown">
+  <div id="main-video-container" class="eight columns offset-by-two">
+      <div class="videoWrapper" style="margin-bottom: 10px;">
+        <iframe width="1280" height="720" src="https://www.youtube.com/embed/C9gnpUI3x1U?rel=0" frameborder="0" allowfullscreen></iframe>
+      </div>
+      </div>
+</div>

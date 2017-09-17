@@ -1,11 +1,12 @@
 var authWait = ["Auth", function(Auth) { return Auth.$waitForSignIn(); }]
 var authRequire = ["Auth", function(Auth) { return Auth.$requireSignIn(); }]
 
-angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui.bootstrap','firebase','angularMoment','ngCart','ngStorage','angularPayments','ngAnimate','picardy.fontawesome','textAngular','ui.router.metatags','angular-parallax', 'tableSort','ngFileSaver'])
+angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui.bootstrap','firebase','angularMoment','ngCart','ngStorage','angularPayments','ngAnimate','picardy.fontawesome','textAngular','ui.router.metatags','angular-parallax', 'tableSort','ngFileSaver','timer'])
 
 
 
 .run(["$rootScope", "$state","$location","$window",'MetaTags', function($rootScope, $state, $location, $window,MetaTags) {
+  $rootScope.$state = $state;
   $rootScope.MetaTags = MetaTags;
   $rootScope.$on("$stateChangeError", function(event, toState, toParams, fromState, fromParams, error) {
     // We can catch the error thrown when the $requireSignIn promise is rejected
@@ -80,6 +81,15 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
             },
     templateUrl: '/views/home.html',
     controller: 'HomeCtrl'
+  })
+  .state('releaseCountdown', {
+    url: '/greetingsfromsisters',
+    metaTags: {
+                title: 'SISTERS',
+                description: 'Seattle duo. Please return on October 9th at 1pm PST for something awesome.'
+            },
+    templateUrl: '/views/countdown.html',
+    controller: 'ReleaseCountdownCtrl'
   })
   .state('admin', {
     url: '/admin',

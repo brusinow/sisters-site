@@ -79,4 +79,18 @@ $scope.$on('loadMainContainer', function (event, data) {
   main.style.padding = "0 0 176px 0";
   main.style.width = '90%';
   $scope.$emit('loadMainContainer', 'loaded');
+})
+
+.controller('ReleaseCountdownCtrl', function($scope, $state, $timeout){
+  var main = document.getElementById("main");
+  main.style.backgroundColor = 'rgba(255, 255, 255, 0)';
+  main.style.padding = "0 0 176px 0";
+  main.style.width = '90%';
+  $scope.$emit('loadMainContainer', 'loaded');
+  $scope.showCountdown = true;
+  $scope.endTime = "09 Oct 2017 13:00:00 PST"
+
+  $scope.endCountdown = function(){
+    $scope.showCountdown = false;
+  }
 });

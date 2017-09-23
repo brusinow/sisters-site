@@ -16,13 +16,12 @@ gulp.task('lint', function() {
 });
 
 gulp.task('libJs', function () {
-  gulp.src(['app/lib/ngCart.js','app/lib/angular-parallax.js','app/components/angular-file-saver/dist/angular-file-saver.bundle.js', 'app/lib/metatags/ui-router-metatags.js','app/lib/angular-tablesort.js', 'app/lib/angular-fontawesome.js', 'app/lib/buttons.js','app/lib/angular-payments.js','app/components/angular-timer/dist/angular-timer.js'])
+  gulp.src(['app/lib/angular-parallax.js','app/components/angular-file-saver/dist/angular-file-saver.bundle.js', 'app/lib/metatags/ui-router-metatags.js','app/lib/angular-tablesort.js', 'app/lib/angular-fontawesome.js', 'app/lib/buttons.js','app/components/angular-timer/dist/angular-timer.js'])
     .pipe(sourcemaps.init())
-      .pipe(concat('libs.js'))
       .pipe(ngAnnotate())
-      .pipe(uglify())
+      .pipe(uglify({mangle: false}))
     .pipe(sourcemaps.write())
-    .pipe(gulp.dest('app/dist'))
+    .pipe(gulp.dest('app/dist/'))
 })
 
 gulp.task('myJs', function () {
@@ -30,7 +29,7 @@ gulp.task('myJs', function () {
     .pipe(sourcemaps.init())
       .pipe(concat('app.js'))
       .pipe(ngAnnotate())
-      .pipe(uglify())
+      .pipe(uglify({mangle: false}))
     .pipe(sourcemaps.write())
     .pipe(gulp.dest('app/dist'))
 })

@@ -20,7 +20,7 @@
 
   <div class="insta-gallery">
     <div class="insta-photo" ng-repeat="photo in photos | limitTo:9">
-      <a ng-href="{{photo.link}}" target="_blank"><img ng-src="{{photo.images.low_resolution.url}}"/></a>
+      <a ng-href="{{photo.link}}" target="_blank"><img ng-src="{{photo.images.thumbnail.url}}"/></a>
     </div>
   </div>
   <div class="fancy"><span>RECENT POSTS</span></div>

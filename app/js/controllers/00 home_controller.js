@@ -24,6 +24,7 @@ $scope.$on('loadMainContainer', function (event, data) {
   var width = window.innerWidth;
   if (!$scope.loaded && width > 806){ 
     $timeout(function () {
+      console.log("fade me in!");
       $scope.$emit('loadMainContainer', 'loaded');
       $scope.fadeHome = true;
       LoadedService.set(true);

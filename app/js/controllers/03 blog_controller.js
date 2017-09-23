@@ -9,6 +9,7 @@ angular.module('SistersCtrls')
  
   InstagramFactory.then(function(data){
     $scope.photos = data.data;
+    console.log("what are photos? ",$scope.photos);
     $scope.loadedInsta = true;
     if ($scope.loadedTwitter){
       $scope.loaded = true;

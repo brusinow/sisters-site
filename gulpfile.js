@@ -16,7 +16,7 @@ gulp.task('lint', function() {
 });
 
 gulp.task('libJs', function () {
-  gulp.src(['app/lib/angular-parallax.js','app/components/angular-file-saver/dist/angular-file-saver.bundle.js', 'app/lib/metatags/ui-router-metatags.js','app/lib/angular-tablesort.js', 'app/lib/angular-fontawesome.js', 'app/lib/buttons.js','app/components/angular-timer/dist/angular-timer.js'])
+  gulp.src(['app/lib/angular-parallax.js','app/components/angular-file-saver/dist/angular-file-saver.bundle.js', 'app/lib/metatags/ui-router-metatags.js','app/lib/angular-fontawesome.js', 'app/lib/buttons.js','app/components/angular-timer/dist/angular-timer.js'])
     .pipe(sourcemaps.init())
       .pipe(ngAnnotate())
       .pipe(uglify({mangle: false}))

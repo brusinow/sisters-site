@@ -89,7 +89,7 @@ $scope.$on('loadMainContainer', function (event, data) {
   main.style.width = '90%';
   $scope.$emit('loadMainContainer', 'loaded');
   $scope.showCountdown = true;
-  $scope.endTime = "09 Oct 2017 13:00:00 PST"
+  $scope.endTime = "09 Oct 2017 12:00:00 PST"
 
   $scope.endCountdown = function(){
     $scope.showCountdown = false;

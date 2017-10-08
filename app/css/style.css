@@ -72,6 +72,29 @@ h4 {
   font-size: 2.4rem;
 }
 
+#countdown-text {
+  padding: 10px 20px;
+  background-color: rgba(255,255,255,.5);
+  margin-bottom: 20px;
+}
+
+#countdown-text p {
+  font-size: 2.4rem;
+  font-family: 'Helvetica Neue', sans-serif;
+}
+
+.countdown-header {
+  text-align: center;
+}
+
+.countdown-header a {
+  text-decoration: none;
+  font-family: 'Oswald', sans-serif;
+  font-size: 5rem;
+  font-weight: 600;
+  color: #1A0504;
+}
+
 .admin-nav-btn {
   background-color: #f7799e; 
   padding: 5px; 

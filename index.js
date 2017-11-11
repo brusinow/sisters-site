@@ -30,7 +30,6 @@ function shouldCompress (req, res) {
     // don't compress responses with this request header
     return false
   }
-  console.log("we have a req!")
   // fallback to standard filter function
   return compression.filter(req, res)
 }
@@ -99,6 +98,22 @@ app.get('/instagram', function(req, res) {
   var instaURL = 'https://api.instagram.com/v1/users/'+process.env.INSTA_USER+'/media/recent/?access_token='+process.env.INSTA_TOKEN;
   request(instaURL, function (error, response, body) {
     if (!error && response.statusCode == 200) {
+      res.send(body);
+    }
+  });
+});
+
+app.get('/bandsintown', function(req, res) {
+  console.log("bands in town request");
+  var URL = 'https://rest.bandsintown.com/artists/SISTERS/events?app_id=sisterssite';
+  request(URL, function (error, response, body) {
+    if (error){
+      console.log("error: ",error);
+    }
+    console.log("response code: ",response.statusCode);
+    console.log("body: ",body);
+    if (!error && response.statusCode == 200) {
+      console.log("sending body to client");
       res.send(body);
     }
   });

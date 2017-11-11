@@ -13,6 +13,8 @@
   </div>
   <div class="text-center">
   <h2 class="text-center master-header">Upcoming Shows</h2>
+  <p id="bandsintown-powered-by">Powered by:</p>
+  <img id="bandsintown-logo" src="/img/bandsintown.png"/>
   </div>
   <table id="show-table" ng-if="shows.length > 0" class="u-full-width">
   <thead>
@@ -26,16 +28,11 @@
   </thead>
   <tbody>
     <tr ng-repeat="show in shows track by $index">
-      <td ng-if="firebaseUser.email"><button type="button" class="button button-border-pink edit-button" ng-click="open('edit',$index)"><i class="fa fa-pencil" aria-hidden="true"></i></button></td>
-      <td>{{show.date}}</td>
-      <td>{{show.location}}</td>
-      <td>{{show.venue}}</td>
+      <td>{{show.datetime | MomentFilter}}</td>
+      <td>{{show.venue.city}}, {{show.venue.country}}</td>
+      <td>{{show.venue.name}}</td>
       <td>
-        <a ng-if="show.venueLink" ng-href="{{show.venueLink}}" target="_blank">info</a>
-        <br ng-if="show.ticketLink && show.venueLink">
-       
-        <a ng-if='show.ticketSale' ng-href="{{show.ticketLink}}">tickets</a>
-        <a ng-if='show.ticketLink && !show.ticketSale' ng-href="{{show.ticketLink}}" target="_blank">tickets</a>
+        <a ng-href="{{show.url}}" target="_blank">info</a>
       </td>
     </tr>
   </tbody>

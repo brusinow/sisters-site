@@ -1,18 +1,23 @@
 angular.module('SistersCtrls')
 
-.controller('ShowsCtrl', ['$scope', '$state','currentAuth','$log','$firebaseArray','moment','Auth','getShows','$uibModal', function($scope, $state, currentAuth,$log, $firebaseArray, moment, Auth, getShows, $uibModal){
+.controller('ShowsCtrl', ['$scope', '$state','currentAuth','$log','$firebaseArray','moment','Auth','getShows','$uibModal','BandsInTown', function($scope, $state, currentAuth,$log, $firebaseArray, moment, Auth, getShows, $uibModal, BandsInTown){
 var main = document.getElementById("main");
   main.style.backgroundColor = 'rgba(252, 244, 247, 0)';
   main.style.width = '';
   main.style.padding = '';
 $scope.$emit('loadMainContainer', 'loaded');
-  $scope.shows = getShows;
+  // $scope.shows = getShows;
 
   $scope.auth = Auth;
   $scope.auth.$onAuthStateChanged(function(firebaseUser) {
     $scope.firebaseUser = firebaseUser;
     // console.log("firebase user is ",$scope.firebaseUser);
   });
+
+  BandsInTown.then(function(data){
+    $scope.shows = data;
+    console.log("what are shows from bands in town? ",$scope.shows);
+  })
 
 
 

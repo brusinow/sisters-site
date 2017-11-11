@@ -440,6 +440,7 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
   }
 }])
 
+
 .filter('tooOld', function() {
   return function(events) {
     var currentDay = moment().unix()

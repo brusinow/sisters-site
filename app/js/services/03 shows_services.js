@@ -1,5 +1,21 @@
 angular.module('SistersServices')
 
+// Pulls content for twitter post display
+.service('BandsInTown', ['$http', '$q', 
+  function ($http, $q) {
+    var deferred = $q.defer();
+    $http({
+        method: 'GET',
+        url: '/bandsintown',
+        cache: true
+    }).success(function (data) {
+        deferred.resolve(data);
+    }).error(function (msg) {
+        deferred.reject(msg);
+    });
+    return deferred.promise;
+}])
+
 .factory("GetShows", ["$firebaseArray","moment", 
   function($firebaseArray, moment){
     var currentDay = moment().unix();

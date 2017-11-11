@@ -63,7 +63,7 @@ h4 {
 
 .master-header {
   display: inline-block;
-  margin: 20px;
+  margin: 20px 20px 5px 20px;
   font-family: 'Oswald', sans-serif;
   text-transform: uppercase;
   font-weight: 300;
@@ -93,6 +93,17 @@ h4 {
   font-size: 5rem;
   font-weight: 600;
   color: #1A0504;
+}
+
+#bandsintown-powered-by {
+  margin-bottom: 0px;
+  font-size: .8em;
+}
+
+#bandsintown-logo {
+  display: block;
+  margin: 0 auto 5px auto;
+  height: 24px;
 }
 
 .admin-nav-btn {

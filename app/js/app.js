@@ -488,6 +488,63 @@ angular.module("SistersApp", ['SistersCtrls','SistersDirectives','ui.router','ui
     };
   })
 
+.filter("MonthSort", function(){
+  return function(monthArray){
+    var newArray = [];
+    var resultArray = [];
+    var currentMonth;
+    var index;
+      for (var i = 0; i < monthArray.length; i++){
+        currentMonth = monthArray[i].$id;
+        switch(currentMonth){
+          case "January":
+          index = 0;
+          break;
+          case "February":
+          index = 1;
+          break;
+          case "March":
+          index = 2;
+          break;
+          case "April":
+          index = 3;
+          break;
+          case "May":
+          index = 4;
+          break;
+          case "June":
+          index = 5;
+          break;
+          case "July":
+          index = 6;
+          break;
+          case "August":
+          index = 7;
+          break;
+          case "September":
+          index = 8;
+          break;
+          case "October":
+          index = 9;
+          break;
+          case "November":
+          index = 10;
+          break;
+          case "December":
+          index = 11;
+          break;
+        }
+        newArray[index] = monthArray[i];
+      } 
+      for (var j = 0; j < newArray.length; j++){
+        if (newArray[j] !== undefined){
+          resultArray.push(newArray[j]);
+        }
+      } 
+    return resultArray;
+  }
+})
+
 
 
 .filter('centsToDollars', function(){

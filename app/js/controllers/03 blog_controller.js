@@ -221,7 +221,7 @@ angular.module('SistersCtrls')
 }])  
 
 
-.controller('BlogSidebarCtrl', ['$scope', '$state','$stateParams','$timeout','ArchiveService','AllTagsService','BlogPosts','HelperService','$uibModal','$log', function($scope, $state, $stateParams,$timeout, ArchiveService, AllTagsService, BlogPosts, HelperService, $uibModal, $log){
+.controller('BlogSidebarCtrl', ['$scope', '$state','$stateParams','$timeout','ArchiveService', 'AllTagsService','BlogPosts','HelperService','$uibModal','$log', function($scope, $state, $stateParams,$timeout, ArchiveService, AllTagsService, BlogPosts, HelperService, $uibModal, $log){
  
   $scope.recentPosts = BlogPosts();
   $scope.parseTitle = HelperService.titleToURL;

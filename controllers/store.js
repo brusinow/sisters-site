@@ -46,12 +46,12 @@ router.post("/newOrder", function(req, res){
   var orderNumber = Math.random().toString(36).substr(2, 9);
   console.log("order number: ",orderNumber);
   console.log("req.query.shippable is ",req.query.shippable);
-  
 
 
-  
+
+
   if (req.query.shippable === true){
-    
+
     var addressFrom = {
       "object_purpose": "PURCHASE",
       "name": "SISTERS",
@@ -96,7 +96,7 @@ router.post("/newOrder", function(req, res){
     }
     if (shipment){
       res.send({
-        shipment: shipment, 
+        shipment: shipment,
         order: parsedOrder
       });
     }
@@ -105,13 +105,13 @@ router.post("/newOrder", function(req, res){
   } else {
     res.send({order: parsedOrder});
   }
-  
-
-  
 
 
-  
-        
+
+
+
+
+
 })
 
 
@@ -132,7 +132,7 @@ router.post("/orderComplete", function(req, res){
   amount: data.totalAmount,
   currency: "usd",
   source: data.token, // obtained with Stripe.js
-  description: "Charge for " + data.name 
+  description: "Charge for " + data.name
     }, function(err, charge) {
     if (err){
       // there is an error with Stripe charge
@@ -142,7 +142,7 @@ router.post("/orderComplete", function(req, res){
     if (charge){
       // Stripe charge was created successfully
     console.log(charge);
-    res.send(charge); 
+    res.send(charge);
 
       var order = {
         email: myOrder.billing.email,

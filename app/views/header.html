@@ -10,10 +10,9 @@
       <li><a ng-click="toggle = !toggle" ng-href="/">home</a></li>
       <li><a ng-click="toggle = !toggle" ng-href="/shows">shows</a></li>
       <li><a ng-click="toggle = !toggle" href="https://open.spotify.com/artist/2Hb8mc3CoUktri3i4Q4ACR" target="_blank">music</a></li>
-      <li><a ng-click="toggle = !toggle" ng-href="/blog">blog</a></li>
-      <li ng-show="firebaseUser.email"><a ng-click="toggle = !toggle" ng-href="/admin">admin</a></li>
+      <!-- <li ng-show="firebaseUser.email"><a ng-click="toggle = !toggle" ng-href="/admin">admin</a></li> -->
     </ul>
-  </div> 
+  </div>
 </div>
 
 
@@ -23,16 +22,15 @@
     <ul style="margin-top: 1.5rem; margin-bottom: 0;" class="nav-left">
       <li><a ng-href="/shows">shows</a></li>
       <li><a href="https://open.spotify.com/artist/2Hb8mc3CoUktri3i4Q4ACR" target="_blank">music</a></li>
-      <li><a ng-href="/blog">blog</a></li>
-      <li ng-show="firebaseUser.email" ><a class="admin-nav-btn" ng-href="/admin">admin</a></li>
+      <!-- <li ng-show="firebaseUser.email" ><a class="admin-nav-btn" ng-href="/admin">admin</a></li> -->
     </ul>
 
   </div>
   <div class="clear-float"></div>
   <div class="four columns right-nav-social-width">
-    
+
     <div class="nav-right">
-     
+
       <div style="margin-top: 1.5rem; margin-bottom: 0;" class="social header-social float-right">
         <a href="https://soundcloud.com/sisterstheband" target="_blank"><i class="fa fa-soundcloud fa-lg" aria-hidden="true"></i></a>
         <a href="https://open.spotify.com/artist/2Hb8mc3CoUktri3i4Q4ACR" target="_blank"><i class="fa fa-spotify fa-lg" aria-hidden="true"></i></a>
@@ -42,7 +40,7 @@
         <a href="https://twitter.com/sisterstheband" target="_blank"><i class="fa fa-twitter fa-lg" aria-hidden="true"></i></a>
       </div>
     </div>
-  </div> 
+  </div>
 </div>
 <div ng-show="isPopup">
   <div id="pop-up"></div>

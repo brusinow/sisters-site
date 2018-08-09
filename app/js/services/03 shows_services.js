@@ -1,7 +1,6 @@
 angular.module('SistersServices')
 
-// Pulls content for twitter post display
-.service('BandsInTown', ['$http', '$q', 
+.service('BandsInTown', ['$http', '$q',
   function ($http, $q) {
     var deferred = $q.defer();
     $http({
@@ -9,6 +8,7 @@ angular.module('SistersServices')
         url: '/bandsintown',
         cache: true
     }).success(function (data) {
+      console.log("data: ",data);
         deferred.resolve(data);
     }).error(function (msg) {
         deferred.reject(msg);
@@ -16,7 +16,7 @@ angular.module('SistersServices')
     return deferred.promise;
 }])
 
-.factory("GetShows", ["$firebaseArray","moment", 
+.factory("GetShows", ["$firebaseArray","moment",
   function($firebaseArray, moment){
     var currentDay = moment().unix();
     var calcDay = currentDay - 86400;
@@ -28,7 +28,7 @@ angular.module('SistersServices')
   }
 }])
 
-.factory("GetSingleShow", ["$firebaseObject", 
+.factory("GetSingleShow", ["$firebaseObject",
   function($firebaseObject){
     return function(key){
     var showRef = firebase.database().ref('shows/'+key);
@@ -36,7 +36,7 @@ angular.module('SistersServices')
   }
 }])
 
-.factory("GetAllTickets", ["$firebaseArray", 
+.factory("GetAllTickets", ["$firebaseArray",
   function($firebaseArray) {
   return function(){
     var ticketRef = firebase.database().ref('tickets');
@@ -44,7 +44,7 @@ angular.module('SistersServices')
   }
 }])
 
-.factory("GetTicket", ["$firebaseObject", 
+.factory("GetTicket", ["$firebaseObject",
   function($firebaseObject){
     return function(key){
     var ticketRef = firebase.database().ref('tickets/'+key);
@@ -52,7 +52,7 @@ angular.module('SistersServices')
   }
 }])
 
-.factory("WillCallListService", ["$firebaseArray", 
+.factory("WillCallListService", ["$firebaseArray",
   function($firebaseArray){
     return function(key){
     var willCallRef = firebase.database().ref('tickets/'+ key + '/willCallList');

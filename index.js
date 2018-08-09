@@ -105,7 +105,7 @@ app.get('/instagram', function(req, res) {
 
 app.get('/bandsintown', function(req, res) {
   console.log("bands in town request");
-  var URL = 'https://rest.bandsintown.com/artists/SISTERS/events?app_id=sisterssite';
+  var URL = 'https://rest.bandsintown.com/artists/'+process.env.BANDSINTOWN_ARTIST_ID+'/events?app_id=' + process.env.BANDSINTOWN_APP_ID;
   request(URL, function (error, response, body) {
     if (error){
       console.log("error: ",error);
@@ -177,13 +177,13 @@ app.post("/stripe/updateShipping", function(req, res){
 })
 
 app.get('/stripe/testtest', function(req, res) {
-    res.json({ message: 'hooray! welcome to our api!' });   
+    res.json({ message: 'hooray! welcome to our api!' });
 });
 
 
 app.post("/stripe/orderComplete", function(req, res){
   stripe.orders.pay(req.query.orderId, {
-  source: req.query.token 
+  source: req.query.token
   }, function(err, order) {
     if (order){
       res.send(order);
@@ -228,9 +228,9 @@ app.post("/stripe/taxCallback", function(req, res){
           }
         ]
       }
-  }   
+  }
   console.log(JSON.stringify(myJSON, null, 4));
-  res.json(myJSON); 
+  res.json(myJSON);
 });
 
 

@@ -1,3 +1,4 @@
+require('dotenv').config();
 var subdomain = require('express-subdomain');
 var compression = require('compression')
 var express = require('express');

@@ -61,7 +61,7 @@ var client = new Twitter({
   access_token_secret: process.env.TWITTER_TOKEN_SECRET
 });
 
-
+console.log("secret: ",process.env.SESSION_SECRET);
 app.use(session({
   secret: process.env.SESSION_SECRET,
   resave: false,

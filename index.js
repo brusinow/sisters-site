@@ -1,4 +1,8 @@
-require('dotenv').config();
+var dotenvresult = require('dotenv').config()
+if (dotenvresult.error) {
+  throw dotenvresult.error
+}
+console.log(dotenvresult.parsed);
 var subdomain = require('express-subdomain');
 var compression = require('compression')
 var express = require('express');

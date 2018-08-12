@@ -2,7 +2,6 @@ var dotenvresult = require('dotenv').config()
 if (dotenvresult.error) {
   throw dotenvresult.error
 }
-console.log(dotenvresult.parsed);
 var subdomain = require('express-subdomain');
 var compression = require('compression')
 var express = require('express');
@@ -65,7 +64,6 @@ var client = new Twitter({
   access_token_secret: process.env.TWITTER_TOKEN_SECRET
 });
 
-console.log("secret: ",process.env.SESSION_SECRET);
 app.use(session({
   secret: process.env.SESSION_SECRET,
   resave: false,
@@ -250,5 +248,6 @@ app.get('/*', function(req, res) {
 app.use('/store', require('./controllers/store'));
 
 
-
-app.listen(process.env.PORT || 8080)
+var port = process.env.PORT || 8080
+app.listen(port)
+console.log("serving on port " + port);

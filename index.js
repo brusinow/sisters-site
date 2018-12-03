@@ -1,7 +1,3 @@
-var dotenvresult = require('dotenv').config()
-if (dotenvresult.error) {
-  throw dotenvresult.error
-}
 var subdomain = require('express-subdomain');
 var compression = require('compression')
 var express = require('express');
